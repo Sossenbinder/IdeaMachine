@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+		"baseUrl": "src",
+		"removeComments": true,
+		"sourceMap": true,
+		"target": "ESNext",
+		"module": "commonjs",
+		"jsx": "react",
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "node",
+		// "noImplicitAny": true,
+		// "noUnusedLocals": true,
+		// "noUnusedParameters": true,
+		"allowJs": false,
+		"paths": {
+			"common": [ "Common/*" ],
+			"views": [ "Views/*" ],
+			"modules": [ "Modules/*" ],
+		}
+    },
+	"exclude": [
+		"node_modules",
+		"wwwroot",
+	]
+}

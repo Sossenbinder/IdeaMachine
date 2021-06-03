@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="MassTransit" Version="7.1.8" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />
+	</ItemGroup>
+</Project>

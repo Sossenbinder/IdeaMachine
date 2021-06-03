@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="MailKit" Version="2.12.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="DI\" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\IdeaMachine.Modules.Idea\IdeaMachine.Modules.Idea.csproj" />
+		<ProjectReference Include="..\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
+	</ItemGroup>
+</Project>

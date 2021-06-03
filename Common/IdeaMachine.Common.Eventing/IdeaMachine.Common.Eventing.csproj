@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="MassTransit" Version="7.1.8" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="7.1.8" />
+		<PackageReference Include="MassTransit.SignalR" Version="7.1.8" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="1.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.Json" Version="1.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />
+		<ProjectReference Include="..\IdeaMachine.Common.DI\IdeaMachine.Common.DI.csproj" />
+		<ProjectReference Include="..\IdeaMachine.Common.Eventing.Abstractions\IdeaMachine.Common.Eventing.Abstractions.csproj" />
+		<ProjectReference Include="..\IdeaMachine.Common.SignalR\IdeaMachine.Common.SignalR.csproj" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+﻿<!doctype html>
+<html style="height: 100%;width: 100%">
+
+<head>
+	<meta charset=utf-8>
+	<title>IdeaMachine</title>
+	<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body style="height: 100%; width: 100%; margin: 0">
+
+	@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryToken" }))
+	{
+		@Html.AntiForgeryToken()
+	}
+ <div id="reactRoot" style="height: 100%; width: 100%">
+ </div>
+ <script type="text/javascript" src="site.js"></script>
+</body>
+
+</html>
