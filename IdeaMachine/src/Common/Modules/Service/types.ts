@@ -1,6 +1,8 @@
 //Types
+import { NetworkResponse } from "Common/Helper/Requests/Types/NetworkDefinitions";
 import ISignalRConnectionProvider from "common/Helper/SignalR/Interface/ISignalRConnectionProvider";
-import { Idea } from 'modules/Ideas/types';
+import { Idea } from "modules/Ideas/types";
+import { RegisterInfo, SignInInfo, IdentityErrorCode } from "modules/Account/types";
 
 export interface IModuleService {
 	start?(): Promise<void>;
@@ -16,7 +18,13 @@ export interface IIdeaService extends IModuleService {
 	initializeIdeas(): Promise<void>;
 }
 
+export interface IAccountService extends IModuleService {
+	register(registerInfo: RegisterInfo): Promise<NetworkResponse<IdentityErrorCode>>;
+	login(signInInfo: SignInInfo): Promise<NetworkResponse<IdentityErrorCode>>;
+}
+
 export type Services = {
+	AccountService: IAccountService;
 	IdeaService: IIdeaService;
 	SignalRConnectionProvider: ISignalRConnectionProvider;
 }

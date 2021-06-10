@@ -9,20 +9,25 @@ namespace IdeaMachine.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class IdeaController : ControllerBase
+	public class IdeaController : IdentityControllerBase
 	{
 		private readonly IIdeaService _ideaService;
 
-		public IdeaController(IIdeaService ideaService)
+		private readonly IIdeaRetrievalService _ideaRetrievalService;
+
+		public IdeaController(
+			IIdeaService ideaService,
+			IIdeaRetrievalService ideaRetrievalService)
 		{
 			_ideaService = ideaService;
+			_ideaRetrievalService = ideaRetrievalService;
 		}
 
 		[HttpGet]
 		[Route("Get")]
 		public async Task<JsonDataResponse<List<IdeaModel>>> Get()
 		{
-			var result = await _ideaService.Get();
+			var result = await _ideaRetrievalService.Get();
 
 			return JsonResponse.Success(result);
 		}
@@ -31,7 +36,7 @@ namespace IdeaMachine.Controllers
 		[Route("Add")]
 		public async Task Add([FromBody] IdeaModel ideaModel)
 		{
-			await _ideaService.Add(ideaModel);
+			await _ideaService.Add(Session, ideaModel);
 		}
 	}
 }

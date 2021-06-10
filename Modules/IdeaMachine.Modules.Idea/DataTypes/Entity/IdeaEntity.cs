@@ -1,0 +1,28 @@
+﻿using System;
+
+namespace IdeaMachine.Modules.Idea.DataTypes.Entity
+{
+	public class IdeaEntity
+	{
+		public int Id { get; set; } = 0;
+
+		public Guid Creator { get; set; }
+
+		public string ShortDescription { get; set; } = null!;
+
+		public string? LongDescription { get; set; }
+
+		public DateTime CreationDate { get; set; }
+
+		public IdeaModel ToModel()
+		{
+			return new()
+			{
+				CreationDate = CreationDate,
+				ShortDescription = ShortDescription,
+				LongDescription = LongDescription,
+				Id = Id,
+			};
+		}
+	}
+}

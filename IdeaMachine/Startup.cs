@@ -1,4 +1,5 @@
 using System;
+using System.Data.Entity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,14 +9,20 @@ using System.IO;
 using Autofac;
 using GreenPipes;
 using GreenPipes.Configurators;
+using IdeaMachine.Common.AspNetIdentity.Helper;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Logging.Log;
 using IdeaMachine.Common.SignalR;
+using IdeaMachine.Modules.Account.DataTypes.Entity;
+using IdeaMachine.Modules.Account.DI;
+using IdeaMachine.Modules.Account.Repository.Context;
 using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
 using MassTransit;
 using MassTransit.SignalR;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace IdeaMachine
@@ -44,6 +51,12 @@ namespace IdeaMachine
 			services.AddMemoryCache();
 
 			services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(LogProvider.CreateLogger(Configuration)));
+
+			services.AddAntiforgery(x => x.HeaderName = "RequestVerificationToken");
+
+			services.AddResponseCompression();
+
+			RegisterIdentity(services);
 
 			services.AddMassTransit(x =>
 			{
@@ -80,12 +93,25 @@ namespace IdeaMachine
 			}
 		}
 
+		private void RegisterIdentity(IServiceCollection services)
+		{
+			services.AddDbContext<AccountContext>(options => options.UseNpgsql(Configuration["PostgresConnectionString"]));
+
+			services.AddIdentity<AccountEntity, IdentityRole<int>>(IdentityOptionsProvider.ApplyDefaultOptions)
+				.AddErrorDescriber<CodeIdentityErrorDescriber>()
+				.AddEntityFrameworkStores<AccountContext>()
+				.AddDefaultTokenProviders();
+
+			services.AddSingleton<PasswordHasher<AccountEntity>>();
+		}
+
 		// ReSharper disable once UnusedMember.Global
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
 			builder.RegisterModule<IdeaModule>();
 			builder.RegisterModule<EmailModule>();
 			builder.RegisterModule<MassTransitModule>();
+			builder.RegisterModule<AccountModule>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,6 +133,7 @@ namespace IdeaMachine
 			app.UseRouting();
 
 			app.UseAuthorization();
+			app.UseAuthentication();
 
 			app.UseEndpoints(endpoints =>
 			{

@@ -1,0 +1,32 @@
+﻿namespace IdeaMachine.Common.AspNetIdentity.DataTypes
+{
+	public enum IdentityErrorCode
+	{
+		Success,
+		DefaultError,
+		ConcurrencyFailure,
+		PasswordMismatch,
+		InvalidToken,
+		LoginAlreadyAssociated,
+		InvalidUserName,
+		InvalidEmail,
+		EmailMissing,
+		DuplicateUserName,
+		DuplicateEmail,
+		InvalidRoleName,
+		DuplicateRoleName,
+		UserAlreadyHasPassword,
+		UserLockoutNotEnabled,
+		UserAlreadyInRole,
+		UserNameNullOrEmpty,
+		UserNotInRole,
+		PasswordTooShort,
+		PasswordRequiresNonAlphanumeric,
+		PasswordRequiresDigit,
+		PasswordRequiresLower,
+		PasswordRequiresUpper,
+		PasswordMissing,
+		EmailNotConfirmed,
+		EmailAlreadyConfirmed,
+	}
+}

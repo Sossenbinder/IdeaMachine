@@ -6,14 +6,18 @@ import ServiceUpdateEvent from "common/Modules/Service/ServiceUpdateEvent";
 import ISignalRConnectionProvider from "common/Helper/SignalR/Interface/ISignalRConnectionProvider";
 import SignalRConnectionProvider from "common/Helper/SignalR/SignalRConnectionProvider";
 import IdeaService from "modules/Ideas/Service/IdeaService";
+import AccountService from "modules/Account/Service/AccountService";
 
 // Types
 import { Services, IModuleService } from "common/Modules/Service/types";
 
 window.onload = async () => {
+
+	await fetch("/Identity/Identify");
+
 	const signalRConnectionProvider = new SignalRConnectionProvider();
 
-	renderRoot(signalRConnectionProvider, () => initCoreServices(signalRConnectionProvider), 2);
+	renderRoot(signalRConnectionProvider, () => initCoreServices(signalRConnectionProvider), 3);
 }
 
 const initCoreServices = async (signalRProvider: ISignalRConnectionProvider) => {
@@ -38,6 +42,9 @@ const initCoreServices = async (signalRProvider: ISignalRConnectionProvider) => 
 
 	const ideaService = new IdeaService();
 	initPromises.push(initService("IdeaService", ideaService));
+
+	const accountService = new AccountService();
+	initPromises.push(initService("AccountService", accountService));
 
 	await Promise.all(initPromises);
 }

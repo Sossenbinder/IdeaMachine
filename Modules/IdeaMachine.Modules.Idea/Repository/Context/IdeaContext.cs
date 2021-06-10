@@ -1,12 +1,12 @@
 ﻿using IdeaMachine.Common.Database.Context;
-using IdeaMachine.Modules.Idea.DataTypes;
+using IdeaMachine.Modules.Idea.DataTypes.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdeaMachine.Modules.Idea.Repository.Context
 {
 	public class IdeaContext : AbstractDbContext
 	{
-		public DbSet<IdeaModel> Ideas { get; set; } = null!;
+		public DbSet<IdeaEntity> Ideas { get; set; } = null!;
 
 		public IdeaContext(string connectionString)
 			: base(connectionString)
@@ -15,7 +15,7 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<IdeaModel>()
+			modelBuilder.Entity<IdeaEntity>()
 				.Property(x => x.Id)
 				.ValueGeneratedOnAdd();
 		}

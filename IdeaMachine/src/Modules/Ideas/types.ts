@@ -3,7 +3,6 @@ export type Idea = {
 	shortDescription: string;
 	longDescription: string;
 	creationDate: Date;
-	creatorMail: string;
 }
 
 export namespace Network {

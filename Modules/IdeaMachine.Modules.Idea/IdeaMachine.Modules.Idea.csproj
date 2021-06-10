@@ -11,5 +11,6 @@
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Database\IdeaMachine.Common.Database.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing.Abstractions\IdeaMachine.Common.Eventing.Abstractions.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing\IdeaMachine.Common.Eventing.csproj" />
+		<ProjectReference Include="..\IdeaMachine.Modules.Session\IdeaMachine.Modules.Session.csproj" />
 	</ItemGroup>
-</Project>
+		</Project>

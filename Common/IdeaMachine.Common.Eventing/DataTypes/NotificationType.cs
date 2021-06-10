@@ -2,6 +2,6 @@
 {
 	public enum NotificationType
 	{
-		ParticipantUpdate,
+		Idea,
 	}
 }

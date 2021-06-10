@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using IdeaMachine.Modules.Idea.DataTypes;
+using IdeaMachine.Modules.Session.DataTypes.Interface;
 
 namespace IdeaMachine.Modules.Idea.Service.Interface
 {
 	public interface IIdeaService
 	{
-		Task Add(IdeaModel ideaModel);
-
-		Task<List<IdeaModel>> Get();
+		Task Add(IUserSession session, IdeaModel ideaModel);
 	}
 }

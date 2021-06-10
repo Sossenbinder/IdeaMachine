@@ -6,8 +6,8 @@ import PostRequest from "common/Helper/Requests/PostRequest"
 import GetRequest from 'common/Helper/Requests/GetRequest';
 
 const Urls = {
-	Add: "Idea/Add",
-	Get: "Idea/Get",
+	Add: "/Idea/Add",
+	Get: "/Idea/Get",
 }
 
 export const postIdea = async (idea: Idea) => {

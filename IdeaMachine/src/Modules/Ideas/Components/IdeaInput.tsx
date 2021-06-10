@@ -1,6 +1,7 @@
 // Framework
 import * as React from "react";
 import { TextareaAutosize, Button } from "@material-ui/core";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 // Components
 import { Grid, Cell } from "common/Components";
@@ -15,17 +16,23 @@ import { Idea } from 'modules/Ideas/types';
 // Styles
 import styles from "./Styles/IdeaInput.module.less";
 
-type Props = {
+type Props = RouteComponentProps;
 
-}
+export const IdeaInput: React.FC<Props> = ({ history }) => {
 
-export const IdeaInput: React.FC<Props> = () => {
-
-	const [idea, setIdea] = React.useState<Idea>({} as Idea);
+	const [idea, setIdea] = React.useState<Idea>({
+		longDescription: "",
+		shortDescription: "",
+	} as Idea);
 
 	const translations = useTranslations();
 
 	const { IdeaService } = useServices();
+
+	const onClick = async () => {
+		await IdeaService.addIdea(idea);
+		history.replace("/");
+	}
 
 	return (
 		<Grid
@@ -67,19 +74,6 @@ export const IdeaInput: React.FC<Props> = () => {
 						longDescription: event.currentTarget.value,
 					})} />
 			</Cell>
-			<span>{translations.AddIdeaYourEmail}</span>
-			<Cell
-				cellStyles={{
-					gridColumn: "2/4"
-				}}>
-				<input
-					type={"text"}
-					value={idea.creatorMail}
-					onChange={val => setIdea({
-						...idea,
-						creatorMail: val.currentTarget.value,
-					})} />
-			</Cell>
 			<Cell
 				cellStyles={{
 					gridColumn: "2/4"
@@ -87,7 +81,7 @@ export const IdeaInput: React.FC<Props> = () => {
 				<Button
 					variant="contained"
 					color="primary"
-					onClick={() => IdeaService.addIdea(idea)}>
+					onClick={onClick}>
 					Submit
 				</Button>
 			</Cell>
@@ -95,4 +89,4 @@ export const IdeaInput: React.FC<Props> = () => {
 	);
 }
 
-export default IdeaInput;
+export default withRouter(IdeaInput);

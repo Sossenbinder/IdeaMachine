@@ -21,11 +21,13 @@ export const getTranslations = () => {
 			language = "en";
 		}
 
-		const tlFile = await fetch(`Translations/tl_${language}.json`);
+		const tlFile = await fetch(`/Translations/tl_${language}.json`);
 
 		const json = await tlFile.json();
 
 		return json as TL;
+	}, {
+		refetchOnMount: false,
 	});
 
 	return data;

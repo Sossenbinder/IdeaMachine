@@ -27,6 +27,10 @@ namespace IdeaMachine.Modules.Idea.DI
 			builder.RegisterType<IdeaEvents>()
 				.As<IIdeaEvents>()
 				.SingleInstance();
+
+			builder.RegisterType<IdeaRetrievalService>()
+				.As<IIdeaRetrievalService>()
+				.SingleInstance();
 		}
 	}
 }

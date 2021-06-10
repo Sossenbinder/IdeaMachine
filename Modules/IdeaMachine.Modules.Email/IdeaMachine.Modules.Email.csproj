@@ -10,6 +10,7 @@
 		<Folder Include="DI\" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\IdeaMachine.Modules.Account\IdeaMachine.Modules.Account.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Modules.Idea\IdeaMachine.Modules.Idea.csproj" />
 		<ProjectReference Include="..\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
 	</ItemGroup>

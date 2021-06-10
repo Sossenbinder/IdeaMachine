@@ -52,7 +52,7 @@ export default class AjaxRequest<TRequest, TResponse> {
 
 			const json = await response.json();
 
-			if (!json.data) {
+			if (json.data === undefined) {
 				return {
 					success: false,
 					payload: undefined,
@@ -60,7 +60,7 @@ export default class AjaxRequest<TRequest, TResponse> {
 			}
 
 			return {
-				success: true,
+				success: json.success,
 				payload: json.data,
 			};
 

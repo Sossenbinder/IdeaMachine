@@ -8,5 +8,5 @@ export const getUsDate = (date: Date) => {
 
 export const getUsTime = (date: Date) => {
 	const momentizedDate = moment(date);
-	return momentizedDate.format("hh:mm:ss")
+	return momentizedDate.format("hh:mm:ss A")
 }

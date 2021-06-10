@@ -11,6 +11,7 @@
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.2.0" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+		<PackageReference Include="EntityFramework" Version="6.4.4" />
 		<PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.1.8" />
 		<PackageReference Include="MassTransit.Autofac" Version="7.1.8" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
@@ -19,11 +20,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Common\IdeaMachine.Common.AspNetIdentity\IdeaMachine.Common.AspNetIdentity.csproj" />
 		<ProjectReference Include="..\Common\IdeaMachine.Common.Eventing\IdeaMachine.Common.Eventing.csproj" />
 		<ProjectReference Include="..\Common\IdeaMachine.Common.Logging\IdeaMachine.Common.Logging.csproj" />
 		<ProjectReference Include="..\Common\IdeaMachine.Common.SignalR\IdeaMachine.Common.SignalR.csproj" />
 		<ProjectReference Include="..\Common\IdeaMachine.Common.Web\IdeaMachine.Common.Web.csproj" />
+		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Account\IdeaMachine.Modules.Account.csproj" />
 		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Email\IdeaMachine.Modules.Email.csproj" />
 		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Idea\IdeaMachine.Modules.Idea.csproj" />
+		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Session\IdeaMachine.Modules.Session.csproj" />
 	</ItemGroup>
-</Project>
+		</Project>

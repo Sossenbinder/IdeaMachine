@@ -24,12 +24,17 @@ namespace IdeaMachine.Common.Web.DataTypes.Responses
 			return new(data, internalSuccess, HttpStatusCode.OK);
 		}
 
+		public static JsonResponse Error(object? data = null)
+		{
+			return new(data, false, HttpStatusCode.OK);
+		}
+
 		public static JsonDataResponse<TPayload> Success<TPayload>(TPayload? data = default, bool internalSuccess = true)
 		{
 			return new(data, internalSuccess, HttpStatusCode.OK);
 		}
 
-		public static JsonResponse Error(object? data = null)
+		public static JsonDataResponse<TPayload> Error<TPayload>(TPayload? data = default)
 		{
 			return new(data, false, HttpStatusCode.OK);
 		}

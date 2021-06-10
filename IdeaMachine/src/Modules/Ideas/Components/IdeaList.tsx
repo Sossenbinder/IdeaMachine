@@ -24,11 +24,13 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 
 	const { IdeaService } = useServices();
 
-	const ideasRendered = React.useMemo(() => ideas.map(idea => (
-		<IdeaListEntry
-			idea={idea}
-			key={idea.id} />
-	)), [ideas]);
+	const ideasRendered = React.useMemo(() => ideas
+		.sort((x, y) => y.creationDate.getTime() - x.creationDate.getTime())
+		.map(idea => (
+			<IdeaListEntry
+				idea={idea}
+				key={idea.id} />
+		)), [ideas]);
 
 	React.useEffect(() => {
 		IdeaService.initializeIdeas();

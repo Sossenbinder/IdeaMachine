@@ -26,4 +26,4 @@
 			<DependentUpon>TupleAwaiterExtensions.tt</DependentUpon>
 		</Compile>
 	</ItemGroup>
-</Project>
+		</Project>

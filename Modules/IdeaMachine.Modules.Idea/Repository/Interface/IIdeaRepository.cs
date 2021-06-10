@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using IdeaMachine.Modules.Idea.DataTypes;
+using IdeaMachine.Modules.Idea.DataTypes.Entity;
 
 namespace IdeaMachine.Modules.Idea.Repository.Interface
 {
 	public interface IIdeaRepository
 	{
-		Task Add(IdeaModel idea);
+		Task<IdeaEntity> Add(IdeaEntity idea);
 
-		Task<List<IdeaModel>> Get();
+		Task<List<IdeaEntity>> Get();
 	}
 }

@@ -7,6 +7,7 @@ import Flex from "common/Components/Flex";
 import IdeaInput from "Modules/Ideas/Components/IdeaInput";
 import IdeaList from "Modules/Ideas/Components/IdeaList";
 import CreateButton from 'Modules/Ideas/Components/CreateButton';
+import LogonView from "views/Login/LogonView";
 
 // Functionality
 
@@ -15,11 +16,7 @@ import CreateButton from 'Modules/Ideas/Components/CreateButton';
 // Styles
 import styles from "./Styles/Content.module.less";
 
-type Props = {
-
-}
-
-export const Content: React.FC<Props> = () => {
+export const Content: React.FC = () => {
 	return (
 		<Flex
 			className={styles.ContentWrapper}
@@ -28,6 +25,10 @@ export const Content: React.FC<Props> = () => {
 				<Route
 					path="/ideainput">
 					<IdeaInput />
+				</Route>
+				<Route
+					path="/Logon">
+					<LogonView />
 				</Route>
 				<Route
 					exact={true}

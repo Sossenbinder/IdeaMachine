@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IdeaMachine.Modules.Session.DataTypes.Interface;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Events
 {
-	public record IdeaCreated(IdeaModel Idea);
+	public record IdeaCreated(IUserSession Creator, IdeaModel Idea);
 }

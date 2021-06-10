@@ -2,6 +2,7 @@ version: '3.4'
 
 volumes:
   ideamachine_postgres: {}
+  seq: {}
 
 services:
   ideamachine:
@@ -13,11 +14,12 @@ services:
       - "1456:80"
       - "1457:443"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - PostgresConnectionString=Server=ideamachine.postgres;Port=5432;User Id=ideamachine;Password=ideamachine;Database=ideamachine;
-      - IdeaMachine_RabbitMq=ideamachine.rabbitmq
-      - GmailUserName=ideamachinenews@gmail.com
-      - GmailPassword=LwtqQp6bBUVE7j2IhmVT
+      ASPNETCORE_ENVIRONMENT: "Development"
+      PostgresConnectionString: "Server=ideamachine.postgres;Port=5432;User Id=ideamachine;Password=ideamachine;Database=ideamachine;"
+      IdeaMachine_RabbitMq: "ideamachine.rabbitmq"
+      GmailUserName: "ideamachinenews@gmail.com"
+      GmailPassword: "LwtqQp6bBUVE7j2IhmVT"
+      Seq_Server: "http://ideamachine.seq:5341"
     depends_on:
       - ideamachine.postgres
       - ideamachine.rabbitmq
@@ -36,6 +38,17 @@ services:
     volumes:
       - ideamachine_postgres:/var/lib/postgresql/data
       - ./Module/IdeaMachine.Module.Idea/Repository/Scripts/Idea.sql:/docker-entrypoint-initdb.d/Idea.sql
+
+  ideamachine.seq:
+    image: datalust/seq:latest
+    labels:
+      - ideamachinecompose
+    ports:
+      - "5341:80"
+    environment:
+      ACCEPT_EULA: "Y"
+    volumes:
+      - seq:/data
 
   ideamachine.rabbitmq:
     image: docker.io/library/rabbitmq:3.8.6-management

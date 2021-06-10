@@ -8,7 +8,7 @@ namespace IdeaMachine.Modules.Email.DI
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<IdeaEventHandler>()
+			builder.RegisterType<EmailEventHandler>()
 				.AsSelf()
 				.SingleInstance()
 				.AutoActivate();
