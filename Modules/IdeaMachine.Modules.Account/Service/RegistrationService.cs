@@ -2,6 +2,8 @@
 using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.AspNetIdentity.Extension;
 using IdeaMachine.Common.Core.Utils.IPC;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
+using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
@@ -15,15 +17,19 @@ namespace IdeaMachine.Modules.Account.Service
 
 		private readonly IPasswordHasher<AccountEntity> _passwordHasher;
 
+		private readonly IAccountEvents _accountEvents;
+
 		public RegistrationService(
 			UserManager<AccountEntity> userManager,
-			IPasswordHasher<AccountEntity> passwordHasher)
+			IPasswordHasher<AccountEntity> passwordHasher,
+			IAccountEvents accountEvents)
 		{
 			_userManager = userManager;
 			_passwordHasher = passwordHasher;
+			_accountEvents = accountEvents;
 		}
 
-		public async Task<ServiceResponse<IdentityErrorCode?>> RegisterAccount(RegisterModel registerModel)
+		public async Task<ServiceResponse<IdentityErrorCode>> RegisterAccount(RegisterModel registerModel)
 		{
 			var accountEntity = new AccountEntity()
 			{
@@ -35,9 +41,16 @@ namespace IdeaMachine.Modules.Account.Service
 
 			var createResult = await _userManager.CreateAsync(accountEntity, registerModel.Password);
 
-			return createResult.Succeeded
-				? ServiceResponse.Success(IdentityErrorCode.Success as IdentityErrorCode?)
-				: ServiceResponse.Failure(createResult.FirstErrorOrNull());
+			if (!createResult.Succeeded)
+			{
+				return ServiceResponse.Failure(createResult.FirstErrorOrFail());
+			}
+
+			var emailVerificationToken = await _userManager.GenerateEmailConfirmationTokenAsync(accountEntity);
+
+			await _accountEvents.AccountCreated.Raise(new AccountCreated(registerModel.UserName, registerModel.Email, emailVerificationToken));
+
+			return ServiceResponse.Success(IdentityErrorCode.Success);
 		}
 	}
 }

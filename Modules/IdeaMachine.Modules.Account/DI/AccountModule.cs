@@ -1,6 +1,6 @@
 ﻿using Autofac;
+using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Account.Events;
-using IdeaMachine.Modules.Account.Events.Interface;
 using IdeaMachine.Modules.Account.Service;
 using IdeaMachine.Modules.Account.Service.Interface;
 
@@ -20,6 +20,10 @@ namespace IdeaMachine.Modules.Account.DI
 
 			builder.RegisterType<AccountEvents>()
 				.As<IAccountEvents>()
+				.SingleInstance();
+
+			builder.RegisterType<VerificationService>()
+				.As<IVerificationService>()
 				.SingleInstance();
 		}
 	}

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IdeaMachine.Modules.Session.DataTypes.Interface
+namespace IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface
 {
 	public interface IUserSession
 	{

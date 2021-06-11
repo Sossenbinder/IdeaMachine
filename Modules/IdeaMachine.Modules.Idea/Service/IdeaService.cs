@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Eventing.DataTypes;
 using IdeaMachine.Common.Eventing.Helper;
@@ -10,7 +8,7 @@ using IdeaMachine.Modules.Idea.DataTypes.Events;
 using IdeaMachine.Modules.Idea.Events.Interface;
 using IdeaMachine.Modules.Idea.Repository.Interface;
 using IdeaMachine.Modules.Idea.Service.Interface;
-using IdeaMachine.Modules.Session.DataTypes.Interface;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 
 namespace IdeaMachine.Modules.Idea.Service
 {

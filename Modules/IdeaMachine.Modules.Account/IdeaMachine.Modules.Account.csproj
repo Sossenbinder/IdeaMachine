@@ -5,6 +5,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
@@ -19,6 +20,7 @@
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing.Abstractions\IdeaMachine.Common.Eventing.Abstractions.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing\IdeaMachine.Common.Eventing.csproj" />
+		<ProjectReference Include="..\IdeaMachine.Modules.Account.Abstractions\IdeaMachine.Modules.Account.Abstractions.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Modules.Session\IdeaMachine.Modules.Session.csproj" />
 	</ItemGroup>
 </Project>

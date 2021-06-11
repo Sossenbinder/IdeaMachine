@@ -1,4 +1,4 @@
-﻿using IdeaMachine.Modules.Session.DataTypes.Interface;
+﻿using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Events
 {

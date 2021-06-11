@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Extensions;
-using IdeaMachine.Modules.Account.DataTypes.Events;
-using IdeaMachine.Modules.Account.Events.Interface;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
+using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Email.Service.Interface;
 using IdeaMachine.Modules.Email.Utils;
 using IdeaMachine.Modules.Idea.DataTypes.Events;
 using IdeaMachine.Modules.Idea.Events.Interface;
 using IdeaMachine.ModulesServiceBase;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 
 namespace IdeaMachine.Modules.Email.Service
@@ -15,19 +16,44 @@ namespace IdeaMachine.Modules.Email.Service
 	{
 		private readonly IEmailSender _mailSender;
 
+		private readonly IConfiguration _configuration;
+
 		public EmailEventHandler(
 			IIdeaEvents ideaEvents,
 			IAccountEvents accountEvents,
-			IEmailSender mailSender)
+			IEmailSender mailSender,
+			IConfiguration configuration)
 		{
 			_mailSender = mailSender;
+			_configuration = configuration;
 			RegisterEventHandler(ideaEvents.IdeaCreated, OnIdeaCreated);
 			RegisterEventHandler(accountEvents.AccountCreated, OnAccountCreated);
 		}
 
-		private Task OnAccountCreated(AccountCreated obj)
+		private async Task OnAccountCreated(AccountCreated accountCreated)
 		{
-			throw new System.NotImplementedException();
+			var (userName, email, verificationCode) = accountCreated;
+
+			if (email.IsNullOrEmpty())
+			{
+				return;
+			}
+
+			var mail = MailFactory.CreateMail();
+			mail.To.Add(new MailboxAddress($"Dear {userName}!", email));
+			mail.Subject = "Thanks for signing up to IdeaMachine";
+
+			var builder = new BodyBuilder
+			{
+				HtmlBody = $@"
+					<h2>Your verification mail!</h2>
+					<p>Dear {userName} - Thanks for signing up! Please click the link below to verify your registration.</p>
+					<a href='{EnvironmentLinkGenerator.GetDomainLink(_configuration)}/VerifyEmail?userName={userName}&token={verificationCode}'>Click to verify</a>
+				"
+			};
+			mail.Body = builder.ToMessageBody();
+
+			await _mailSender.SendMail(mail);
 		}
 
 		private async Task OnIdeaCreated(IdeaCreated ideaCreated)

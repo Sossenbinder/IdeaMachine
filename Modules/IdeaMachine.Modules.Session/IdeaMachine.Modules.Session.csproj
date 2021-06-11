@@ -2,4 +2,13 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
-		</Project>
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.2.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />
+		<ProjectReference Include="..\IdeaMachine.Modules.Account.Abstractions\IdeaMachine.Modules.Account.Abstractions.csproj" />
+		<ProjectReference Include="..\IdeaMachine.Modules.Session.Abstractions\IdeaMachine.Modules.Session.Abstractions.csproj" />
+		<ProjectReference Include="..\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
+	</ItemGroup>
+</Project>
