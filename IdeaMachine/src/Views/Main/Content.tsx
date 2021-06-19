@@ -8,10 +8,7 @@ import IdeaInput from "Modules/Ideas/Components/IdeaInput";
 import IdeaList from "Modules/Ideas/Components/IdeaList";
 import CreateButton from 'Modules/Ideas/Components/CreateButton';
 import LogonView from "views/Login/LogonView";
-
-// Functionality
-
-// Types
+import EmailVerification from "views/EmailVerification/EmailVerification";
 
 // Styles
 import styles from "./Styles/Content.module.less";
@@ -29,6 +26,10 @@ export const Content: React.FC = () => {
 				<Route
 					path="/Logon">
 					<LogonView />
+				</Route>
+				<Route
+					path="/VerifyEmail">
+					<EmailVerification />
 				</Route>
 				<Route
 					exact={true}

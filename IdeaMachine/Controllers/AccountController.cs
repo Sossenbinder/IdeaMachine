@@ -1,34 +1,67 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
+using IdeaMachine.Attributes;
 using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.Web.DataTypes.Responses;
-using IdeaMachine.DataTypes.UiModels;
+using IdeaMachine.DataTypes.UiModels.Account;
 using IdeaMachine.Extensions;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes;
+using IdeaMachine.Modules.Session.Service.Interface;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachine.Controllers
 {
 	[Route("Account")]
 	[AutoValidateAntiforgeryToken]
-	public class AccountController : Controller
+	public class AccountController : IdentityControllerBase
 	{
 		private readonly ILoginService _loginService;
 
 		private readonly IRegistrationService _registrationService;
 
 		public AccountController(
+			ISessionService sessionService,
 			ILoginService loginService,
 			IRegistrationService registrationService)
+			: base(sessionService)
 		{
 			_loginService = loginService;
 			_registrationService = registrationService;
 		}
 
+		[Route("Get")]
+		[Authorize]
+		[HttpGet]
+		public JsonDataResponse<AccountSession> Get()
+		{
+			return JsonDataResponse<AccountSession>.Success(Session as AccountSession);
+		}
+
+		[Route("Logout")]
+		[CookieAuthorize]
+		[HttpPost]
+		public async Task<JsonResponse> Logout()
+		{
+			await HttpContext.SignOutAsync();
+
+			return JsonResponse.Success();
+		}
+
 		[Route("Register")]
 		[HttpPost]
-		public async Task<JsonDataResponse<IdentityErrorCode?>> Register([FromBody] RegisterUiModel model)
+		public async Task<JsonDataResponse<IdentityErrorCode>> Register([FromBody] RegisterUiModel model)
 		{
+			if (!ModelState.IsValid)
+			{
+				return JsonDataResponse<IdentityErrorCode>.Error();
+			}
+
 			var registrationResponse = await _registrationService.RegisterAccount(new RegisterModel()
 			{
 				Email = model.Email,
@@ -36,16 +69,47 @@ namespace IdeaMachine.Controllers
 				UserName = model.UserName,
 			});
 
-			return registrationResponse.ToJsonResponse();
+			return registrationResponse.ToJsonDataResponse();
 		}
 
 		[Route("SignIn")]
 		[HttpPost]
-		public async Task<IActionResult> SignIn([FromBody] SignInInfo signInInfo)
+		public async Task<JsonDataResponse<IdentityErrorCode>> SignIn([FromBody] SignInInfo signInInfo)
 		{
-			await Task.CompletedTask;
+			if (!ModelState.IsValid)
+			{
+				return JsonResponse.Error(IdentityErrorCode.DefaultError);
+			}
 
-			return Ok();
+			var loginResponse = await _loginService.Login(new LoginModel()
+			{
+				EmailUserName = signInInfo.EmailUserName,
+				Password = signInInfo.Password,
+				RememberMe = signInInfo.RememberMe,
+			});
+
+			if (!loginResponse.IsSuccess)
+			{
+				return JsonResponse.Error(loginResponse.PayloadOrFail.ResultCode);
+			}
+
+			//var account = loginResponse.PayloadOrFail.Account!;
+
+			//var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+			//identity.AddClaim(new Claim(ClaimTypes.Name, account.UserId.ToString()));
+
+			//var principal = new ClaimsPrincipal(identity);
+
+			//await HttpContext.SignInAsync(
+			//	CookieAuthenticationDefaults.AuthenticationScheme,
+			//	principal,
+			//	new AuthenticationProperties()
+			//	{
+			//		IsPersistent = signInInfo.RememberMe,
+			//	}
+			//);
+
+			return JsonDataResponse<IdentityErrorCode>.Success();
 		}
 	}
 }

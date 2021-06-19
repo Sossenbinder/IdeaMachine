@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace IdeaMachine.Modules.Account.DataTypes.Entity
 {
-	public class AccountEntity : IdentityUser<int>
+	public class AccountEntity : IdentityUser<Guid>
 	{
 		[Column("LastAccessedAt")]
 		public DateTime LastAccessedAt { get; set; }

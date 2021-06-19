@@ -2,8 +2,8 @@
 {
 	public enum IdentityErrorCode
 	{
-		Success,
 		DefaultError,
+		Success,
 		ConcurrencyFailure,
 		PasswordMismatch,
 		InvalidToken,
@@ -28,5 +28,6 @@
 		PasswordMissing,
 		EmailNotConfirmed,
 		EmailAlreadyConfirmed,
+		InvalidEmailOrUserName,
 	}
 }

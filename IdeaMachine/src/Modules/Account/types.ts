@@ -1,9 +1,12 @@
 export type Account = {
-
+	userName: string;
+	email: string;
+	lastAccessedAt: Date;
+	id: string;
 }
 
 export type SignInInfo = {
-	email: string;
+	emailUserName: string;
 	password: string;
 	rememberMe: boolean;
 }
@@ -16,8 +19,8 @@ export type RegisterInfo = {
 }
 
 export enum IdentityErrorCode {
-	Success = 0,
-	DefaultError = 1,
+	DefaultError = 0,
+	Success = 1,
 	ConcurrencyFailure = 2,
 	PasswordMismatch = 3,
 	InvalidToken = 4,
@@ -45,6 +48,10 @@ export enum IdentityErrorCode {
 }
 
 export namespace Network {
+	export namespace GetAccount {
+		export type Response = Account;
+	}
+
 	export namespace Register {
 		export type Request = RegisterInfo;
 
@@ -53,5 +60,16 @@ export namespace Network {
 
 	export namespace SignIn {
 		export type Request = SignInInfo;
+
+		export type Response = IdentityErrorCode;
+	}
+
+	export namespace VerifyEmail {
+		export type Request = {
+			userName: string;
+			token: string;
+		}
+
+		export type Response = IdentityErrorCode;
 	}
 }

@@ -1,9 +1,10 @@
-﻿using IdeaMachine.Modules.Account.Abstractions.DataTypes.Model;
+﻿using System;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 
 namespace IdeaMachine.Modules.Session.Service.Interface
 {
 	public interface ISessionService
 	{
-		AccountModel? GetSession(int userId);
+		AccountSession? GetSession(Guid userId);
 	}
 }

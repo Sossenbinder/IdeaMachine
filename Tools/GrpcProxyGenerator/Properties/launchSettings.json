@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GrpcProxyGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "$(SolutionDir)"
+    }
+  }
+}

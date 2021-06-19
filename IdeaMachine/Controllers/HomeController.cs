@@ -1,19 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using System.Threading.Tasks;
+using IdeaMachine.Modules.Account.DataTypes.Model;
+using IdeaMachine.Modules.Account.Service.Interface;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes;
+using IdeaMachine.Modules.Session.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachine.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : IdentityControllerBase
 	{
-		private readonly ILogger<HomeController> _logger;
+		private readonly ILoginService _loginService;
 
-		public HomeController(ILogger<HomeController> logger)
+		public HomeController(
+			ISessionService sessionService,
+			ILoginService loginService)
+			: base(sessionService)
 		{
-			_logger = logger;
+			_loginService = loginService;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
+			if ((HttpContext.User.Identity?.IsAuthenticated ?? false) && SessionOrNull is AnonymousUserSession)
+			{
+				await _loginService.RefreshLogin(new RefreshLoginModel()
+				{
+					UserId = UserId
+				});
+			}
+
 			return View("~/Views/Index.cshtml");
 		}
 	}

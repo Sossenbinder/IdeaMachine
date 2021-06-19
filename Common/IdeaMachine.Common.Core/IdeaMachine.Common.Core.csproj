@@ -14,6 +14,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
+		<PackageReference Include="protobuf-net" Version="2.4.6" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -26,4 +27,4 @@
 			<DependentUpon>TupleAwaiterExtensions.tt</DependentUpon>
 		</Compile>
 	</ItemGroup>
-		</Project>
+</Project>

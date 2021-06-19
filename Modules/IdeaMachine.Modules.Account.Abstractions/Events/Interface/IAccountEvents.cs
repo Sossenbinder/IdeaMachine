@@ -8,5 +8,7 @@ namespace IdeaMachine.Modules.Account.Abstractions.Events.Interface
 		IDistributedEvent<AccountCreated> AccountCreated { get; }
 
 		IDistributedEvent<AccountSignedIn> AccountSignedIn { get; }
+
+		IDistributedEvent<AccountLoggedOut> AccountLoggedOut { get; }
 	}
 }

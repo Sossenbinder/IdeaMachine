@@ -11,7 +11,7 @@ namespace IdeaMachine.Extensions
 			return serviceResponse.IsSuccess ? JsonResponse.Success(serviceResponse) : JsonResponse.Error();
 		}
 
-		public static JsonDataResponse<TPayload> ToJsonResponse<TPayload>([NotNull] this ServiceResponse<TPayload> serviceResponse)
+		public static JsonDataResponse<TPayload> ToJsonDataResponse<TPayload>([NotNull] this ServiceResponse<TPayload> serviceResponse)
 		{
 			return serviceResponse.IsSuccess ? JsonResponse.Success(serviceResponse.PayloadOrNull, serviceResponse.IsSuccess) : JsonResponse.Error(serviceResponse.PayloadOrNull);
 		}

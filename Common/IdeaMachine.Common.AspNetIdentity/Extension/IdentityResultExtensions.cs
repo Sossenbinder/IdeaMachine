@@ -13,7 +13,16 @@ namespace IdeaMachine.Common.AspNetIdentity.Extension
 				.GetErrorCodes()
 				.ToList();
 
-			return errorCodes.Any() ? errorCodes.FirstOrDefault() : (IdentityErrorCode?)null;
+			return errorCodes.Any() ? errorCodes.FirstOrDefault() : null;
+		}
+
+		public static IdentityErrorCode FirstErrorOrFail(this IdentityResult identityResult)
+		{
+			var errorCodes = identityResult
+				.GetErrorCodes()
+				.ToList();
+
+			return errorCodes.First();
 		}
 
 		public static IdentityErrorCode FirstErrorOrDefault(this IdentityResult identityResult)

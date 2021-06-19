@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Idea.DataTypes;
 using IdeaMachine.Modules.Idea.Service.Interface;
+using IdeaMachine.Modules.Session.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachine.Controllers
@@ -16,8 +17,10 @@ namespace IdeaMachine.Controllers
 		private readonly IIdeaRetrievalService _ideaRetrievalService;
 
 		public IdeaController(
+			ISessionService sessionService,
 			IIdeaService ideaService,
 			IIdeaRetrievalService ideaRetrievalService)
+			: base(sessionService)
 		{
 			_ideaService = ideaService;
 			_ideaRetrievalService = ideaRetrievalService;

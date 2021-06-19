@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>4dabb35e-ee9d-4dcf-b1a8-8ed8233e8a8e</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+    <DockerServiceUrl>https://localhost:1457</DockerServiceUrl>
     <DockerServiceName>ideamachine</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

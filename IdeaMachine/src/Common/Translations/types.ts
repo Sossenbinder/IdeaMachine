@@ -9,6 +9,7 @@ export type TL = {
 	IdentityError_LoginAlreadyAssociated: string,
 	IdentityError_InvalidUserName: string,
 	IdentityError_InvalidEmail: string,
+	IdentityError_InvalidToken: string,
 	IdentityError_EmailMissing: string,
 	IdentityError_DuplicateUserName: string,
 	IdentityError_DuplicateEmail: string,

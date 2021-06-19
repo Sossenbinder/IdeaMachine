@@ -19,8 +19,10 @@ export interface IIdeaService extends IModuleService {
 }
 
 export interface IAccountService extends IModuleService {
+	logout(): Promise<void>;
 	register(registerInfo: RegisterInfo): Promise<NetworkResponse<IdentityErrorCode>>;
-	login(signInInfo: SignInInfo): Promise<NetworkResponse<IdentityErrorCode>>;
+	login(signInInfo: SignInInfo): Promise<IdentityErrorCode>;
+	verifyEmail(userName: string, token: string): Promise<NetworkResponse<IdentityErrorCode>>;
 }
 
 export type Services = {

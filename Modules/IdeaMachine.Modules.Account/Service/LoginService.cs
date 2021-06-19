@@ -1,12 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.Core.Utils.IPC;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
-using IdeaMachine.Modules.Account.Abstractions.DataTypes.Model;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using Microsoft.AspNetCore.Identity;
 
 namespace IdeaMachine.Modules.Account.Service
@@ -38,18 +40,23 @@ namespace IdeaMachine.Modules.Account.Service
 				return ServiceResponse.Failure(LoginResult.WithCode(IdentityErrorCode.InvalidEmailOrUserName));
 			}
 
-			if (account.EmailConfirmed)
+			if (!account.EmailConfirmed)
 			{
-				return ServiceResponse.Success(LoginResult.WithCode(IdentityErrorCode.EmailNotConfirmed));
+				return ServiceResponse.Failure(LoginResult.WithCode(IdentityErrorCode.EmailNotConfirmed));
+			}
+
+			if (!await _userManager.CheckPasswordAsync(account, loginModel.Password))
+			{
+				return ServiceResponse<LoginResult>.Failure(LoginResult.WithCode(IdentityErrorCode.PasswordMismatch));
 			}
 
 			var result = await _signInManager.PasswordSignInAsync(account, loginModel.Password, loginModel.RememberMe, false);
 
 			if (result.Succeeded)
 			{
-				var accountModel = new AccountModel
+				var accountModel = new AccountSession
 				{
-					Id = account.Id,
+					UserId = account.Id,
 					Email = account.Email,
 					UserName = account.UserName,
 					LastAccessedAt = account.LastAccessedAt,
@@ -65,6 +72,29 @@ namespace IdeaMachine.Modules.Account.Service
 			}
 
 			return ServiceResponse.Failure(LoginResult.WithCode(IdentityErrorCode.DefaultError));
+		}
+
+		public async Task Logout(IUserSession session)
+		{
+			await _accountEvents.AccountLoggedOut.Raise(new AccountLoggedOut(session));
+		}
+
+		public async Task RefreshLogin(RefreshLoginModel refreshLoginModel)
+		{
+			var account = await _userManager.FindByIdAsync(refreshLoginModel.UserId.ToString());
+
+			if (account is not null)
+			{
+				var accountModel = new AccountSession
+				{
+					UserId = account.Id,
+					Email = account.Email,
+					UserName = account.UserName,
+					LastAccessedAt = account.LastAccessedAt,
+				};
+
+				await _accountEvents.AccountSignedIn.Raise(new AccountSignedIn(accountModel));
+			}
 		}
 
 		private async Task<AccountEntity?> GetAccountOrNull(string emailOrUserName)

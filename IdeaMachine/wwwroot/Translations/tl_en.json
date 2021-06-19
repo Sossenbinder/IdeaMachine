@@ -9,6 +9,7 @@
 	"IdentityError_LoginAlreadyAssociated": "Login is already associated with another login.",
 	"IdentityError_InvalidUserName": "Invalid username.",
 	"IdentityError_InvalidEmail": "Invalid email.",
+	"IdentityError_InvalidToken": "Invalid token.",
 	"IdentityError_EmailMissing": "Email missing.",
 	"IdentityError_DuplicateUserName": "Username already exists.",
 	"IdentityError_DuplicateEmail": "Email already exists.",

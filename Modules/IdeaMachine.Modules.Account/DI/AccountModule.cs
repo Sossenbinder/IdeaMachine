@@ -10,20 +10,12 @@ namespace IdeaMachine.Modules.Account.DI
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<RegistrationService>()
-				.As<IRegistrationService>()
-				.SingleInstance();
-
-			builder.RegisterType<LoginService>()
-				.As<ILoginService>()
-				.SingleInstance();
-
 			builder.RegisterType<AccountEvents>()
 				.As<IAccountEvents>()
 				.SingleInstance();
 
-			builder.RegisterType<VerificationService>()
-				.As<IVerificationService>()
+			builder.RegisterType<LastAccessedService>()
+				.As<ILastAccessedService>()
 				.SingleInstance();
 		}
 	}

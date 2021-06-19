@@ -28,6 +28,11 @@ namespace IdeaMachine.Common.Core.Utils.Caching
 			return _cache.Set(key, value, expiration);
 		}
 
+		public TValue Set(TKey key, TValue value)
+		{
+			return _cache.Set(key, value);
+		}
+
 		public bool TryGetValue(TKey key, out TValue value)
 		{
 			return _cache.TryGetValue(key, out value);

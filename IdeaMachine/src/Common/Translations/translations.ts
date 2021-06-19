@@ -27,7 +27,7 @@ export const getTranslations = () => {
 
 		return json as TL;
 	}, {
-		refetchOnMount: false,
+		staleTime: 10000000,
 	});
 
 	return data;

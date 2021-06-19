@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Disposable;
 using IdeaMachine.Common.Core.Extensions;
@@ -39,6 +40,14 @@ namespace IdeaMachine.Common.Eventing.Events
 			IMassTransitEventingService massTransitEventingService,
 			ILogger logger)
 			: this(typeof(TEventArgs).Name, massTransitEventingService, logger)
+		{
+		}
+
+		public MtEvent(
+			MemberInfo t,
+			IMassTransitEventingService massTransitEventingService,
+			ILogger logger)
+			: this(t.Name, massTransitEventingService, logger)
 		{
 		}
 

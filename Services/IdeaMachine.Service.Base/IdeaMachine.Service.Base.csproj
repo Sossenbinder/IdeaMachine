@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+		<PackageReference Include="protobuf-net" Version="3.0.101" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.152" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.8.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />
+		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing\IdeaMachine.Common.Eventing.csproj" />
+		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Grpc\IdeaMachine.Common.Grpc.csproj" />
+		<ProjectReference Include="..\..\Common\IdeaMachine.Common.IPC\IdeaMachine.Common.IPC.csproj" />
+		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Session.Abstractions\IdeaMachine.Modules.Session.Abstractions.csproj" />
+		<ProjectReference Include="..\..\Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
+	</ItemGroup>
+</Project>

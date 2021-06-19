@@ -1,16 +1,19 @@
 // Framework
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Button, FormControlLabel, Switch, TextField } from "@material-ui/core";
+import { FormControlLabel, Switch, TextField } from "@material-ui/core";
 
 // Components
 import Flex from "common/Components/Flex";
+import LoadingButton from "common/Components/Controls/LoadingButton";
 
 // Functionality
 import useServices from "common/Hooks/useServices";
+import { getTranslationForErrorCode } from "modules/Account/Helper/IdentityErrorCodeHelper";
+import useTranslations from "common/Hooks/useTranslations";
 
 // Types
-import { SignInInfo } from "modules/Account/types";
+import { IdentityErrorCode, SignInInfo } from "modules/Account/types";
 
 // Styles
 import styles from "./Styles/SignIn.module.less";
@@ -18,15 +21,21 @@ import styles from "./Styles/SignIn.module.less";
 export const SignIn: React.FC = () => {
 
 	const { AccountService } = useServices();
+	const translations = useTranslations();
+	const [identityErrorCode, setIdentityErrorCode] = React.useState<IdentityErrorCode>(IdentityErrorCode.Success);
 
 	const [signInInfo, setSignInInfo] = React.useState<SignInInfo>({
-		email: "",
+		emailUserName: "",
 		password: "",
 		rememberMe: false,
 	});
 
 	const onSignInClick = async () => {
-		await AccountService.login(signInInfo);
+		const resultCode = await AccountService.login(signInInfo);
+
+		if (resultCode !== IdentityErrorCode.Success) {
+			setIdentityErrorCode(resultCode);
+		}
 	}
 
 	return (
@@ -37,12 +46,12 @@ export const SignIn: React.FC = () => {
 			<h2>Sign in:</h2>
 			<TextField
 				className={styles.InputField}
-				label="Email"
+				label="Email/Username"
 				onChange={e => setSignInInfo({
 					...signInInfo,
-					email: e.currentTarget.value,
+					emailUserName: e.currentTarget.value,
 				})}
-				value={signInInfo.email}
+				value={signInInfo.emailUserName}
 				variant="outlined" />
 			<TextField
 				className={styles.InputField}
@@ -72,6 +81,11 @@ export const SignIn: React.FC = () => {
 					label="Remember login?"
 				/>
 			</Flex>
+			<If condition={identityErrorCode !== IdentityErrorCode.Success}>
+				<span className={styles.ErrorDescription}>
+					{getTranslationForErrorCode(translations, identityErrorCode)}
+				</span>
+			</If>
 			<Flex
 				className={styles.ActionSection}
 				space="Between"
@@ -81,13 +95,13 @@ export const SignIn: React.FC = () => {
 					to="/Logon/Register">
 					Create an account instead?
 				</Link>
-				<Button
+				<LoadingButton
 					color="primary"
 					className={styles.Button}
 					onClick={() => onSignInClick()}
 					variant="contained">
 					Login
-				</Button>
+				</LoadingButton>
 			</Flex>
 		</Flex>
 	);

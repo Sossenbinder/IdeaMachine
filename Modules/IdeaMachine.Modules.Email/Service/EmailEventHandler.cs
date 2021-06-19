@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
@@ -48,7 +50,7 @@ namespace IdeaMachine.Modules.Email.Service
 				HtmlBody = $@"
 					<h2>Your verification mail!</h2>
 					<p>Dear {userName} - Thanks for signing up! Please click the link below to verify your registration.</p>
-					<a href='{EnvironmentLinkGenerator.GetDomainLink(_configuration)}/VerifyEmail?userName={userName}&token={verificationCode}'>Click to verify</a>
+					<a href='{EnvironmentLinkGenerator.GetDomainLink(_configuration)}/VerifyEmail?userName={userName}&token={WebUtility.HtmlEncode(verificationCode)}'>Click to verify</a>
 				"
 			};
 			mail.Body = builder.ToMessageBody();

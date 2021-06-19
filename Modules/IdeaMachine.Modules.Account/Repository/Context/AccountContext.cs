@@ -1,17 +1,18 @@
-﻿using IdeaMachine.Modules.Account.DataTypes.Entity;
+﻿using System;
+using IdeaMachine.Modules.Account.DataTypes.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdeaMachine.Modules.Account.Repository.Context
 {
-	public class AccountContext : IdentityDbContext<AccountEntity, IdentityRole<int>, int>
+	public class AccountContext : IdentityDbContext<AccountEntity, IdentityRole<Guid>, Guid>
 	{
-		// Migration
-		//public AccountContext()
-		//	: base(new DbContextOptionsBuilder<AccountContext>().UseNpgsql("Server=ideamachine.postgres;Port=5432;User Id=ideamachine;Password=ideamachine;Database=ideamachine;").Options)
-		//{
-		//}
+		//Migration
+		public AccountContext()
+			: base(new DbContextOptionsBuilder<AccountContext>().UseNpgsql("Server=localhost;Port=5432;User Id=ideamachine;Password=ideamachine;Database=ideamachine;").Options)
+		{
+		}
 
 		public AccountContext(DbContextOptions<AccountContext> options)
 			: base(options)

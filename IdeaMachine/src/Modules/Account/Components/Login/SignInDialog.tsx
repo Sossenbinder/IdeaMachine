@@ -17,24 +17,20 @@ import styles from "./Styles/SignInDialog.module.less";
 export const SignInDialog: React.FC = () => {
 	return (
 		<Flex
-			className={styles.SignInDialogContainer}
+			className={styles.SignInDialogFormContainer}
+			direction="Column"
 			crossAlign="Center"
-			direction="Column">
-			<Flex
-				className={styles.SignInDialogFormContainer}
-				direction="Column"
-				crossAlign="Center">
-				<Route
-					exact
-					path="/Logon/Login">
-					<SignIn />
-				</Route>
-				<Route
-					exact
-					path="/Logon/Register">
-					<Register />
-				</Route>
-			</Flex>
+			crossAlignSelf="Center">
+			<Route
+				exact
+				path="/Logon/Login">
+				<SignIn />
+			</Route>
+			<Route
+				exact
+				path="/Logon/Register">
+				<Register />
+			</Route>
 		</Flex>
 	);
 }

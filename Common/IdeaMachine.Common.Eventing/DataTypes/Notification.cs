@@ -6,6 +6,6 @@
 
 		public NotificationType NotificationType { get; set; }
 
-		public T Payload { get; set; }
+		public T? Payload { get; set; }
 	}
 }

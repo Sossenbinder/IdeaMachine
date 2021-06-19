@@ -1,6 +1,7 @@
-﻿using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
-using IdeaMachine.Modules.Account.Abstractions.DataTypes.Model;
+﻿using System;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Cache.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachine.ModulesServiceBase;
@@ -25,7 +26,7 @@ namespace IdeaMachine.Modules.Session.Service
 			_sessionCache.Insert(accountSignedIn.Account);
 		}
 
-		public AccountModel? GetSession(int userId)
+		public AccountSession? GetSession(Guid userId)
 		{
 			return _sessionCache.GetSession(userId);
 		}

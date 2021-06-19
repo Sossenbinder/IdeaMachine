@@ -1,25 +1,31 @@
 using System;
-using System.Data.Entity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
-using GreenPipes.Configurators;
 using IdeaMachine.Common.AspNetIdentity.Helper;
 using IdeaMachine.Common.Eventing.DI;
+using IdeaMachine.Common.Grpc.DI;
+using IdeaMachine.Common.IPC.DI;
 using IdeaMachine.Common.Logging.Log;
+using IdeaMachine.Common.RemotingProxies.Proxies;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Repository.Context;
+using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
+using IdeaMachine.Modules.Session.DI;
+using IdeaMachine.Service.Base.Extensions;
 using MassTransit;
 using MassTransit.SignalR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +61,17 @@ namespace IdeaMachine
 			services.AddAntiforgery(x => x.HeaderName = "RequestVerificationToken");
 
 			services.AddResponseCompression();
+
+			services
+				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(options =>
+				{
+					options.Events.OnRedirectToLogin = context =>
+					{
+						context.Response.StatusCode = 401;
+						return Task.CompletedTask;
+					};
+				});
 
 			RegisterIdentity(services);
 
@@ -97,12 +114,21 @@ namespace IdeaMachine
 		{
 			services.AddDbContext<AccountContext>(options => options.UseNpgsql(Configuration["PostgresConnectionString"]));
 
-			services.AddIdentity<AccountEntity, IdentityRole<int>>(IdentityOptionsProvider.ApplyDefaultOptions)
+			services.AddIdentity<AccountEntity, IdentityRole<Guid>>(IdentityOptionsProvider.ApplyDefaultOptions)
 				.AddErrorDescriber<CodeIdentityErrorDescriber>()
 				.AddEntityFrameworkStores<AccountContext>()
 				.AddDefaultTokenProviders();
 
+			services.AddAuthorization(options =>
+			{
+				options.AddPolicy("Blub", policy => policy.RequireClaim(""));
+			});
+
 			services.AddSingleton<PasswordHasher<AccountEntity>>();
+
+			//services
+			//	.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+			//	.AddCookie();
 		}
 
 		// ReSharper disable once UnusedMember.Global
@@ -112,6 +138,13 @@ namespace IdeaMachine
 			builder.RegisterModule<EmailModule>();
 			builder.RegisterModule<MassTransitModule>();
 			builder.RegisterModule<AccountModule>();
+			builder.RegisterModule<SessionModule>();
+			builder.RegisterModule<GrpcModule>();
+			builder.RegisterModule<IpcModule>();
+
+			builder.RegisterGrpcService<IRegistrationService, RegistrationServiceProxy>();
+			builder.RegisterGrpcService<ILoginService, LoginServiceProxy>();
+			builder.RegisterGrpcService<IVerificationService, VerificationServiceProxy>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,4 @@
 ﻿using IdeaMachine.Common.Eventing.Abstractions.Events;
-using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 
@@ -11,10 +10,16 @@ namespace IdeaMachine.Modules.Account.Events
 
 		public IDistributedEvent<AccountSignedIn> AccountSignedIn { get; }
 
-		public AccountEvents(MassTransitEventFactory eventFactory)
+		public IDistributedEvent<AccountLoggedOut> AccountLoggedOut { get; }
+
+		public AccountEvents(
+			IDistributedEvent<AccountCreated> accountCreated,
+			IDistributedEvent<AccountSignedIn> accountSignedIn,
+			IDistributedEvent<AccountLoggedOut> accountLoggedOut)
 		{
-			AccountCreated = eventFactory.Create<AccountCreated>();
-			AccountSignedIn = eventFactory.Create<AccountSignedIn>();
+			AccountCreated = accountCreated;
+			AccountSignedIn = accountSignedIn;
+			AccountLoggedOut = accountLoggedOut;
 		}
 	}
 }

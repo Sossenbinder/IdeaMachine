@@ -25,7 +25,7 @@ namespace IdeaMachine.Common.Database.Extensions
 
 			var itemKey = keyFunc(item);
 
-			if (knownKeys.Any(key => itemKey.Equals(key)))
+			if (itemKey is not null && knownKeys.Any(key => itemKey.Equals(key)))
 			{
 				dbSet.Update(item);
 			}
@@ -44,7 +44,7 @@ namespace IdeaMachine.Common.Database.Extensions
 			{
 				var itemKey = keyFunc(item);
 
-				if (knownKeys.Any(key => itemKey.Equals(key)))
+				if (itemKey is not null && knownKeys.Any(key => itemKey.Equals(key)))
 				{
 					dbSet.Update(item);
 				}
