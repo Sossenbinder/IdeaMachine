@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ProtoBuf.Meta;
 
 namespace IdeaMachine.Service.Base.Serialization

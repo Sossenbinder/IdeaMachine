@@ -15,6 +15,11 @@ namespace IdeaMachine.Common.Core.Utils.IPC
 
 		public bool IsFailure => !IsSuccess;
 
+		// Implicitly used by protobuf-net, so the lib can use this instead of having to fallback onto the non-parameterless constructor
+		protected ServiceResponseBase()
+		{
+		}
+
 		protected ServiceResponseBase(bool isSuccess, string? errorMessage)
 		{
 			IsSuccess = isSuccess;
@@ -25,6 +30,12 @@ namespace IdeaMachine.Common.Core.Utils.IPC
 	[ProtoContract]
 	public class ServiceResponse : ServiceResponseBase
 	{
+		// Implicitly used by protobuf-net, so the lib can use this instead of having to fallback onto the non-parameterless constructor
+		// ReSharper disable once UnusedMember.Global
+		protected ServiceResponse()
+		{
+		}
+
 		public ServiceResponse(bool isSuccess, string? errorMessage = null)
 			: base(isSuccess, errorMessage)
 		{
@@ -61,6 +72,12 @@ namespace IdeaMachine.Common.Core.Utils.IPC
 
 				return PayloadOrNull;
 			}
+		}
+
+		// Implicitly used by protobuf-net, so the lib can use this instead of having to fallback onto the non-parameterless constructor
+		// ReSharper disable once UnusedMember.Local
+		private ServiceResponse()
+		{
 		}
 
 		public ServiceResponse(bool isSuccess, TPayload? payload = default, string? errorMessage = null)

@@ -7,14 +7,13 @@ namespace IdeaMachine.Modules.Session.Abstractions.DataTypes
 	[ProtoContract]
 	public class AnonymousUserSession : IUserSession
 	{
+		public bool IsAnonymous { get; set; } = true;
+
 		[ProtoMember(1)]
-		public bool IsAnonymous { get; } = true;
+		public Guid UserId { get; set; }
 
 		[ProtoMember(2)]
-		public Guid UserId { get; }
-
-		[ProtoMember(3)]
-		public string? Email { get; } = null;
+		public string? Email { get; set; } = null;
 
 		public AnonymousUserSession(Guid userId) => UserId = userId;
 	}

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Autofac;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.ModulesServiceBase.Interface;

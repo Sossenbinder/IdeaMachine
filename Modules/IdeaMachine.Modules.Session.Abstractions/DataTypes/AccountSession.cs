@@ -7,19 +7,18 @@ namespace IdeaMachine.Modules.Session.Abstractions.DataTypes
 	[ProtoContract]
 	public class AccountSession : IUserSession
 	{
-		[ProtoMember(1)]
 		public bool IsAnonymous { get; } = false;
 
-		[ProtoMember(2)]
+		[ProtoMember(1)]
 		public Guid UserId { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(2)]
 		public string UserName { get; set; } = null!;
 
-		[ProtoMember(4)]
+		[ProtoMember(3)]
 		public string Email { get; set; } = null!;
 
-		[ProtoMember(5)]
+		[ProtoMember(4)]
 		public DateTime LastAccessedAt { get; set; }
 	}
 }

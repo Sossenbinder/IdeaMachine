@@ -22,6 +22,7 @@ using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
 using IdeaMachine.Modules.Session.DI;
+using IdeaMachine.Service.Base.DI;
 using IdeaMachine.Service.Base.Extensions;
 using MassTransit;
 using MassTransit.SignalR;
@@ -141,6 +142,7 @@ namespace IdeaMachine
 			builder.RegisterModule<SessionModule>();
 			builder.RegisterModule<GrpcModule>();
 			builder.RegisterModule<IpcModule>();
+			builder.RegisterModule<ServiceBaseModule>();
 
 			builder.RegisterGrpcService<IRegistrationService, RegistrationServiceProxy>();
 			builder.RegisterGrpcService<ILoginService, LoginServiceProxy>();
