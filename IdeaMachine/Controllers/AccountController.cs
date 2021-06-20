@@ -12,7 +12,6 @@ using IdeaMachine.Modules.Session.Service.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachine.Controllers
@@ -74,6 +73,8 @@ namespace IdeaMachine.Controllers
 
 		[Route("SignIn")]
 		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
 		public async Task<JsonDataResponse<IdentityErrorCode>> SignIn([FromBody] SignInInfo signInInfo)
 		{
 			if (!ModelState.IsValid)
@@ -93,21 +94,21 @@ namespace IdeaMachine.Controllers
 				return JsonResponse.Error(loginResponse.PayloadOrFail.ResultCode);
 			}
 
-			//var account = loginResponse.PayloadOrFail.Account!;
+			var account = loginResponse.PayloadOrFail.Account!;
 
-			//var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-			//identity.AddClaim(new Claim(ClaimTypes.Name, account.UserId.ToString()));
+			var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+			identity.AddClaim(new Claim(ClaimTypes.Name, account.UserId.ToString()));
 
-			//var principal = new ClaimsPrincipal(identity);
+			var principal = new ClaimsPrincipal(identity);
 
-			//await HttpContext.SignInAsync(
-			//	CookieAuthenticationDefaults.AuthenticationScheme,
-			//	principal,
-			//	new AuthenticationProperties()
-			//	{
-			//		IsPersistent = signInInfo.RememberMe,
-			//	}
-			//);
+			await HttpContext.SignInAsync(
+				CookieAuthenticationDefaults.AuthenticationScheme,
+				principal,
+				new AuthenticationProperties()
+				{
+					IsPersistent = signInInfo.RememberMe,
+				}
+			);
 
 			return JsonDataResponse<IdentityErrorCode>.Success();
 		}

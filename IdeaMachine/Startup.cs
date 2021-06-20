@@ -51,17 +51,13 @@ namespace IdeaMachine
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddControllersWithViews();
+			ConfigureMassTransit(services);
 
-			services.AddSignalR();
+			services.AddMvc();
 
 			services.AddMemoryCache();
 
 			services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(LogProvider.CreateLogger(Configuration)));
-
-			services.AddAntiforgery(x => x.HeaderName = "RequestVerificationToken");
-
-			services.AddResponseCompression();
 
 			services
 				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -74,7 +70,27 @@ namespace IdeaMachine
 					};
 				});
 
-			RegisterIdentity(services);
+			services.AddAntiforgery(x => x.HeaderName = "RequestVerificationToken");
+
+			services.AddResponseCompression();
+
+			if (_isDevelopmentEnvironment)
+			{
+				services.AddDataProtection()
+					.SetApplicationName("IdeaMachine")
+					.PersistKeysToFileSystem(new DirectoryInfo("/keys/storage"));
+			}
+			else
+			{
+				//services.AddDataProtection()
+				//	.PersistKeysToAzureBlobStorage(Configuration["CloudStorageAccountConnectionString"], "dataprotection", "keys")
+				//	.ProtectKeysWithAzureKeyVault(new Uri("https://picro.vault.azure.net/"), new DefaultAzureCredential());
+			}
+		}
+
+		private void ConfigureMassTransit(IServiceCollection services)
+		{
+			services.AddSignalR();
 
 			services.AddMassTransit(x =>
 			{
@@ -96,40 +112,6 @@ namespace IdeaMachine
 					cfg.ConfigureEndpoints(ctx);
 				});
 			});
-
-			if (_isDevelopmentEnvironment)
-			{
-				services.AddDataProtection()
-					.SetApplicationName("IdeaMachine")
-					.PersistKeysToFileSystem(new DirectoryInfo("/keys/storage"));
-			}
-			else
-			{
-				//services.AddDataProtection()
-				//	.PersistKeysToAzureBlobStorage(Configuration["CloudStorageAccountConnectionString"], "dataprotection", "keys")
-				//	.ProtectKeysWithAzureKeyVault(new Uri("https://picro.vault.azure.net/"), new DefaultAzureCredential());
-			}
-		}
-
-		private void RegisterIdentity(IServiceCollection services)
-		{
-			services.AddDbContext<AccountContext>(options => options.UseNpgsql(Configuration["PostgresConnectionString"]));
-
-			services.AddIdentity<AccountEntity, IdentityRole<Guid>>(IdentityOptionsProvider.ApplyDefaultOptions)
-				.AddErrorDescriber<CodeIdentityErrorDescriber>()
-				.AddEntityFrameworkStores<AccountContext>()
-				.AddDefaultTokenProviders();
-
-			services.AddAuthorization(options =>
-			{
-				options.AddPolicy("Blub", policy => policy.RequireClaim(""));
-			});
-
-			services.AddSingleton<PasswordHasher<AccountEntity>>();
-
-			//services
-			//	.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-			//	.AddCookie();
 		}
 
 		// ReSharper disable once UnusedMember.Global
@@ -167,8 +149,8 @@ namespace IdeaMachine
 
 			app.UseRouting();
 
-			app.UseAuthorization();
 			app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{

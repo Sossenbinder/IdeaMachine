@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Authentication;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
@@ -62,12 +60,9 @@ namespace IdeaMachine.Controllers
 
 		private Task InitUserContext(ActionExecutingContext context)
 		{
-			// Init regular context here
-			var userId = context.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
-
-			if (userId is not null)
+			if (Guid.TryParse(context.HttpContext.User.Identity.Name, out var userId))
 			{
-				if (TryInitializeKnownSession(userId.Value))
+				if (TryInitializeKnownSession(userId.ToString()))
 				{
 					return Task.CompletedTask;
 				}
