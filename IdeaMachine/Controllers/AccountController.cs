@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using IdeaMachine.Attributes;
 using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.DataTypes.UiModels.Account;
@@ -43,7 +42,7 @@ namespace IdeaMachine.Controllers
 		}
 
 		[Route("Logout")]
-		[CookieAuthorize]
+		[Authorize]
 		[HttpPost]
 		public async Task<JsonResponse> Logout()
 		{

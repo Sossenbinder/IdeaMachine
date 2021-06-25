@@ -28,7 +28,8 @@ export const MaterialIcon: React.FC<Props> = ({ className, iconName, color, size
 			className={classes}
 			style={{
 				fontSize: size,
-				color: color
+				color: color,
+				userSelect: "none",
 			}}>
 			{iconName}
 		</span>

@@ -9,6 +9,7 @@ import IdeaList from "Modules/Ideas/Components/IdeaList";
 import CreateButton from 'Modules/Ideas/Components/CreateButton';
 import LogonView from "views/Login/LogonView";
 import EmailVerification from "views/EmailVerification/EmailVerification";
+import AccountRoutes from "views/Account/AccountRoutes";
 
 // Styles
 import styles from "./Styles/Content.module.less";
@@ -30,6 +31,10 @@ export const Content: React.FC = () => {
 				<Route
 					path="/VerifyEmail">
 					<EmailVerification />
+				</Route>
+				<Route
+					path="/Account">
+					<AccountRoutes />
 				</Route>
 				<Route
 					exact={true}

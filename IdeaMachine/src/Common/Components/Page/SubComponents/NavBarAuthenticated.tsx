@@ -1,5 +1,6 @@
 // Framework
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 // Components
 import MaterialIcon from "common/Components/MaterialIcon";
@@ -31,10 +32,11 @@ export const NavBarAuthenticated: React.FC<Props> = ({ account }) => {
 			className={styles.Container}
 			crossAlign="Center"
 			direction="Row">
-			<span
+			<Link
+				to="/Account/Overview"
 				className={styles.UserName}>
 				{account.userName}
-			</span>
+			</Link>
 			<MaterialIcon
 				color="white"
 				onClick={onLogoutClick}

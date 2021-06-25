@@ -39,7 +39,13 @@ export default class AccountService extends ModuleService implements IAccountSer
 		const result = await accountCommunication.signIn(signInInfo);
 
 		if (result.success) {
-			location.href = "/";
+			const accountRequest = await accountCommunication.getAccount();
+
+			if (accountRequest.success) {
+				this.dispatch(accountReducer.replace(accountRequest.payload));
+			}
+
+			return IdentityErrorCode.Success;
 		}
 
 		return result.payload;
