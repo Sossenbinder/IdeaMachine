@@ -1,5 +1,4 @@
 ﻿using IdeaMachine.Common.AspNetIdentity.DataTypes;
-using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using ProtoBuf;
 
 namespace IdeaMachine.Modules.Account.DataTypes.Model
@@ -11,7 +10,7 @@ namespace IdeaMachine.Modules.Account.DataTypes.Model
 		public IdentityErrorCode ResultCode { get; set; }
 
 		[ProtoMember(2)]
-		public AccountSession? Account { get; set; }
+		public Abstractions.DataTypes.Account? Account { get; set; }
 
 		public static LoginResult WithCode(IdentityErrorCode errorCode) => new() { ResultCode = errorCode };
 	}

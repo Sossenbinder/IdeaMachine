@@ -8,16 +8,13 @@ using System.IO;
 using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
-using IdeaMachine.Common.AspNetIdentity.Helper;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
 using IdeaMachine.Common.IPC.DI;
 using IdeaMachine.Common.Logging.Log;
 using IdeaMachine.Common.RemotingProxies.Proxies;
 using IdeaMachine.Common.SignalR;
-using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DI;
-using IdeaMachine.Modules.Account.Repository.Context;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
@@ -28,8 +25,6 @@ using MassTransit;
 using MassTransit.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace IdeaMachine

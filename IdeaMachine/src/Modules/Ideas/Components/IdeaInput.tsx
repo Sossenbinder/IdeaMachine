@@ -48,7 +48,6 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 				}}>
 				<span>{translations.AddIdea}</span>
 			</Cell>
-
 			<span>{translations.AddIdeaShortDescription}</span>
 			<Cell
 				cellStyles={{

@@ -1,12 +1,11 @@
 ﻿using System;
-using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 
 namespace IdeaMachine.Modules.Session.Cache.Interface
 {
 	public interface ISessionCache
 	{
-		void Insert(AccountSession account);
+		void Insert(Abstractions.DataTypes.Interface.ISession session);
 
-		AccountSession? GetSession(Guid key);
+		Abstractions.DataTypes.Session? GetSession(Guid key);
 	}
 }

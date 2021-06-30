@@ -5,6 +5,6 @@ namespace IdeaMachine.Modules.Session.Service.Interface
 {
 	public interface ISessionService
 	{
-		AccountSession? GetSession(Guid userId);
+		Abstractions.DataTypes.Session? GetSession(Guid userId);
 	}
 }

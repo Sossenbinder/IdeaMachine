@@ -1,27 +1,27 @@
 ﻿using System;
-using IdeaMachine.Common.Core.Utils.Caching;
-using IdeaMachine.Modules.Session.Abstractions.DataTypes;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Session.Cache.Interface;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace IdeaMachine.Modules.Session.Cache
 {
 	public class SessionCache : ISessionCache
 	{
-		private readonly TypedMemoryCache<Guid, AccountSession> _sessions;
+		private readonly IMemoryCache _sessions;
 
-		public SessionCache()
+		public SessionCache(IMemoryCache sessionsCache)
 		{
-			_sessions = new TypedMemoryCache<Guid, AccountSession>();
+			_sessions = sessionsCache;
 		}
 
-		public void Insert(AccountSession account)
+		public void Insert(ISession session)
 		{
-			_sessions.Set(account.UserId, account);
+			_sessions.Set(session.User.UserId, session);
 		}
 
-		public AccountSession? GetSession(Guid key)
+		public Abstractions.DataTypes.Session? GetSession(Guid key)
 		{
-			return _sessions.TryGetValue(key, out var accountModel) ? accountModel : null;
+			return _sessions.TryGetValue<Abstractions.DataTypes.Session?>(key, out var accountModel) ? accountModel : null;
 		}
 	}
 }

@@ -30,13 +30,13 @@ namespace IdeaMachine.Modules.Idea.Service
 			_massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;
 		}
 
-		public async Task Add(IUserSession session, IdeaModel ideaModel)
+		public async Task Add(ISession session, IdeaModel ideaModel)
 		{
 			ideaModel.CreationDate = DateTime.UtcNow;
 
 			ideaModel.Id = (await _ideaRepository.Add(ideaModel.ToEntity(session))).Id;
 
-			await _ideaEvents.IdeaCreated.Raise(new IdeaCreated(session, ideaModel));
+			await _ideaEvents.IdeaCreated.Raise(new IdeaCreated(session.User, ideaModel));
 
 			await _massTransitSignalRBackplaneService.RaiseAllSignalREvent(NotificationFactory.Create(ideaModel, NotificationType.Idea));
 		}

@@ -4,6 +4,8 @@ using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.DataTypes.UiModels.Account;
 using IdeaMachine.Extensions;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
@@ -34,11 +36,17 @@ namespace IdeaMachine.Controllers
 		}
 
 		[Route("Get")]
-		[Authorize]
 		[HttpGet]
-		public JsonDataResponse<AccountSession> Get()
+		public JsonDataResponse<UserUiModel> Get()
 		{
-			return JsonDataResponse<AccountSession>.Success(Session as AccountSession);
+			return JsonDataResponse<UserUiModel>.Success(new UserUiModel()
+			{
+				UserId = Session.User.UserId,
+				Email = Session.User.Email,
+				UserName = Session.User.UserName,
+				IsAnonymous = Session.User is AnonymousUser,
+				LastAccessedAt = Session.User.LastAccessedAt,
+			});
 		}
 
 		[Route("Logout")]

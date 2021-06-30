@@ -1,11 +1,12 @@
-﻿using IdeaMachine.Modules.Session.Abstractions.DataTypes;
-using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
+﻿using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
 
 namespace IdeaMachine.Modules.Account.Abstractions.DataTypes.Events
 {
 	public record AccountCreated(string UserName, string Email, string VerificationCode);
 
-	public record AccountSignedIn(AccountSession Account);
+	public record AccountSignedIn(IUser Account);
 
-	public record AccountLoggedOut(IUserSession UserSession);
+	public record AccountLoggedOut(IUser Session);
+
+	public record AccountVerified(IUser OldAnonymousUser, IUser NewUser);
 }

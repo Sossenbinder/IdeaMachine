@@ -1,7 +1,7 @@
 // Framework
 import * as React from "react";
 import { connect } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 
 // Components
 import Flex from "common/Components/Flex";
@@ -35,6 +35,10 @@ export const NavBar: React.FC<Props> = ({ account, history }) => {
 				className={styles.LoginSection}
 				direction="Row"
 				crossAlignSelf="Center">
+				<Link
+					to="/idea/own">
+					My ideas
+				</Link>
 				<Choose>
 					<When condition={!account}>
 						<NavBarAnon />

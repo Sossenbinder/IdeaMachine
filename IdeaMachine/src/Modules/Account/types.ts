@@ -1,8 +1,9 @@
 export type Account = {
+	isAnonymous: boolean;
 	userName: string;
 	email: string;
 	lastAccessedAt: Date;
-	id: string;
+	userId: string;
 }
 
 export type SignInInfo = {

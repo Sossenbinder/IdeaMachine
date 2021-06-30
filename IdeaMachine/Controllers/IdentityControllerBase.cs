@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
@@ -14,9 +15,9 @@ namespace IdeaMachine.Controllers
 	{
 		private readonly ISessionService _sessionService;
 
-		protected IUserSession? SessionOrNull { get; private set; }
+		protected ISession? SessionOrNull { get; private set; }
 
-		protected IUserSession Session
+		protected ISession Session
 		{
 			get
 			{
@@ -60,7 +61,7 @@ namespace IdeaMachine.Controllers
 
 		private Task InitUserContext(ActionExecutingContext context)
 		{
-			if (Guid.TryParse(context.HttpContext.User.Identity.Name, out var userId))
+			if (Guid.TryParse(context.HttpContext.User.Identity?.Name, out var userId))
 			{
 				if (TryInitializeKnownSession(userId.ToString()))
 				{
@@ -71,7 +72,15 @@ namespace IdeaMachine.Controllers
 			var isUserAnonymous = Request.Cookies.TryGetValue(IdentityDefinitions.AnonymousIdentification, out var anonCookieValue);
 			if (isUserAnonymous)
 			{
-				SessionOrNull = new AnonymousUserSession(Guid.Parse(anonCookieValue!));
+				SessionOrNull = new Session()
+				{
+					User = new AnonymousUser()
+					{
+						UserName = "Anonymous user",
+						UserId = Guid.Parse(anonCookieValue!),
+						LastAccessedAt = DateTime.UtcNow,
+					},
+				};
 			}
 
 			return Task.CompletedTask;

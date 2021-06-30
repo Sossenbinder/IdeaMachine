@@ -2,7 +2,7 @@
 
 namespace GrpcProxyGenerator.DataTypes
 {
-	internal class ProxyMetaData
+	public class ProxyMetaData
 	{
 		public Type Type { get; set; }
 

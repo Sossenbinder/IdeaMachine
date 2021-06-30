@@ -19,6 +19,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 			return new()
 			{
 				CreationDate = CreationDate,
+				CreatorId = Creator,
 				ShortDescription = ShortDescription,
 				LongDescription = LongDescription,
 				Id = Id,

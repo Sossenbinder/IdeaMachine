@@ -4,7 +4,7 @@ using GrpcProxyGenerator.Service.Interface;
 
 namespace GrpcProxyGenerator.Service
 {
-	internal class TypeInfoProvider : ITypeInfoProvider
+	public class TypeInfoProvider : ITypeInfoProvider
 	{
 		public ProxyMetaData GetMetaData(Type proxyInterface)
 		{

@@ -7,10 +7,18 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Account\IdeaMachine.Modules.Account.csproj" />
 		<ProjectReference Include="..\..\Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
+		<ProjectReference Include="..\..\Tools\GrpcProxyGenerator\GrpcProxyGenerator.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Common.Grpc\IdeaMachine.Common.Grpc.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Common.IPC\IdeaMachine.Common.IPC.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Proxies\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
 	</ItemGroup>
 </Project>

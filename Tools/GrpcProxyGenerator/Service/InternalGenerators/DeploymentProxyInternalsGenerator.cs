@@ -9,16 +9,11 @@ using GrpcProxyGenerator.Service.InternalGenerators.Interface;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Common.Grpc.Service.Interface;
 using IdeaMachine.Common.IPC;
-using IdeaMachine.Common.RemotingProxies.ProxyInvocation;
-using IdeaMachine.ModulesServiceBase.Interface;
 
 namespace GrpcProxyGenerator.Service.InternalGenerators
 {
 	internal class DeploymentProxyInternalsGenerator : IProxyInternalsGenerator
 	{
-		// Needed for nameof() with non-static object methods
-		private static readonly AbstractDeploymentProxy<IGrpcService> _proxyObj = null!;
-
 		public void GenerateProxyInternals(StringBuilder stringBuilder, ProxyMetaData metaData)
 		{
 			GenerateConstructor(stringBuilder, metaData);
@@ -74,7 +69,7 @@ namespace GrpcProxyGenerator.Service.InternalGenerators
 			}
 
 			// Add method forward call
-			stringBuilder.Tab(3).Append($"=> {(methodInfo.ReturnType == typeof(Task) ? nameof(_proxyObj.Invoke) : nameof(_proxyObj.InvokeWithResult))}");
+			stringBuilder.Tab(3).Append($"=> {(methodInfo.ReturnType == typeof(Task) ? "Invoke" : "InvokeWithResult")}");
 			stringBuilder.Append($"(service => service.{methodName}(");
 
 			if (parameters.Any())

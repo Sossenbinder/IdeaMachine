@@ -3,16 +3,16 @@
 	border-radius: 5px;
 	background: white;
 
-	min-height: 50px;
-	max-height: 100px;
+	cursor: pointer;
+
+	height: 50px;
 
 	&:not(:last-child) {
 		margin-bottom: 10px;
 	}
 
 	&.Open {
-		min-height: auto;
-		max-height: auto;
+		height: auto;
 	}
 
 	.Idea {
@@ -21,8 +21,12 @@
 
 		margin: 5px;
 
-		.ExpandMore {
-			cursor: pointer;
+		.ShortDescription {
+			margin-top: 10px;
 		}
+	}
+
+	.ControlSection {
+		margin-left: -5px;
 	}
 }

@@ -5,11 +5,11 @@ using GrpcProxyGenerator.Service.Interface;
 
 namespace GrpcProxyGenerator.Service
 {
-	internal class GrpcProxyEmitter : IGrpcProxyEmitter
+	public class GrpcProxyFileEmitter : IGrpcProxyEmitter
 	{
 		private readonly string _solutionPath;
 
-		public GrpcProxyEmitter(string solutionPath)
+		public GrpcProxyFileEmitter(string solutionPath)
 		{
 			_solutionPath = solutionPath;
 		}

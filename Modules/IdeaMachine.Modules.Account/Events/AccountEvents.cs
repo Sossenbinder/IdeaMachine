@@ -12,14 +12,18 @@ namespace IdeaMachine.Modules.Account.Events
 
 		public IDistributedEvent<AccountLoggedOut> AccountLoggedOut { get; }
 
+		public IDistributedEvent<AccountVerified> AccountVerified { get; }
+
 		public AccountEvents(
 			IDistributedEvent<AccountCreated> accountCreated,
 			IDistributedEvent<AccountSignedIn> accountSignedIn,
-			IDistributedEvent<AccountLoggedOut> accountLoggedOut)
+			IDistributedEvent<AccountLoggedOut> accountLoggedOut,
+			IDistributedEvent<AccountVerified> accountVerified)
 		{
 			AccountCreated = accountCreated;
 			AccountSignedIn = accountSignedIn;
 			AccountLoggedOut = accountLoggedOut;
+			AccountVerified = accountVerified;
 		}
 	}
 }

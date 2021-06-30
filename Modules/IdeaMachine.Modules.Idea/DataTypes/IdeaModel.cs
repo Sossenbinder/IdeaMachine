@@ -14,11 +14,13 @@ namespace IdeaMachine.Modules.Idea.DataTypes
 
 		public DateTime CreationDate { get; set; }
 
-		public IdeaEntity ToEntity(IUserSession session)
+		public Guid CreatorId { get; set; }
+
+		public IdeaEntity ToEntity(ISession session)
 		{
 			return new()
 			{
-				Creator = session.UserId,
+				Creator = session.User.UserId,
 				CreationDate = CreationDate,
 				LongDescription = LongDescription,
 				ShortDescription = ShortDescription,

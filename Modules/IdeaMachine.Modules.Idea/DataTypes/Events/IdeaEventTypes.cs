@@ -1,6 +1,6 @@
-﻿using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
+﻿using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Events
 {
-	public record IdeaCreated(IUserSession Creator, IdeaModel Idea);
+	public record IdeaCreated(IUser Creator, IdeaModel Idea);
 }

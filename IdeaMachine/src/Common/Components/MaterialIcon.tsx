@@ -5,18 +5,31 @@ import { } from "react";
 // Functionality
 import classNames from "classnames";
 
+export enum MaterialIconType {
+	Outlined,
+	Filled,
+	Rounded,
+	Sharp,
+	TwoTone,
+}
+
 type Props = {
 	iconName: string;
 	color?: string;
 	size?: number;
-	onClick?(): void;
+	onClick?(event: React.MouseEvent<HTMLSpanElement, MouseEvent>): void;
 	className?: string;
+	type?: MaterialIconType;
 }
 
-export const MaterialIcon: React.FC<Props> = ({ className, iconName, color, size, onClick }) => {
+export const MaterialIcon: React.FC<Props> = ({ className, iconName, color, size, onClick, type = MaterialIconType.Filled }) => {
 
 	const classes = classNames({
-		"material-icons": true,
+		"material-icons": type === MaterialIconType.Filled,
+		"material-icons-outlined": type === MaterialIconType.Outlined,
+		"material-icons-round": type === MaterialIconType.Rounded,
+		"material-icons-sharp": type === MaterialIconType.Sharp,
+		"material-icons-two-tone": type === MaterialIconType.TwoTone,
 	}, className ?? "");
 
 	size ??= 24;
@@ -24,7 +37,7 @@ export const MaterialIcon: React.FC<Props> = ({ className, iconName, color, size
 
 	return (
 		<span
-			onClick={() => onClick?.()}
+			onClick={event => onClick?.(event)}
 			className={classes}
 			style={{
 				fontSize: size,

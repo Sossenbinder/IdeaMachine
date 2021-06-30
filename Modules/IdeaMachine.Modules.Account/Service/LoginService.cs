@@ -54,7 +54,7 @@ namespace IdeaMachine.Modules.Account.Service
 
 			if (result.Succeeded)
 			{
-				var accountModel = new AccountSession
+				var accountModel = new Abstractions.DataTypes.Account()
 				{
 					UserId = account.Id,
 					Email = account.Email,
@@ -74,9 +74,9 @@ namespace IdeaMachine.Modules.Account.Service
 			return ServiceResponse.Failure(LoginResult.WithCode(IdentityErrorCode.DefaultError));
 		}
 
-		public async Task Logout(IUserSession session)
+		public async Task Logout(ISession session)
 		{
-			await _accountEvents.AccountLoggedOut.Raise(new AccountLoggedOut(session));
+			await _accountEvents.AccountLoggedOut.Raise(new AccountLoggedOut(session.User));
 		}
 
 		public async Task RefreshLogin(RefreshLoginModel refreshLoginModel)
@@ -85,7 +85,7 @@ namespace IdeaMachine.Modules.Account.Service
 
 			if (account is not null)
 			{
-				var accountModel = new AccountSession
+				var accountModel = new Abstractions.DataTypes.Account()
 				{
 					UserId = account.Id,
 					Email = account.Email,

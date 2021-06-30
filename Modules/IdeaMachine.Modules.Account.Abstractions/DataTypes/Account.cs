@@ -1,14 +1,12 @@
 ﻿using System;
-using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
 using ProtoBuf;
 
-namespace IdeaMachine.Modules.Session.Abstractions.DataTypes
+namespace IdeaMachine.Modules.Account.Abstractions.DataTypes
 {
 	[ProtoContract]
-	public class AccountSession : IUserSession
+	public class Account : IUser
 	{
-		public bool IsAnonymous { get; } = false;
-
 		[ProtoMember(1)]
 		public Guid UserId { get; set; }
 

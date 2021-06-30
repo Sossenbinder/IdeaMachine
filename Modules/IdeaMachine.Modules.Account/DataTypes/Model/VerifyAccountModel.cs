@@ -1,9 +1,10 @@
-﻿using ProtoBuf;
+﻿using IdeaMachine.Modules.Session.Abstractions.DataTypes;
+using ProtoBuf;
 
 namespace IdeaMachine.Modules.Account.DataTypes.Model
 {
 	[ProtoContract]
-	public class VerifyAccountModel
+	public class VerifyAccountModel : UserSessionContainer
 	{
 		[ProtoMember(1)]
 		public string UserName { get; set; }

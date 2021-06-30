@@ -16,6 +16,8 @@ export type ServiceNotification = {
 export interface IIdeaService extends IModuleService {
 	addIdea(idea: Idea): Promise<void>;
 	initializeIdeas(): Promise<void>;
+	initializeOwnIdeas(): Promise<void>;
+	getSpecificIdea(id: number): Promise<void>;
 }
 
 export interface IAccountService extends IModuleService {

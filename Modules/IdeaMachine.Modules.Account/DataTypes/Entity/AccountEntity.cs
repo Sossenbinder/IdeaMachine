@@ -13,5 +13,16 @@ namespace IdeaMachine.Modules.Account.DataTypes.Entity
 		public AccountEntity()
 		{
 		}
+
+		public Abstractions.DataTypes.Account ToModel()
+		{
+			return new()
+			{
+				UserId = Id,
+				Email = Email,
+				UserName = UserName,
+				LastAccessedAt = LastAccessedAt,
+			};
+		}
 	}
 }

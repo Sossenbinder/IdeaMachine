@@ -21,7 +21,7 @@ namespace IdeaMachine.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			if ((HttpContext.User.Identity?.IsAuthenticated ?? false) && SessionOrNull is AnonymousUserSession)
+			if ((HttpContext.User.Identity?.IsAuthenticated ?? false) && (SessionOrNull?.IsAnonymous ?? false))
 			{
 				await _loginService.RefreshLogin(new RefreshLoginModel()
 				{

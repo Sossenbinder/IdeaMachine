@@ -6,13 +6,14 @@ namespace IdeaMachine.Modules.Session.Abstractions.DataTypes
 	[ProtoContract]
 	public abstract class UserSessionContainer : IUserSessionContainer
 	{
-		public IUserSession Session { get; set; } = null!;
+		[ProtoMember(50)]
+		public ISession Session { get; set; } = null!;
 
 		protected UserSessionContainer()
 		{
 		}
 
-		protected UserSessionContainer(IUserSession session)
+		protected UserSessionContainer(ISession session)
 		{
 			Session = session;
 		}

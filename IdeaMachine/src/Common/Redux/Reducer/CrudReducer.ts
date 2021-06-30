@@ -31,6 +31,7 @@ type CrudActions<TDataType, TReducerState extends ReducerState<TDataType>> = {
 	addAction: Action<TDataType, TReducerState>;
 	updateAction: Action<TDataType, TReducerState>;
 	deleteAction: Action<TDataType, TReducerState>;
+	putAction: Action<TDataType, TReducerState>;
 }
 
 export const createSingleReducer = <T>(params: SingleReducerParams<T>) => createReducerInternal<T, ReducerState<T>>(
@@ -39,17 +40,22 @@ export const createSingleReducer = <T>(params: SingleReducerParams<T>) => create
 		actions: {
 			addAction: (_, action) => {
 				return {
-					data: { ...action.payload }
+					data: { ...action.payload },
 				}
 			},
 			updateAction: (_, action) => {
 				return {
-					data: { ...action.payload }
+					data: { ...action.payload },
 				}
 			},
 			deleteAction: (_, __) => {
 				return {
 					data: undefined,
+				}
+			},
+			putAction: (_, action) => {
+				return {
+					data: { ...action.payload },
 				}
 			}
 		},
@@ -76,13 +82,16 @@ export const createReducer = <T>(params: MultiReducerParams<T>) => createReducer
 				const updatedData = [...state.data];
 
 				updatePayloadAsArray.forEach(val => {
-					const existingItemIndex = updatedData.findIndex(x => x[params.key] === val[params.key]);
-					updatedData[existingItemIndex] = val;
+					const index = updatedData.findIndex(x => x[params.key] === val[params.key]);
+
+					if (index !== -1) {
+						updatedData[index] = val;
+					}
 				});
 
 				return {
 					...state,
-					data: updatedData
+					data: updatedData,
 				};
 			},
 			deleteAction: (state, action) => {
@@ -90,16 +99,35 @@ export const createReducer = <T>(params: MultiReducerParams<T>) => createReducer
 				const dataToDelete = [...state.data];
 
 				deletePayloadAsArray.forEach(val => {
-					const indexToDelete = dataToDelete.findIndex(x => x[params.key] === val[params.key]);
+					const index = dataToDelete.findIndex(x => x[params.key] === val[params.key]);
 
-					if (indexToDelete > -1) {
-						removeAt(dataToDelete, indexToDelete);
+					if (index > -1) {
+						removeAt(dataToDelete, index);
 					}
 				});
 
 				return {
 					...state,
-					data: dataToDelete
+					data: dataToDelete,
+				};
+			},
+			putAction: (state, action) => {
+				const putPayloadAsArray = ensureArray(action.payload);
+				const dataCopy = [...state.data];
+
+				putPayloadAsArray.forEach(val => {
+					const existingIndex = dataCopy.findIndex(x => x[params.key] === val[params.key]);
+
+					if (existingIndex === -1) {
+						dataCopy.push(val);
+					} else {
+						dataCopy[existingIndex] = val;
+					}
+				})
+
+				return {
+					...state,
+					data: dataCopy,
 				};
 			}
 		},
@@ -123,12 +151,13 @@ const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDa
 
 	const ADD_IDENTIFIER = `${actionIdentifier}_ADD`;
 	const UPDATE_IDENTIFIER = `${actionIdentifier}_UPDATE`;
+	const PUT_IDENTIFIER = `${actionIdentifier}_PUT`;
 	const DELETE_IDENTIFIER = `${actionIdentifier}_DELETE`;
 	const REPLACE_IDENTIFIER = `${actionIdentifier}_REPLACE`;
 
 	const initialState: TReducerState = params.initialState;
 
-	const { addAction, deleteAction, updateAction } = params.actions;
+	const { addAction, deleteAction, updateAction, putAction } = params.actions;
 
 	const replaceAction = (state: TReducerState, action: ReducerAction<TDataType>): TReducerState => ({ ...state, data: action.payload });
 
@@ -136,6 +165,7 @@ const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDa
 		[ADD_IDENTIFIER, addAction],
 		[UPDATE_IDENTIFIER, updateAction],
 		[DELETE_IDENTIFIER, deleteAction],
+		[PUT_IDENTIFIER, putAction],
 		[REPLACE_IDENTIFIER, replaceAction]
 	]);
 
@@ -143,12 +173,7 @@ const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDa
 
 	const reducer = (state = initialState, action: ReducerAction<TDataType>): TReducerState => {
 		const reducerAction = reducerActionMap.get(action.type);
-
-		if (!reducerAction) {
-			return state;
-		}
-
-		return reducerAction(state, action);
+		return reducerAction?.(state, action) ?? state;
 	}
 
 	const actionGenerator = (type: string) => (payload: TDataType): ReducerAction<TDataType> => ({
@@ -161,6 +186,7 @@ const createReducerInternal = <TDataType, TReducerState extends ReducerState<TDa
 		update: actionGenerator(UPDATE_IDENTIFIER),
 		delete: actionGenerator(DELETE_IDENTIFIER),
 		replace: actionGenerator(REPLACE_IDENTIFIER),
+		put: actionGenerator(PUT_IDENTIFIER),
 		reducer: reducer,
 	}
 }

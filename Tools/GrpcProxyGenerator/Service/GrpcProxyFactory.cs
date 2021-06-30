@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using GrpcProxyGenerator.DataTypes;
 using GrpcProxyGenerator.Extensions;
-using GrpcProxyGenerator.Helper;
 using GrpcProxyGenerator.Service.Interface;
 using GrpcProxyGenerator.Service.InternalGenerators;
 using GrpcProxyGenerator.Service.InternalGenerators.Interface;
-using IdeaMachine.Common.RemotingProxies.ProxyInvocation;
 
 namespace GrpcProxyGenerator.Service
 {
-	internal class GrpcProxyFactory : IGrpcProxyFactory
+	public class GrpcProxyFactory : IGrpcProxyFactory
 	{
 		private readonly IGrpcProxyEmitter _grpcProxyEmitter;
 
@@ -67,7 +64,7 @@ namespace GrpcProxyGenerator.Service
 
 		private static string GetKubernetesType(ProxyMetaData proxyMetaData)
 		{
-			return TypeNameHelper.StripGenericArtifacts(typeof(AbstractDeploymentProxy<>).FullName);
+			return "IdeaMachine.Common.RemotingProxies.ProxyInvocation.AbstractDeploymentProxy";
 		}
 	}
 }

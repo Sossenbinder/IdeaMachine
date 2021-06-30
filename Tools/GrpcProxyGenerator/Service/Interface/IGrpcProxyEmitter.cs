@@ -2,7 +2,7 @@
 
 namespace GrpcProxyGenerator.Service.Interface
 {
-	internal interface IGrpcProxyEmitter
+	public interface IGrpcProxyEmitter
 	{
 		void EmitProxy(string builtProxy, ProxyMetaData metaData);
 	}

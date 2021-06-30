@@ -2,7 +2,7 @@
 
 namespace GrpcProxyGenerator.Service.Interface
 {
-	internal interface IGrpcProxyFactory
+	public interface IGrpcProxyFactory
 	{
 		void GenerateProxy(Type proxyInterface);
 	}

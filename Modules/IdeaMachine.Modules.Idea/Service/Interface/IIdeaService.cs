@@ -6,6 +6,6 @@ namespace IdeaMachine.Modules.Idea.Service.Interface
 {
 	public interface IIdeaService
 	{
-		Task Add(IUserSession session, IdeaModel ideaModel);
+		Task Add(ISession session, IdeaModel ideaModel);
 	}
 }

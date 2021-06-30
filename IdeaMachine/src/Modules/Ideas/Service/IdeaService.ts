@@ -30,7 +30,28 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 
 			payload.forEach(pl => pl.creationDate = new Date(pl.creationDate));
 
-			this.dispatch(ideaReducer.replace(ideaResponse.payload));
+			this.dispatch(ideaReducer.replace(payload));
+		}
+	}
+
+	initializeOwnIdeas = async (): Promise<void> => {
+		const ideaResponse = await ideaCommunication.getOwnIdeas();
+
+		if (ideaResponse.success) {
+
+			const { payload } = ideaResponse;
+
+			payload.forEach(pl => pl.creationDate = new Date(pl.creationDate));
+
+			this.dispatch(ideaReducer.put(payload));
+		}
+	}
+
+	getSpecificIdea = async (id: number) => {
+		const ideaResponse = await ideaCommunication.getSpecificIdea(id);
+
+		if (ideaResponse.success) {
+			this.dispatch(ideaReducer.put(ideaResponse.payload));
 		}
 	}
 }

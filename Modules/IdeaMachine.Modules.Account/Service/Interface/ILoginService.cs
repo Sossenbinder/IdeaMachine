@@ -15,7 +15,7 @@ namespace IdeaMachine.Modules.Account.Service.Interface
 		Task<ServiceResponse<LoginResult>> Login(LoginModel loginModel);
 
 		[OperationContract]
-		Task Logout(IUserSession session);
+		Task Logout(ISession session);
 
 		[OperationContract]
 		Task RefreshLogin(RefreshLoginModel refreshLoginModel);

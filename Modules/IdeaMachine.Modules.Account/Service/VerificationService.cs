@@ -2,6 +2,8 @@
 using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.AspNetIdentity.Extension;
 using IdeaMachine.Common.Core.Utils.IPC;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
+using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
@@ -11,10 +13,15 @@ namespace IdeaMachine.Modules.Account.Service
 {
 	public class VerificationService : IVerificationService
 	{
+		private readonly IAccountEvents _accountEvents;
+
 		private readonly UserManager<AccountEntity> _userManager;
 
-		public VerificationService(UserManager<AccountEntity> userManager)
+		public VerificationService(
+			IAccountEvents accountEvents,
+			UserManager<AccountEntity> userManager)
 		{
+			_accountEvents = accountEvents;
 			_userManager = userManager;
 		}
 
@@ -29,9 +36,14 @@ namespace IdeaMachine.Modules.Account.Service
 
 			var result = await _userManager.ConfirmEmailAsync(user, verifyModel.Token);
 
-			return result.Succeeded
-				? ServiceResponse.Success(IdentityErrorCode.Success)
-				: ServiceResponse.Failure(result.FirstErrorOrFail());
+			if (!result.Succeeded)
+			{
+				return ServiceResponse.Failure(result.FirstErrorOrFail());
+			}
+
+			await _accountEvents.AccountVerified.Raise(new AccountVerified(verifyModel.Session.User, user.ToModel()));
+
+			return ServiceResponse.Success(IdentityErrorCode.Success);
 		}
 	}
 }

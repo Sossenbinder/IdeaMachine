@@ -4,6 +4,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />

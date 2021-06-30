@@ -6,17 +6,21 @@ using IdeaMachine.DataTypes.UiModels.Account;
 using IdeaMachine.Extensions;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
+using IdeaMachine.Modules.Session.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachine.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	public class VerifyController : ControllerBase
+	public class VerifyController : IdentityControllerBase
 	{
 		private readonly IVerificationService _verificationService;
 
-		public VerifyController(IVerificationService verificationService)
+		public VerifyController(
+			IVerificationService verificationService,
+			ISessionService sessionService)
+			: base(sessionService)
 		{
 			_verificationService = verificationService;
 		}
@@ -36,6 +40,7 @@ namespace IdeaMachine.Controllers
 			{
 				UserName = userName,
 				Token = token,
+				Session = Session,
 			});
 
 			return result.ToJsonDataResponse();

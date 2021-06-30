@@ -18,5 +18,6 @@ export type Reducer<T, TReducerType = ReducerState<T> | MultiReducerState<T>> = 
 	update: (data: T) => ReducerAction<T>;
 	delete: (data: T) => ReducerAction<T>;
 	replace: (data: T) => ReducerAction<T>;
+	put: (data: T) => ReducerAction<T>;
 	reducer: Redux.Reducer<TReducerType, ReducerAction<T>>;
 }

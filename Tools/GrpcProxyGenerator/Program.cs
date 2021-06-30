@@ -1,12 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
-using GrpcProxyGenerator.Extensions;
 using GrpcProxyGenerator.Service;
-using GrpcProxyGenerator.Service.Interface;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.ModulesServiceBase.Interface;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GrpcProxyGenerator
 {
@@ -14,17 +10,9 @@ namespace GrpcProxyGenerator
 	{
 		public static void Main(string[] args)
 		{
-			//setup our DI
-			var serviceProvider = new ServiceCollection()
-				.AddSingleton<IGrpcProxyEmitter, GrpcProxyEmitter>()
-				.AddSingleton<IGrpcProxyFactory, GrpcProxyFactory>()
-				.AddSingleton<ITypeInfoProvider, TypeInfoProvider>()
-				.AddSingleton<string>(args[0])
-				.BuildServiceProvider();
-
 			var allGrpcServices = Assembly
 				.GetEntryAssembly()
-				.GetReferencedAssemblies()
+				?.GetReferencedAssemblies()
 				.Select(Assembly.Load)
 				.Select(x => x.GetTypes())
 				.SelectMany(x => x)
@@ -32,11 +20,11 @@ namespace GrpcProxyGenerator
 				.OrderBy(x => x.FullName)
 				.ToList();
 
-			var factoryService = serviceProvider.GetServiceOrFail<IGrpcProxyFactory>();
+			var factory = new GrpcProxyFactory(new GrpcProxyFileEmitter(args[0]), new TypeInfoProvider());
 
 			foreach (var service in allGrpcServices!)
 			{
-				factoryService.GenerateProxy(service);
+				factory.GenerateProxy(service);
 			}
 		}
 	}

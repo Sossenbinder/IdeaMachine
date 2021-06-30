@@ -23,7 +23,7 @@ export const CreateButton: React.FC<Props> = ({ history }) => {
 			className={styles.CreateButton}
 			mainAlign="Center"
 			crossAlign="Center"
-			onClick={() => history.push("/ideaInput")} >
+			onClick={() => history.push("/idea/input")} >
 			<MaterialIcon
 				iconName="add"
 				color="white"
