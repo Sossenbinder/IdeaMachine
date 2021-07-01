@@ -12,7 +12,7 @@ Just clone & run. It's 2021, we don't do static installations on a machine anymo
 * React + Redux + React-Query + TS + Less + Webpack = <3
 * MassTransit over RabbitMQ
 * grpc with https://github.com/protobuf-net/protobuf-net.Grpc
-* Postgres
+* MSSql
 * Serilog + Seq
 
 Still to come:

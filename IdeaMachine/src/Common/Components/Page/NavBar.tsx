@@ -40,7 +40,7 @@ export const NavBar: React.FC<Props> = ({ account, history }) => {
 					My ideas
 				</Link>
 				<Choose>
-					<When condition={!account}>
+					<When condition={!account || account.isAnonymous}>
 						<NavBarAnon />
 					</When>
 					<Otherwise>

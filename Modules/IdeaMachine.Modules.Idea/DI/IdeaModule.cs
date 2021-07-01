@@ -14,7 +14,7 @@ namespace IdeaMachine.Modules.Idea.DI
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterDbContextFactory(ctx => new IdeaContext(ctx["PostgresConnectionString"]));
+			builder.RegisterDbContextFactory(ctx => new IdeaContext(ctx["DbConnectionString"]));
 
 			builder.RegisterType<IdeaRepository>()
 				.As<IIdeaRepository>()

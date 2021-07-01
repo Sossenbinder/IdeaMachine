@@ -13,7 +13,7 @@ namespace IdeaMachine.Common.Database.Context
 		private static DbContextOptions GetContextOptions([NotNull] string connectionString)
 		{
 			return new DbContextOptionsBuilder()
-				.UseNpgsql(connectionString)
+				.UseSqlServer(connectionString)
 				.Options;
 		}
 	}

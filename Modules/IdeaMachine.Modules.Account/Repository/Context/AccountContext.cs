@@ -10,7 +10,7 @@ namespace IdeaMachine.Modules.Account.Repository.Context
 	{
 		//Migration
 		public AccountContext()
-			: base(new DbContextOptionsBuilder<AccountContext>().UseNpgsql("Server=localhost;Port=5432;User Id=ideamachine;Password=ideamachine;Database=ideamachine;").Options)
+			: base(new DbContextOptionsBuilder<AccountContext>().UseSqlServer("Server=tcp:localhost,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;").Options)
 		{
 		}
 
