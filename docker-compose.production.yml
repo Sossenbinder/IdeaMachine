@@ -1,0 +1,67 @@
+version: '3.4'
+
+services:
+  ideamachine:
+    image: ideamachine.azurecr.io/ideamachine
+    labels:
+      - ideamachinecompose
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DbConnectionString: "Server=tcp:ideamachine.sql,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+      IdeaMachine_RabbitMq: "ideamachine.rabbitmq"
+      GmailUserName: "ideamachinenews@gmail.com"
+      GmailPassword: "LwtqQp6bBUVE7j2IhmVT"
+      Seq_Server: "http://ideamachine.seq:5341"
+      DeploymentLink: "https://localhost:1457"
+    depends_on:
+      - ideamachine.sql
+      - ideamachine.rabbitmq
+
+
+  ideamachine.accountservice:
+    image: ideamachine.azurecr.io/ideamachine_accountservice
+    labels:
+      - ideamachinecompose
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DbConnectionString: "Server=tcp:ideamachine.sql,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+      IdeaMachine_RabbitMq: "ideamachine.rabbitmq"
+      Seq_Server: "http://ideamachine.seq:5341"
+    depends_on:
+      - ideamachine.sql
+      - ideamachine.rabbitmq
+
+  ideamachine.sql:
+    image: mcr.microsoft.com/mssql/server
+    labels:
+      - ideamachinecompose
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "^dEbX2Ew"
+    volumes:
+        - ideamachine_sql:/var/opt/mssql
+        - ./database:/Scripts/dbInit.sql
+    restart: unless-stopped
+
+  ideamachine.seq:
+    image: datalust/seq:latest
+    labels:
+      - ideamachinecompose
+    ports:
+      - "5341:80"
+    environment:
+      ACCEPT_EULA: "Y"
+    volumes:
+      - seq:/data
+
+  ideamachine.rabbitmq:
+    image: docker.io/library/rabbitmq:3.8.6-management
+    labels:
+      - ideamachinecompose
+    ports:
+      - "15672:15672"

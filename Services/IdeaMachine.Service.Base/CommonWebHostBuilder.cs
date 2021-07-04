@@ -1,6 +1,7 @@
 ﻿using System;
 using Autofac.Extensions.DependencyInjection;
 using IdeaMachine.Service.Base.Extensions;
+using IdeaMachine.Service.Base.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -47,6 +48,7 @@ namespace IdeaMachine.Service.Base
 				{
 					webBuilder
 						.UseStartup<TStartUp>()
+						.UseConfiguration(ConfigHelper.CreateConfiguration(args))
 						.ConfigureGrpc();
 
 					webHostBuilderEnricher?.Invoke(webBuilder);

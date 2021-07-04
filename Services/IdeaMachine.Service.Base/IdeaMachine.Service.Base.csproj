@@ -6,6 +6,7 @@
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.2.0" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.16" />
 		<PackageReference Include="protobuf-net" Version="3.0.101" />
 		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.152" />
 		<PackageReference Include="System.ServiceModel.Primitives" Version="4.8.1" />
@@ -15,6 +16,7 @@
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing\IdeaMachine.Common.Eventing.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Grpc\IdeaMachine.Common.Grpc.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.IPC\IdeaMachine.Common.IPC.csproj" />
+		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Logging\IdeaMachine.Common.Logging.csproj" />
 		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Session.Abstractions\IdeaMachine.Modules.Session.Abstractions.csproj" />
 		<ProjectReference Include="..\..\Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
 	</ItemGroup>
