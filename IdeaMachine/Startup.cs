@@ -13,13 +13,15 @@ using IdeaMachine.Common.Grpc.DI;
 using IdeaMachine.Common.IPC.DI;
 using IdeaMachine.Common.Logging.Log;
 using IdeaMachine.Common.RemotingProxies.Proxies;
+using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
+using IdeaMachine.Common.SignalR.DI;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
+using IdeaMachine.Modules.Reaction.DI;
 using IdeaMachine.Modules.Session.DI;
-using IdeaMachine.Service.Base.DI;
 using IdeaMachine.Service.Base.Extensions;
 using MassTransit;
 using MassTransit.SignalR;
@@ -119,7 +121,9 @@ namespace IdeaMachine
 			builder.RegisterModule<SessionModule>();
 			builder.RegisterModule<GrpcModule>();
 			builder.RegisterModule<IpcModule>();
-			builder.RegisterModule<ServiceBaseModule>();
+			builder.RegisterModule<ProtobufSerializationModule>();
+			builder.RegisterModule<ReactionModule>();
+			builder.RegisterModule<SignalRModule>();
 
 			builder.RegisterGrpcService<IRegistrationService, RegistrationServiceProxy>();
 			builder.RegisterGrpcService<ILoginService, LoginServiceProxy>();

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using IdeaMachine.Modules.Account.DataTypes.Entity;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 {
@@ -7,6 +9,9 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 		public int Id { get; set; } = 0;
 
 		public Guid Creator { get; set; }
+
+		[ForeignKey(nameof(Creator))]
+		public AccountEntity? Account { get; set; }
 
 		public string ShortDescription { get; set; } = null!;
 

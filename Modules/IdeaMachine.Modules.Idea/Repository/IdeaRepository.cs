@@ -49,5 +49,17 @@ namespace IdeaMachine.Modules.Idea.Repository
 
 			return await ctx.Ideas.FirstOrDefaultAsync(x => x.Id == id);
 		}
+
+		public async Task MigrateIdeas(Guid oldOwner, Guid newOwner)
+		{
+			await using var ctx = CreateContext();
+
+			foreach (var ideaOfOldOwner in ctx.Ideas.Where(x => x.Creator == oldOwner))
+			{
+				ideaOfOldOwner.Creator = newOwner;
+			}
+
+			await ctx.SaveChangesAsync();
+		}
 	}
 }

@@ -29,6 +29,7 @@
 		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Account\IdeaMachine.Modules.Account.csproj" />
 		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Email\IdeaMachine.Modules.Email.csproj" />
 		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Idea\IdeaMachine.Modules.Idea.csproj" />
+		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Reaction\IdeaMachine.Modules.Reaction.csproj" />
 		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Session\IdeaMachine.Modules.Session.csproj" />
 		<ProjectReference Include="..\Services\IdeaMachine.Service.Base\IdeaMachine.Service.Base.csproj" />
 	</ItemGroup>

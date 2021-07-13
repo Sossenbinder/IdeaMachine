@@ -8,7 +8,7 @@ using IdeaMachine.Common.Core.Utils.IPC;
 using IdeaMachine.ModulesServiceBase.Interface;
 using ProtoBuf.Meta;
 
-namespace IdeaMachine.Service.Base.Serialization
+namespace IdeaMachine.Common.RuntimeSerialization
 {
 	/// <summary>
 	/// Dynamically registers all parameters and return types of involved

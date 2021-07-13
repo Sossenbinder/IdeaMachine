@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using IdeaMachine.Common.Eventing.DataTypes;
 
 namespace IdeaMachine.Common.Eventing.MassTransit.Service.Interface
@@ -11,6 +12,6 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service.Interface
 
 		Task RaiseGroupSignalREvent<T>(string groupName, Notification<T> notification, string[]? excludedConnectionIds = null);
 
-		Task RaiseUserSignalREvent<T>(string userId, Notification<T> notification);
+		Task RaiseUserSignalREvent<T>(Guid userId, Notification<T> notification);
 	}
 }

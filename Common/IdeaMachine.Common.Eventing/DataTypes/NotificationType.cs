@@ -3,5 +3,7 @@
 	public enum NotificationType
 	{
 		Idea,
+		Reaction,
+		LikeCommited,
 	}
 }

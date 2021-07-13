@@ -4,6 +4,8 @@ using ProtoBuf;
 namespace IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface
 {
 	[ProtoContract]
+	[ProtoInclude(50, typeof(Account))]
+	[ProtoInclude(51, typeof(AnonymousUser))]
 	public interface IUser
 	{
 		[ProtoMember(1)]

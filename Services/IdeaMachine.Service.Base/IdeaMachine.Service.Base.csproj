@@ -17,6 +17,7 @@
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Grpc\IdeaMachine.Common.Grpc.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.IPC\IdeaMachine.Common.IPC.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Logging\IdeaMachine.Common.Logging.csproj" />
+		<ProjectReference Include="..\..\Common\IdeaMachine.Common.RuntimeSerialization\IdeaMachine.Common.RuntimeSerialization.csproj" />
 		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Session.Abstractions\IdeaMachine.Modules.Session.Abstractions.csproj" />
 		<ProjectReference Include="..\..\Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
 	</ItemGroup>

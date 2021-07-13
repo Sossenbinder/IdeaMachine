@@ -8,7 +8,7 @@ using IdeaMachine.ModulesServiceBase.Interface;
 using Microsoft.Extensions.Logging;
 using ProtoBuf.Meta;
 
-namespace IdeaMachine.Service.Base.Serialization
+namespace IdeaMachine.Common.RuntimeSerialization
 {
 	/// <summary>
 	/// Auto-binds all return values & params used by grpc service
@@ -39,7 +39,7 @@ namespace IdeaMachine.Service.Base.Serialization
 
 			_grpcServiceTypeSerializer.SerializeGrpcServices(_services);
 
-			BindSessionContextAttachedContainers();
+			BindUserSessionContainers();
 
 			stopWatch.Stop();
 			_logger.LogInformation($"Initialization of serialization model service took {stopWatch.Elapsed}");
@@ -48,15 +48,19 @@ namespace IdeaMachine.Service.Base.Serialization
 			RuntimeTypeModel.Default.AutoCompile = true;
 		}
 
-		private void BindSessionContextAttachedContainers()
+		private static void BindUserSessionContainers()
 		{
 			var containerType = typeof(UserSessionContainer);
 			var index = 700;
 
 			var containerImplementers = Assembly
-				.GetAssembly(containerType)
-				?.GetTypes()
-				.Where(x => x.BaseType == containerType).ToList();
+				.GetEntryAssembly()
+				.GetReferencedAssemblies()
+				.Select(Assembly.Load)
+				.SelectMany(x => x.GetTypes())
+				.Where(x => x.BaseType == containerType)
+				.OrderBy(type => type.Name)
+				.ToList();
 
 			if (containerImplementers.IsNullOrEmpty())
 			{

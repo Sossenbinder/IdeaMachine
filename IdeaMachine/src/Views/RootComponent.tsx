@@ -42,15 +42,12 @@ const RootComponent: React.FC<Props> = ({ signalRConnectionProvider, initFunc, i
 	const [loadedServices, setLoadedServices] = React.useState(0);
 
 	React.useEffect(() => {
-		let localLoadedServices = loadedServices;
-
-		const registration = ServiceUpdateEvent.Register(_ => {
-			localLoadedServices++;
-			setLoadedServices(localLoadedServices);
+		const registration = ServiceUpdateEvent.Register(() => {
+			setLoadedServices(current => current + 1);
 			return Promise.resolve();
 		});
 
-		initFunc().then(_ => setInitialized(true));
+		initFunc().then(() => setInitialized(true));
 
 		return () => ServiceUpdateEvent.Unregister(registration);
 	}, []);

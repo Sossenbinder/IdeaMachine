@@ -10,6 +10,7 @@ namespace IdeaMachine.Modules.Session.Abstractions.DataTypes
 	{
 		public bool IsAnonymous => User is AnonymousUser;
 
+		[ProtoMember(1)]
 		public IUser User { get; set; } = null!;
 	}
 }

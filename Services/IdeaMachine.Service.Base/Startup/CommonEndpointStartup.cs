@@ -5,9 +5,9 @@ using GreenPipes;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
 using IdeaMachine.Common.IPC.DI;
+using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.ModulesServiceBase.Interface;
-using IdeaMachine.Service.Base.DI;
 using IdeaMachine.Service.Base.Extensions;
 using MassTransit;
 using MassTransit.SignalR;
@@ -67,7 +67,7 @@ namespace IdeaMachine.Service.Base.Startup
 		public virtual void ConfigureContainer(ContainerBuilder containerBuilder)
 		{
 			containerBuilder.RegisterModule<MassTransitModule>();
-			containerBuilder.RegisterModule<ServiceBaseModule>();
+			containerBuilder.RegisterModule<ProtobufSerializationModule>();
 			containerBuilder.RegisterModule<GrpcModule>();
 			containerBuilder.RegisterModule<IpcModule>();
 		}

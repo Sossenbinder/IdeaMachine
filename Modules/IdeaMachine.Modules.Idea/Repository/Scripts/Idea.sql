@@ -5,3 +5,9 @@
 	"CreationDate" timestamp NOT NULL,
 	"Creator" UUID NOT NULL,
 );
+
+CREATE TABLE Reactions (
+    UserID UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
+    PostId int NOT NULL,
+    LikeState TINYINT NOT NULL,
+);

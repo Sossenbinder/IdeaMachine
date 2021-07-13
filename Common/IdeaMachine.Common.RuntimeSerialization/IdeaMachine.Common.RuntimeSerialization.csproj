@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.2.0" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Session.Abstractions\IdeaMachine.Modules.Session.Abstractions.csproj" />
+		<ProjectReference Include="..\..\Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
+	</ItemGroup>
+</Project>

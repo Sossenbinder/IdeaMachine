@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Eventing.DataTypes;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
 using IdeaMachine.Common.SignalR;
+using IdeaMachine.Common.SignalR.Service.Interface;
 using MassTransit;
 using MassTransit.SignalR.Contracts;
 using MassTransit.SignalR.Utils;
@@ -14,11 +16,16 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 	{
 		private readonly IBusControl _busControl;
 
+		private readonly IClientTrackingService _clientTrackingService;
+
 		private readonly List<IHubProtocol> _signalRProtocols;
 
-		public MassTransitSignalRBackplaneService(IBusControl busControl)
+		public MassTransitSignalRBackplaneService(
+			IBusControl busControl,
+			IClientTrackingService clientTrackingService)
 		{
 			_busControl = busControl;
+			_clientTrackingService = clientTrackingService;
 
 			_signalRProtocols = new List<IHubProtocol>() { new JsonHubProtocol() };
 		}
@@ -57,11 +64,11 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 			await _busControl.Publish<Group<SignalRHub>>(signalRParams);
 		}
 
-		public async Task RaiseUserSignalREvent<T>(string userId, Notification<T> notification)
+		public async Task RaiseUserSignalREvent<T>(Guid userId, Notification<T> notification)
 		{
 			var signalRParams = new
 			{
-				UserId = userId,
+				UserId = userId.ToString(),
 				Messages = CreateProtocolDict(notification)
 			};
 

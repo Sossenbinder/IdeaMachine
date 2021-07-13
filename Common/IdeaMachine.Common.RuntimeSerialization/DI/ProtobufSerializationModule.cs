@@ -1,9 +1,8 @@
 ﻿using Autofac;
-using IdeaMachine.Service.Base.Serialization;
 
-namespace IdeaMachine.Service.Base.DI
+namespace IdeaMachine.Common.RuntimeSerialization.DI
 {
-	public class ServiceBaseModule : Module
+	public class ProtobufSerializationModule : Module
 	{
 		protected override void Load(ContainerBuilder builder)
 		{

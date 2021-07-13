@@ -5,8 +5,10 @@ import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 
 // Components
 import Flex from "common/Components/Flex";
+import LinkButton from "common/Components/Controls/LinkButton";
 import NavBarAnon from "./SubComponents/NavBarAnon";
 import NavBarAuthenticated from "./SubComponents/NavBarAuthenticated";
+import Separator from "common/Components/Controls/Separator";
 
 // Types
 import { Account } from "modules/Account/types";
@@ -35,10 +37,14 @@ export const NavBar: React.FC<Props> = ({ account, history }) => {
 				className={styles.LoginSection}
 				direction="Row"
 				crossAlignSelf="Center">
-				<Link
-					to="/idea/own">
+				<LinkButton
+					to="/idea/own"
+					color="primary">
 					My ideas
-				</Link>
+				</LinkButton>
+				<Separator
+					direction="Vertical"
+					width="20px" />
 				<Choose>
 					<When condition={!account || account.isAnonymous}>
 						<NavBarAnon />

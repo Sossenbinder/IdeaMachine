@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Extensions.Async;
+using IdeaMachine.Common.Core.Utils.Async;
 
 namespace IdeaMachine.Common.Core.Disposable
 {
@@ -21,16 +22,15 @@ namespace IdeaMachine.Common.Core.Disposable
 
 		protected void RegisterAsyncDisposable(IAsyncDisposable asyncDisposable) => _asyncDisposables.Add(asyncDisposable);
 
-		public void Dispose()
+		public void Dispose() => AsyncUtils.RunSafe(async () => await DisposeAsync());
+
+		public ValueTask DisposeAsync()
 		{
 			foreach (var disposable in _disposables)
 			{
 				disposable.Dispose();
 			}
-		}
 
-		public ValueTask DisposeAsync()
-		{
 			return _asyncDisposables.ParallelAsyncValueTask(x => x.DisposeAsync());
 		}
 	}

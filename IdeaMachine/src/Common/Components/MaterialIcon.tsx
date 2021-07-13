@@ -43,6 +43,7 @@ export const MaterialIcon: React.FC<Props> = ({ className, iconName, color, size
 				fontSize: size,
 				color: color,
 				userSelect: "none",
+				cursor: onClick === undefined ? "auto" : "pointer",
 			}}>
 			{iconName}
 		</span>

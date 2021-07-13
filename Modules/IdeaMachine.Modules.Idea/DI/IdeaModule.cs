@@ -31,6 +31,11 @@ namespace IdeaMachine.Modules.Idea.DI
 			builder.RegisterType<IdeaRetrievalService>()
 				.As<IIdeaRetrievalService>()
 				.SingleInstance();
+
+			builder.RegisterType<IdeaMigrationService>()
+				.AsSelf()
+				.AutoActivate()
+				.SingleInstance();
 		}
 	}
 }
