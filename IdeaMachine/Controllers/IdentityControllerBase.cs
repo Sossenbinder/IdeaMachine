@@ -81,6 +81,8 @@ namespace IdeaMachine.Controllers
 						LastAccessedAt = DateTime.UtcNow,
 					},
 				};
+
+				UserIdOrNull = SessionOrNull.User.UserId;
 			}
 
 			return Task.CompletedTask;

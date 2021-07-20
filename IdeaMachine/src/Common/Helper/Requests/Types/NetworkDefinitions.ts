@@ -1,11 +1,7 @@
-export namespace Continuation {
-	export type ContinuationRequest<TRequest> = TRequest & {
-		continuationToken: string;
-	}
-
-	export type ContinuationResult<TPayload> = {
-		continuationToken: string;
-		payload: Array<TPayload>;
+export namespace Pagination {
+	export type PaginationResult<TPaginationToken, TDataType> = {
+		paginationToken?: TPaginationToken;
+		data: Array<TDataType>;
 	}
 }
 

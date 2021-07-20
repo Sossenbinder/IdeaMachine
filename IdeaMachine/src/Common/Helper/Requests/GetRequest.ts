@@ -1,4 +1,4 @@
-﻿import { NetworkResponse } from "./Types/NetworkDefinitions";
+﻿import { NetworkResponse, Pagination } from "./Types/NetworkDefinitions";
 import AjaxRequest, { RequestMethods } from "./AjaxRequest"
 
 type VerificationTokenRequest = {
@@ -11,13 +11,13 @@ export default class GetRequest<TResponse, TRequest = void> extends AjaxRequest<
 		super(url, RequestMethods.GET);
 	}
 
-	public async get(requestData?: TRequest, attachVerificationToken: boolean = true): Promise<NetworkResponse<TResponse>> {
+	public async get(requestData?: TRequest): Promise<NetworkResponse<TResponse>> {
 
 		let getData: TRequest & VerificationTokenRequest = undefined;
 		if (requestData) {
 			getData = requestData ?? ({} as TRequest & VerificationTokenRequest);
-		}		
+		}
 
-		return super.send(getData, attachVerificationToken);
+		return super.send(getData);
 	}
 }

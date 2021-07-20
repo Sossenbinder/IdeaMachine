@@ -27,10 +27,16 @@ export const Cell: React.FC<CellProps> = ({
 	return (
 		<div
 			className={className}
-			style={cellStyles}
+			style={
+				{
+					...cellStyles,
+					height: "100%",
+					width: "100%",
+				}
+			}
 			onClick={onClick}
 			ref={ref}>
-			{ children}
+			{children}
 		</div>
 	)
 }

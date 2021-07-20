@@ -4,6 +4,12 @@ export type Idea = {
 	longDescription: string;
 	creatorId: string;
 	creationDate: Date;
+	ideaReactionMetaData: IdeaReactionMetaData;
+}
+
+export type IdeaReactionMetaData = {
+	ownLikeState: number;
+	totalLike: number;
 }
 
 export namespace Network {
@@ -12,7 +18,7 @@ export namespace Network {
 	}
 
 	export namespace Get {
-		export type Response = Array<Idea>;
+		export type Response = Idea;
 	}
 
 	export namespace GetForUser {

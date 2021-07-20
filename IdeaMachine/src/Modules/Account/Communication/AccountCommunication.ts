@@ -1,5 +1,5 @@
 // Types
-import { Account, RegisterInfo, SignInInfo, Network } from "../types";
+import { RegisterInfo, SignInInfo, Network } from "../types";
 
 // Functionality
 import GetRequest from "common/Helper/Requests/GetRequest";

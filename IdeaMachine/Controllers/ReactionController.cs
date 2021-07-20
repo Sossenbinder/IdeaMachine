@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.DataTypes.UiModels.Reaction;
 using IdeaMachine.Modules.Reaction.DataTypes.Events;
 using IdeaMachine.Modules.Reaction.Events.Interface;
@@ -22,11 +23,13 @@ namespace IdeaMachine.Controllers
 
 		[HttpPost]
 		[Route("ModifyLike")]
-		public async Task Like([FromBody] ModifyLikeUiModel modifyLikeUiModel)
+		public async Task<JsonResponse> Like([FromBody] ModifyLikeUiModel modifyLikeUiModel)
 		{
 			var (ideaId, likeState) = modifyLikeUiModel;
 
 			await _reactionEvents.LikeChange.Raise(new LikeChange(UserId, ideaId, likeState));
+
+			return JsonResponse.Success();
 		}
 	}
 }

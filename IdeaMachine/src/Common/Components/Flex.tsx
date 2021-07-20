@@ -41,11 +41,12 @@ export type FlexProps = {
 	children?: React.ReactNode;
 	onClick?: () => void;
 	onScroll?: (event: React.UIEvent<HTMLDivElement>) => void;
-	ref?: React.Ref<any>;
 	title?: string;
 }
 
-export const Flex: React.FC<FlexProps> = ({ className, style, direction = "Row", wrap, mainAlign, mainAlignSelf, crossAlign, crossAlignSelf, space, children, onClick = () => { }, onScroll = () => { }, ref, title = null }) => {
+export const Flex = React.forwardRef<HTMLDivElement, FlexProps>((props, ref) => {
+
+	const { className, style, direction = "Row", wrap, mainAlign, mainAlignSelf, crossAlign, crossAlignSelf, space, children, onClick = () => { }, onScroll = () => { }, title = null } = props;
 
 	const classes = classNames({
 		"flex": true,
@@ -80,9 +81,9 @@ export const Flex: React.FC<FlexProps> = ({ className, style, direction = "Row",
 			onScroll={onScroll}
 			ref={ref}
 			title={title}>
-			{ children}
+			{children}
 		</div>
 	)
-}
+});
 
 export default Flex;

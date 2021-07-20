@@ -7,10 +7,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import Flex from "common/Components/Flex";
 import MaterialIcon from "common/Components/MaterialIcon";
 
-// Functionality
-
-// Types
-
 // Styles
 import styles from "./Styles/CreateButton.module.less";
 
@@ -26,8 +22,9 @@ export const CreateButton: React.FC<Props> = ({ history }) => {
 			onClick={() => history.push("/idea/input")} >
 			<MaterialIcon
 				iconName="add"
-				color="white"
-				size={50} />
+				color="black"
+				size={50}
+				onClick={() => history.push("/idea/input")} />
 		</Flex>
 	);
 }

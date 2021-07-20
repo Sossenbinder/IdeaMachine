@@ -7,6 +7,7 @@ import ISignalRConnectionProvider from "common/Helper/SignalR/Interface/ISignalR
 import SignalRConnectionProvider from "common/Helper/SignalR/SignalRConnectionProvider";
 import IdeaService from "modules/Ideas/Service/IdeaService";
 import AccountService from "modules/Account/Service/AccountService";
+import ReactionService from "./Modules/Reaction/Service/ReactionService";
 
 // Types
 import { Services, IModuleService } from "common/Modules/Service/types";
@@ -17,7 +18,7 @@ window.onload = async () => {
 
 	const signalRConnectionProvider = new SignalRConnectionProvider();
 
-	renderRoot(signalRConnectionProvider, () => initCoreServices(signalRConnectionProvider), 3);
+	renderRoot(signalRConnectionProvider, () => initCoreServices(signalRConnectionProvider), 4);
 }
 
 const initCoreServices = async (signalRProvider: ISignalRConnectionProvider) => {
@@ -45,6 +46,9 @@ const initCoreServices = async (signalRProvider: ISignalRConnectionProvider) => 
 
 	const accountService = new AccountService();
 	initPromises.push(initService("AccountService", accountService));
+
+	const reactionService = new ReactionService();
+	initPromises.push(initService("ReactionService", reactionService));
 
 	await Promise.all(initPromises);
 }

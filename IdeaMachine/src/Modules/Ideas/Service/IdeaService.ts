@@ -3,9 +3,12 @@ import { IIdeaService } from "common/Modules/Service/types";
 import ModuleService from "common/Modules/Service/ModuleService";
 import * as ideaCommunication from "modules/Ideas/Communication/IdeaCommunication";
 import { reducer as ideaReducer } from "modules/Ideas/Reducer/IdeaReducer";
+import { updateIdeaPagination } from "common/Redux/Reducer/PaginationReducer";
+import { ensureArray } from "common/Helper/arrayUtils";
 
 // Types
 import { Idea } from "../types";
+import { CouldBeArray } from "common/Types/arrayTypes";
 
 export default class IdeaService extends ModuleService implements IIdeaService {
 
@@ -21,16 +24,20 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		await ideaCommunication.postIdea(idea);
 	}
 
-	initializeIdeas = async () => {
-		const ideaResponse = await ideaCommunication.getIdeas();
+	fetchIdeas = async () => {
+
+		const paginationToken = this.getStore().paginationReducer.ideaPagination.paginationToken;
+
+		const ideaResponse = await ideaCommunication.getIdeas(paginationToken as (number | null));
 
 		if (ideaResponse.success) {
 
-			const { payload } = ideaResponse;
+			const { payload: { data, paginationToken } } = ideaResponse;
 
-			payload.forEach(pl => pl.creationDate = new Date(pl.creationDate));
+			this.enrichIdeasWithDate(data);
 
-			this.dispatch(ideaReducer.replace(payload));
+			this.dispatch(updateIdeaPagination(paginationToken));
+			this.dispatch(ideaReducer.add(data));
 		}
 	}
 
@@ -41,7 +48,7 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 
 			const { payload } = ideaResponse;
 
-			payload.forEach(pl => pl.creationDate = new Date(pl.creationDate));
+			this.enrichIdeasWithDate(payload);
 
 			this.dispatch(ideaReducer.put(payload));
 		}
@@ -54,4 +61,6 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 			this.dispatch(ideaReducer.put(ideaResponse.payload));
 		}
 	}
+
+	private enrichIdeasWithDate = (data: CouldBeArray<Idea>) => ensureArray(data).forEach(x => x.creationDate = new Date(x.creationDate));
 }

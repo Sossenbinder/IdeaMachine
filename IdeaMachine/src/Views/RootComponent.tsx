@@ -30,12 +30,6 @@ type Props = {
 	initServiceCount: number;
 }
 
-const mainTheme = createMuiTheme({
-	palette: {
-		primary: grey,
-	},
-});
-
 const RootComponent: React.FC<Props> = ({ signalRConnectionProvider, initFunc, initServiceCount }) => {
 
 	const [initialized, setInitialized] = React.useState(false);

@@ -2,16 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Common.Web.DataTypes.Responses;
+using IdeaMachine.DataTypes.UiModels.Idea;
+using IdeaMachine.DataTypes.UiModels.Pagination;
 using IdeaMachine.Extensions;
 using IdeaMachine.Modules.Idea.DataTypes;
+using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Service.Interface;
+using IdeaMachine.Modules.Reaction.Service.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachine.Controllers
 {
+	public record GetIdeasUiModel(int? PaginationToken = null);
+
 	[ApiController]
 	[Route("[controller]")]
 	public class IdeaController : IdentityControllerBase
@@ -20,50 +26,62 @@ namespace IdeaMachine.Controllers
 
 		private readonly IIdeaRetrievalService _ideaRetrievalService;
 
+		private readonly IReactionRetrievalService _reactionRetrievalService;
+
 		public IdeaController(
 			ISessionService sessionService,
 			IIdeaService ideaService,
-			IIdeaRetrievalService ideaRetrievalService)
+			IIdeaRetrievalService ideaRetrievalService,
+			IReactionRetrievalService reactionRetrievalService)
 			: base(sessionService)
 		{
 			_ideaService = ideaService;
 			_ideaRetrievalService = ideaRetrievalService;
+			_reactionRetrievalService = reactionRetrievalService;
 		}
 
-		[HttpGet]
+		[HttpPost]
 		[Route("Get")]
-		public async Task<JsonDataResponse<List<IdeaModel>>> Get()
+		public async Task<JsonDataResponse<PaginationResult<int?, IdeaUiModel>>> Get([FromBody] PaginationTokenUiModel<int?> getIdeasTokenModel)
 		{
-			var result = await _ideaRetrievalService.Get();
+			var result = await _ideaRetrievalService.Get(getIdeasTokenModel.PaginationToken);
 
-			return JsonResponse.Success(result);
+			var uiModelPayload = result.WithNewPayload(await Task.WhenAll(result.Data.Select(ToEnrichedUiModel)));
+			return JsonResponse.Success(uiModelPayload);
 		}
 
 		[HttpGet]
 		[Route("GetOwn")]
-		public async Task<JsonDataResponse<List<IdeaModel>>> GetOwn()
+		public async Task<JsonDataResponse<List<IdeaUiModel>>> GetOwn()
 		{
 			var result = await _ideaRetrievalService.GetForUser(Session.User.UserId);
 
-			return JsonResponse.Success(result);
+			var uiModelPayload = await Task.WhenAll(result.Select(ToEnrichedUiModel));
+			return JsonResponse.Success(uiModelPayload.ToList());
 		}
 
 		[HttpPost]
 		[Route("GetForUser")]
-		public async Task<JsonDataResponse<List<IdeaModel>>> GetForUser(Guid userId)
+		public async Task<JsonDataResponse<List<IdeaUiModel>>> GetForUser(Guid userId)
 		{
 			var result = await _ideaRetrievalService.GetForUser(userId);
 
-			return JsonResponse.Success(result);
+			var uiModelPayload = await Task.WhenAll(result.Select(ToEnrichedUiModel));
+			return JsonResponse.Success(uiModelPayload.ToList());
 		}
 
 		[HttpPost]
 		[Route("GetSpecificIdea")]
-		public async Task<JsonDataResponse<IdeaModel?>> GetSpecificIdea([FromBody] int id)
+		public async Task<JsonDataResponse<IdeaUiModel?>> GetSpecificIdea([FromBody] int id)
 		{
 			var result = await _ideaRetrievalService.GetSpecificIdea(id);
 
-			return result.ToJsonDataResponse();
+			if (result.IsFailure)
+			{
+				return JsonDataResponse<IdeaUiModel?>.Error();
+			}
+
+			return JsonDataResponse<IdeaUiModel?>.Success(await ToEnrichedUiModel(result.PayloadOrFail!));
 		}
 
 		[HttpPost]
@@ -71,6 +89,15 @@ namespace IdeaMachine.Controllers
 		public async Task Add([FromBody] IdeaModel ideaModel)
 		{
 			await _ideaService.Add(Session, ideaModel);
+		}
+
+		private async Task<IdeaUiModel> ToEnrichedUiModel(IdeaModel ideaModel)
+		{
+			var ideaUiModel = IdeaUiModel.FromModel(ideaModel);
+
+			ideaUiModel.IdeaReactionMetaData = await _reactionRetrievalService.GetIdeaReactionMetaData(ideaUiModel.Id, UserId);
+
+			return ideaUiModel;
 		}
 	}
 }

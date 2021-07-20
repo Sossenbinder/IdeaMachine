@@ -30,11 +30,16 @@ export const Separator: React.FC<Props> = ({ direction = "Horizontal", height = 
 	return (
 		<Flex style={{
 			width,
-			height
+			height,
 		}}
 			crossAlign="Center"
 			mainAlign="Center">
-			<span className={cn} />
+			<span
+				className={cn}
+				style={{
+					borderRight: direction === "Vertical" ? "1px solid white" : null,
+					borderBottom: direction === "Horizontal" ? "1px solid white" : null
+				}} />
 		</Flex>
 	);
 }

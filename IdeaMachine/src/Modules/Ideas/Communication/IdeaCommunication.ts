@@ -2,7 +2,7 @@
 import { Idea, Network } from "../types";
 
 // Functionality
-import PostRequest, { VoidPostRequest } from "common/Helper/Requests/PostRequest"
+import PostRequest, { PagedPostRequest, VoidPostRequest } from "common/Helper/Requests/PostRequest"
 import GetRequest from 'common/Helper/Requests/GetRequest';
 
 const Urls = {
@@ -19,9 +19,9 @@ export const postIdea = async (idea: Idea) => {
 	return await request.post(idea);
 }
 
-export const getIdeas = async () => {
-	const request = new GetRequest<Network.Get.Response>(Urls.Get);
-	return await request.get();
+export const getIdeas = async (paginationToken: number | null = null) => {
+	const request = new PagedPostRequest<Network.Get.Response, number>(Urls.Get);
+	return await request.post(paginationToken);
 }
 
 export const getOwnIdeas = async () => {

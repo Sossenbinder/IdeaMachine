@@ -38,7 +38,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 
 	const idParsed = Number(id);
 
-	const { IdeaService } = useServices();
+	const { IdeaService, ReactionService } = useServices();
 
 	const translations = useTranslations();
 
@@ -57,7 +57,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 					<Grid
 						className={styles.IdeaInfo}
 						gridProperties={{
-							gridTemplateColumns: "9fr 2fr 2fr",
+							gridTemplateColumns: "9fr 1fr 2fr",
 							gridTemplateRows: "50px 5fr minmax(0px, 4fr)",
 							rowGap: "20px"
 						}}>
@@ -68,34 +68,42 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 								</u>
 							</h2>
 						</Cell>
-						<Cell>
-							<Flex
-								direction="Column">
-								<MaterialIcon
-									onClick={() => history.push(`/idea/${id}/reply`)}
-									iconName="reply"
-									color="white"
-									size={40} />
-								<MaterialIcon
-									onClick={async () => await modifyLike(+id, LikeState.Like)}
-									iconName="thumb_up"
-									color="white"
-									size={40} />
-							</Flex>
-						</Cell>
-						<Cell className={styles.TimeSection}>
-							<Flex
-								direction="Column">
-								<span>{getUsDate(idea.creationDate)}</span>
-								<span>{getUsTime(idea.creationDate)}</span>
-							</Flex>
-						</Cell>
+						<MaterialIcon
+							onClick={() => history.push(`/idea/${id}/reply`)}
+							iconName="reply"
+							color="white"
+							size={40} />
+						<Flex
+							direction="Column">
+							<span>{getUsDate(idea.creationDate)}</span>
+							<span>{getUsTime(idea.creationDate)}</span>
+						</Flex>
 						<Cell
 							cellStyles={{
-								gridColumn: "1/4",
+								gridColumn: "1/3",
 							}}>
 							{idea.longDescription}
 						</Cell>
+						<Flex
+							className={styles.ReactionSection}
+							direction="Column"
+							crossAlign="Center">
+							<MaterialIcon
+								className={styles.ThumbButton}
+								onClick={async _ => await ReactionService.modifyLike(idea.id, LikeState.Like)}
+								iconName="thumb_up"
+								size={25}
+								color={idea.ideaReactionMetaData.ownLikeState === LikeState.Like ? "lightblue" : "black"} />
+							<span>
+								{`${idea.ideaReactionMetaData.totalLike >= 0 ? "+" : ""}${idea.ideaReactionMetaData.totalLike}`}
+							</span>
+							<MaterialIcon
+								className={styles.ThumbButton}
+								onClick={async _ => await ReactionService.modifyLike(idea.id, LikeState.Dislike)}
+								iconName="thumb_down"
+								size={25}
+								color={idea.ideaReactionMetaData.ownLikeState === LikeState.Dislike ? "lightblue" : "black"} />
+						</Flex>
 						<Cell
 							cellStyles={{
 								gridColumn: "1/4",

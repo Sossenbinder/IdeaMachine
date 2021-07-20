@@ -1,4 +1,4 @@
-﻿using IdeaMachine.Modules.Reaction.DataTypes;
+﻿using IdeaMachine.Modules.Reaction.Abstractions.DataTypes;
 
 namespace IdeaMachine.DataTypes.UiModels.Reaction
 {
