@@ -1,4 +1,5 @@
 ﻿using System;
+using IdeaMachine.Modules.Reaction.Abstractions.DataTypes;
 
 namespace IdeaMachine.Modules.Reaction.DataTypes.Events
 {

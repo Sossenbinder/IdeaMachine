@@ -2,7 +2,7 @@
 using IdeaMachine.Modules.Idea.DataTypes.Entity;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 
-namespace IdeaMachine.Modules.Idea.DataTypes
+namespace IdeaMachine.Modules.Idea.DataTypes.Model
 {
 	public class IdeaModel
 	{

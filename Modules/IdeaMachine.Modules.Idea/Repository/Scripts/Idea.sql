@@ -1,9 +1,9 @@
 ﻿CREATE TABLE "Ideas" (
-	"Id" SERIAL PRIMARY KEY,
-	"ShortDescription" VARCHAR(400) NOT NULL,
-	"LongDescription" VARCHAR(5000),
-	"CreationDate" timestamp NOT NULL,
-	"Creator" UUID NOT NULL,
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ShortDescription] [varchar](400) NOT NULL,
+	[LongDescription] [varchar](5000) NULL,
+	[CreationDate] [datetime2](7) NOT NULL,
+	[Creator] [uniqueidentifier] NOT NULL
 );
 
 CREATE TABLE Reactions (

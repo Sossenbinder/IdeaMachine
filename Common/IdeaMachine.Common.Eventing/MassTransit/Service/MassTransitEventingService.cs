@@ -14,9 +14,14 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 	{
 		private readonly IBusControl _busControl;
 
-		public MassTransitEventingService(IBusControl busControl)
+		private readonly IReceiveEndpointConnector _receiveEndpointConnector;
+
+		public MassTransitEventingService(
+			IBusControl busControl,
+			IReceiveEndpointConnector receiveEndpointConnector)
 		{
 			_busControl = busControl;
+			_receiveEndpointConnector = receiveEndpointConnector;
 		}
 
 		public void Start()
@@ -66,8 +71,7 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 			{
 				queueName = $"{queueName}_error";
 			}
-
-			_busControl.ConnectReceiveEndpoint(queueName, ep =>
+			_receiveEndpointConnector.ConnectReceiveEndpoint(queueName, (cfg, ep) =>
 			{
 				ep.UseMessageRetry(retry => retry.Exponential(
 					10,

@@ -61,7 +61,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Common.Remoting
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Common.RuntimeSerialization", "Common\IdeaMachine.Common.RuntimeSerialization\IdeaMachine.Common.RuntimeSerialization.csproj", "{3E31C7C5-F465-49AE-A42D-A56153CC9BCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Modules.Reaction", "Modules\IdeaMachine.Modules.Reaction\IdeaMachine.Modules.Reaction.csproj", "{C651DCCB-82A7-464C-A02E-C94A07E81726}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Modules.Reaction", "Modules\IdeaMachine.Modules.Reaction\IdeaMachine.Modules.Reaction.csproj", "{C651DCCB-82A7-464C-A02E-C94A07E81726}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Modules.Reaction.Abstractions", "Modules\IdeaMachine.Modules.Reaction.Abstractions\IdeaMachine.Modules.Reaction.Abstractions.csproj", "{EDEF844D-44B7-429A-BF88-D4128FA4FCAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Modules.Idea.Abstractions", "Modules\IdeaMachine.Modules.Idea.Abstractions\IdeaMachine.Modules.Idea.Abstractions.csproj", "{CFC94A50-D742-44AB-8AAF-C83EE2605239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +177,14 @@ Global
 		{C651DCCB-82A7-464C-A02E-C94A07E81726}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C651DCCB-82A7-464C-A02E-C94A07E81726}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C651DCCB-82A7-464C-A02E-C94A07E81726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDEF844D-44B7-429A-BF88-D4128FA4FCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDEF844D-44B7-429A-BF88-D4128FA4FCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDEF844D-44B7-429A-BF88-D4128FA4FCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDEF844D-44B7-429A-BF88-D4128FA4FCAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFC94A50-D742-44AB-8AAF-C83EE2605239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC94A50-D742-44AB-8AAF-C83EE2605239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFC94A50-D742-44AB-8AAF-C83EE2605239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFC94A50-D742-44AB-8AAF-C83EE2605239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -203,6 +215,8 @@ Global
 		{13A6B63E-CD33-4D19-AC79-1C363D448209} = {CFCBCF86-FA94-4510-851A-1F23C6FD9ADE}
 		{3E31C7C5-F465-49AE-A42D-A56153CC9BCB} = {CFCBCF86-FA94-4510-851A-1F23C6FD9ADE}
 		{C651DCCB-82A7-464C-A02E-C94A07E81726} = {32AB01DD-C846-4192-938A-11DEAC05B772}
+		{EDEF844D-44B7-429A-BF88-D4128FA4FCAB} = {32AB01DD-C846-4192-938A-11DEAC05B772}
+		{CFC94A50-D742-44AB-8AAF-C83EE2605239} = {32AB01DD-C846-4192-938A-11DEAC05B772}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43FF27FF-5FB7-41C5-A060-392626E2A889}

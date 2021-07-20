@@ -31,16 +31,11 @@ namespace IdeaMachine.Common.Eventing.DI
 
 					var factory = ctx.Resolve<MassTransitEventFactory>();
 
-					MethodInfo create = typeof(MassTransitEventFactory).GetMethod(nameof(MassTransitEventFactory.Create), new Type[0])?.MakeGenericMethod(type) ?? throw new ArgumentException("Couldn't create generic create");
+					MethodInfo create = typeof(MassTransitEventFactory).GetMethod(nameof(MassTransitEventFactory.Create), new Type[0])?.MakeGenericMethod(type) ?? throw new ArgumentException($"Couldn't create generic {nameof(MassTransitEventFactory.Create)}");
 
 					return create.Invoke(factory, new object[0])!;
 				}).As(typeof(IDistributedEvent<>))
 				.SingleInstance();
-		}
-
-		public static T CastInto<T>(object obj)
-		{
-			return (T)obj;
 		}
 	}
 }

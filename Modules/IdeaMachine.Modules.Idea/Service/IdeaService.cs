@@ -5,6 +5,7 @@ using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
 using IdeaMachine.Modules.Idea.DataTypes;
 using IdeaMachine.Modules.Idea.DataTypes.Events;
+using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Events.Interface;
 using IdeaMachine.Modules.Idea.Repository.Interface;
 using IdeaMachine.Modules.Idea.Service.Interface;

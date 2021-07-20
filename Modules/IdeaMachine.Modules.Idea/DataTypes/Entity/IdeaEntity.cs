@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
+using IdeaMachine.Modules.Idea.DataTypes.Model;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 {

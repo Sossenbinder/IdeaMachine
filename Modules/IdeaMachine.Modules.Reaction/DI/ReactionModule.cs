@@ -6,6 +6,7 @@ using IdeaMachine.Modules.Reaction.Repository;
 using IdeaMachine.Modules.Reaction.Repository.Context;
 using IdeaMachine.Modules.Reaction.Repository.Interface;
 using IdeaMachine.Modules.Reaction.Service;
+using IdeaMachine.Modules.Reaction.Service.Interface;
 
 namespace IdeaMachine.Modules.Reaction.DI
 {
@@ -26,6 +27,10 @@ namespace IdeaMachine.Modules.Reaction.DI
 
 			builder.RegisterType<ReactionRepository>()
 				.As<IReactionRepository>()
+				.SingleInstance();
+
+			builder.RegisterType<ReactionRetrievalService>()
+				.As<IReactionRetrievalService>()
 				.SingleInstance();
 		}
 	}

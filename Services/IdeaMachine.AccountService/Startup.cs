@@ -27,6 +27,7 @@ namespace IdeaMachine.AccountService
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public sealed override void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSignalR();
 			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
 
 			services.AddIdentity<AccountEntity, IdentityRole<Guid>>(IdentityOptionsProvider.ApplyDefaultOptions)

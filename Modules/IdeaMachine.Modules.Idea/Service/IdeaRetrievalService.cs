@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Utils.IPC;
+using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Common.IPC.DataTypes;
 using IdeaMachine.Modules.Idea.DataTypes;
+using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Repository.Interface;
 using IdeaMachine.Modules.Idea.Service.Interface;
 
@@ -19,13 +21,11 @@ namespace IdeaMachine.Modules.Idea.Service
 			_ideaRepository = ideaRepository;
 		}
 
-		public async Task<List<IdeaModel>> Get()
+		public async Task<PaginationResult<int?, IdeaModel>> Get(int? paginationToken = null)
 		{
-			var ideas = await _ideaRepository.Get();
+			var ideaResult = await _ideaRepository.Get(paginationToken);
 
-			return ideas
-				.Select(x => x.ToModel())
-				.ToList();
+			return ideaResult.WithNewPayload(ideaResult.Data.Select(x => x.ToModel()));
 		}
 
 		public async Task<List<IdeaModel>> GetForUser(Primitive<Guid> userId)
@@ -38,6 +38,7 @@ namespace IdeaMachine.Modules.Idea.Service
 			var ideas = await _ideaRepository.Get();
 
 			return ideas
+				.Data
 				.Select(x => x.ToModel())
 				.ToList();
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Modules.Idea.DataTypes.Entity;
 
 namespace IdeaMachine.Modules.Idea.Repository.Interface
@@ -9,7 +10,7 @@ namespace IdeaMachine.Modules.Idea.Repository.Interface
 	{
 		Task<IdeaEntity> Add(IdeaEntity idea);
 
-		Task<List<IdeaEntity>> Get();
+		Task<PaginationResult<int?, IdeaEntity>> Get(int? paginationToken = null);
 
 		Task<List<IdeaEntity>> GetForSpecificUser(Guid userId);
 
