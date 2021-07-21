@@ -74,14 +74,14 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 								onClick={async ev => await modifyLikeState(ev, LikeState.Like)}
 								iconName="thumb_up"
 								size={14}
-								color={ownLikeState === LikeState.Like ? "lightblue" : "black"} />
+								color={ownLikeState === LikeState.Like ? "blue" : "black"} />
 							{`${totalLike >= 0 ? "+" : ""}${totalLike}`}
 							<MaterialIcon
 								className={styles.ThumbButton}
 								onClick={async ev => await modifyLikeState(ev, LikeState.Dislike)}
 								iconName="thumb_down"
 								size={14}
-								color={ownLikeState === LikeState.Dislike ? "lightblue" : "black"} />
+								color={ownLikeState === LikeState.Dislike ? "blue" : "black"} />
 						</Flex>
 						<Separator
 							direction="Vertical"

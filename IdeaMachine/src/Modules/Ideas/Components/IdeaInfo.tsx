@@ -93,7 +93,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 								onClick={async _ => await ReactionService.modifyLike(idea.id, LikeState.Like)}
 								iconName="thumb_up"
 								size={25}
-								color={idea.ideaReactionMetaData.ownLikeState === LikeState.Like ? "lightblue" : "black"} />
+								color={idea.ideaReactionMetaData.ownLikeState === LikeState.Like ? "blue" : "black"} />
 							<span>
 								{`${idea.ideaReactionMetaData.totalLike >= 0 ? "+" : ""}${idea.ideaReactionMetaData.totalLike}`}
 							</span>
@@ -102,7 +102,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 								onClick={async _ => await ReactionService.modifyLike(idea.id, LikeState.Dislike)}
 								iconName="thumb_down"
 								size={25}
-								color={idea.ideaReactionMetaData.ownLikeState === LikeState.Dislike ? "lightblue" : "black"} />
+								color={idea.ideaReactionMetaData.ownLikeState === LikeState.Dislike ? "blue" : "black"} />
 						</Flex>
 						<Cell
 							cellStyles={{
