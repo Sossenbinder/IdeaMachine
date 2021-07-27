@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.Eventing.DataTypes;
 using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
-using IdeaMachine.Modules.Idea.DataTypes;
 using IdeaMachine.Modules.Idea.DataTypes.Events;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Events.Interface;
@@ -40,6 +39,11 @@ namespace IdeaMachine.Modules.Idea.Service
 			await _ideaEvents.IdeaCreated.Raise(new IdeaCreated(session.User, ideaModel));
 
 			await _massTransitSignalRBackplaneService.RaiseAllSignalREvent(NotificationFactory.Create(ideaModel, NotificationType.Idea));
+		}
+
+		public async Task<IdeaDeleteErrorCode> Delete(ISession session, int id)
+		{
+			return await _ideaRepository.Delete(session.User.UserId, id);
 		}
 	}
 }

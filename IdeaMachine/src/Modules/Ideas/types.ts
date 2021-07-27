@@ -12,6 +12,13 @@ export type IdeaReactionMetaData = {
 	totalLike: number;
 }
 
+export enum IdeaDeleteErrorCode {
+	UnspecifiedError,
+	Successful,
+	NotOwned,
+	NotFound,
+}
+
 export namespace Network {
 	export namespace Add {
 		export type Request = Idea;
@@ -29,6 +36,11 @@ export namespace Network {
 	export namespace GetSpecificIdea {
 		export type Request = number;
 		export type Response = Idea | undefined;
+	}
+
+	export namespace Delete {
+		export type Request = number;
+		export type Response = IdeaDeleteErrorCode;
 	}
 
 	export namespace Reply {

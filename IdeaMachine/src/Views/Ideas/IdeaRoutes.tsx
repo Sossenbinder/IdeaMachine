@@ -5,14 +5,14 @@ import { Route, Switch } from "react-router-dom";
 // Components
 import IdeaInput from "modules/Ideas/Components/IdeaInput";
 import IdeaInfo from "modules/Ideas/Components/IdeaInfo";
-import IdeasOwn from "modules/Ideas/Components/IdeasOwn";
+import IdeaListOwn from "modules/Ideas/Components/IdeaListOwn";
 
 export const IdeaRoutes: React.FC = () => {
 	return (
 		<Switch>
 			<Route
 				path="/idea/own">
-				<IdeasOwn />
+				<IdeaListOwn />
 			</Route>
 			<Route
 				path="/idea/input">

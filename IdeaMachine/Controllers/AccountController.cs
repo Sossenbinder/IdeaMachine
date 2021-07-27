@@ -54,8 +54,7 @@ namespace IdeaMachine.Controllers
 		[HttpPost]
 		public async Task<JsonResponse> Logout()
 		{
-			await HttpContext.SignOutAsync();
-
+			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 			return JsonResponse.Success();
 		}
 

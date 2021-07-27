@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Styles
-import styles from "./Styles/IdeaNotFound.module.less";
+import styles from "./styles/IdeaNotFound.module.less";
 
 export const IdeaNotFound: React.FC = () => {
 	return (

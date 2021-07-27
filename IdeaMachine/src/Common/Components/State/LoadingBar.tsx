@@ -2,10 +2,10 @@
 import * as React from "react";
 
 // Components
-import Flex from "common/Components/Flex";
+import Flex from "common/components/Flex";
 
 // Styles
-import "./Styles/LoadingBar.less";
+import "./styles/LoadingBar.less";
 
 type Props = {
 	progress: number;

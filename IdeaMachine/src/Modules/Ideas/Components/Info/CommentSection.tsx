@@ -3,7 +3,7 @@ import * as React from "react";
 import { TextField } from "@material-ui/core";
 
 // Components
-import { Cell, Flex } from "common/Components";
+import { Cell, Flex } from "common/components";
 
 // Functionality
 
@@ -11,7 +11,7 @@ import { Cell, Flex } from "common/Components";
 import { Idea } from "modules/Ideas/types";
 
 // Styles
-import styles from "./Styles/CommentSection.module.less";
+import styles from "./styles/CommentSection.module.less";
 
 type Props = {
 	idea: Idea;

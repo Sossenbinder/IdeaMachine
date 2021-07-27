@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Functionality
-import ServiceContext from "common/Modules/Service/ServiceContext";
+import ServiceContext from "common/modules/Service/ServiceContext";
 
 // Types
 import { Services } from "common/modules/Service/types";

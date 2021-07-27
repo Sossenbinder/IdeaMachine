@@ -3,7 +3,7 @@ import * as React from "react";
 import { Route, withRouter } from "react-router-dom";
 
 // Components
-import Flex from "common/Components/Flex";
+import Flex from "common/components/Flex";
 import SignIn from "./SignIn";
 import Register from "./Register";
 
@@ -12,7 +12,7 @@ import Register from "./Register";
 // Types
 
 // Styles
-import styles from "./Styles/SignInDialog.module.less";
+import styles from "./styles/SignInDialog.module.less";
 
 export const SignInDialog: React.FC = () => {
 	return (

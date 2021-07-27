@@ -1,9 +1,9 @@
 // Functionality
-import { IAccountService } from "common/Modules/Service/types";
-import ModuleService from "common/Modules/Service/ModuleService";
+import { IAccountService } from "common/modules/Service/types";
+import ModuleService from "common/modules/Service/ModuleService";
 import * as accountCommunication from "modules/Account/Communication/AccountCommunication";
 import { reducer as accountReducer } from "modules/Account/Reducer/AccountReducer";
-import { NetworkResponse } from "Common/Helper/Requests/Types/NetworkDefinitions";
+import { NetworkResponse } from "common/helper/Requests/Types/NetworkDefinitions";
 
 // Types
 import { RegisterInfo, SignInInfo, IdentityErrorCode } from "../types";
@@ -26,7 +26,9 @@ export default class AccountService extends ModuleService implements IAccountSer
 		const result = await accountCommunication.logout();
 
 		if (result.success) {
-			this.dispatch(accountReducer.delete(this.getStore().accountReducer.data));
+			location.href = "/";
+			// TODO: Try this once I figured out how to deal with stale antiforgery tokens without reload
+			//this.dispatch(accountReducer.delete(this.getStore().accountReducer.data));
 		}
 	}
 
@@ -42,7 +44,7 @@ export default class AccountService extends ModuleService implements IAccountSer
 			const accountRequest = await accountCommunication.getAccount();
 
 			if (accountRequest.success) {
-				this.dispatch(accountReducer.replace(accountRequest.payload));
+				location.href = "/";
 			}
 
 			return IdentityErrorCode.Success;

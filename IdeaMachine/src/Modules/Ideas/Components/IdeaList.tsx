@@ -1,22 +1,20 @@
 // Framework
 import * as React from "react";
-import { connect } from "react-redux";
 
 // Components
-import Flex from "common/Components/Flex";
+import Flex from "common/components/Flex";
 import IdeaListEntry from "./IdeaListEntry";
 
 // Functionality
-import useServices from "common/Hooks/useServices";
+import useServices from "common/hooks/useServices";
 
 // Types
-import { ReduxStore } from "common/Redux/store";
 import { Idea } from "modules/Ideas/types";
 
 // Styles
-import styles from "./Styles/IdeaList.module.less";
-import useAsyncCall from "common/Hooks/useAsyncCall";
-import LoadingBubbles from "../../../Common/Components/State/LoadingBubbles";
+import styles from "./styles/IdeaList.module.less";
+import useAsyncCall from "common/hooks/useAsyncCall";
+import LoadingBubbles from "../../../common/components/State/LoadingBubbles";
 
 type Props = {
 	ideas: Array<Idea>;
@@ -81,14 +79,11 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 			ref={scrollRef}>
 			{ideasRendered}
 			<If condition={moreLoading}>
-				<LoadingBubbles />
+				<LoadingBubbles
+					color="white" />
 			</If>
 		</Flex>
 	);
 }
 
-const mapStateToProps = (state: ReduxStore): Props => ({
-	ideas: state.ideaReducer.data,
-});
-
-export default connect(mapStateToProps)(IdeaList);
+export default IdeaList;

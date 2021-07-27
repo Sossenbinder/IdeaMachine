@@ -30,7 +30,7 @@ namespace IdeaMachine.Modules.Reaction.Repository
 				IdeaId = ideaId,
 				LikeState = likeState,
 				UserId = userId,
-			}, x => x.IdeaId = ideaId);
+			}, x => x.IdeaId == ideaId && x.UserId == userId);
 
 			return await ctx.SaveChangesAsyncWithResult();
 		}

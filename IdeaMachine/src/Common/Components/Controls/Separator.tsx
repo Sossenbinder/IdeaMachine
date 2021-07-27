@@ -3,8 +3,8 @@ import * as React from "react";
 import classNames from "classnames";
 
 // Styles
-import styles from "./Styles/Separator.module.less";
-import Flex from "common/Components/Flex";
+import styles from "./styles/Separator.module.less";
+import Flex from "common/components/Flex";
 
 enum Direction {
 	Horizontal,

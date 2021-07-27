@@ -5,7 +5,7 @@ import { Route, RouteProps } from 'react-router';
 
 // Types
 import { Account } from "modules/Account/types";
-import { ReduxStore } from "common/Redux/store";
+import { ReduxStore } from "common/redux/store";
 
 type ReduxProps = {
 	account: Account;

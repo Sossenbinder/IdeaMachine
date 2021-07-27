@@ -2,7 +2,7 @@
 import { Action } from "redux";
 
 // Functionality
-import { store, ReduxStore } from "common/Redux/store";
+import { store, ReduxStore } from "common/redux/store";
 
 // Types
 import { IModuleService } from "./types";

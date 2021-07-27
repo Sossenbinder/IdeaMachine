@@ -1,5 +1,5 @@
 // Framework
-import AsyncEvent from "common/Helper/AsyncEvent";
+import AsyncEvent from "common/helper/AsyncEvent";
 
 // Types
 import { ServiceNotification } from "./types";

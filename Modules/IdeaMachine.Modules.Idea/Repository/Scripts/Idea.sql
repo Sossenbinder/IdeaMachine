@@ -8,6 +8,6 @@
 
 CREATE TABLE Reactions (
     UserID UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
-    PostId int NOT NULL,
-    LikeState TINYINT NOT NULL,
+    IdeaId int NOT NULL,
+    LikeState int NOT NULL,
 );

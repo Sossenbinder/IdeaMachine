@@ -6,8 +6,6 @@ using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.DataTypes.UiModels.Idea;
 using IdeaMachine.DataTypes.UiModels.Pagination;
-using IdeaMachine.Extensions;
-using IdeaMachine.Modules.Idea.DataTypes;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Reaction.Service.Interface;
@@ -86,9 +84,20 @@ namespace IdeaMachine.Controllers
 
 		[HttpPost]
 		[Route("Add")]
-		public async Task Add([FromBody] IdeaModel ideaModel)
+		public async Task<JsonResponse> Add([FromBody] IdeaModel ideaModel)
 		{
 			await _ideaService.Add(Session, ideaModel);
+
+			return JsonResponse.Success();
+		}
+
+		[HttpDelete]
+		[Route("Delete")]
+		public async Task<JsonDataResponse<IdeaDeleteErrorCode>> Delete([FromBody] int id)
+		{
+			var result = await _ideaService.Delete(Session, id);
+
+			return JsonResponse.Success(result);
 		}
 
 		private async Task<IdeaUiModel> ToEnrichedUiModel(IdeaModel ideaModel)

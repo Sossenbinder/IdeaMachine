@@ -3,16 +3,16 @@ import * as React from "react";
 import { Route } from "react-router-dom";
 
 // Components
-import Flex from "common/Components/Flex";
-import IdeaList from "Modules/Ideas/Components/IdeaList";
-import CreateButton from 'Modules/Ideas/Components/CreateButton';
+import Flex from "common/components/Flex";
+import IdeaListAll from "modules/Ideas/Components/IdeaListAll";
+import CreateButton from 'modules/Ideas/Components/CreateButton';
 import LogonView from "views/Login/LogonView";
 import EmailVerification from "views/EmailVerification/EmailVerification";
 import AccountRoutes from "views/Account/AccountRoutes";
 import IdeaRoutes from "views/Ideas/IdeaRoutes";
 
 // Styles
-import styles from "./Styles/Content.module.less";
+import styles from "./styles/Content.module.less";
 
 export const Content: React.FC = () => {
 	return (
@@ -40,7 +40,7 @@ export const Content: React.FC = () => {
 					<Route
 						exact={true}
 						path="/">
-						<IdeaList />
+						<IdeaListAll />
 					</Route>
 				</div>
 			</div>

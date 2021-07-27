@@ -4,20 +4,20 @@ import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 
 // Components
-import Flex from "common/Components/Flex";
-import LoadingButton from "common/Components/Controls/LoadingButton";
+import Flex from "common/components/Flex";
+import LoadingButton from "common/components/Controls/LoadingButton";
 
 // Functionality
-import useServices from "common/Hooks/useServices";
-import useQueryStringParams from "common/Hooks/useQueryStringParams";
+import useServices from "common/hooks/useServices";
+import useQueryStringParams from "common/hooks/useQueryStringParams";
 import { getTranslationForErrorCode } from "modules/Account/Helper/IdentityErrorCodeHelper";
-import { useTranslations } from "common/Hooks/useTranslations";
+import { useTranslations } from "common/hooks/useTranslations";
 
 // Types
 import { IdentityErrorCode } from "modules/Account/types";
 
 // Styles
-import styles from "./Styles/EmailVerification.module.less";
+import styles from "./styles/EmailVerification.module.less";
 
 
 export const EmailVerification: React.FC = () => {

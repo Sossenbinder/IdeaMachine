@@ -1,8 +1,8 @@
 // Functionality
-import { ensureArray, removeAt } from "common/Helper/arrayUtils";
+import { ensureArray, removeAt } from "common/helper/arrayUtils";
 
 // Types
-import { CouldBeArray } from "common/Types/arrayTypes";
+import { CouldBeArray } from "common/types/arrayTypes";
 import { Reducer, ReducerState, MultiReducerState, ReducerAction } from "./types";
 
 type CommonReducerParams = {

@@ -2,14 +2,14 @@
 import * as React from "react";
 
 // Components
-import Flex from "common/Components/Flex";
+import Flex from "common/components/Flex";
 
 // Functionality
 
 // Types
 
 // Styles
-import styles from "./Styles/Spacing.module.less";
+import styles from "./styles/Spacing.module.less";
 
 type Props = {
 	x?: number;

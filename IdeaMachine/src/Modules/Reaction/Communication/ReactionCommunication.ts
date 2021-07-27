@@ -2,7 +2,7 @@
 import { Network, LikeState } from "../types";
 
 // Functionality
-import { VoidPostRequest } from "common/Helper/Requests/PostRequest"
+import { VoidPostRequest } from "common/helper/Requests/PostRequest"
 
 const Urls = {
 	ModifyLike: "/Reaction/ModifyLike"

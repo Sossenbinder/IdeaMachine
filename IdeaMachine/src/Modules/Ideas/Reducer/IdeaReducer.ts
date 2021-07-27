@@ -1,5 +1,5 @@
 // Functionality
-import { createReducer } from "common/Redux/Reducer/CrudReducer";
+import { createReducer } from "common/redux/Reducer/CrudReducer";
 
 // Types
 import { Idea } from "modules/Ideas/types";

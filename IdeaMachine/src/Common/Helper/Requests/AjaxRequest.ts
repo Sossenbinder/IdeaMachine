@@ -2,7 +2,8 @@ import { NetworkResponse } from "./Types/NetworkDefinitions";
 
 export enum RequestMethods {
 	GET = "GET",
-	POST = "POST"
+	POST = "POST",
+	DELETE = "DELETE",
 }
 
 const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] as HTMLInputElement;
@@ -34,7 +35,7 @@ export default class AjaxRequest<TRequest, TResponse> {
 
 		requestInit.headers["RequestVerificationToken"] = tokenHolder.value;
 
-		if (this.m_requestMethod === RequestMethods.POST && typeof requestData !== "undefined") {
+		if ((this.m_requestMethod === RequestMethods.POST || this.m_requestMethod === RequestMethods.DELETE) && typeof requestData !== "undefined") {
 			requestInit.body = JSON.stringify(requestData);
 		}
 

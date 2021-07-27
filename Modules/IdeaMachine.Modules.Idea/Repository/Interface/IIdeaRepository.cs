@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Modules.Idea.DataTypes.Entity;
+using IdeaMachine.Modules.Idea.DataTypes.Model;
 
 namespace IdeaMachine.Modules.Idea.Repository.Interface
 {
@@ -17,5 +18,7 @@ namespace IdeaMachine.Modules.Idea.Repository.Interface
 		Task<IdeaEntity?> GetSpecificIdea(int id);
 
 		Task MigrateIdeas(Guid oldOwner, Guid newOwner);
+
+		Task<IdeaDeleteErrorCode> Delete(Guid userId, int id);
 	}
 }

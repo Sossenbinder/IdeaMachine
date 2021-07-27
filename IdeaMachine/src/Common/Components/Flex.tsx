@@ -2,7 +2,7 @@
 import * as React from "react";
 import classNames from "classnames";
 
-import "./Styles/Flex.less";
+import "./styles/Flex.less";
 
 export enum FlexDirections {
 	Column,

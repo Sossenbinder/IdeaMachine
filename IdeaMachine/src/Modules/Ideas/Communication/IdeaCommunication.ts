@@ -2,8 +2,9 @@
 import { Idea, Network } from "../types";
 
 // Functionality
-import PostRequest, { PagedPostRequest, VoidPostRequest } from "common/Helper/Requests/PostRequest"
-import GetRequest from 'common/Helper/Requests/GetRequest';
+import PostRequest, { PagedPostRequest, VoidPostRequest } from "common/helper/Requests/PostRequest";
+import GetRequest from "common/helper/Requests/GetRequest";
+import DeleteRequest from "common/helper/Requests/DeleteRequest";
 
 const Urls = {
 	Add: "/Idea/Add",
@@ -11,6 +12,7 @@ const Urls = {
 	GetOwn: "/Idea/GetOwn",
 	GetForUser: "/Idea/GetForUser",
 	GetSpecific: "/Idea/GetSpecificIdea",
+	Delete: "/Idea/Delete",
 	Reply: "/Idea/Reply",
 }
 
@@ -37,6 +39,11 @@ export const getIdeasForUser = async (userId: string) => {
 export const getSpecificIdea = async (id: number) => {
 	const request = new PostRequest<Network.GetSpecificIdea.Request, Network.GetSpecificIdea.Response>(Urls.GetSpecific);
 	return await request.post(id);
+}
+
+export const deleteIdea = async (id: number) => {
+	const request = new DeleteRequest<Network.Delete.Request, Network.Delete.Response>(Urls.Delete);
+	return await request.delete(id);
 }
 
 export const reply = async () => {

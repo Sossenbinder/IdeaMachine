@@ -5,13 +5,13 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 
 // Components
 import IdeaNotFound from "modules/Ideas/Components/IdeaNotFound";
-import { Cell, Flex, Grid } from "common/Components";
+import { Cell, Flex, Grid } from "common/components";
 
 // Functionality
-import { ReduxStore } from "common/Redux/store";
-import useAsyncCall from "common/Hooks/useAsyncCall";
-import useServices from "common/Hooks/useServices";
-import useTranslations from "common/Hooks/useTranslations";
+import { ReduxStore } from "common/redux/store";
+import useAsyncCall from "common/hooks/useAsyncCall";
+import useServices from "common/hooks/useServices";
+import useTranslations from "common/hooks/useTranslations";
 
 // Functionality
 import { getUsDate, getUsTime } from "common/utils/timeUtils";
@@ -22,8 +22,8 @@ import { Idea } from "../types";
 import { LikeState } from "modules/Reaction/types";
 
 // Styles
-import styles from "./Styles/IdeaInfo.module.less";
-import MaterialIcon from "common/Components/MaterialIcon";
+import styles from "./styles/IdeaInfo.module.less";
+import MaterialIcon from "common/components/MaterialIcon";
 import CommentSection from "./Info/CommentSection";
 
 type Props = RouteComponentProps<{

@@ -2,21 +2,18 @@
 import * as React from "react";
 
 // Components
-import NavBar from 'common/Components/Page/NavBar';
-import Flex from "common/Components/Flex";
+import NavBar from 'common/components/Page/NavBar';
+import Flex from "common/components/Flex";
+import PushNotificationContainer from "common/components/Page/PushMessages/PushNotificationContainer";
 import Content from "./Content";
 
 // Functionality
-import { getTranslations } from 'common/Translations/translations';
+import { getTranslations } from 'common/translations/translations';
 
 // Styles
-import styles from "./Styles/MainContainer.module.less";
+import styles from "./styles/MainContainer.module.less";
 
-type Props = {
-
-}
-
-export const MainContainer: React.FC<Props> = () => {
+export const MainContainer = () => {
 
 	const [loading, setLoading] = React.useState<boolean>(true);
 
@@ -36,6 +33,7 @@ export const MainContainer: React.FC<Props> = () => {
 				Loading...
 			</If>
 			<If condition={!loading}>
+				<PushNotificationContainer />
 				<Flex
 					className={styles.MainGrid}
 					direction="Column">

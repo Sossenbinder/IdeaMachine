@@ -4,18 +4,18 @@ import { connect } from "react-redux";
 import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 
 // Components
-import Flex from "common/Components/Flex";
-import LinkButton from "common/Components/Controls/LinkButton";
+import Flex from "common/components/Flex";
+import LinkButton from "common/components/Controls/LinkButton";
 import NavBarAnon from "./SubComponents/NavBarAnon";
 import NavBarAuthenticated from "./SubComponents/NavBarAuthenticated";
-import Separator from "common/Components/Controls/Separator";
+import Separator from "common/components/Controls/Separator";
 
 // Types
 import { Account } from "modules/Account/types";
-import { ReduxStore } from "common/Redux/store";
+import { ReduxStore } from "common/redux/store";
 
 // Styles
-import styles from "./Styles/NavBar.module.less";
+import styles from "./styles/NavBar.module.less";
 
 type ReduxProps = {
 	account: Account;
@@ -28,11 +28,14 @@ export const NavBar: React.FC<Props> = ({ account, history }) => {
 		<Flex
 			className={styles.NavBar}
 			space="Between">
-			<h2
-				className={styles.Label}
+			<Flex
+				direction="Row"
+				crossAlign="Center"
+				className={styles.Branding}
 				onClick={() => history.push("/")}>
-				IdeaMachine
-			</h2>
+				<img className={styles.BrandIcon} src="/Resources/Icons/ideablub.svg" />
+				<h2>IdeaMachine</h2>
+			</Flex>
 			<Flex
 				className={styles.LoginSection}
 				direction="Row"

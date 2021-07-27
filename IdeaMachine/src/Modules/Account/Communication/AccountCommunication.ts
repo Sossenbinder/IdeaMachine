@@ -2,8 +2,8 @@
 import { RegisterInfo, SignInInfo, Network } from "../types";
 
 // Functionality
-import GetRequest from "common/Helper/Requests/GetRequest";
-import PostRequest from "common/Helper/Requests/PostRequest";
+import GetRequest from "common/helper/Requests/GetRequest";
+import PostRequest from "common/helper/Requests/PostRequest";
 
 const Urls = {
 	GetAccount: "/Account/Get",

@@ -1,4 +1,4 @@
-import { CouldBeArray } from "common/Types/arrayTypes";
+import { CouldBeArray } from "common/types/arrayTypes";
 
 export const ensureArray = <T>(potentialArray: CouldBeArray<T>) => {
 	if (potentialArray instanceof Array) {

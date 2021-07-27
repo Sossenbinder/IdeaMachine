@@ -4,17 +4,17 @@ import { TextareaAutosize, Button } from "@material-ui/core";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 // Components
-import { Grid, Cell } from "common/Components";
+import { Grid, Cell } from "common/components";
 
 // Functionality
-import { useTranslations } from 'common/Hooks/useTranslations';
-import useServices from "common/Hooks/useServices";
+import { useTranslations } from 'common/hooks/useTranslations';
+import useServices from "common/hooks/useServices";
 
 // Types
 import { Idea } from 'modules/Ideas/types';
 
 // Styles
-import styles from "./Styles/IdeaInput.module.less";
+import styles from "./styles/IdeaInput.module.less";
 
 type Props = RouteComponentProps;
 

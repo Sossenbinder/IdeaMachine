@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Common.Database.Context;
+using IdeaMachine.Common.Database.Extensions;
 using IdeaMachine.Common.Database.Repository;
 using IdeaMachine.Modules.Idea.DataTypes.Entity;
+using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Repository.Context;
 using IdeaMachine.Modules.Idea.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +79,30 @@ namespace IdeaMachine.Modules.Idea.Repository
 			}
 
 			await ctx.SaveChangesAsync();
+		}
+
+		public async Task<IdeaDeleteErrorCode> Delete(Guid userId, int id)
+		{
+			await using var ctx = CreateContext();
+
+			var idea = await ctx.Ideas
+				.FirstOrDefaultAsync(x => x.Id == id);
+
+			if (idea is null)
+			{
+				return IdeaDeleteErrorCode.NotFound;
+			}
+
+			if (idea.Creator != userId)
+			{
+				return IdeaDeleteErrorCode.NotOwned;
+			}
+
+			ctx.Ideas.Remove(idea);
+
+			return await ctx.SaveChangesAsyncWithResult()
+				? IdeaDeleteErrorCode.Successful
+				: IdeaDeleteErrorCode.UnspecifiedError;
 		}
 	}
 }

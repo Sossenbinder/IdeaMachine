@@ -1,6 +1,6 @@
 // Types
 import { IdentityErrorCode } from "../types";
-import TL from "common/Translations/types";
+import TL from "common/translations/types";
 
 export const getTranslationForErrorCode = (translations: TL, errorCode: IdentityErrorCode) => {
 

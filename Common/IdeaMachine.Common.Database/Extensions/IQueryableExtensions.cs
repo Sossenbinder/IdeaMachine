@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,40 +19,18 @@ namespace IdeaMachine.Common.Database.Extensions
 			return entrySet;
 		}
 
-		public static async Task AddOrUpdate<T, TKey>(this DbSet<T> dbSet, T item, Func<T, TKey> keyFunc)
+		public static async Task AddOrUpdate<T>(this DbSet<T> dbSet, T item, Expression<Func<T, bool>> match)
 			where T : class
 		{
-			var knownKeys = await dbSet.AsNoTracking().Select(x => keyFunc(x)).ToListAsync();
+			var itemExists = await dbSet.AsNoTracking().Where(match).AnyAsync();
 
-			var itemKey = keyFunc(item);
-
-			if (itemKey is not null && knownKeys.Any(key => itemKey.Equals(key)))
+			if (itemExists)
 			{
 				dbSet.Update(item);
 			}
 			else
 			{
 				dbSet.Add(item);
-			}
-		}
-
-		public static async Task AddOrUpdateRange<T, TKey>(this DbSet<T> dbSet, IEnumerable<T> items, Func<T, TKey> keyFunc)
-			where T : class
-		{
-			var knownKeys = await dbSet.AsNoTracking().Select(x => keyFunc(x)).ToListAsync();
-
-			foreach (var item in items)
-			{
-				var itemKey = keyFunc(item);
-
-				if (itemKey is not null && knownKeys.Any(key => itemKey.Equals(key)))
-				{
-					dbSet.Update(item);
-				}
-				else
-				{
-					dbSet.Add(item);
-				}
 			}
 		}
 	}

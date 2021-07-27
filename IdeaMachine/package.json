@@ -8,6 +8,7 @@
   "license": "ISC",
   "scripts": {
     "build": "webpack --mode production",
+    "server": "webpack serve --hot-only",
     "watch": "webpack watch --mode development"
   },
   "alias": {
@@ -29,6 +30,7 @@
     "@types/recharts": "^1.8.19",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.2.2",
+    "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "chai": "^4.3.4",
     "concurrently": "^4.1.0",
     "css-loader": "^5.2.4",

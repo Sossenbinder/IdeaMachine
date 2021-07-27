@@ -4,20 +4,19 @@ import classNames from "classnames";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 // Components
-import { Grid, Cell, Flex } from "common/Components";
-import MaterialIcon, { MaterialIconType } from "common/Components/MaterialIcon";
-import Separator from "common/Components/Controls/Separator";
+import { Grid, Cell, Flex } from "common/components";
+import MaterialIcon, { MaterialIconType } from "common/components/MaterialIcon";
+import Separator from "common/components/Controls/Separator";
 
 // Functionality
-import { getUsDate, getUsTime } from "common/Utils/timeUtils";
-import { modifyLike } from "modules/Reaction/Communication/ReactionCommunication";
-import useServices from "common/Hooks/useServices";
+import { getUsDate, getUsTime } from "common/utils/timeUtils";
+import useServices from "common/hooks/useServices";
 
 // Types
 import { Idea } from "../types";
 
 // Styles
-import styles from "./Styles/IdeaListEntry.module.less";
+import styles from "./styles/IdeaListEntry.module.less";
 import { LikeState } from "modules/Reaction/types";
 
 type Props = RouteComponentProps & {
@@ -28,7 +27,7 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 
 	const [previewOpen, setPreviewOpen] = React.useState(false);
 
-	const { ReactionService } = useServices();
+	const { ReactionService, IdeaService } = useServices();
 
 	const containerClassNames = classNames(
 		styles.Container,
@@ -55,7 +54,7 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 			<Grid
 				className={styles.Idea}
 				gridProperties={{
-					gridTemplateColumns: "30px 9fr 50px 1fr 40px",
+					gridTemplateColumns: "30px 9fr 75px 1fr 40px",
 					gridTemplateRows: "1fr 1fr"
 				}}>
 				<Cell
@@ -102,6 +101,10 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 					<MaterialIcon
 						onClick={event => navTo(event, `/idea/${id}/reply`)}
 						iconName="reply"
+						size={25} />
+					<MaterialIcon
+						onClick={async () => await IdeaService.deleteIdea(id)}
+						iconName="delete"
 						size={25} />
 				</Flex>
 				<Flex direction="Column">

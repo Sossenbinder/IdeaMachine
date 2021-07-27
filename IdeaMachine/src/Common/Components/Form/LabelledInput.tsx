@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Components
-import Flex from "common/Components/Flex";
+import Flex from "common/components/Flex";
 import Input from "./Input";
 
 // Types

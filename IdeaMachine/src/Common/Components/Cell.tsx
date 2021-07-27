@@ -1,8 +1,8 @@
 // Framework
 import * as React from "react";
 
-import "./Styles/Grid.less";
-import "./Styles/Cell.less";
+import "./styles/Grid.less";
+import "./styles/Cell.less";
 
 type CellStyleKeys = 'gridColumn' | 'gridRow' | 'gridArea';
 

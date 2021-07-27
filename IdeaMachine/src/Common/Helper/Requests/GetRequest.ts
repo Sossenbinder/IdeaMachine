@@ -1,4 +1,4 @@
-﻿import { NetworkResponse, Pagination } from "./Types/NetworkDefinitions";
+﻿import { NetworkResponse } from "./Types/NetworkDefinitions";
 import AjaxRequest, { RequestMethods } from "./AjaxRequest"
 
 type VerificationTokenRequest = {

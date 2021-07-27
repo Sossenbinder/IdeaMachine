@@ -3,19 +3,19 @@ import * as React from "react";
 import { Button, TextField } from "@material-ui/core";
 
 // Components
-import Flex from "common/Components/Flex";
-import LoadingButton from "common/Components/Controls/LoadingButton";
+import Flex from "common/components/Flex";
+import LoadingButton from "common/components/Controls/LoadingButton";
 
 // Functionality
-import useServices from "common/Hooks/useServices";
-import { useTranslations } from "common/Hooks/useTranslations";
+import useServices from "common/hooks/useServices";
+import { useTranslations } from "common/hooks/useTranslations";
 import { getTranslationForErrorCode } from "modules/Account/Helper/IdentityErrorCodeHelper";
 
 // Types
 import { RegisterInfo, IdentityErrorCode } from "modules/Account/types";
 
 // Styles
-import styles from "./Styles/Register.module.less";
+import styles from "./styles/Register.module.less";
 
 type PasswordType = keyof Pick<RegisterInfo, "password" | "confirmPassword">;
 

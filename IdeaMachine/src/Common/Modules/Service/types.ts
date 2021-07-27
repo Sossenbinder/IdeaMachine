@@ -1,6 +1,6 @@
 //Types
-import { NetworkResponse } from "Common/Helper/Requests/Types/NetworkDefinitions";
-import ISignalRConnectionProvider from "common/Helper/SignalR/Interface/ISignalRConnectionProvider";
+import { NetworkResponse } from "common/helper/Requests/Types/NetworkDefinitions";
+import ISignalRConnectionProvider from "common/helper/SignalR/Interface/ISignalRConnectionProvider";
 import { Idea } from "modules/Ideas/types";
 import { RegisterInfo, SignInInfo, IdentityErrorCode } from "modules/Account/types";
 import { LikeState } from "modules/Reaction/types";
@@ -19,6 +19,7 @@ export interface IIdeaService extends IModuleService {
 	fetchIdeas(): Promise<void>;
 	initializeOwnIdeas(): Promise<void>;
 	getSpecificIdea(id: number): Promise<void>;
+	deleteIdea(id: number): Promise<void>;
 }
 
 export interface IReactionService extends IModuleService {

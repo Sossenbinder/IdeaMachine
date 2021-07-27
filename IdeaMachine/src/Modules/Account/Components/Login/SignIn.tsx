@@ -4,19 +4,19 @@ import { Link } from "react-router-dom";
 import { FormControlLabel, Switch, TextField } from "@material-ui/core";
 
 // Components
-import Flex from "common/Components/Flex";
-import LoadingButton from "common/Components/Controls/LoadingButton";
+import Flex from "common/components/Flex";
+import LoadingButton from "common/components/Controls/LoadingButton";
 
 // Functionality
-import useServices from "common/Hooks/useServices";
+import useServices from "common/hooks/useServices";
 import { getTranslationForErrorCode } from "modules/Account/Helper/IdentityErrorCodeHelper";
-import useTranslations from "common/Hooks/useTranslations";
+import useTranslations from "common/hooks/useTranslations";
 
 // Types
 import { IdentityErrorCode, SignInInfo } from "modules/Account/types";
 
 // Styles
-import styles from "./Styles/SignIn.module.less";
+import styles from "./styles/SignIn.module.less";
 
 export const SignIn: React.FC = () => {
 
@@ -35,6 +35,7 @@ export const SignIn: React.FC = () => {
 
 		if (resultCode !== IdentityErrorCode.Success) {
 			setIdentityErrorCode(resultCode);
+			return;
 		}
 	}
 

@@ -2,9 +2,9 @@
 import * as React from "react";
 
 // Components
-import Flex from "common/Components/Flex";
+import Flex from "common/components/Flex";
 
-import "./Styles/CheckBoxToggle.less";
+import "./styles/CheckBoxToggle.less";
 
 type Props = {
 	toggleState: boolean;

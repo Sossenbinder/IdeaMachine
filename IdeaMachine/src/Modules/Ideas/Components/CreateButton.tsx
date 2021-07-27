@@ -4,11 +4,11 @@ import { withRouter } from "react-router";
 import { RouteComponentProps } from 'react-router-dom';
 
 // Components
-import Flex from "common/Components/Flex";
-import MaterialIcon from "common/Components/MaterialIcon";
+import Flex from "common/components/Flex";
+import MaterialIcon from "common/components/MaterialIcon";
 
 // Styles
-import styles from "./Styles/CreateButton.module.less";
+import styles from "./styles/CreateButton.module.less";
 
 type Props = RouteComponentProps;
 

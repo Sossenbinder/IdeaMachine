@@ -1,5 +1,5 @@
 // Functionality
-import { createSingleReducer } from "common/Redux/Reducer/CrudReducer";
+import { createSingleReducer } from "common/redux/Reducer/CrudReducer";
 
 // Types
 import { Account } from "modules/Account/types";

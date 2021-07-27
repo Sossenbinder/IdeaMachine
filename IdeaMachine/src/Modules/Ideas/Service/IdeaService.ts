@@ -1,14 +1,14 @@
 // Functionality
-import { IIdeaService } from "common/Modules/Service/types";
-import ModuleService from "common/Modules/Service/ModuleService";
+import { IIdeaService } from "common/modules/Service/types";
+import ModuleService from "common/modules/Service/ModuleService";
 import * as ideaCommunication from "modules/Ideas/Communication/IdeaCommunication";
 import { reducer as ideaReducer } from "modules/Ideas/Reducer/IdeaReducer";
-import { updateIdeaPagination } from "common/Redux/Reducer/PaginationReducer";
-import { ensureArray } from "common/Helper/arrayUtils";
+import { updateIdeaPagination } from "common/redux/Reducer/PaginationReducer";
+import { ensureArray } from "common/helper/arrayUtils";
 
 // Types
 import { Idea } from "../types";
-import { CouldBeArray } from "common/Types/arrayTypes";
+import { CouldBeArray } from "common/types/arrayTypes";
 
 export default class IdeaService extends ModuleService implements IIdeaService {
 
@@ -58,8 +58,14 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		const ideaResponse = await ideaCommunication.getSpecificIdea(id);
 
 		if (ideaResponse.success) {
+			this.enrichIdeasWithDate(ideaResponse.payload);
 			this.dispatch(ideaReducer.put(ideaResponse.payload));
 		}
+	}
+
+	deleteIdea = async (id: number) => {
+		const deletionResponse = await ideaCommunication.deleteIdea(id);
+		debugger;
 	}
 
 	private enrichIdeasWithDate = (data: CouldBeArray<Idea>) => ensureArray(data).forEach(x => x.creationDate = new Date(x.creationDate));

@@ -1,5 +1,5 @@
 // Functionality
-import { getTranslations } from "common/Translations/translations";
+import { getTranslations } from "common/translations/translations";
 
 export const useTranslations = () => getTranslations();
 

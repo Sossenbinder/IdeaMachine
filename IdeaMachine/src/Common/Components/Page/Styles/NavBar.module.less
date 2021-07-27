@@ -4,10 +4,23 @@
 	background: rgb(41, 41, 64);
 	background: linear-gradient(0deg, rgba(41, 41, 64, 1) 0%, rgba(6, 22, 48, 1) 50%, rgba(41, 41, 64, 1) 100%);
 
-	.Label {
+	.Branding {
 		color: white;
 		margin: auto 15px auto 15px;
 		cursor: pointer;
+
+		height: 100%;
+
+		.BrandIcon {
+			height: 40px;
+			margin-right: 5px;
+		}
+
+		@media (max-width: 768px) {
+			h2 {
+				display: none;
+			}
+		}
 	}
 
 	.LoginSection {

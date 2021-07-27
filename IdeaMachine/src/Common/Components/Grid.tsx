@@ -2,7 +2,7 @@
 import * as React from "react";
 import classNames from "classnames";
 
-import "./Styles/Grid.less";
+import "./styles/Grid.less";
 
 enum GridDisplay {
 	Regular,
@@ -36,7 +36,7 @@ export const Grid: React.FC<GridProps> = ({
 		<div
 			className={`${classes} ${typeof className !== "undefined" ? className : ""}`}
 			style={gridProperties}>
-			{ children}
+			{children}
 		</div>
 	)
 }

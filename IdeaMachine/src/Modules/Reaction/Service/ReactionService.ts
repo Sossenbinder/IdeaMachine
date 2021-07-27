@@ -1,6 +1,6 @@
 // Functionality
-import { IReactionService } from "common/Modules/Service/types";
-import ModuleService from "common/Modules/Service/ModuleService";
+import { IReactionService } from "common/modules/Service/types";
+import ModuleService from "common/modules/Service/ModuleService";
 import * as reactionCommunication from "modules/Reaction/Communication/ReactionCommunication";
 import { reducer as ideaReducer } from "modules/Ideas/Reducer/IdeaReducer";
 

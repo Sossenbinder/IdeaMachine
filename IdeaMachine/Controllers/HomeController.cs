@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
@@ -25,7 +27,7 @@ namespace IdeaMachine.Controllers
 			{
 				await _loginService.RefreshLogin(new RefreshLoginModel()
 				{
-					UserId = UserId
+					UserId = Guid.Parse(HttpContext.User.Claims.First().Value),
 				});
 			}
 

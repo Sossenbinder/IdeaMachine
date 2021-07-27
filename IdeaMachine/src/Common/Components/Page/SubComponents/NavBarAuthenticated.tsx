@@ -3,17 +3,17 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 
 // Components
-import MaterialIcon from "common/Components/MaterialIcon";
-import { Flex } from "common/Components";
+import MaterialIcon from "common/components/MaterialIcon";
+import { Flex } from "common/components";
 
 // Functionality
-import useServices from "common/Hooks/useServices";
+import useServices from "common/hooks/useServices";
 
 // Types
 import { Account } from "modules/Account/types";
 
 // Styles
-import styles from "./Styles/NavBarAuthenticated.module.less";
+import styles from "./styles/NavBarAuthenticated.module.less";
 
 type Props = {
 	account: Account
