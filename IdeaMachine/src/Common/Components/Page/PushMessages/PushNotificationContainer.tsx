@@ -4,36 +4,37 @@ import { connect } from "react-redux";
 
 // Components
 import Flex from "common/components/Flex";
+import PushNotificationEntry from "./PushNotificationEntry";;
 
 // Functionality
 
 // Types
-import { BubbleMessage } from "common/definitions/BubbleMessageTypes";
+import { PushNotification } from "common/definitions/PushNotificationTypes";
 import { ReduxStore } from "common/redux/store";
 
 // Styles
 import styles from "./styles/PushNotificationContainer.module.less";
 
 type ReduxProps = {
-	messages: Array<BubbleMessage>;
+	messages: Array<PushNotification>;
 }
 
 export const PushNotificationContainer: React.FC<ReduxProps> = ({ messages }) => {
-
 	return (
-		<Flex className={styles.Container}>
-			Bubble Notification Container
+		<Flex
+			className={styles.Container}
+			direction="Column">
 			{messages.map(x => (
-				<span>
-					Notification
-				</span>
+				<PushNotificationEntry
+					notification={x}
+					key={x.timeStamp.toString()} />
 			))}
 		</Flex>
 	);
 }
 
 const mapStateToProps = (state: ReduxStore): ReduxProps => ({
-	messages: state.bubbleMessageReducer.data,
+	messages: state.pushNotificationReducer.data,
 });
 
 export default connect(mapStateToProps)(PushNotificationContainer);

@@ -13,7 +13,7 @@ namespace IdeaMachine.Service.Base.Extensions
 				.SingleInstance();
 		}
 
-		public static void RegisterGrpcService<TServiceInterface, TServiceImpl>(this ContainerBuilder builder)
+		public static void RegisterGrpcProxy<TServiceInterface, TServiceImpl>(this ContainerBuilder builder)
 			where TServiceImpl : TServiceInterface
 			where TServiceInterface : IGrpcService
 		{

@@ -47,6 +47,12 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 		await ReactionService.modifyLike(id, likeState);
 	}
 
+	const deleteIdea = async (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+		event.stopPropagation();
+		event.preventDefault();
+		await IdeaService.deleteIdea(id);
+	}
+
 	return (
 		<div
 			className={containerClassNames}
@@ -103,7 +109,7 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 						iconName="reply"
 						size={25} />
 					<MaterialIcon
-						onClick={async () => await IdeaService.deleteIdea(id)}
+						onClick={async (ev) => await deleteIdea(ev)}
 						iconName="delete"
 						size={25} />
 				</Flex>

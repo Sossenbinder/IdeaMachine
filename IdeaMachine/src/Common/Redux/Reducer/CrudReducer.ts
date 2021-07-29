@@ -12,12 +12,14 @@ type CommonReducerParams = {
 // No keys needed here. We only have one entry
 type SingleReducerParams<TDataType> = CommonReducerParams & {
 	additionalActions?: CouldBeArray<ExternalAction<TDataType, ReducerState<TDataType>>>;
+	initialState?: TDataType;
 }
 
 // Keys are necessary here, so identifying updates for specific items are possible
 export type MultiReducerParams<TDataType> = CommonReducerParams & {
 	additionalActions?: CouldBeArray<ExternalAction<Array<TDataType>, MultiReducerState<TDataType>>>;
 	key: keyof TDataType;
+	initialState?: Array<TDataType>;
 }
 
 type Action<TDataType, TReducerState extends ReducerState<TDataType>> = (state: TReducerState, action: ReducerAction<TDataType>) => TReducerState;
@@ -60,7 +62,7 @@ export const createSingleReducer = <T>(params: SingleReducerParams<T>) => create
 			}
 		},
 		initialState: {
-			data: undefined
+			data: params.initialState ?? undefined,
 		},
 	}
 );
@@ -132,7 +134,7 @@ export const createReducer = <T>(params: MultiReducerParams<T>) => createReducer
 			}
 		},
 		initialState: {
-			data: []
+			data: params.initialState ?? [],
 		},
 	}
 );

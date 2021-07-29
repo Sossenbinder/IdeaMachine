@@ -3,11 +3,12 @@ import { IIdeaService } from "common/modules/Service/types";
 import ModuleService from "common/modules/Service/ModuleService";
 import * as ideaCommunication from "modules/Ideas/Communication/IdeaCommunication";
 import { reducer as ideaReducer } from "modules/Ideas/Reducer/IdeaReducer";
+import { reducer as pushNotificationReducer } from "common/redux/Reducer/PushNotificationReducer";
 import { updateIdeaPagination } from "common/redux/Reducer/PaginationReducer";
 import { ensureArray } from "common/helper/arrayUtils";
 
 // Types
-import { Idea } from "../types";
+import { Idea, IdeaDeleteErrorCode } from "../types";
 import { CouldBeArray } from "common/types/arrayTypes";
 
 export default class IdeaService extends ModuleService implements IIdeaService {
@@ -65,7 +66,21 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 
 	deleteIdea = async (id: number) => {
 		const deletionResponse = await ideaCommunication.deleteIdea(id);
-		debugger;
+
+		const errorCode = deletionResponse.payload;
+
+		if (errorCode === IdeaDeleteErrorCode.Successful) {
+			return;
+		}
+
+		if (errorCode === IdeaDeleteErrorCode.NotOwned) {
+			this.dispatch(pushNotificationReducer.add({
+				message: "You don't own this idea, so you also can't delete it",
+				timeStamp: new Date(),
+				type: "Warning",
+				timeout: 5000,
+			}));
+		}
 	}
 
 	private enrichIdeasWithDate = (data: CouldBeArray<Idea>) => ensureArray(data).forEach(x => x.creationDate = new Date(x.creationDate));

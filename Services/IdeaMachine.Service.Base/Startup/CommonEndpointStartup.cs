@@ -106,7 +106,7 @@ namespace IdeaMachine.Service.Base.Startup
 
 		public override void ConfigureContainer(ContainerBuilder containerBuilder)
 		{
-			containerBuilder.RegisterGrpcService<TGrpcService>();
+			//containerBuilder.RegisterGrpcService<TGrpcService>();
 
 			base.ConfigureContainer(containerBuilder);
 		}

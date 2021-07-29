@@ -4,9 +4,24 @@ export const delay = async (seconds: number) => {
 	let resolver: ((value: unknown) => void);
 	const promise = new Promise(res => resolver = res);
 
-	setTimeout(() => resolver(null), seconds);
+	window.setTimeout(() => resolver(null), seconds);
 
 	return promise;
+}
+
+export const tickCountDownAwaitable = (tickCount: number, msBetweenTicks: number, cb: () => Promise<void>) => {
+	return new Promise<void>(resolve => {
+		let counter = 0;
+		const counterId = window.setInterval(() => {
+			cb();
+			counter++;
+
+			if (counter === tickCount) {
+				clearTimeout(counterId);
+				resolve();
+			}
+		}, msBetweenTicks);
+	});
 }
 
 export const asyncForEachParallel = async <T>(source: Array<T>, action: (item: T) => Promise<void>, parallelismDegree: number = 25) => {

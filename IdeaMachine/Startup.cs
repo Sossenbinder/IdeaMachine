@@ -128,9 +128,9 @@ namespace IdeaMachine
 			builder.RegisterModule<ReactionModule>();
 			builder.RegisterModule<SignalRModule>();
 
-			builder.RegisterGrpcService<IRegistrationService, RegistrationServiceProxy>();
-			builder.RegisterGrpcService<ILoginService, LoginServiceProxy>();
-			builder.RegisterGrpcService<IVerificationService, VerificationServiceProxy>();
+			builder.RegisterGrpcProxy<IRegistrationService, RegistrationServiceProxy>();
+			builder.RegisterGrpcProxy<ILoginService, LoginServiceProxy>();
+			builder.RegisterGrpcProxy<IVerificationService, VerificationServiceProxy>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
