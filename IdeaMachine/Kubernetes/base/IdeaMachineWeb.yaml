@@ -1,0 +1,81 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  name: webingress
+  namespace: default
+spec:
+  rules:
+    - host: ideamachinelocal.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: ideamachineweb
+              servicePort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ideamachineweb
+spec:
+  type: ClusterIP
+  selector:
+    name: ideamachineweb
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 443
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ideamachineweb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: ideamachineweb
+  template:
+    metadata:
+      labels:
+        name: ideamachineweb
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      containers:
+        - name: ideamachineweb
+          image: moomed.azurecr.io/frontendservice
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+            - containerPort: 443
+              name: https
+          resources:
+            limits:
+              cpu: 500m
+              memory: 200Mi
+          env:
+            - name: KeyvaultClientId
+              valueFrom:
+                secretKeyRef:
+                  name: ideamachinekeyvaultsecrets
+                  key: clientId
+            - name: KeyvaultClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: ideamachinekeyvaultsecrets
+                  key: clientPassword
+            - name: IdeaMachine_RabbitMq
+              value: ideamachine-rabbitmq
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+      imagePullSecrets:
+        - name: acrimgpullsecret

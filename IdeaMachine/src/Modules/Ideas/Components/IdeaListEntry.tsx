@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 // Components
 import { Grid, Cell, Flex } from "common/components";
 import MaterialIcon, { MaterialIconType } from "common/components/MaterialIcon";
+import { FeedbackMaterialIcon } from "common/components/FeedbackMaterialIcon";
 import Separator from "common/components/Controls/Separator";
 
 // Functionality
@@ -13,11 +14,11 @@ import { getUsDate, getUsTime } from "common/utils/timeUtils";
 import useServices from "common/hooks/useServices";
 
 // Types
+import { LikeState } from "modules/Reaction/types";
 import { Idea } from "../types";
 
 // Styles
 import styles from "./styles/IdeaListEntry.module.less";
-import { LikeState } from "modules/Reaction/types";
 
 type Props = RouteComponentProps & {
 	idea: Idea;
@@ -100,16 +101,16 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 					className={styles.ControlSection}
 					direction="Row">
 					<MaterialIcon
-						onClick={event => navTo(event, `/idea/${id}`)}
+						onClick={async event => navTo(event, `/idea/${id}`)}
 						iconName="info"
 						type={MaterialIconType.Outlined}
 						size={25} />
 					<MaterialIcon
-						onClick={event => navTo(event, `/idea/${id}/reply`)}
+						onClick={async event => navTo(event, `/idea/${id}/reply`)}
 						iconName="reply"
 						size={25} />
-					<MaterialIcon
-						onClick={async (ev) => await deleteIdea(ev)}
+					<FeedbackMaterialIcon
+						onClick={async event => await deleteIdea(event)}
 						iconName="delete"
 						size={25} />
 				</Flex>

@@ -59,7 +59,7 @@ namespace IdeaMachine.Controllers
 			await base.OnActionExecutionAsync(context, next);
 		}
 
-		private Task InitUserContext(ActionExecutingContext context)
+		private Task InitUserContext(ActionContext context)
 		{
 			if (Guid.TryParse(context.HttpContext.User.Identity?.Name, out var userId))
 			{
@@ -70,20 +70,22 @@ namespace IdeaMachine.Controllers
 			}
 
 			var isUserAnonymous = Request.Cookies.TryGetValue(IdentityDefinitions.AnonymousIdentification, out var anonCookieValue);
-			if (isUserAnonymous)
+			if (!isUserAnonymous)
 			{
-				SessionOrNull = new Session()
-				{
-					User = new AnonymousUser()
-					{
-						UserName = "Anonymous user",
-						UserId = Guid.Parse(anonCookieValue!),
-						LastAccessedAt = DateTime.UtcNow,
-					},
-				};
-
-				UserIdOrNull = SessionOrNull.User.UserId;
+				return Task.CompletedTask;
 			}
+
+			SessionOrNull = new Session()
+			{
+				User = new AnonymousUser()
+				{
+					UserName = "Anonymous user",
+					UserId = Guid.Parse(anonCookieValue!),
+					LastAccessedAt = DateTime.UtcNow,
+				},
+			};
+
+			UserIdOrNull = SessionOrNull.User.UserId;
 
 			return Task.CompletedTask;
 		}

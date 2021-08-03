@@ -1,15 +1,15 @@
 // Framework
 import * as React from "react";
 
-export const useAsyncCall = (): [boolean, (cb: () => Promise<void>) => Promise<void>] => {
+export const useAsyncCall = <T = void>(): [boolean, (cb: () => Promise<T>) => Promise<T>] => {
 
 	const [isRunning, setIsRunning] = React.useState(false);
 
-	const callAsync = async (cb: () => Promise<void>) => {
+	const callAsync = async (cb: () => Promise<T>) => {
 		setIsRunning(true);
 
 		try {
-			await cb();
+			return await cb();
 		} finally {
 			setIsRunning(false);
 		}

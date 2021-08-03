@@ -1,6 +1,5 @@
 // Framework
 import * as React from "react";
-import { } from "react";
 
 // Functionality
 import classNames from "classnames";
@@ -13,16 +12,16 @@ export enum MaterialIconType {
 	TwoTone,
 }
 
-type Props = {
+export type MaterialIconProps<T> = {
 	iconName: string;
 	color?: string;
 	size?: number;
-	onClick?(event: React.MouseEvent<HTMLSpanElement, MouseEvent>): void;
+	onClick?(event: React.MouseEvent<HTMLSpanElement, MouseEvent>): T;
 	className?: string;
 	type?: MaterialIconType;
 }
 
-export const MaterialIcon: React.FC<Props> = ({ className, iconName, color, size, onClick, type = MaterialIconType.Filled }) => {
+export const MaterialIcon: React.FC<MaterialIconProps<void>> = ({ className, iconName, color, size, onClick, type = MaterialIconType.Filled }) => {
 
 	const classes = classNames({
 		"material-icons": type === MaterialIconType.Filled,

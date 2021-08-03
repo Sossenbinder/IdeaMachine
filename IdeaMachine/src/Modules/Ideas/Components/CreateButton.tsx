@@ -24,7 +24,7 @@ export const CreateButton: React.FC<Props> = ({ history }) => {
 				iconName="add"
 				color="black"
 				size={50}
-				onClick={() => history.push("/idea/input")} />
+				onClick={async () => history.push("/idea/input")} />
 		</Flex>
 	);
 }

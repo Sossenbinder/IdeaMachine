@@ -69,7 +69,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 							</h2>
 						</Cell>
 						<MaterialIcon
-							onClick={() => history.push(`/idea/${id}/reply`)}
+							onClick={async () => history.push(`/idea/${id}/reply`)}
 							iconName="reply"
 							color="white"
 							size={40} />
