@@ -62,7 +62,9 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 		)), [ideasSorted]);
 
 	React.useEffect(() => {
-		call(IdeaService.fetchIdeas);
+		if (ideas.length === 0) {
+			call(IdeaService.fetchIdeas);
+		}
 	}, []);
 
 	const onScroll = async (ev: Event) => {
