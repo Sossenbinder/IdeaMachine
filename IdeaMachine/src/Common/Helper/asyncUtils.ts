@@ -1,8 +1,8 @@
 import { range } from "./arrayUtils";
 
 export const delay = async (seconds: number) => {
-	let resolver: ((value: unknown) => void);
-	const promise = new Promise(res => resolver = res);
+	let resolver: ((value: void) => void);
+	const promise = new Promise<void>(res => resolver = res);
 
 	window.setTimeout(() => resolver(null), seconds);
 

@@ -9,8 +9,6 @@ namespace IdeaMachine.Common.Eventing.Abstractions.Events
 	{
 		Task Raise();
 
-		void RaiseFireAndForget();
-
 		DisposableAction RegisterForErrors(Func<Fault, Task> faultHandler);
 	}
 
@@ -18,8 +16,6 @@ namespace IdeaMachine.Common.Eventing.Abstractions.Events
 		where TEventArgs : class
 	{
 		Task Raise(TEventArgs eventArgs);
-
-		void RaiseFireAndForget(TEventArgs eventArgs);
 
 		DisposableAction RegisterForErrors(Func<Fault<TEventArgs>, Task> faultHandler);
 	}

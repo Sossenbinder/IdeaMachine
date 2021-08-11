@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Account.Abstractions\IdeaMachine.Modules.Account.Abstractions.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Common.DI\IdeaMachine.Common.DI.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Common.Eventing.Abstractions\IdeaMachine.Common.Eventing.Abstractions.csproj" />

@@ -38,6 +38,6 @@ namespace IdeaMachine.Common.Core.Utils.Concurrency
 
 		public static implicit operator bool(InterlockedBool interlockedBool) => interlockedBool.Value;
 
-		public static implicit operator InterlockedBool(bool boolValue) => new InterlockedBool() { Value = boolValue };
+		public static implicit operator InterlockedBool(bool boolValue) => new() { Value = boolValue };
 	}
 }

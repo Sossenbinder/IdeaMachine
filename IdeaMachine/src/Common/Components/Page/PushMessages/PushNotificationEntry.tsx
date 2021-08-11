@@ -61,7 +61,10 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 			<Grid
 				className={styles.Content}
 				gridProperties={{
-					gridTemplateAreas: "'time . close' 'body body body'",
+					gridTemplateAreas: `
+						'time . close' 
+						'body body body'
+					`,
 					gridTemplateColumns: "2fr 8fr 25px",
 					gridTemplateRows: "1fr 1fr",
 				}}>

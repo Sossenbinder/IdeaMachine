@@ -1,5 +1,4 @@
-﻿using System;
-using IdeaMachine.Common.Eventing.Events;
+﻿using IdeaMachine.Common.Eventing.Events;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
 using Microsoft.Extensions.Logging;
 
@@ -19,12 +18,20 @@ namespace IdeaMachine.Common.Eventing.Helper
 			_logger = logger;
 		}
 
-		public MtEvent<T> Create<T>()
+		public MtEvent<T> CreateDistinct<T>()
 			where T : class =>
-			new(_massTransitEventingService, _logger);
+			new(_massTransitEventingService, new DistinctQueueNameFactory(), _logger);
 
-		public MtEvent<T> Create<T>(string queueName)
+		public MtEvent<T> CreateDistinct<T>(string queueName)
 			where T : class =>
-			new(queueName, _massTransitEventingService, _logger);
+			new(queueName, _massTransitEventingService, new DistinctQueueNameFactory(), _logger);
+
+		public MtEvent<T> CreateRegular<T>()
+			where T : class =>
+			new(_massTransitEventingService, new SharedQueueNameFactory(), _logger);
+
+		public MtEvent<T> CreateRegular<T>(string queueName)
+			where T : class =>
+			new(queueName, _massTransitEventingService, new SharedQueueNameFactory(), _logger);
 	}
 }

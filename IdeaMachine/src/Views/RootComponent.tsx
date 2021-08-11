@@ -11,6 +11,7 @@ import ServiceContextProvider from "common/modules/Service/ServiceContextProvide
 import ServiceUpdateEvent from "common/modules/Service/ServiceUpdateEvent";
 import SignalRContextProvider from "common/helper/SignalR/SignalRContextProvider";
 import MainContainer from "views/Main/MainContainer";
+import IdeaFilterContextProvider from "modules/Ideas/Components/IdeaFilterContext";
 
 // Functionality
 import ISignalRConnectionProvider from 'common/helper/SignalR/Interface/ISignalRConnectionProvider';
@@ -52,7 +53,9 @@ const RootComponent: React.FC<Props> = ({ signalRConnectionProvider, initFunc, i
 						<SignalRContextProvider signalRConnectionProvider={signalRConnectionProvider}>
 							<Choose>
 								<When condition={loadedServices === initServiceCount && initialized}>
-									<MainContainer />
+									<IdeaFilterContextProvider>
+										<MainContainer />
+									</IdeaFilterContextProvider>
 								</When>
 								<Otherwise>
 									<LoadingBar

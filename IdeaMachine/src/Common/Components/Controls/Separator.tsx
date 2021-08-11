@@ -12,15 +12,17 @@ enum Direction {
 }
 
 type Props = {
+	className?: string;
 	direction?: keyof typeof Direction;
 	height?: string;
 	width?: string;
 }
 
-export const Separator: React.FC<Props> = ({ direction = "Horizontal", height = "100%", width = "100%" }) => {
+export const Separator: React.FC<Props> = ({ className, direction = "Horizontal", height = "100%", width = "100%" }) => {
 
 	const cn = classNames(
 		styles.Separator,
+		className,
 		{
 			[styles.Horizontal]: direction === "Horizontal",
 			[styles.Vertical]: direction === "Vertical",

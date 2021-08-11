@@ -3,8 +3,8 @@ import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 
 // Components
-import IdeaInput from "modules/Ideas/Components/IdeaInput";
-import IdeaInfo from "modules/Ideas/Components/IdeaInfo";
+import IdeaInput from "modules/Ideas/Components/Input/IdeaInput";
+import IdeaInfo from "modules/Ideas/Components/Info/IdeaInfo";
 import IdeaListOwn from "modules/Ideas/Components/IdeaListOwn";
 
 export const IdeaRoutes: React.FC = () => {

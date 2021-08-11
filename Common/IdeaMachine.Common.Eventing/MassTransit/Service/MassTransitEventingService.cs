@@ -10,7 +10,7 @@ using MassTransit;
 
 namespace IdeaMachine.Common.Eventing.MassTransit.Service
 {
-	public class MassTransitEventingService : IStartable, IDisposable, IMassTransitEventingService
+	public class MassTransitEventingService : IStartable, IDisposable, IAsyncDisposable, IMassTransitEventingService
 	{
 		private readonly IBusControl _busControl;
 
@@ -34,44 +34,43 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 			_busControl.Stop();
 		}
 
+		public async ValueTask DisposeAsync()
+		{
+			await _busControl.StopAsync();
+		}
+
 		public Task RaiseEvent<T>(T message)
 			where T : class
 		{
 			return _busControl.Publish(message);
 		}
 
-		private void RegisterForEvent<T>(string queueName, Func<ConsumeContext<T>, Task> handler, QueueType queueType = QueueType.Regular)
+		private HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Func<ConsumeContext<T>, Task> handler)
 			where T : class
 		{
-			RegisterOnQueue(queueName, ep => ep.Handler<T>(ctx => handler(ctx)), queueType);
+			return RegisterOnQueue(queueName, ep => ep.Handler<T>(ctx => handler(ctx)));
 		}
 
-		public void RegisterForEvent<T>(string queueName, Action<T> handler, QueueType queueType = QueueType.Regular)
+		public HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Action<T> handler)
 			where T : class
 		{
-			RegisterForEvent<T>(queueName, handler.MakeTaskCompatible()!, queueType);
+			return RegisterForEvent(queueName, handler.MakeTaskCompatible()!);
 		}
 
-		public void RegisterForEvent<T>(string queueName, Func<T, Task> handler, QueueType queueType = QueueType.Regular) where T : class
+		public HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Func<T, Task> handler) where T : class
 		{
-			RegisterForEvent<T>(queueName, ctx => handler(ctx.Message), queueType);
+			return RegisterForEvent<T>(queueName, ctx => handler(ctx.Message));
 		}
 
-		public void RegisterConsumer<TConsumer>(string queueName, TConsumer consumer, QueueType queueType = QueueType.Regular)
+		public HostReceiveEndpointHandle RegisterConsumer<TConsumer>(string queueName, TConsumer consumer)
 			where TConsumer : class, IConsumer
 		{
-			RegisterOnQueue(queueName, ep => ep.Instance(consumer), queueType);
+			return RegisterOnQueue(queueName, ep => ep.Instance(consumer));
 		}
 
-		private void RegisterOnQueue(string queueName, Action<IReceiveEndpointConfigurator> registrationCb, QueueType queueType = QueueType.Regular)
+		private HostReceiveEndpointHandle RegisterOnQueue(string queueName, Action<IReceiveEndpointConfigurator> registrationCb)
 		{
-			queueName = $"{queueName}_{Dns.GetHostName()}";
-
-			if (queueType == QueueType.Error)
-			{
-				queueName = $"{queueName}_error";
-			}
-			_receiveEndpointConnector.ConnectReceiveEndpoint(queueName, (cfg, ep) =>
+			return _receiveEndpointConnector.ConnectReceiveEndpoint(queueName, (cfg, ep) =>
 			{
 				ep.UseMessageRetry(retry => retry.Exponential(
 					10,

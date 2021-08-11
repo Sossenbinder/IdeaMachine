@@ -12,6 +12,12 @@ export type IdeaReactionMetaData = {
 	totalLike: number;
 }
 
+export enum OrderType {
+	Created,
+	Description,
+	Popularity
+}
+
 export enum IdeaDeleteErrorCode {
 	UnspecifiedError,
 	Successful,
