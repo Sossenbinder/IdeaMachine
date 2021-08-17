@@ -1,12 +1,15 @@
 // Framework
 import * as React from "react";
 import classNames from "classnames";
-import { Button, TextField, makeStyles, Paper, Chip } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 // Components
-import { Grid, Cell, Flex } from "common/components";
+import { Grid, Cell } from "common/components";
+import TagDisplay from "./TagDisplay";
 import Card from "../Card";
+import UploadRow from "./UploadRow";
 import Separator from "common/components/Controls/Separator";
 
 // Functionality
@@ -21,7 +24,7 @@ import styles from "./styles/IdeaInput.module.less";
 
 type Props = RouteComponentProps;
 
-const customTextFieldStyles = makeStyles(() => ({
+const customTextFieldStyles = makeStyles((_) => ({
 	custom: {
 		"& .MuiInputBase-input": {
 			color: "white",
@@ -43,8 +46,9 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 		longDescription: "",
 		shortDescription: "",
 	} as Idea);
-
 	const translations = useTranslations();
+
+	const [tags, setTags] = React.useState<Array<string>>([]);
 
 	const { IdeaService } = useServices();
 
@@ -65,7 +69,7 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 						"Separator Separator Separator Separator Separator"
 						"ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription"
 						"LongDescription LongDescription LongDescription LongDescription LongDescription"
-						"Tags Tags UploadRow UploadRow UploadRow"
+						"UploadRow UploadRow UploadRow Tags Tags"
 						"Upload . . . Submit"
 					`,
 				}}>
@@ -117,29 +121,31 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 						})} />
 				</Cell>
 				<Cell
+					className={styles.TagsArea}
 					cellStyles={{
 						gridArea: "Tags",
 					}}>
-					<TextField
-						InputProps={{
-							startAdornment: (
-								<Flex direction="Row">
-									{["Test", "Test1", "Test2", "Test3", "Test4"].map((data) => {
-										return (
-											<Chip
-												label={data}
-											/>
-										);
-									})}
-								</Flex>
-							),
-						}} />
+					<TagDisplay
+						customStyleSet={customStyles}
+						tags={tags}
+						setTags={setTags} />
+				</Cell>
+				<Cell
+					cellStyles={{
+						gridArea: "UploadRow",
+					}}>
+					<UploadRow />
 				</Cell>
 				<Cell
 					cellStyles={{
 						gridArea: "Upload",
 					}}>
-					Test
+					<Button
+						variant="contained"
+						color="primary"
+						onClick={onClick}>
+						Upload
+					</Button>
 				</Cell>
 				<Cell
 					cellStyles={{

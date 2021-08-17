@@ -33,7 +33,7 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 
 	const [moreLoading, call] = useAsyncCall();
 
-	const scrollHandlingInProcess = React.useRef(false);
+	const scrollHandlingInProgress = React.useRef(false);
 
 	const ideasSorted = React.useMemo(() => {
 		let newDataSet = [...ideas];
@@ -41,7 +41,7 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 		let sortCb: (a: Idea, b: Idea) => number;
 		switch (order) {
 			case OrderType.Created:
-				sortCb = (left, right) => left.creationDate.getTime() - right.creationDate.getTime();
+				sortCb = (left, right) => right.creationDate.getTime() - left.creationDate.getTime();
 				break;
 			case OrderType.Description:
 				sortCb = (left, right) => left.shortDescription.localeCompare(right.shortDescription);
@@ -74,19 +74,20 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 
 		const yScrollPercentage = currentScroll / maxScroll;
 
-		if (yScrollPercentage < 0.95 || scrollHandlingInProcess.current) {
+		if (yScrollPercentage < 0.95 || scrollHandlingInProgress.current) {
 			return;
 		}
 
 		try {
-			scrollHandlingInProcess.current = true;
-
-			await call(IdeaService.fetchIdeas);
+			if (!scrollHandlingInProgress.current) {
+				scrollHandlingInProgress.current = true;
+				await call(IdeaService.fetchIdeas);
+			}
 
 			element.scrollTop = currentScroll;
 
 		} finally {
-			scrollHandlingInProcess.current = false;
+			scrollHandlingInProgress.current = false;
 		}
 	}
 

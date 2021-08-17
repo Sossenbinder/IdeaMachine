@@ -10,6 +10,15 @@ export default class Semaphore {
 		this._maxLock = maxLock;
 	}
 
+	public enter(): boolean {
+		if (this._maxLock === 0) {
+			return false;
+		}
+
+		this._maxLock--;
+		return true;
+	}
+
 	public async wait(timeout: number = null): Promise<void> {
 
 		if (this._maxLock > 0) {

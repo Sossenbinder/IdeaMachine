@@ -1,3 +1,6 @@
+// Framework
+import * as moment from "moment";
+
 // Functionality
 import { IIdeaService } from "common/modules/Service/types";
 import ModuleService from "common/modules/Service/ModuleService";
@@ -83,5 +86,5 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		}
 	}
 
-	private enrichIdeasWithDate = (data: CouldBeArray<Idea>) => ensureArray(data).forEach(x => x.creationDate = new Date(x.creationDate));
+	private enrichIdeasWithDate = (data: CouldBeArray<Idea>) => ensureArray(data).forEach(x => x.creationDate = moment(x.creationDate).local().toDate());
 }
