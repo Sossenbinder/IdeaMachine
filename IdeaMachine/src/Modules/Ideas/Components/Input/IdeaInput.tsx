@@ -1,8 +1,6 @@
 // Framework
 import * as React from "react";
-import classNames from "classnames";
-import { Button, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 // Components
@@ -11,6 +9,7 @@ import TagDisplay from "./TagDisplay";
 import Card from "../Card";
 import UploadRow from "./UploadRow";
 import Separator from "common/components/Controls/Separator";
+import StyledTextField from "./StyledTextField";
 
 // Functionality
 import { useTranslations } from 'common/hooks/useTranslations';
@@ -22,25 +21,10 @@ import { Idea } from 'modules/Ideas/types';
 // Styles
 import styles from "./styles/IdeaInput.module.less";
 
+
 type Props = RouteComponentProps;
 
-const customTextFieldStyles = makeStyles((_) => ({
-	custom: {
-		"& .MuiInputBase-input": {
-			color: "white",
-		},
-		"& .MuiFormLabel-root": {
-			color: "white",
-		},
-		"& .MuiInput-underline:before": {
-			borderBottomColor: "black",
-		},
-	},
-}));
-
 export const IdeaInput: React.FC<Props> = ({ history }) => {
-
-	const customStyles = customTextFieldStyles();
 
 	const [idea, setIdea] = React.useState<Idea>({
 		longDescription: "",
@@ -63,14 +47,14 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 				className={styles.IdeaInput}
 				gridProperties={{
 					gridTemplateRows: "1fr 1fr 1fr 1fr 1fr 1fr",
-					gridTemplateColumns: "repeat(4, 1fr)",
+					gridTemplateColumns: "repeat(6, 1fr)",
 					gridTemplateAreas: `
-						"Intro Intro Intro Intro Intro"
-						"Separator Separator Separator Separator Separator"
-						"ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription"
-						"LongDescription LongDescription LongDescription LongDescription LongDescription"
-						"UploadRow UploadRow UploadRow Tags Tags"
-						"Upload . . . Submit"
+						"Intro Intro Intro Intro Intro Intro"
+						"Separator Separator Separator Separator Separator Separator"
+						"ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription"
+						"LongDescription LongDescription LongDescription LongDescription LongDescription LongDescription"
+						"UploadRow UploadRow UploadRow Tags Tags Tags"
+						"Upload . . . . Submit"
 					`,
 				}}>
 				<Cell
@@ -92,9 +76,9 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 					cellStyles={{
 						gridArea: "ShortDescription",
 					}}>
-					<TextField
+					<StyledTextField
 						label={translations.AddIdeaShortDescription}
-						className={classNames(styles.ShortDescription, customStyles.custom)}
+						className={styles.ShortDescription}
 						value={idea.shortDescription}
 						color="primary"
 						variant="outlined"
@@ -107,9 +91,9 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 					cellStyles={{
 						gridArea: "LongDescription",
 					}}>
-					<TextField
+					<StyledTextField
 						label={translations.AddIdeaLongDescription}
-						className={classNames(styles.LongDescription, customStyles.custom)}
+						className={styles.LongDescription}
 						value={idea.longDescription}
 						color="primary"
 						rows={10}
@@ -126,7 +110,6 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 						gridArea: "Tags",
 					}}>
 					<TagDisplay
-						customStyleSet={customStyles}
 						tags={tags}
 						setTags={setTags} />
 				</Cell>

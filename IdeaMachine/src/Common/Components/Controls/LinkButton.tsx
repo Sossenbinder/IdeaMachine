@@ -28,7 +28,7 @@ export const LinkButton: React.FC<Props> = ({ to, color, disabled, size = "mediu
 
 	return (
 		<Button
-			color={color}
+			color={"primary"}
 			disabled={disabled}
 			size={size}
 			variant={variant}

@@ -1,27 +1,62 @@
 // Framework
 import * as React from "react";
-import ChipInput from "material-ui-chip-input";
-import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { Chip } from "@material-ui/core";
+
+// Components
+import Flex from "common/components/Flex";
+import StyledTextField from "./StyledTextField";
 
 type Props = {
-	customStyleSet?: ClassNameMap<"custom">;
 	tags: Array<string>;
 	setTags: React.Dispatch<Array<string>>;
 }
 
-export const TagDisplay: React.FC<Props> = ({ customStyleSet, tags, setTags }) => {
+export const TagDisplay: React.FC<Props> = ({ tags, setTags }) => {
+
+	const [currentText, setCurrentText] = React.useState("");
+
+	const onKeyDown = (event: KeyboardEvent) => {
+		if (event.key === " " || event.key === "Enter") {
+			setTags(tags.concat(currentText));
+			setCurrentText("");
+		}
+	}
 
 	return (
-		<ChipInput
-			className={customStyleSet?.custom ?? ""}
-			onAdd={(chip) => setTags([...tags, chip])}
-			onDelete={(_, index) => {
-				tags.splice(index, 1);
-				setTags(tags);
+		<StyledTextField
+			InputProps={{
+				startAdornment: (
+					<Flex
+						wrap="Wrap"
+						direction="Row">
+						{tags.map((data, index) => {
+							return (
+								<Chip
+									label={data}
+									color="info"
+									id={`Tags_${index}`}
+									onDelete={(x) => {
+										const parentId = x.currentTarget.parentElement.id as string;
+										const strippedId = parentId.replace("Tags_", "");
+
+										const newTags = [...tags];
+										newTags.splice(+strippedId, 1);
+
+										setTags(newTags);
+									}}
+								/>
+							);
+						})}
+					</Flex>
+				),
 			}}
+			multiline
+			rows={1}
+			fullWidth
 			label="Tags"
-			newChipKeyCodes={[13, 32]}
-			value={tags}
+			value={currentText}
+			onKeyDown={onKeyDown}
+			onChange={(event) => setCurrentText(event.currentTarget.value)}
 			variant="outlined"
 		/>
 	);

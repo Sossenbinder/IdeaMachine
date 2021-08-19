@@ -63,9 +63,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Common.RuntimeS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Modules.Reaction", "Modules\IdeaMachine.Modules.Reaction\IdeaMachine.Modules.Reaction.csproj", "{C651DCCB-82A7-464C-A02E-C94A07E81726}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Modules.Reaction.Abstractions", "Modules\IdeaMachine.Modules.Reaction.Abstractions\IdeaMachine.Modules.Reaction.Abstractions.csproj", "{EDEF844D-44B7-429A-BF88-D4128FA4FCAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Modules.Reaction.Abstractions", "Modules\IdeaMachine.Modules.Reaction.Abstractions\IdeaMachine.Modules.Reaction.Abstractions.csproj", "{EDEF844D-44B7-429A-BF88-D4128FA4FCAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Modules.Idea.Abstractions", "Modules\IdeaMachine.Modules.Idea.Abstractions\IdeaMachine.Modules.Idea.Abstractions.csproj", "{CFC94A50-D742-44AB-8AAF-C83EE2605239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Modules.Idea.Abstractions", "Modules\IdeaMachine.Modules.Idea.Abstractions\IdeaMachine.Modules.Idea.Abstractions.csproj", "{CFC94A50-D742-44AB-8AAF-C83EE2605239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
