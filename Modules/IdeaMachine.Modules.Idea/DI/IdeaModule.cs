@@ -36,6 +36,10 @@ namespace IdeaMachine.Modules.Idea.DI
 				.AsSelf()
 				.AutoActivate()
 				.SingleInstance();
+
+			builder.RegisterType<IdeaAttachmentService>()
+				.As<IIdeaAttachmentService>()
+				.SingleInstance();
 		}
 	}
 }

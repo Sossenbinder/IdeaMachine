@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Common.Database.Context;
 using IdeaMachine.Common.Database.Extensions;
@@ -27,6 +28,11 @@ namespace IdeaMachine.Modules.Idea.Repository
 
 			ctx.Ideas.Add(idea);
 
+			if (idea.Tags.IsNotNullOrEmpty())
+			{
+				ctx.Tags.AddRange(idea.Tags!);
+			}
+
 			await ctx.SaveChangesAsync();
 
 			return idea;
@@ -36,7 +42,8 @@ namespace IdeaMachine.Modules.Idea.Repository
 		{
 			await using var ctx = CreateContext();
 
-			var query = ctx.Ideas.AsQueryable();
+			var query = ctx.Ideas
+				.AsQueryable();
 
 			if (paginationToken is not null)
 			{
@@ -46,7 +53,8 @@ namespace IdeaMachine.Modules.Idea.Repository
 
 			query = query
 				.OrderByDescending(x => x.Id)
-				.Take(50);
+				.Take(50)
+				.Include(x => x.Tags);
 
 			var queryResult = await query.ToListAsync();
 
@@ -59,21 +67,30 @@ namespace IdeaMachine.Modules.Idea.Repository
 		{
 			await using var ctx = CreateContext();
 
-			return await ctx.Ideas.Where(x => x.Creator == userId).ToListAsync();
+			return await ctx.Ideas
+				.Where(x => x.Creator == userId)
+				.Include(x => x.Tags)
+				.ToListAsync();
 		}
 
 		public async Task<IdeaEntity?> GetSpecificIdea(int id)
 		{
 			await using var ctx = CreateContext();
 
-			return await ctx.Ideas.FirstOrDefaultAsync(x => x.Id == id);
+			return await ctx.Ideas
+				.Include(x => x.Tags)
+				.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
 		public async Task MigrateIdeas(Guid oldOwner, Guid newOwner)
 		{
 			await using var ctx = CreateContext();
 
-			foreach (var ideaOfOldOwner in ctx.Ideas.Where(x => x.Creator == oldOwner))
+			var oldIdeas = await ctx.Ideas
+				.Where(x => x.Creator == oldOwner)
+				.ToListAsync();
+
+			foreach (var ideaOfOldOwner in oldIdeas)
 			{
 				ideaOfOldOwner.Creator = newOwner;
 			}

@@ -7,6 +7,8 @@
 	border: 2px solid #9FA4A1;
 	border-radius: 10px;
 
+	animation: opacityIn 0.5s ease-in;
+
 	.Content {
 		height: 100%;
 		width: 100%;
@@ -18,5 +20,15 @@
 		.CloseIcon {
 			float: right;
 		}
+	}
+}
+
+@keyframes opacityIn {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
 	}
 }

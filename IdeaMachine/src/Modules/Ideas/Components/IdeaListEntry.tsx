@@ -2,11 +2,13 @@
 import * as React from "react";
 import classNames from "classnames";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Chip } from "@material-ui/core";
 
 // Components
 import { Grid, Cell, Flex } from "common/components";
 import MaterialIcon, { MaterialIconType } from "common/components/MaterialIcon";
 import { FeedbackMaterialIcon } from "common/components/FeedbackMaterialIcon";
+import { IdeaFilterContext } from "modules/Ideas/Components/IdeaFilterContext";
 import Separator from "common/components/Controls/Separator";
 
 // Functionality
@@ -24,9 +26,11 @@ type Props = RouteComponentProps & {
 	idea: Idea;
 }
 
-export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creationDate, longDescription, id, ideaReactionMetaData: { totalLike, ownLikeState } }, history }) => {
+export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creationDate, longDescription, id, tags, ideaReactionMetaData: { totalLike, ownLikeState } }, history }) => {
 
 	const [previewOpen, setPreviewOpen] = React.useState(false);
+
+	const { filters, updateFilters } = React.useContext(IdeaFilterContext);
 
 	const { ReactionService, IdeaService } = useServices();
 
@@ -54,6 +58,20 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 		await IdeaService.deleteIdea(id);
 	}
 
+	const onTagClick = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, tag: string) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		if (filters.tags.indexOf(tag) !== -1) {
+			return;
+		}
+
+		updateFilters({
+			...filters,
+			tags: [...filters.tags, tag],
+		});
+	}
+
 	return (
 		<div
 			className={containerClassNames}
@@ -61,12 +79,16 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 			<Grid
 				className={styles.Idea}
 				gridProperties={{
-					gridTemplateColumns: "30px 9fr 75px 1fr 40px",
-					gridTemplateRows: "1fr 1fr"
+					gridTemplateColumns: "30px 7fr 75px 1fr 40px",
+					gridTemplateRows: "1fr 1fr",
+					gridTemplateAreas: `
+						"TotalLike ShortDescription Actions Timestamp Expand"
+						"TotalLike LongDescription Tags Tags ."
+					`,
 				}}>
 				<Cell
 					cellStyles={{
-						gridRow: "1/3"
+						gridArea: "TotalLike"
 					}}>
 					<Flex
 						className={styles.TotalLikeContainer}
@@ -125,9 +147,29 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 				<If condition={previewOpen}>
 					<Cell
 						cellStyles={{
-							gridColumn: "2/6",
+							gridArea: "LongDescription",
 						}}>
 						<span>{longDescription}</span>
+					</Cell>
+					<Cell
+						cellStyles={{
+							gridArea: "Tags",
+						}}>
+						<Flex
+							className={styles.Chips}
+							direction="Row"
+							wrap="Wrap">
+							{tags.map((data, index) => {
+								return (
+									<Chip
+										label={data}
+										color="info"
+										key={`Tags_${index}`}
+										onClick={event => onTagClick(event, data)}
+									/>
+								);
+							})}
+						</Flex>
 					</Cell>
 				</If>
 			</Grid>

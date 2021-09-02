@@ -4,6 +4,7 @@ export type Idea = {
 	longDescription: string;
 	creatorId: string;
 	creationDate: Date;
+	tags: Array<string>;
 	ideaReactionMetaData: IdeaReactionMetaData;
 }
 
@@ -18,11 +19,23 @@ export enum OrderType {
 	Popularity
 }
 
+export enum OrderDirection {
+	Up,
+	Down,
+}
+
 export enum IdeaDeleteErrorCode {
 	UnspecifiedError,
 	Successful,
 	NotOwned,
 	NotFound,
+}
+
+export enum IdeaInputResult {
+	UnspecifiedError = 0,
+	Successful = 1 << 0,
+	MissingShortDescription = 1 << 1,
+	MissingLongDescription = 1 << 2,
 }
 
 export namespace Network {

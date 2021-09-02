@@ -10,6 +10,8 @@ using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Reaction.Service.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
+using IdeaMachine.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachine.Controllers
@@ -25,6 +27,8 @@ namespace IdeaMachine.Controllers
 		private readonly IIdeaRetrievalService _ideaRetrievalService;
 
 		private readonly IReactionRetrievalService _reactionRetrievalService;
+
+		private readonly IIdeaAttachmentService _ideaAttachmentService;
 
 		public IdeaController(
 			ISessionService sessionService,
@@ -84,8 +88,15 @@ namespace IdeaMachine.Controllers
 
 		[HttpPost]
 		[Route("Add")]
-		public async Task<JsonResponse> Add([FromBody] IdeaModel ideaModel)
+		public async Task<JsonResponse> Add(
+			[ModelBinder(BinderType = typeof(MultiPartJsonModelBinder))] IdeaModel ideaModel,
+			IFormCollection form)
 		{
+			if (!ideaModel.Validate())
+			{
+				return JsonResponse.Error();
+			}
+
 			await _ideaService.Add(Session, ideaModel);
 
 			return JsonResponse.Success();

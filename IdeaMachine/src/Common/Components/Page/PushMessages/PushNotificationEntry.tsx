@@ -28,7 +28,7 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 
 	const onClose = async () => {
 		let opacityDegree = 100;
-		await tickCountDownAwaitable(100, 10, () => {
+		await tickCountDownAwaitable(100, 5, () => {
 			notificationRef.current.style.opacity = `${opacityDegree}%`;
 			opacityDegree--;
 			return Promise.resolve();

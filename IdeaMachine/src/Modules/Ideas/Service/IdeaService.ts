@@ -11,7 +11,7 @@ import { updateIdeaPagination } from "common/redux/Reducer/PaginationReducer";
 import { ensureArray } from "common/helper/arrayUtils";
 
 // Types
-import { Idea, IdeaDeleteErrorCode } from "../types";
+import { Idea, IdeaDeleteErrorCode, IdeaInputResult } from "../types";
 import { CouldBeArray } from "common/types/arrayTypes";
 
 export default class IdeaService extends ModuleService implements IIdeaService {
@@ -24,8 +24,36 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		return Promise.resolve();
 	}
 
-	addIdea = async (idea: Idea) => {
-		await ideaCommunication.postIdea(idea);
+	addIdea = async (idea: Idea, attachments?: FileList): Promise<number> => {
+
+		let result: IdeaInputResult = null;
+
+		if (!idea.shortDescription) {
+			result |= IdeaInputResult.MissingShortDescription;
+		}
+
+		if (!idea.longDescription) {
+			result |= IdeaInputResult.MissingLongDescription;
+		}
+
+		if (result !== null) {
+			return result;
+		}
+
+		const response = await ideaCommunication.postIdea(idea, attachments);
+
+		if (!response.success) {
+			this.dispatch(pushNotificationReducer.add({
+				message: "An error occured",
+				timeStamp: new Date(),
+				type: "Error",
+				timeout: 5000,
+			}));
+
+			return IdeaInputResult.UnspecifiedError;
+		}
+
+		return IdeaInputResult.Successful;
 	}
 
 	fetchIdeas = async () => {
@@ -73,7 +101,7 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		const errorCode = deletionResponse.payload;
 
 		if (errorCode === IdeaDeleteErrorCode.Successful) {
-			return;
+			this.dispatch(ideaReducer.delete(this.getStore().ideaReducer.data.find(x => x.id === id)));
 		}
 
 		if (errorCode === IdeaDeleteErrorCode.NotOwned) {

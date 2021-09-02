@@ -20,6 +20,8 @@ namespace IdeaMachine.DataTypes.UiModels.Idea
 
 		public IdeaReactionMetaData IdeaReactionMetaData { get; set; }
 
+		public List<string> Tags { get; set; }
+
 		public static IdeaUiModel FromModel(IdeaModel model)
 		{
 			return new()
@@ -29,6 +31,7 @@ namespace IdeaMachine.DataTypes.UiModels.Idea
 				Id = model.Id,
 				LongDescription = model.LongDescription,
 				ShortDescription = model.ShortDescription,
+				Tags = model.Tags,
 			};
 		}
 	}

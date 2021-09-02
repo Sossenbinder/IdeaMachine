@@ -34,4 +34,8 @@
 		<ProjectReference Include="..\Modules\IdeaMachine.Modules.Session\IdeaMachine.Modules.Session.csproj" />
 		<ProjectReference Include="..\Services\IdeaMachine.Service.Base\IdeaMachine.Service.Base.csproj" />
 	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="if [ $(ConfigurationName) == Release ]; then yarn run build; fi" />
+	</Target>
 </Project>

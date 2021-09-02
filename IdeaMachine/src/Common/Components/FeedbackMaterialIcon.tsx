@@ -27,8 +27,10 @@ export const FeedbackMaterialIcon: React.FC<FeedbackMaterialIcon> = (props) => {
 			resolve();
 		};
 
-		feedbackRef.current.onanimationend = cb;
-		feedbackRef.current.classList.add(styles.animateOut);
+		if (feedbackRef.current) {
+			feedbackRef.current.onanimationend = cb;
+			feedbackRef.current.classList.add(styles.animateOut);
+		}
 	});
 
 	const onClick = props.onClick === undefined ? undefined : async (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {

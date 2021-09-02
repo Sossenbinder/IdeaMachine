@@ -16,7 +16,7 @@ namespace GrpcProxyGenerator.Service
 
 		public void EmitProxy(string builtProxy, ProxyMetaData metaData)
 		{
-			var outputDir = $"{_solutionPath}\\Common\\IDeaMachine.Common.RemotingProxies\\Proxies\\";
+			var outputDir = $"{_solutionPath}\\Common\\IdeaMachine.Common.RemotingProxies\\Proxies\\";
 
 			File.WriteAllText($"{outputDir}\\{metaData.ServiceNameShort}Proxy.cs", builtProxy);
 		}

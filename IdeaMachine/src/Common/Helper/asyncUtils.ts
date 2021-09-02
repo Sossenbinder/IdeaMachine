@@ -16,7 +16,7 @@ export const tickCountDownAwaitable = (tickCount: number, msBetweenTicks: number
 			cb();
 			counter++;
 
-			if (counter === tickCount) {
+			if (counter >= tickCount) {
 				clearTimeout(counterId);
 				resolve();
 			}

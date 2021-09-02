@@ -1,7 +1,7 @@
 //Types
 import { NetworkResponse } from "common/helper/Requests/Types/NetworkDefinitions";
 import ISignalRConnectionProvider from "common/helper/SignalR/Interface/ISignalRConnectionProvider";
-import { Idea } from "modules/Ideas/types";
+import { Idea, IdeaInputResult } from "modules/Ideas/types";
 import { RegisterInfo, SignInInfo, IdentityErrorCode } from "modules/Account/types";
 import { LikeState } from "modules/Reaction/types";
 
@@ -15,7 +15,7 @@ export type ServiceNotification = {
 }
 
 export interface IIdeaService extends IModuleService {
-	addIdea(idea: Idea): Promise<void>;
+	addIdea(idea: Idea, attachments?: FileList): Promise<number>;
 	fetchIdeas(): Promise<void>;
 	initializeOwnIdeas(): Promise<void>;
 	getSpecificIdea(id: number): Promise<void>;

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Modules.Idea.DataTypes.Entity;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 
@@ -16,6 +19,8 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Model
 
 		public Guid CreatorId { get; set; }
 
+		public List<string> Tags { get; set; } = new();
+
 		public IdeaEntity ToEntity(ISession session)
 		{
 			return new()
@@ -24,7 +29,16 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Model
 				CreationDate = CreationDate,
 				LongDescription = LongDescription,
 				ShortDescription = ShortDescription,
+				Tags = Tags.Select(x => new TagEntity()
+				{
+					Tag = x,
+				}).ToList(),
 			};
+		}
+
+		public bool Validate()
+		{
+			return !ShortDescription.IsNullOrEmpty() || !LongDescription.IsNullOrEmpty() || Tags.Count <= 5;
 		}
 	}
 }

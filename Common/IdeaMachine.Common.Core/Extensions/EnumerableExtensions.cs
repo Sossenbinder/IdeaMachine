@@ -9,5 +9,10 @@ namespace IdeaMachine.Common.Core.Extensions
 		{
 			return !enumerable?.Any() ?? true;
 		}
+
+		public static bool IsNotNullOrEmpty<T>(this IEnumerable<T>? enumerable)
+		{
+			return enumerable?.Any() ?? false;
+		}
 	}
 }

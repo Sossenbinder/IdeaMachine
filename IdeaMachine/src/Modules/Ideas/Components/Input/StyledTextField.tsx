@@ -1,6 +1,6 @@
 // Framework
-import { styled } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
+import { styled } from "@material-ui/core/styles";
 
 export const StyledTextField = styled(TextField)(() => ({
 	["& .MuiInputBase-input"]: {
@@ -15,6 +15,9 @@ export const StyledTextField = styled(TextField)(() => ({
 	["& .MuiInput-underline:before"]: {
 		borderBottomColor: "black",
 	},
+	["& .MuiOutlinedInput-input"]: {
+		marginLeft: "15px",
+	}
 }));
 
 export default StyledTextField;

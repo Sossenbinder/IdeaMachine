@@ -1,11 +1,11 @@
 // Framework
 import * as React from "react";
-import { ImageList, ImageListItem } from "@material-ui/core";
 
 // Components
 import Flex from "common/components/Flex";
 
 // Functionality
+import openModal from "./UploadModal";
 
 // Types
 
@@ -13,16 +13,23 @@ import Flex from "common/components/Flex";
 import styles from "./styles/UploadRow.module.less";
 
 type Props = {
-
+	fileUrls: Array<string>;
 }
 
-export const UploadRow: React.FC<Props> = () => {
+export const UploadRow: React.FC<Props> = ({ fileUrls }) => {
 	return (
-		<ImageList>
-			<ImageListItem>
-				<img src="/Resources/Images/Background.jpg" />
-			</ImageListItem>
-		</ImageList>
+		<Flex
+			className={styles.UploadRow}>
+			{
+				fileUrls.map(x => (
+					<img
+						className={styles.Image}
+						key={x}
+						onClick={() => openModal(x)}
+						src={x} />
+				))
+			}
+		</Flex>
 	);
 }
 

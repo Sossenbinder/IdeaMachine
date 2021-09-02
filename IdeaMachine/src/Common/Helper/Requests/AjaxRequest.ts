@@ -8,7 +8,7 @@ export enum RequestMethods {
 
 const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] as HTMLInputElement;
 
-export default class AjaxRequest<TRequest, TResponse> {
+export default abstract class AjaxRequest<TRequest, TResponse> {
 
 	private m_url: string;
 
@@ -27,13 +27,12 @@ export default class AjaxRequest<TRequest, TResponse> {
 			method: this.m_requestMethod,
 			cache: "no-cache",
 			headers: {
-				'Accept': 'application/json, text/javascript, */*',
-				'Content-Type': 'application/json'
+				"Accept": "application/json, text/javascript, */*",
+				"Content-Type": "application/json",
+				"RequestVerificationToken": tokenHolder.value,
 			},
 			credentials: 'include'
 		};
-
-		requestInit.headers["RequestVerificationToken"] = tokenHolder.value;
 
 		if ((this.m_requestMethod === RequestMethods.POST || this.m_requestMethod === RequestMethods.DELETE) && typeof requestData !== "undefined") {
 			requestInit.body = JSON.stringify(requestData);

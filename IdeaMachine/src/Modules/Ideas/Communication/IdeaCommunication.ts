@@ -5,6 +5,7 @@ import { Idea, Network } from "../types";
 import PostRequest, { PagedPostRequest, VoidPostRequest } from "common/helper/Requests/PostRequest";
 import GetRequest from "common/helper/Requests/GetRequest";
 import DeleteRequest from "common/helper/Requests/DeleteRequest";
+import MultiPartRequest from "common/helper/Requests/MultiPartRequest";
 
 const Urls = {
 	Add: "/Idea/Add",
@@ -16,9 +17,12 @@ const Urls = {
 	Reply: "/Idea/Reply",
 }
 
-export const postIdea = async (idea: Idea) => {
-	const request = new PostRequest<Network.Add.Request, void>(Urls.Add);
-	return await request.post(idea);
+export const postIdea = async (idea: Idea, files?: FileList) => {
+	const request = new MultiPartRequest<Network.Add.Request, void>(Urls.Add);
+	return await request.post({
+		files: files ?? new FileList(),
+		data: idea,
+	});
 }
 
 export const getIdeas = async (paginationToken: number | null = null) => {

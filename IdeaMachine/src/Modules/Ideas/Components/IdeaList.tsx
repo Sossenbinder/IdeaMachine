@@ -5,7 +5,7 @@ import * as React from "react";
 import Flex from "common/components/Flex";
 import IdeaListEntry from "./IdeaListEntry";
 import LoadingBubbles from "../../../common/components/State/LoadingBubbles";
-import IdeaListFilters from "./IdeaListFilters";
+import IdeaListFilters from "./Filter/IdeaListFilters";
 
 // Functionality
 import useServices from "common/hooks/useServices";
@@ -13,7 +13,7 @@ import useAsyncCall from "common/hooks/useAsyncCall";
 import { IdeaFilterContext } from "modules/Ideas/Components/IdeaFilterContext";
 
 // Types
-import { Idea } from "modules/Ideas/types";
+import { Idea, OrderDirection } from "modules/Ideas/types";
 
 // Styles
 import styles from "./styles/IdeaList.module.less";
@@ -25,7 +25,7 @@ type Props = {
 
 export const IdeaList: React.FC<Props> = ({ ideas }) => {
 
-	const { order } = React.useContext(IdeaFilterContext);
+	const { filters: { order, direction, tags } } = React.useContext(IdeaFilterContext);
 
 	const scrollRef = React.createRef<HTMLDivElement>();
 
@@ -38,21 +38,40 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 	const ideasSorted = React.useMemo(() => {
 		let newDataSet = [...ideas];
 
+		if (tags && tags.length > 0) {
+			newDataSet = newDataSet.filter(x => tags.every(y => x.tags.includes(y)));
+		}
+
 		let sortCb: (a: Idea, b: Idea) => number;
 		switch (order) {
 			case OrderType.Created:
-				sortCb = (left, right) => right.creationDate.getTime() - left.creationDate.getTime();
+				sortCb = (left, right) => {
+					if (direction === OrderDirection.Down) {
+						return right.creationDate.getTime() - left.creationDate.getTime();
+					}
+					return left.creationDate.getTime() - right.creationDate.getTime();
+				}
 				break;
 			case OrderType.Description:
-				sortCb = (left, right) => left.shortDescription.localeCompare(right.shortDescription);
+				sortCb = (left, right) => {
+					if (direction === OrderDirection.Up) {
+						return left.shortDescription.localeCompare(right.shortDescription);
+					}
+					return right.shortDescription.localeCompare(left.shortDescription);
+				}
 				break;
 			case OrderType.Popularity:
-				sortCb = (left, right) => right.ideaReactionMetaData.totalLike - left.ideaReactionMetaData.totalLike;
+				sortCb = (left, right) => {
+					if (direction === OrderDirection.Down) {
+						return left.ideaReactionMetaData.totalLike - right.ideaReactionMetaData.totalLike;
+					}
+					return right.ideaReactionMetaData.totalLike - left.ideaReactionMetaData.totalLike;
+				}
 				break;
 		}
 
 		return newDataSet.sort(sortCb);
-	}, [ideas, order]);
+	}, [ideas, order, direction, tags]);
 
 	const ideasRendered = React.useMemo(() => ideasSorted
 		.map(idea => (

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Entity
@@ -15,6 +17,8 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 
 		public DateTime CreationDate { get; set; }
 
+		public List<TagEntity>? Tags { get; set; }
+
 		public IdeaModel ToModel()
 		{
 			return new()
@@ -24,6 +28,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 				ShortDescription = ShortDescription,
 				LongDescription = LongDescription,
 				Id = Id,
+				Tags = Tags?.Select(x => x.Tag).ToList() ?? new List<string>(),
 			};
 		}
 	}
