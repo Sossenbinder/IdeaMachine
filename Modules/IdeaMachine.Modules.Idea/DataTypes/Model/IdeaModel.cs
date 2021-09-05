@@ -21,6 +21,8 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Model
 
 		public List<string> Tags { get; set; } = new();
 
+		public List<AttachmentUrlModel> AttachmentUrls { get; set; } = new();
+
 		public IdeaEntity ToEntity(ISession session)
 		{
 			return new()

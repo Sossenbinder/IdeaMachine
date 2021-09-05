@@ -114,5 +114,18 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		}
 	}
 
+	deleteAttachment = async (ideaId: number, attachmentId: number) => {
+		const deletionResponse = await ideaCommunication.deleteAttachment(ideaId, attachmentId);
+
+		if (!deletionResponse.success) {
+			this.dispatch(pushNotificationReducer.add({
+				message: "Error while trying to delete the attachment",
+				timeStamp: new Date(),
+				type: "Error",
+				timeout: 5000,
+			}));
+		}
+	}
+
 	private enrichIdeasWithDate = (data: CouldBeArray<Idea>) => ensureArray(data).forEach(x => x.creationDate = moment(x.creationDate).local().toDate());
 }

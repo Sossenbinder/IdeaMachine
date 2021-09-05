@@ -5,7 +5,7 @@ type VerificationTokenRequest = {
 	__RequestVerificationToken?: string;
 }
 
-export default class DeleteRequest<TRequest, TResponse> extends AjaxRequest<TRequest, TResponse> {
+export default class DeleteRequest<TRequest, TResponse = void> extends AjaxRequest<TRequest, TResponse> {
 
 	constructor(url: string) {
 		super(url, RequestMethods.DELETE);

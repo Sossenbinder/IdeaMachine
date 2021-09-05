@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Utils.Transaction;
 using NUnit.Framework;
 
-namespace IdeaMachine.Common.Core.Tests.Utils.TransAction
+namespace IdeaMachine.Common.Core.Tests.Utils.Transaction
 {
 	[TestFixture]
 	public class TransactionBuilderTests

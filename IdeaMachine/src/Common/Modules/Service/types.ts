@@ -20,6 +20,7 @@ export interface IIdeaService extends IModuleService {
 	initializeOwnIdeas(): Promise<void>;
 	getSpecificIdea(id: number): Promise<void>;
 	deleteIdea(id: number): Promise<void>;
+	deleteAttachment(ideaId: number, attachmentId: number): Promise<void>;
 }
 
 export interface IReactionService extends IModuleService {

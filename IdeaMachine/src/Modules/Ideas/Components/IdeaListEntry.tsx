@@ -26,7 +26,7 @@ type Props = RouteComponentProps & {
 	idea: Idea;
 }
 
-export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creationDate, longDescription, id, tags, ideaReactionMetaData: { totalLike, ownLikeState } }, history }) => {
+export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creationDate, longDescription, id, tags, attachmentUrls, ideaReactionMetaData: { totalLike, ownLikeState } }, history }) => {
 
 	const [previewOpen, setPreviewOpen] = React.useState(false);
 
@@ -79,7 +79,7 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 			<Grid
 				className={styles.Idea}
 				gridProperties={{
-					gridTemplateColumns: "30px 7fr 75px 1fr 40px",
+					gridTemplateColumns: "30px 7fr 100px 1fr 40px",
 					gridTemplateRows: "1fr 1fr",
 					gridTemplateAreas: `
 						"TotalLike ShortDescription Actions Timestamp Expand"
@@ -121,7 +121,23 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 				</span>
 				<Flex
 					className={styles.ControlSection}
-					direction="Row">
+					direction="Row"
+					crossAlign="Start">
+					<If condition={attachmentUrls && attachmentUrls.length > 0}>
+						<Flex
+							direction="Row"
+							crossAlign="Center"
+							className={styles.Attachments}>
+							<span className={styles.Number}>
+								{attachmentUrls.length}
+							</span>
+							<MaterialIcon
+								className={styles.AttachmentIcon}
+								onClick={async event => navTo(event, `/idea/${id}`)}
+								iconName="attachment"
+								size={25} />
+						</Flex>
+					</If>
 					<MaterialIcon
 						onClick={async event => navTo(event, `/idea/${id}`)}
 						iconName="info"

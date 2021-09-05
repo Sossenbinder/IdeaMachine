@@ -16,4 +16,8 @@
 		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Account\IdeaMachine.Modules.Account.csproj" />
 		<ProjectReference Include="..\..\Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
 	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="dotnet $(OutDir)\GrpcProxyGenerator.dll $(SolutionDir)" />
+	</Target>
 </Project>

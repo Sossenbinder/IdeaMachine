@@ -10,7 +10,7 @@ namespace IdeaMachine.Common.Core.Extensions
 	/// </summary>
 	public static class ActionExtensions
 	{
-		public static Func<Task>? MakeTaskCompatible(this Action? action)
+		public static Func<Task>? MakeTaskFunc(this Action? action)
 		{
 			if (action == null)
 			{
@@ -24,7 +24,7 @@ namespace IdeaMachine.Common.Core.Extensions
 			};
 		}
 
-		public static Func<T, Task>? MakeTaskCompatible<T>(this Action<T>? action)
+		public static Func<T, Task>? MakeTaskFunc<T>(this Action<T>? action)
 		{
 			if (action == null)
 			{

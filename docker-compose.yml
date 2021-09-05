@@ -19,6 +19,7 @@ services:
       ASPNETCORE_ENVIRONMENT: "Development"
       DbConnectionString: "Server=tcp:ideamachine.sql,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
       IdeaMachine_RabbitMq: "ideamachine.rabbitmq"
+      BlobStorageConnection: "DefaultEndpointsProtocol=https;AccountName=ideamachine;AccountKey=UACIUfu/dASKQJSwvwYpvsn74usor69WgNCzP7xlxIumycC1LFyWYptQ1xBcnw8jBsoBI3tD5ysemzdmMMiH6g==;EndpointSuffix=core.windows.net"
       GmailUserName: "ideamachinenews@gmail.com"
       GmailPassword: "LwtqQp6bBUVE7j2IhmVT"
       Seq_Server: "http://ideamachine.seq:5341"

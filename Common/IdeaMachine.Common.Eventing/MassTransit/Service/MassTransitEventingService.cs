@@ -54,7 +54,7 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 		public HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Action<T> handler)
 			where T : class
 		{
-			return RegisterForEvent(queueName, handler.MakeTaskCompatible()!);
+			return RegisterForEvent(queueName, handler.MakeTaskFunc()!);
 		}
 
 		public HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Func<T, Task> handler) where T : class

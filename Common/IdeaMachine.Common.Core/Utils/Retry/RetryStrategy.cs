@@ -38,7 +38,7 @@ namespace IdeaMachine.Common.Core.Utils.Retry
 			int msBetweenRetries = 0,
 			int retryCount = 10)
 		{
-			return RetryInternal(action, msBetweenRetries, retryCount, onRetry.MakeTaskCompatible());
+			return RetryInternal(action, msBetweenRetries, retryCount, onRetry.MakeTaskFunc());
 		}
 
 		public static Task DoRetryExponential(
@@ -48,7 +48,7 @@ namespace IdeaMachine.Common.Core.Utils.Retry
 			int retryScalingFactor = 2,
 			int retryCount = 10)
 		{
-			return RetryInternal(action, msBetweenRetries, retryCount, onRetry.MakeTaskCompatible(), currentWaitTime => currentWaitTime * retryScalingFactor);
+			return RetryInternal(action, msBetweenRetries, retryCount, onRetry.MakeTaskFunc(), currentWaitTime => currentWaitTime * retryScalingFactor);
 		}
 
 		#endregion ActionBased

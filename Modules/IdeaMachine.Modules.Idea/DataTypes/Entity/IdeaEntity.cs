@@ -19,6 +19,8 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 
 		public List<TagEntity>? Tags { get; set; }
 
+		public List<AttachmentUrlEntity>? AttachmentUrls { get; set; }
+
 		public IdeaModel ToModel()
 		{
 			return new()
@@ -29,6 +31,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 				LongDescription = LongDescription,
 				Id = Id,
 				Tags = Tags?.Select(x => x.Tag).ToList() ?? new List<string>(),
+				AttachmentUrls = AttachmentUrls?.Select(x => x.ToModel()).ToList() ?? new List<AttachmentUrlModel>()
 			};
 		}
 	}

@@ -17,3 +17,9 @@ CREATE TABLE [dbo].[Tags](
 	[IdeaId] [int] NOT NULL FOREIGN KEY REFERENCES Ideas(Id),
 	[Tag] [varchar](200) NOT NULL
 );
+
+CREATE TABLE [dbo].[AttachmentUrls](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[IdeaId] [int] NOT NULL FOREIGN KEY REFERENCES Ideas(Id),
+	[AttachmentUrl] [varchar](500) NOT NULL
+);

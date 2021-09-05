@@ -10,6 +10,8 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 
 		public DbSet<TagEntity> Tags { get; set; } = null!;
 
+		public DbSet<AttachmentUrlEntity> AttachmentUrls { get; set; } = null!;
+
 		public IdeaContext(string connectionString)
 			: base(connectionString)
 		{
@@ -28,6 +30,10 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 				.HasMany(x => x.Tags)
 				.WithOne(x => x.Idea);
 
+			modelBuilder.Entity<IdeaEntity>()
+				.HasMany(x => x.AttachmentUrls)
+				.WithOne(x => x.Idea);
+
 			modelBuilder.Entity<TagEntity>()
 				.Property(x => x.Id)
 				.ValueGeneratedOnAdd();
@@ -38,6 +44,19 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 				.HasForeignKey(x => x.IdeaId);
 
 			modelBuilder.Entity<TagEntity>()
+				.HasKey(x => x.Id);
+
+			modelBuilder.Entity<AttachmentUrlEntity>()
+				.Property(x => x.Id)
+				.ValueGeneratedOnAdd();
+
+			modelBuilder.Entity<AttachmentUrlEntity>()
+				.HasOne(x => x.Idea)
+				.WithMany(x => x.AttachmentUrls)
+				.HasForeignKey(x => x.IdeaId);
+
+			modelBuilder.Entity<AttachmentUrlEntity>()
+				.ToTable("AttachmentUrls")
 				.HasKey(x => x.Id);
 		}
 	}

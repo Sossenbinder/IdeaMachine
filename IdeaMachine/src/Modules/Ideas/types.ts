@@ -5,7 +5,13 @@ export type Idea = {
 	creatorId: string;
 	creationDate: Date;
 	tags: Array<string>;
+	attachmentUrls: Array<AttachmentUrl>;
 	ideaReactionMetaData: IdeaReactionMetaData;
+}
+
+export type AttachmentUrl = {
+	id: number;
+	attachmentUrl: string;
 }
 
 export type IdeaReactionMetaData = {
@@ -60,6 +66,13 @@ export namespace Network {
 	export namespace Delete {
 		export type Request = number;
 		export type Response = IdeaDeleteErrorCode;
+	}
+
+	export namespace DeleteAttachment {
+		export type Request = {
+			ideaId: number;
+			attachmentId: number;
+		}
 	}
 
 	export namespace Reply {

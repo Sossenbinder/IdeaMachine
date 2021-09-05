@@ -17,7 +17,7 @@ import { useTranslations } from 'common/hooks/useTranslations';
 import useServices from "common/hooks/useServices";
 
 // Types
-import { Idea, IdeaInputResult } from 'modules/Ideas/types';
+import { AttachmentUrl, Idea, IdeaInputResult } from 'modules/Ideas/types';
 
 // Styles
 import styles from "./styles/IdeaInput.module.less";
@@ -166,7 +166,8 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 						gridArea: "UploadRow",
 					}}>
 					<UploadRow
-						fileUrls={fileUrls} />
+						attachments={fileUrls.map(x => ({ attachmentUrl: x }) as AttachmentUrl)}
+						ideaId={idea.id} />
 				</Cell>
 				<Cell
 					cellStyles={{

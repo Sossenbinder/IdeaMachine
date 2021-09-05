@@ -7,6 +7,9 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import IdeaNotFound from "modules/Ideas/Components/IdeaNotFound";
 import { Cell, Flex, Grid } from "common/components";
 import Card from "../Card";
+import MaterialIcon from "common/components/MaterialIcon";
+import CommentSection from "./CommentSection";
+import UploadRow from "../Input/UploadRow";
 
 // Functionality
 import { ReduxStore } from "common/redux/store";
@@ -19,22 +22,22 @@ import { getUsDate, getUsTime } from "common/utils/timeUtils";
 
 // Types
 import { Idea } from "../../types";
+import { Account } from "modules/Account/types";
 import { LikeState } from "modules/Reaction/types";
 
 // Styles
 import styles from "./styles/IdeaInfo.module.less";
-import MaterialIcon from "common/components/MaterialIcon";
-import CommentSection from "./CommentSection";
 
 type Props = RouteComponentProps<{
 	id: string,
 }>;
 
 type ReduxProps = {
+	account: Account;
 	idea: Idea;
 }
 
-export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id } }, idea, history }) => {
+export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id } }, idea, history, account }) => {
 
 	const idParsed = Number(id);
 
@@ -58,7 +61,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 						className={styles.IdeaInfoGrid}
 						gridProperties={{
 							gridTemplateColumns: "9fr 1fr 2fr",
-							gridTemplateRows: "50px 5fr minmax(0px, 4fr)",
+							gridTemplateRows: "50px 4fr 1fr minmax(0px, 4fr)",
 							rowGap: "20px"
 						}}>
 						<Cell>
@@ -108,6 +111,18 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 							cellStyles={{
 								gridColumn: "1/4",
 							}}>
+							<If condition={idea.attachmentUrls && idea.attachmentUrls.length > 0}>
+								<span className={styles.Attachments}>Attachments:</span>
+								<UploadRow
+									ideaId={idea.id}
+									isOwned={idea.creatorId === account.userId}
+									attachments={idea.attachmentUrls} />
+							</If>
+						</Cell>
+						<Cell
+							cellStyles={{
+								gridColumn: "1/4",
+							}}>
 							<CommentSection
 								idea={idea} />
 						</Cell>
@@ -132,6 +147,7 @@ const mapStateToProps = (state: ReduxStore, ownProps: Props): ReduxProps => {
 	const idParsed = Number(ownProps.match.params.id);
 
 	return {
+		account: state.accountReducer.data,
 		idea: state.ideaReducer.data.find(x => x.id === idParsed),
 	}
 }

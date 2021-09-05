@@ -17,7 +17,7 @@ namespace IdeaMachine.ModulesServiceBase
 		protected void RegisterEventHandler<T>(
 			IEvent<T> @event,
 			Action<T> handler)
-			=> RegisterEventHandler(@event, handler.MakeTaskCompatible()!);
+			=> RegisterEventHandler(@event, handler.MakeTaskFunc()!);
 
 		protected void RegisterEventHandler<T>(
 			IEvent<T> @event,
@@ -32,7 +32,7 @@ namespace IdeaMachine.ModulesServiceBase
 			IDistributedEvent<T> @event,
 			Action<Fault<T>> handler)
 			where T : class
-			=> RegisterFaultHandler(@event, handler.MakeTaskCompatible()!);
+			=> RegisterFaultHandler(@event, handler.MakeTaskFunc()!);
 
 		protected void RegisterFaultHandler<T>(
 			IDistributedEvent<T> @event,

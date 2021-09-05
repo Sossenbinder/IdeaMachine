@@ -42,6 +42,7 @@ COPY ["Tools/GrpcProxyGenerator/GrpcProxyGenerator.csproj", "Tools/GrpcProxyGene
 RUN dotnet restore "IdeaMachine/IdeaMachine.csproj"
 COPY . .
 WORKDIR "/src/IdeaMachine"
+RUN yarn run build
 RUN dotnet build "IdeaMachine.csproj" -c Release -o /app/build
 
 FROM build AS publish

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using IdeaMachine.Modules.Idea.Abstractions.DataTypes.Model;
-using IdeaMachine.Modules.Idea.DataTypes;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 
 namespace IdeaMachine.DataTypes.UiModels.Idea
@@ -22,6 +21,8 @@ namespace IdeaMachine.DataTypes.UiModels.Idea
 
 		public List<string> Tags { get; set; }
 
+		public List<AttachmentUrlModel> AttachmentUrls { get; set; }
+
 		public static IdeaUiModel FromModel(IdeaModel model)
 		{
 			return new()
@@ -32,6 +33,7 @@ namespace IdeaMachine.DataTypes.UiModels.Idea
 				LongDescription = model.LongDescription,
 				ShortDescription = model.ShortDescription,
 				Tags = model.Tags,
+				AttachmentUrls = model.AttachmentUrls,
 			};
 		}
 	}

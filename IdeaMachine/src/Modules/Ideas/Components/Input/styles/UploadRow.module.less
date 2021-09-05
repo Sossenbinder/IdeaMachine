@@ -6,12 +6,23 @@
 
 	width: calc(100% - 10px);
 
-	.Image {
-		height: 100px;
-		width: 100px;
-		margin: 0 5px;
+	.AttachmentContainer {
 
-		cursor: pointer;
+		position: relative;
+
+		.Image {
+			height: 100px;
+			width: 100px;
+			margin: 0 5px;
+
+			cursor: pointer;
+		}
+
+		.DeleteButton {
+			position: absolute;
+			right: 1px;
+			top: 0px;
+		}
 	}
 
 	&::-webkit-scrollbar {
