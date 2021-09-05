@@ -1,11 +1,14 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+RUN apt update
+RUN apt install npm -y
+RUN npm install -g yarn -y
+RUN npm install -g webpack
+RUN npm install -g webpack-cli
 WORKDIR /src
 COPY ["IdeaMachine/IdeaMachine.csproj", "IdeaMachine/"]
 COPY ["Modules/IdeaMachine.Modules.Account/IdeaMachine.Modules.Account.csproj", "Modules/IdeaMachine.Modules.Account/"]
@@ -35,6 +38,8 @@ COPY ["Common/IdeaMachine.Common.RemotingProxies/IdeaMachine.Common.RemotingProx
 COPY ["Tools/GrpcProxyGenerator/GrpcProxyGenerator.csproj", "Tools/GrpcProxyGenerator/"]
 COPY . .
 WORKDIR "/src/IdeaMachine"
+RUN npm install
+RUN yarn run build
 RUN dotnet build "IdeaMachine.csproj" -c Release -o /app/build
 
 FROM build AS publish
