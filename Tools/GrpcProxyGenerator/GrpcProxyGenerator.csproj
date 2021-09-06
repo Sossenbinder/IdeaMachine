@@ -18,6 +18,6 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="dotnet $(OutDir)\GrpcProxyGenerator.dll $(SolutionDir)" />
+		<Exec Command="dotnet $(OutDir)\GrpcProxyGenerator.dll $(OutDir)" />
 	</Target>
 </Project>

@@ -1,0 +1,29 @@
+.CardContainer {
+	display: grid;
+
+	.Card {
+		height: 680px;
+		width: 700px;
+
+		color: white;
+
+		background: rgb(41, 41, 64);
+		background: linear-gradient(0deg, rgba(41, 41, 64, 1) 0%, rgba(55, 56, 59, 1) 50%, rgba(41, 41, 64, 1) 100%);
+
+		border: 1px solid black;
+		border-radius: 15px;
+
+		box-shadow: 0px 0px 5px black;
+		transition: box-shadow 0.3s ease-in-out;
+
+		margin: 10px;
+		padding: 10px;
+
+		align-self: center;
+		justify-self: center;
+
+		&:hover {
+			box-shadow: 0px 0px 20px black;
+		}
+	}
+}

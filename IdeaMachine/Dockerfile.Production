@@ -3,12 +3,15 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-RUN apt update
-RUN apt install npm -y
-RUN npm install -g yarn -y
+FROM node as webNode
+COPY ./IdeaMachine ./src
+WORKDIR /src
 RUN npm install -g webpack
 RUN npm install -g webpack-cli
+RUN npm install
+RUN yarn run build
+
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["IdeaMachine/IdeaMachine.csproj", "IdeaMachine/"]
 COPY ["Modules/IdeaMachine.Modules.Account/IdeaMachine.Modules.Account.csproj", "Modules/IdeaMachine.Modules.Account/"]
@@ -37,9 +40,7 @@ COPY ["Modules/IdeaMachine.Modules.Email/IdeaMachine.Modules.Email.csproj", "Mod
 COPY ["Common/IdeaMachine.Common.RemotingProxies/IdeaMachine.Common.RemotingProxies.csproj", "Common/IdeaMachine.Common.RemotingProxies/"]
 COPY ["Tools/GrpcProxyGenerator/GrpcProxyGenerator.csproj", "Tools/GrpcProxyGenerator/"]
 COPY . .
-WORKDIR "/src/IdeaMachine"
-RUN npm install
-RUN yarn run build
+WORKDIR /src/IdeaMachine
 RUN dotnet build "IdeaMachine.csproj" -c Release -o /app/build
 
 FROM build AS publish
@@ -48,4 +49,5 @@ RUN dotnet publish "IdeaMachine.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=webNode /src/wwwroot/ ./wwwroot
 ENTRYPOINT ["dotnet", "IdeaMachine.dll"]

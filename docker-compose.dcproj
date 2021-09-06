@@ -1,10 +1,9 @@
-﻿
-<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+﻿<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>4dabb35e-ee9d-4dcf-b1a8-8ed8233e8a8e</ProjectGuid>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerLaunchAction>None</DockerLaunchAction>
     <DockerServiceUrl>https://localhost:1457</DockerServiceUrl>
     <DockerServiceName>ideamachine</DockerServiceName>
     <UserSecretsId>4f73912c-9ebb-451b-81b1-5a3479e93dfd</UserSecretsId>

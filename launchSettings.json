@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "ideamachine": "StartDebugging",
+        "ideamachine.accountservice": "StartDebugging",
+        "ideamachine.rabbitmq": "StartWithoutDebugging",
+        "ideamachine.seq": "StartWithoutDebugging",
+        "ideamachine.sql": "StartWithoutDebugging"
+      }
+    }
+  }
+}

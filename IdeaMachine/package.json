@@ -12,9 +12,9 @@
     "watch": "webpack watch --mode development"
   },
   "alias": {
-    "common": "./src/Common",
-    "views": "./src/Views",
-    "modules": "./src/Modules"
+    "common": "./src/common",
+    "views": "./src/views",
+    "modules": "./src/modules"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
@@ -38,8 +38,6 @@
     "less-loader": "^8.1.1",
     "mocha": "^8.3.2",
     "mocha-jsdom": "^2.0.0",
-    "parcel": "^2.0.0-rc.0",
-    "parcel-bundler": "^1.12.3",
     "postcss-loader": "^5.3.0",
     "style-loader": "^2.0.0",
     "ts-loader": "^9.2.5",

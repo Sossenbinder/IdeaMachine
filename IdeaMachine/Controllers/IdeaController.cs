@@ -6,7 +6,6 @@ using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.DataTypes.UiModels.Idea;
 using IdeaMachine.DataTypes.UiModels.Pagination;
-using IdeaMachine.Extensions;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Reaction.Service.Interface;
@@ -81,12 +80,9 @@ namespace IdeaMachine.Controllers
         {
             var result = await _ideaRetrievalService.GetSpecificIdea(Session, id);
 
-            if (result.IsFailure)
-            {
-                return JsonDataResponse<IdeaUiModel?>.Error();
-            }
-
-            return JsonDataResponse<IdeaUiModel?>.Success(await ToEnrichedUiModel(result.PayloadOrFail!));
+            return result.IsFailure 
+                ? JsonDataResponse<IdeaUiModel?>.Error() 
+                : JsonDataResponse<IdeaUiModel?>.Success(await ToEnrichedUiModel(result.PayloadOrFail!));
         }
 
         [HttpPost]
