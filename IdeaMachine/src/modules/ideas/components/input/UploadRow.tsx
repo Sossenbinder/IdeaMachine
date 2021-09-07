@@ -22,6 +22,13 @@ type Props = {
 }
 
 export const UploadRow: React.FC<Props> = ({ attachments, ideaId, isOwned = false }) => {
+
+	const uploadFileRef = React.useRef<HTMLInputElement>(null);
+
+	const onFileInputChange = () => {
+
+	}
+
 	return (
 		<Flex
 			className={styles.UploadRow}>
@@ -34,9 +41,24 @@ export const UploadRow: React.FC<Props> = ({ attachments, ideaId, isOwned = fals
 						isOwned={isOwned} />
 				))
 			}
-			<If condition={true}>
-				<MaterialIcon
-					iconName="add_circle_outline" />
+			<If condition={isOwned}>
+				<input
+					type="file"
+					ref={uploadFileRef}
+					onChange={onFileInputChange}
+					accept="image/*"
+					multiple
+					hidden
+				/>
+				<Flex
+					className={styles.UploadButton}
+					mainAlign="Center"
+					crossAlign="Center">
+					<MaterialIcon
+						size={50}
+						iconName="add_circle_outline"
+						onClick={() => uploadFileRef.current.click()} />
+				</Flex>
 			</If>
 		</Flex>
 	);

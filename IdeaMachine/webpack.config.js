@@ -22,7 +22,7 @@ const config = {
 	mode: "development",
 	entry: './src/index.tsx',
 	output: {
-	  path: path.resolve(__dirname, 'wwwroot'),
+	  path: path.resolve(__dirname, 'wwwroot/dist'),
 	  filename: 'site.js'
 	},
 	devtool: "source-map",
