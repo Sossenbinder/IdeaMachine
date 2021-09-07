@@ -2,9 +2,9 @@
 import * as React from "react";
 
 // Components
-import NavBar from 'common/components/Page/NavBar';
+import NavBar from 'common/components/page/NavBar';
 import Flex from "common/components/Flex";
-import PushNotificationContainer from "common/components/Page/PushMessages/PushNotificationContainer";
+import PushNotificationContainer from "common/components/page/pushMessages/PushNotificationContainer";
 import Content from "./Content";
 
 // Functionality

@@ -2,15 +2,15 @@
 import renderRoot from "views/RootComponent";
 
 // Functionality
-import ServiceUpdateEvent from "common/modules/Service/ServiceUpdateEvent";
-import ISignalRConnectionProvider from "common/helper/SignalR/Interface/ISignalRConnectionProvider";
-import SignalRConnectionProvider from "common/helper/SignalR/SignalRConnectionProvider";
-import IdeaService from "modules/Ideas/Service/IdeaService";
-import AccountService from "modules/Account/Service/AccountService";
-import ReactionService from "./modules/Reaction/Service/ReactionService";
+import ServiceUpdateEvent from "common/modules/service/ServiceUpdateEvent";
+import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
+import SignalRConnectionProvider from "common/helper/signalR/SignalRConnectionProvider";
+import IdeaService from "modules/ideas/service/IdeaService";
+import AccountService from "modules/account/service/AccountService";
+import ReactionService from "./modules/reaction/service/ReactionService";
 
 // Types
-import { Services, IModuleService } from "common/modules/Service/types";
+import { Services, IModuleService } from "common/modules/service/types";
 
 window.onload = async () => {
 

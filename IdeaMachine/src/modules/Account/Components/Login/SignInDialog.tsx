@@ -23,7 +23,7 @@ export const SignInDialog: React.FC = () => {
 			crossAlignSelf="Center">
 			<Route
 				exact
-				path="/Logon/Login">
+				path="/Logon/login">
 				<SignIn />
 			</Route>
 			<Route

@@ -3,7 +3,7 @@ import * as React from "react";
 
 // Components
 import Flex from "common/components/Flex";
-import SignInDialog from "modules/Account/Components/Login/SignInDialog";
+import SignInDialog from "modules/account/components/login/SignInDialog";
 
 export const LogonView: React.FC = () => {
 	return (

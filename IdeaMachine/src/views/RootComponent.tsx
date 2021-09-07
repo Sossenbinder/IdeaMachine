@@ -6,15 +6,15 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
 // Components
-import LoadingBar from "common/components/State/LoadingBar";
-import ServiceContextProvider from "common/modules/Service/ServiceContextProvider";
-import ServiceUpdateEvent from "common/modules/Service/ServiceUpdateEvent";
-import SignalRContextProvider from "common/helper/SignalR/SignalRContextProvider";
-import MainContainer from "views/Main/MainContainer";
-import IdeaFilterContextProvider from "modules/Ideas/Components/IdeaFilterContext";
+import LoadingBar from "common/components/state/LoadingBar";
+import ServiceContextProvider from "common/modules/service/ServiceContextProvider";
+import ServiceUpdateEvent from "common/modules/service/ServiceUpdateEvent";
+import SignalRContextProvider from "common/helper/signalR/SignalRContextProvider";
+import MainContainer from "views/main/MainContainer";
+import IdeaFilterContextProvider from "modules/ideas/components/IdeaFilterContext";
 
 // Functionality
-import ISignalRConnectionProvider from 'common/helper/SignalR/Interface/ISignalRConnectionProvider';
+import ISignalRConnectionProvider from 'common/helper/signalR/interface/ISignalRConnectionProvider';
 
 // Types
 import { store } from "common/redux/store";

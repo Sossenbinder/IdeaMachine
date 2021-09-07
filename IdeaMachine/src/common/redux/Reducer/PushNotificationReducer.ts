@@ -1,5 +1,5 @@
 // Functionality
-import { createReducer } from "common/redux/Reducer/CrudReducer";
+import { createReducer } from "common/redux/reducer/CrudReducer";
 
 // Types
 import { PushNotification } from "common/definitions/PushNotificationTypes";

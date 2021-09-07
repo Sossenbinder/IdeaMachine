@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Route, RouteProps } from 'react-router';
 
 // Types
-import { Account } from "modules/Account/types";
+import { Account } from "modules/account/types";
 import { ReduxStore } from "common/redux/store";
 
 type ReduxProps = {

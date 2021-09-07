@@ -9,7 +9,7 @@ import TagDisplay from "./TagDisplay";
 import Card from "../Card";
 import UploadRow from "./UploadRow";
 import MaterialIcon from "common/components/MaterialIcon";
-import Separator from "common/components/Controls/Separator";
+import Separator from "common/components/controls/Separator";
 import ValidatableTextField from "./ValidatableTextField";
 
 // Functionality
@@ -17,7 +17,7 @@ import { useTranslations } from 'common/hooks/useTranslations';
 import useServices from "common/hooks/useServices";
 
 // Types
-import { AttachmentUrl, Idea, IdeaInputResult } from 'modules/Ideas/types';
+import { AttachmentUrl, Idea, IdeaInputResult } from 'modules/ideas/types';
 
 // Styles
 import styles from "./styles/IdeaInput.module.less";

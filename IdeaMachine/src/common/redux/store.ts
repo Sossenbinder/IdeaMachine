@@ -2,16 +2,16 @@
 import * as redux from "redux";
 
 // Functionality
-import { reducer as ideaReducer } from "modules/Ideas/Reducer/IdeaReducer";
-import { reducer as accountReducer } from "modules/Account/Reducer/AccountReducer";
-import { reducer as paginationReducer, PaginationReducerState } from "./Reducer/PaginationReducer";
-import { reducer as pushNotificationReducer } from "./Reducer/PushNotificationReducer";
+import { reducer as ideaReducer } from "modules/ideas/reducer/IdeaReducer";
+import { reducer as accountReducer } from "modules/account/reducer/AccountReducer";
+import { reducer as paginationReducer, PaginationReducerState } from "./reducer/PaginationReducer";
+import { reducer as pushNotificationReducer } from "./reducer/PushNotificationReducer";
 
 // Types
-import { Idea } from "modules/Ideas/types";
-import { Account } from "modules/Account/types";
+import { Idea } from "modules/ideas/types";
+import { Account } from "modules/account/types";
 import { PushNotification } from "common/definitions/PushNotificationTypes";
-import { ReducerState, MultiReducerState } from "./Reducer/types";
+import { ReducerState, MultiReducerState } from "./reducer/types";
 
 export type Reducers = {
 	accountReducer: ReducerState<Account>;

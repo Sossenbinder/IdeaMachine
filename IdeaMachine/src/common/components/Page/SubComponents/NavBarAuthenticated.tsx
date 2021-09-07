@@ -10,7 +10,7 @@ import { Flex } from "common/components";
 import useServices from "common/hooks/useServices";
 
 // Types
-import { Account } from "modules/Account/types";
+import { Account } from "modules/account/types";
 
 // Styles
 import styles from "./styles/NavBarAuthenticated.module.less";
@@ -33,7 +33,7 @@ export const NavBarAuthenticated: React.FC<Props> = ({ account }) => {
 			crossAlign="Center"
 			direction="Row">
 			<Link
-				to="/Account/Overview"
+				to="/account/Overview"
 				className={styles.UserName}>
 				{account.userName}
 			</Link>

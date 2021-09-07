@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 
 // Components
 import Flex from "common/components/Flex";
-import LoadingButton from "common/components/Controls/LoadingButton";
+import LoadingButton from "common/components/controls/LoadingButton";
 
 // Functionality
 import useServices from "common/hooks/useServices";
 import useQueryStringParams from "common/hooks/useQueryStringParams";
-import { getTranslationForErrorCode } from "modules/Account/Helper/IdentityErrorCodeHelper";
+import { getTranslationForErrorCode } from "modules/account/helper/IdentityErrorCodeHelper";
 import { useTranslations } from "common/hooks/useTranslations";
 
 // Types
-import { IdentityErrorCode } from "modules/Account/types";
+import { IdentityErrorCode } from "modules/account/types";
 
 // Styles
 import styles from "./styles/EmailVerification.module.less";
@@ -56,7 +56,7 @@ export const EmailVerification: React.FC = () => {
 						<Choose>
 							<When condition={verifyMutation.data === IdentityErrorCode.Success}>
 								<p>Great, you're now verified!</p>
-								<Link to="/Logon/Login">
+								<Link to="/Logon/login">
 									Login now!
 								</Link>
 							</When>

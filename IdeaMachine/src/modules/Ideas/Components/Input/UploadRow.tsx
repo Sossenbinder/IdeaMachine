@@ -10,7 +10,7 @@ import useServices from "common/hooks/useServices";
 import openUploadModal from "./UploadModal";
 
 // Types
-import { AttachmentUrl } from "modules/Ideas/types";
+import { AttachmentUrl } from "modules/ideas/types";
 
 // Styles
 import styles from "./styles/UploadRow.module.less";

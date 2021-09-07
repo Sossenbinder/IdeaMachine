@@ -3,9 +3,9 @@ import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 
 // Components
-import IdeaInput from "modules/Ideas/Components/Input/IdeaInput";
-import IdeaInfo from "modules/Ideas/Components/Info/IdeaInfo";
-import IdeaListOwn from "modules/Ideas/Components/IdeaListOwn";
+import IdeaInput from "modules/ideas/components/input/IdeaInput";
+import IdeaInfo from "modules/ideas/components/info/IdeaInfo";
+import IdeaListOwn from "modules/ideas/components/IdeaListOwn";
 
 export const IdeaRoutes: React.FC = () => {
 	return (

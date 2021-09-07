@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Types
-import { OrderType, OrderDirection } from "modules/Ideas/types";
+import { OrderType, OrderDirection } from "modules/ideas/types";
 
 type IdeaFilters = {
 	order: OrderType;

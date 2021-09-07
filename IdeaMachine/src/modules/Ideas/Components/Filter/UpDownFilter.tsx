@@ -6,10 +6,10 @@ import Flex from "common/components/Flex";
 import MaterialIcon from "common/components/MaterialIcon";
 
 // Functionality
-import { IdeaFilterContext } from "modules/Ideas/Components/IdeaFilterContext";
+import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
 
 // Types
-import { OrderType, OrderDirection } from "modules/Ideas/types";
+import { OrderType, OrderDirection } from "modules/ideas/types";
 
 import styles from "./styles/UpDownFilter.module.less";
 

@@ -2,10 +2,10 @@
 import { Idea, Network } from "../types";
 
 // Functionality
-import PostRequest, { PagedPostRequest, VoidPostRequest } from "common/helper/Requests/PostRequest";
-import GetRequest from "common/helper/Requests/GetRequest";
-import DeleteRequest from "common/helper/Requests/DeleteRequest";
-import MultiPartRequest from "common/helper/Requests/MultiPartRequest";
+import PostRequest, { PagedPostRequest, VoidPostRequest } from "common/helper/requests/PostRequest";
+import GetRequest from "common/helper/requests/GetRequest";
+import DeleteRequest from "common/helper/requests/DeleteRequest";
+import MultiPartRequest from "common/helper/requests/MultiPartRequest";
 
 const Urls = {
 	Add: "/Idea/Add",

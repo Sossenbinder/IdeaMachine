@@ -2,12 +2,12 @@
 import * as moment from "moment";
 
 // Functionality
-import { IIdeaService } from "common/modules/Service/types";
-import ModuleService from "common/modules/Service/ModuleService";
-import * as ideaCommunication from "modules/Ideas/Communication/IdeaCommunication";
-import { reducer as ideaReducer } from "modules/Ideas/Reducer/IdeaReducer";
-import { reducer as pushNotificationReducer } from "common/redux/Reducer/PushNotificationReducer";
-import { updateIdeaPagination } from "common/redux/Reducer/PaginationReducer";
+import { IIdeaService } from "common/modules/service/types";
+import ModuleService from "common/modules/service/ModuleService";
+import * as ideaCommunication from "modules/ideas/communication/IdeaCommunication";
+import { reducer as ideaReducer } from "modules/ideas/reducer/IdeaReducer";
+import { reducer as pushNotificationReducer } from "common/redux/reducer/PushNotificationReducer";
+import { updateIdeaPagination } from "common/redux/reducer/PaginationReducer";
 import { ensureArray } from "common/helper/arrayUtils";
 
 // Types

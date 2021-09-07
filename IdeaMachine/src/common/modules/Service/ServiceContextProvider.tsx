@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Functionality
-import ServiceContext from "common/modules/Service/ServiceContext";
+import ServiceContext from "common/modules/service/ServiceContext";
 import ServiceUpdateEvent from "./ServiceUpdateEvent";
 
 // Types

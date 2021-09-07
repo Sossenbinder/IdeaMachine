@@ -4,14 +4,14 @@ import { Chip } from "@material-ui/core";
 
 // Components
 import Flex from "common/components/Flex";
-import TagDisplay from "../Input/TagDisplay";
+import TagDisplay from "../input/TagDisplay";
 import UpDownFilter from "./UpDownFilter";
 
 // Functionality
 import { IdeaFilterContext } from "../IdeaFilterContext";
 
 // Types
-import { OrderType } from "modules/Ideas/types";
+import { OrderType } from "modules/ideas/types";
 
 // Styles
 import styles from "./styles/IdeaListFilters.module.less";

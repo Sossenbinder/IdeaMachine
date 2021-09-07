@@ -8,7 +8,7 @@ import { Cell, Flex } from "common/components";
 // Functionality
 
 // Types
-import { Idea } from "modules/Ideas/types";
+import { Idea } from "modules/ideas/types";
 
 // Styles
 import styles from "./styles/CommentSection.module.less";

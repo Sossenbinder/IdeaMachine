@@ -1,8 +1,8 @@
 // Functionality
-import { createSingleReducer } from "common/redux/Reducer/CrudReducer";
+import { createSingleReducer } from "common/redux/reducer/CrudReducer";
 
 // Types
-import { Account } from "modules/Account/types";
+import { Account } from "modules/account/types";
 
 export const reducer = createSingleReducer<Account>({
 	actionIdentifier: "Account",

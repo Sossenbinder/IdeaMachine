@@ -4,12 +4,12 @@ import { Route } from "react-router-dom";
 
 // Components
 import Flex from "common/components/Flex";
-import IdeaListAll from "modules/Ideas/Components/IdeaListAll";
-import CreateButton from 'modules/Ideas/Components/CreateButton';
-import LogonView from "views/Login/LogonView";
-import EmailVerification from "views/EmailVerification/EmailVerification";
-import AccountRoutes from "views/Account/AccountRoutes";
-import IdeaRoutes from "views/Ideas/IdeaRoutes";
+import IdeaListAll from "modules/ideas/components/IdeaListAll";
+import CreateButton from 'modules/ideas/components/CreateButton';
+import LogonView from "views/login/LogonView";
+import EmailVerification from "views/emailVerification/EmailVerification";
+import AccountRoutes from "views/account/AccountRoutes";
+import IdeaRoutes from "views/ideas/IdeaRoutes";
 
 // Styles
 import styles from "./styles/Content.module.less";
@@ -30,7 +30,7 @@ export const Content: React.FC = () => {
 						<EmailVerification />
 					</Route>
 					<Route
-						path="/Account">
+						path="/account">
 						<AccountRoutes />
 					</Route>
 					<Route

@@ -1,8 +1,8 @@
 // Functionality
-import { IReactionService } from "common/modules/Service/types";
-import ModuleService from "common/modules/Service/ModuleService";
-import * as reactionCommunication from "modules/Reaction/Communication/ReactionCommunication";
-import { reducer as ideaReducer } from "modules/Ideas/Reducer/IdeaReducer";
+import { IReactionService } from "common/modules/service/types";
+import ModuleService from "common/modules/service/ModuleService";
+import * as reactionCommunication from "modules/reaction/communication/ReactionCommunication";
+import { reducer as ideaReducer } from "modules/ideas/reducer/IdeaReducer";
 
 // Types
 import { LikeState } from "../types";

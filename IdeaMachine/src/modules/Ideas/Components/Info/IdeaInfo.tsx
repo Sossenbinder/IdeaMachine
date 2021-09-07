@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 // Components
-import IdeaNotFound from "modules/Ideas/Components/IdeaNotFound";
+import IdeaNotFound from "modules/ideas/components/IdeaNotFound";
 import { Cell, Flex, Grid } from "common/components";
 import Card from "../Card";
 import MaterialIcon from "common/components/MaterialIcon";
 import CommentSection from "./CommentSection";
-import UploadRow from "../Input/UploadRow";
+import UploadRow from "../input/UploadRow";
 
 // Functionality
 import { ReduxStore } from "common/redux/store";
@@ -22,8 +22,8 @@ import { getUsDate, getUsTime } from "common/utils/timeUtils";
 
 // Types
 import { Idea } from "../../types";
-import { Account } from "modules/Account/types";
-import { LikeState } from "modules/Reaction/types";
+import { Account } from "modules/account/types";
+import { LikeState } from "modules/reaction/types";
 
 // Styles
 import styles from "./styles/IdeaInfo.module.less";

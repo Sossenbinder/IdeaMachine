@@ -5,15 +5,15 @@ import { FormControlLabel, Switch, TextField } from "@material-ui/core";
 
 // Components
 import Flex from "common/components/Flex";
-import LoadingButton from "common/components/Controls/LoadingButton";
+import LoadingButton from "common/components/controls/LoadingButton";
 
 // Functionality
 import useServices from "common/hooks/useServices";
-import { getTranslationForErrorCode } from "modules/Account/Helper/IdentityErrorCodeHelper";
+import { getTranslationForErrorCode } from "modules/account/helper/IdentityErrorCodeHelper";
 import useTranslations from "common/hooks/useTranslations";
 
 // Types
-import { IdentityErrorCode, SignInInfo } from "modules/Account/types";
+import { IdentityErrorCode, SignInInfo } from "modules/account/types";
 
 // Styles
 import styles from "./styles/SignIn.module.less";

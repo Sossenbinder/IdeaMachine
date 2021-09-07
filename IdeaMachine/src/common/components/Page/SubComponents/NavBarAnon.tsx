@@ -8,7 +8,7 @@ export const NavBarAnon: React.FC<RouteComponentProps> = ({ history }) => {
 		<>
 			<Button
 				color="primary"
-				onClick={() => history.push("/Logon/Login")}
+				onClick={() => history.push("/Logon/login")}
 				variant="contained">
 				Login
 			</Button>

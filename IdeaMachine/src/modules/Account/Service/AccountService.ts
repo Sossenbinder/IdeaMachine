@@ -1,9 +1,9 @@
 // Functionality
-import { IAccountService } from "common/modules/Service/types";
-import ModuleService from "common/modules/Service/ModuleService";
-import * as accountCommunication from "modules/Account/Communication/AccountCommunication";
-import { reducer as accountReducer } from "modules/Account/Reducer/AccountReducer";
-import { NetworkResponse } from "common/helper/Requests/Types/NetworkDefinitions";
+import { IAccountService } from "common/modules/service/types";
+import ModuleService from "common/modules/service/ModuleService";
+import * as accountCommunication from "modules/account/communication/AccountCommunication";
+import { reducer as accountReducer } from "modules/account/reducer/AccountReducer";
+import { NetworkResponse } from "common/helper/requests/types/NetworkDefinitions";
 
 // Types
 import { RegisterInfo, SignInInfo, IdentityErrorCode } from "../types";

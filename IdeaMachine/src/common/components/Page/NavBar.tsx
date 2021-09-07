@@ -1,17 +1,17 @@
 // Framework
 import * as React from "react";
 import { connect } from "react-redux";
-import { withRouter, RouteComponentProps, Link } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 // Components
 import Flex from "common/components/Flex";
-import LinkButton from "common/components/Controls/LinkButton";
-import NavBarAnon from "./SubComponents/NavBarAnon";
-import NavBarAuthenticated from "./SubComponents/NavBarAuthenticated";
-import Separator from "common/components/Controls/Separator";
+import LinkButton from "common/components/controls/LinkButton";
+import NavBarAnon from "./subComponents/NavBarAnon";
+import NavBarAuthenticated from "./subComponents/NavBarAuthenticated";
+import Separator from "common/components/controls/Separator";
 
 // Types
-import { Account } from "modules/Account/types";
+import { Account } from "modules/account/types";
 import { ReduxStore } from "common/redux/store";
 
 // Styles

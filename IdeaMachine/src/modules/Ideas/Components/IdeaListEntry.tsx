@@ -8,15 +8,15 @@ import { Chip } from "@material-ui/core";
 import { Grid, Cell, Flex } from "common/components";
 import MaterialIcon, { MaterialIconType } from "common/components/MaterialIcon";
 import { FeedbackMaterialIcon } from "common/components/FeedbackMaterialIcon";
-import { IdeaFilterContext } from "modules/Ideas/Components/IdeaFilterContext";
-import Separator from "common/components/Controls/Separator";
+import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
+import Separator from "common/components/controls/Separator";
 
 // Functionality
 import { getUsDate, getUsTime } from "common/utils/timeUtils";
 import useServices from "common/hooks/useServices";
 
 // Types
-import { LikeState } from "modules/Reaction/types";
+import { LikeState } from "modules/reaction/types";
 import { Idea } from "../types";
 
 // Styles

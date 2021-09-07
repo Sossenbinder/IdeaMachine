@@ -4,15 +4,15 @@ import { Button, TextField } from "@material-ui/core";
 
 // Components
 import Flex from "common/components/Flex";
-import LoadingButton from "common/components/Controls/LoadingButton";
+import LoadingButton from "common/components/controls/LoadingButton";
 
 // Functionality
 import useServices from "common/hooks/useServices";
 import { useTranslations } from "common/hooks/useTranslations";
-import { getTranslationForErrorCode } from "modules/Account/Helper/IdentityErrorCodeHelper";
+import { getTranslationForErrorCode } from "modules/account/helper/IdentityErrorCodeHelper";
 
 // Types
-import { RegisterInfo, IdentityErrorCode } from "modules/Account/types";
+import { RegisterInfo, IdentityErrorCode } from "modules/account/types";
 
 // Styles
 import styles from "./styles/Register.module.less";

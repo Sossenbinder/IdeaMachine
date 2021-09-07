@@ -8,7 +8,7 @@ import MaterialIcon, { MaterialIconType } from "common/components/MaterialIcon";
 
 // Functionality
 import { getUsTime } from "common/utils/timeUtils";
-import { reducer as pushNotificationReducer } from "common/redux/Reducer/PushNotificationReducer";
+import { reducer as pushNotificationReducer } from "common/redux/reducer/PushNotificationReducer";
 
 // Types
 import { PushNotification } from "common/definitions/PushNotificationTypes";

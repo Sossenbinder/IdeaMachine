@@ -4,16 +4,16 @@ import * as React from "react";
 // Components
 import Flex from "common/components/Flex";
 import IdeaListEntry from "./IdeaListEntry";
-import LoadingBubbles from "../../../common/components/State/LoadingBubbles";
-import IdeaListFilters from "./Filter/IdeaListFilters";
+import LoadingBubbles from "common/components/state/LoadingBubbles";
+import IdeaListFilters from "./filter/IdeaListFilters";
 
 // Functionality
 import useServices from "common/hooks/useServices";
 import useAsyncCall from "common/hooks/useAsyncCall";
-import { IdeaFilterContext } from "modules/Ideas/Components/IdeaFilterContext";
+import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
 
 // Types
-import { Idea, OrderDirection } from "modules/Ideas/types";
+import { Idea, OrderDirection } from "modules/ideas/types";
 
 // Styles
 import styles from "./styles/IdeaList.module.less";

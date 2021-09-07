@@ -9,7 +9,7 @@ import Flex from "common/components/Flex";
 // Types
 
 // Styles
-import styles from "./styles/AccountOverview.module.less";
+import styles from "./styles/accountOverview.module.less";
 
 type Props = {
 
