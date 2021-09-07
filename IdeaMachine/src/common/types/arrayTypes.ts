@@ -1,0 +1,1 @@
+export type CouldBeArray<T> = T | Array<T>;
