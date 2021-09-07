@@ -1,1 +1,0 @@
-export const MentionNotification: string = "MentionNotification";
