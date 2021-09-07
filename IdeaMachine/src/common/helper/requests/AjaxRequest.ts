@@ -1,4 +1,4 @@
-import { NetworkResponse } from "./Types/NetworkDefinitions";
+import { NetworkResponse } from "./types/NetworkDefinitions";
 
 export enum RequestMethods {
 	GET = "GET",

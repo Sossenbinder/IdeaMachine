@@ -1,5 +1,5 @@
 ﻿import AjaxRequest, { RequestMethods } from "./AjaxRequest"
-import { NetworkResponse, Pagination } from "./Types/NetworkDefinitions";
+import { NetworkResponse, Pagination } from "./types/NetworkDefinitions";
 
 type VerificationTokenRequest = {
 	__RequestVerificationToken?: string;

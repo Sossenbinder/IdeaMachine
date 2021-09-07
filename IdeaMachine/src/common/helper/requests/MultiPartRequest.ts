@@ -1,4 +1,4 @@
-import { NetworkResponse } from "./Types/NetworkDefinitions";
+import { NetworkResponse } from "./types/NetworkDefinitions";
 
 const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] as HTMLInputElement;
 

@@ -1,5 +1,5 @@
 //Types
-import { NetworkResponse } from "common/helper/requests/Types/NetworkDefinitions";
+import { NetworkResponse } from "common/helper/requests/types/NetworkDefinitions";
 import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
 import { Idea } from "modules/ideas/types";
 import { RegisterInfo, SignInInfo, IdentityErrorCode } from "modules/account/types";
