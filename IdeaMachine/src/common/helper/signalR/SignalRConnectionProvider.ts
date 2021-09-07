@@ -2,7 +2,7 @@
 import * as signalR from "@microsoft/signalr";
 
 // Functionality
-import ISignalRConnectionProvider from "./Interface/ISignalRConnectionProvider";
+import ISignalRConnectionProvider from "./interface/ISignalRConnectionProvider";
 import { Notification } from "./types";
 
 export class SignalRConnectionProvider implements ISignalRConnectionProvider {

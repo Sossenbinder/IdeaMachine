@@ -1,6 +1,6 @@
 // Functionality
 import store from "common/redux/store";
-import { reducer as pushNotificationReducer } from "common/redux/Reducer/PushNotificationReducer";
+import { reducer as pushNotificationReducer } from "common/redux/reducer/PushNotificationReducer";
 
 // Types
 import { PushNotification } from "common/definitions/PushNotificationTypes";

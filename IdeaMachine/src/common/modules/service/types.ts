@@ -1,9 +1,9 @@
 //Types
-import { NetworkResponse } from "common/helper/Requests/Types/NetworkDefinitions";
-import ISignalRConnectionProvider from "common/helper/SignalR/Interface/ISignalRConnectionProvider";
-import { Idea, IdeaInputResult } from "modules/Ideas/types";
-import { RegisterInfo, SignInInfo, IdentityErrorCode } from "modules/Account/types";
-import { LikeState } from "modules/Reaction/types";
+import { NetworkResponse } from "common/helper/requests/Types/NetworkDefinitions";
+import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
+import { Idea } from "modules/ideas/types";
+import { RegisterInfo, SignInInfo, IdentityErrorCode } from "modules/account/types";
+import { LikeState } from "modules/reaction/types";
 
 export interface IModuleService {
 	start?(): Promise<void>;

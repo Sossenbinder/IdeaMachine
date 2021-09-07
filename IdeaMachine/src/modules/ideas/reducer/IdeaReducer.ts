@@ -2,7 +2,7 @@
 import { createReducer } from "common/redux/reducer/CrudReducer";
 
 // Types
-import { Idea } from "modules/Ideas/types";
+import { Idea } from "modules/ideas/types";
 
 export const reducer = createReducer<Idea>({
 	actionIdentifier: "Idea",

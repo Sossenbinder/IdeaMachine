@@ -3,7 +3,7 @@ import * as React from "react";
 import { HubConnection } from "@microsoft/signalr";
 
 // Functionality
-import ISignalRConnectionProvider from './Interface/ISignalRConnectionProvider';
+import ISignalRConnectionProvider from './interface/ISignalRConnectionProvider';
 
 export const SignalRContext = React.createContext<HubConnection>(undefined);
 
