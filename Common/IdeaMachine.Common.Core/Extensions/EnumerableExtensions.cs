@@ -22,6 +22,16 @@ namespace IdeaMachine.Common.Core.Extensions
 		{
 			return new ForEachIterator<T>(enumerable, transformerAction);
 		}
+
+		public static IEnumerable<(T Value, int Index)> AsIndexedIterable<T>(this IEnumerable<T> enumerable)
+		{
+			var list = enumerable.ToList();
+
+			for (var i = 0; i < list.Count; ++i)
+			{
+				yield return (list[i], i);
+			}
+		}
 	}
 
 	public class ForEachIterator<T> : IEnumerable<T>, IEnumerator<T>

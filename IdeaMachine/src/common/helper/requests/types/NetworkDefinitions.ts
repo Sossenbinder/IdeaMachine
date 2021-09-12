@@ -9,3 +9,5 @@ export type NetworkResponse<TPayload> = {
 	success: boolean;
 	payload?: TPayload;
 }
+
+export type GenericNetworkResponse = NetworkResponse<undefined>;

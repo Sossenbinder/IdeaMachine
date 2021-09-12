@@ -20,7 +20,7 @@ const UploadModal: React.FC<Props> = ({ file, onExit, isOwned }) => {
 		>
 			<img src={file} />
 		</Dialog>
-	);
+	); 
 }
 
 export const openUploadModal = (file: string, onDelete: () => Promise<void>, isOwned?: boolean) => {

@@ -14,19 +14,30 @@ import { AttachmentUrl } from "modules/ideas/types";
 
 // Styles
 import styles from "./styles/UploadRow.module.less";
+import useAsyncCall from "../../../../common/hooks/useAsyncCall";
+import { CircularProgress } from "@material-ui/core";
 
 type Props = {
 	attachments: Array<AttachmentUrl>;
+	onAttachmentAdded(newAttachment: File): void;
 	ideaId: number;
 	isOwned?: boolean;
 }
 
-export const UploadRow: React.FC<Props> = ({ attachments, ideaId, isOwned = false }) => {
+export const UploadRow: React.FC<Props> = ({ attachments, ideaId, onAttachmentAdded, isOwned = false }) => {
 
 	const uploadFileRef = React.useRef<HTMLInputElement>(null);
 
-	const onFileInputChange = () => {
+	const [running, call] = useAsyncCall();
+	 
+	const { IdeaService } = useServices();
 
+	const onFileInputChange: React.ChangeEventHandler<HTMLInputElement> = _ => {
+		const files = uploadFileRef.current.files;
+
+		if (files.length !== 0) {
+			call(() => IdeaService.uploadAttachment(ideaId, files[0]));
+		}
 	}
 
 	return (
@@ -54,10 +65,17 @@ export const UploadRow: React.FC<Props> = ({ attachments, ideaId, isOwned = fals
 					className={styles.UploadButton}
 					mainAlign="Center"
 					crossAlign="Center">
-					<MaterialIcon
-						size={50}
-						iconName="add_circle_outline"
-						onClick={() => uploadFileRef.current.click()} />
+					<Choose>
+						<When condition={!running}>							
+							<MaterialIcon
+								size={50}
+								iconName="add_circle_outline"
+								onClick={() => uploadFileRef.current.click()} />
+						</When>
+						<Otherwise>							
+							<CircularProgress />
+						</Otherwise>
+					</Choose>
 				</Flex>
 			</If>
 		</Flex>
@@ -72,12 +90,16 @@ const Attachment = ({ attachment, ideaId, isOwned }: { attachment: AttachmentUrl
 		await IdeaService.deleteAttachment(ideaId, attachment.id);
 	}
 
+	const onImageClick = () => {
+		openUploadModal(attachment.attachmentUrl, onDelete, isOwned)
+	}
+
 	return (
 		<div className={styles.AttachmentContainer}>
 			<img
 				className={styles.Image}
 				key={attachment.attachmentUrl}
-				onClick={() => openUploadModal(attachment.attachmentUrl, onDelete, isOwned)}
+				onClick={onImageClick}
 				src={attachment.attachmentUrl} />
 			<If condition={isOwned}>
 				<MaterialIcon

@@ -130,7 +130,35 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 
 		const idea = this.getStore().ideaReducer.data.find(x => x.id === ideaId);
 
-		this.dispatch(ideaReducer.delete(idea));
+		this.dispatch(ideaReducer.put({
+			...idea,
+			attachmentUrls: [ ...this.getStore().ideaReducer.data.find(x => x.id === ideaId).attachmentUrls.filter(x => x.id !== attachmentId) ],
+		}));
+	}
+
+	uploadAttachment = async (ideaId: number, file: File) => {
+		const uploadResponse = await ideaCommunication.uploadAttachment(ideaId, file);
+
+		if (uploadResponse.success) {
+			const idea = this.getStore().ideaReducer.data.find(x => x.id === ideaId);
+			
+			if (!idea) {
+				return;
+			}
+
+			const newIdea: Idea = {
+				...idea,
+				attachmentUrls: [
+					...idea.attachmentUrls,
+					{
+						attachmentUrl: URL.createObjectURL(file),
+						id: uploadResponse.payload,
+					}
+				]
+			};
+
+			this.dispatch(ideaReducer.put(newIdea));
+		}
 	}
 
 	private enrichIdeasWithDate = (data: CouldBeArray<Idea>) => ensureArray(data).forEach(x => x.creationDate = moment(x.creationDate).local().toDate());

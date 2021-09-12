@@ -8,6 +8,7 @@ using Azure.Storage.Blobs.Models;
 using IdeaMachine.Common.Core.Extensions.Async;
 using IdeaMachine.Common.Core.Utils.Async;
 using IdeaMachine.Common.Core.Utils.IPC;
+using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Repository.Interface;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using Microsoft.AspNetCore.Http;
@@ -36,7 +37,7 @@ namespace IdeaMachine.Modules.Idea.Service
             });
         }
 
-        public async Task UploadAttachments(ISession session, IFormFileCollection files, int ideaId)
+        public async Task<List<AttachmentUrlModel>> UploadAttachments(ISession session, IFormFileCollection files, int ideaId)
         {
             var client = await _containerClient;
 
@@ -50,7 +51,9 @@ namespace IdeaMachine.Modules.Idea.Service
                 return blobClient.Uri;
             }));
 
-            await _ideaRepository.AddAttachmentUrls(ideaId, uris.Select(x => x.ToString()));
+            var attachments = await _ideaRepository.AddAttachmentUrls(ideaId, uris.Select(x => x.ToString()));
+
+            return attachments.Select(x => x.ToModel()).ToList();
         }
 
         public async Task<List<string>> GetAttachments(ISession session, int ideaId)

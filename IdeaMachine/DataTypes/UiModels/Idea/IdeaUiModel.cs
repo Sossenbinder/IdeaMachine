@@ -17,11 +17,11 @@ namespace IdeaMachine.DataTypes.UiModels.Idea
 
 		public Guid CreatorId { get; set; }
 
-		public IdeaReactionMetaData IdeaReactionMetaData { get; set; }
+		public IdeaReactionMetaData IdeaReactionMetaData { get; set; } = null!;
 
-		public List<string> Tags { get; set; }
+		public List<string> Tags { get; set; } = null!;
 
-		public List<AttachmentUrlModel> AttachmentUrls { get; set; }
+		public List<AttachmentUrlModel> AttachmentUrls { get; set; } = null!;
 
 		public static IdeaUiModel FromModel(IdeaModel model)
 		{

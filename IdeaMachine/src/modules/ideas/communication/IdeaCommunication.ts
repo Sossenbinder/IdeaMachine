@@ -14,6 +14,7 @@ const Urls = {
 	GetForUser: "/Idea/GetForUser",
 	GetSpecific: "/Idea/GetSpecificIdea",
 	Delete: "/Idea/Delete",
+	UploadAttachment: "/Attachment/Upload",
 	DeleteAttachment: "/Attachment/Delete",
 	Reply: "/Idea/Reply",
 }
@@ -49,6 +50,17 @@ export const getSpecificIdea = async (id: number) => {
 export const deleteIdea = async (id: number) => {
 	const request = new DeleteRequest<Network.Delete.Request, Network.Delete.Response>(Urls.Delete);
 	return await request.delete(id);
+}
+
+export const uploadAttachment = async (ideaId: number, file: File) => {
+	const request = new MultiPartRequest<Network.UploadAttachment.Request, Network.UploadAttachment.Response>(Urls.UploadAttachment);
+
+	return await request.post({
+		data: {
+			ideaId,
+		},
+		files: [file],
+	});
 }
 
 export const deleteAttachment = async (ideaId: number, attachmentId: number) => {

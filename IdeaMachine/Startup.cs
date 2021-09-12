@@ -26,10 +26,12 @@ using IdeaMachine.Modules.Idea.DI;
 using IdeaMachine.Modules.Reaction.DI;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
+using IdeaMachine.Utils;
 using MassTransit;
 using MassTransit.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Serilog;
 
 namespace IdeaMachine
@@ -53,7 +55,10 @@ namespace IdeaMachine
 		{
 			ConfigureMassTransit(services);
 
-			services.AddMvc();
+			services.AddMvc(options =>
+			{
+				options.ModelBinderProviders.Insert(0, new DestructuringModelBinderProvider());
+			});
 
 			services.AddMemoryCache();
 

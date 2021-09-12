@@ -21,7 +21,7 @@ import useTranslations from "common/hooks/useTranslations";
 import { getUsDate, getUsTime } from "common/utils/timeUtils";
 
 // Types
-import { Idea } from "../../types";
+import { Idea, AttachmentUrl } from "../../types";
 import { Account } from "modules/account/types";
 import { LikeState } from "modules/reaction/types";
 
@@ -116,7 +116,13 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 								<UploadRow
 									ideaId={idea.id}
 									isOwned={idea.creatorId === account.userId}
-									attachments={idea.attachmentUrls} />
+									attachments={idea.attachmentUrls} 
+									onAttachmentAdded={(attachment) => {
+										const newIdea = {...idea};
+										newIdea.attachmentUrls.push({
+											attachmentUrl: URL.createObjectURL(attachment),
+										} as AttachmentUrl);
+									}}/>
 							</If>
 						</Cell>
 						<Cell

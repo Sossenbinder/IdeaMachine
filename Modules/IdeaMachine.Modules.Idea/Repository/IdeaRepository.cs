@@ -15,149 +15,162 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdeaMachine.Modules.Idea.Repository
 {
-    public class IdeaRepository : AbstractRepository<IdeaContext>, IIdeaRepository
-    {
-        public IdeaRepository(DbContextFactory<IdeaContext> dbContextFactory)
-            : base(dbContextFactory)
-        {
-        }
+	public class IdeaRepository : AbstractRepository<IdeaContext>, IIdeaRepository
+	{
+		public IdeaRepository(DbContextFactory<IdeaContext> dbContextFactory)
+			: base(dbContextFactory)
+		{
+		}
 
-        public async Task<IdeaEntity> Add(IdeaEntity idea)
-        {
-            await using var ctx = CreateContext();
+		public async Task<IdeaEntity> Add(IdeaEntity idea)
+		{
+			await using var ctx = CreateContext();
 
-            ctx.Ideas.Add(idea);
+			ctx.Ideas.Add(idea);
 
-            if (idea.Tags.IsNotNullOrEmpty())
-            {
-                ctx.Tags.AddRange(idea.Tags!);
-            }
+			if (idea.Tags.IsNotNullOrEmpty())
+			{
+				ctx.Tags.AddRange(idea.Tags!);
+			}
 
-            await ctx.SaveChangesAsync();
+			await ctx.SaveChangesAsync();
 
-            return idea;
-        }
+			return idea;
+		}
 
-        public async Task<PaginationResult<int?, IdeaEntity>> Get(int? paginationToken = null)
-        {
-            await using var ctx = CreateContext();
+		public async Task<PaginationResult<int?, IdeaEntity>> Get(int? paginationToken = null)
+		{
+			await using var ctx = CreateContext();
 
-            var query = ctx.Ideas
-                .AsQueryable();
+			var query = ctx.Ideas
+				.AsQueryable();
 
-            if (paginationToken is not null)
-            {
-                query = query
-                    .Where(x => x.Id < paginationToken);
-            }
+			if (paginationToken is not null)
+			{
+				query = query
+					.Where(x => x.Id < paginationToken);
+			}
 
-            query = query
-                .OrderByDescending(x => x.Id)
-                .Take(50)
-                .Include(x => x.Tags)
-                .Include(x => x.AttachmentUrls);
+			query = query
+				.OrderByDescending(x => x.Id)
+				.Take(50)
+				.Include(x => x.Tags)
+				.Include(x => x.AttachmentUrls);
 
-            var queryResult = await query.ToListAsync();
+			var queryResult = await query.ToListAsync();
 
-            int? nextContinuationToken = queryResult.Any() ? queryResult.Last().Id : null;
+			int? nextContinuationToken = queryResult.Any() ? queryResult.Last().Id : null;
 
-            return new PaginationResult<int?, IdeaEntity>(nextContinuationToken, queryResult);
-        }
+			return new PaginationResult<int?, IdeaEntity>(nextContinuationToken, queryResult);
+		}
 
-        public async Task<List<IdeaEntity>> GetForSpecificUser(Guid userId)
-        {
-            await using var ctx = CreateContext();
+		public async Task<List<IdeaEntity>> GetForSpecificUser(Guid userId)
+		{
+			await using var ctx = CreateContext();
 
-            return await ctx.Ideas
-                .Where(x => x.Creator == userId)
-                .Include(x => x.Tags)
-                .Include(x => x.AttachmentUrls)
-                .ToListAsync();
-        }
+			return await ctx.Ideas
+				.Where(x => x.Creator == userId)
+				.Include(x => x.Tags)
+				.Include(x => x.AttachmentUrls)
+				.ToListAsync();
+		}
 
-        public async Task<IdeaEntity?> GetSpecificIdea(int id)
-        {
-            await using var ctx = CreateContext();
+		public async Task<IdeaEntity?> GetSpecificIdea(int id)
+		{
+			await using var ctx = CreateContext();
 
-            return await ctx.Ideas
-                .Include(x => x.Tags)
-                .Include(x => x.AttachmentUrls)
-                .FirstOrDefaultAsync(x => x.Id == id);
-        }
+			return await ctx.Ideas
+				.Include(x => x.Tags)
+				.Include(x => x.AttachmentUrls)
+				.FirstOrDefaultAsync(x => x.Id == id);
+		}
 
-        public async Task MigrateIdeas(Guid oldOwner, Guid newOwner)
-        {
-            await using var ctx = CreateContext();
+		public async Task MigrateIdeas(Guid oldOwner, Guid newOwner)
+		{
+			await using var ctx = CreateContext();
 
-            var oldIdeas = await ctx.Ideas
-                .Where(x => x.Creator == oldOwner)
-                .ToListAsync();
+			var oldIdeas = await ctx.Ideas
+				.Where(x => x.Creator == oldOwner)
+				.ToListAsync();
 
-            foreach (var ideaOfOldOwner in oldIdeas)
-            {
-                ideaOfOldOwner.Creator = newOwner;
-            }
+			foreach (var ideaOfOldOwner in oldIdeas)
+			{
+				ideaOfOldOwner.Creator = newOwner;
+			}
 
-            await ctx.SaveChangesAsync();
-        }
+			await ctx.SaveChangesAsync();
+		}
 
-        public async Task<IdeaDeleteErrorCode> Delete(Guid userId, int id)
-        {
-            await using var ctx = CreateContext();
+		public async Task<IdeaDeleteErrorCode> Delete(Guid userId, int id)
+		{
+			await using var ctx = CreateContext();
 
-            var idea = await ctx.Ideas.FirstOrDefaultAsync(x => x.Id == id);
+			var idea = await ctx.Ideas.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (idea is null)
-            {
-                return IdeaDeleteErrorCode.NotFound;
-            }
+			if (idea is null)
+			{
+				return IdeaDeleteErrorCode.NotFound;
+			}
 
-            if (idea.Creator != userId)
-            {
-                return IdeaDeleteErrorCode.NotOwned;
-            }
+			if (idea.Creator != userId)
+			{
+				return IdeaDeleteErrorCode.NotOwned;
+			}
 
-            ctx.Ideas.Remove(idea);
+			ctx.Ideas.Remove(idea);
 
-            return await ctx.SaveChangesAsyncWithResult()
-                ? IdeaDeleteErrorCode.Successful
-                : IdeaDeleteErrorCode.UnspecifiedError;
-        }
+			return await ctx.SaveChangesAsyncWithResult()
+				? IdeaDeleteErrorCode.Successful
+				: IdeaDeleteErrorCode.UnspecifiedError;
+		}
 
-        public async Task AddAttachmentUrls(int ideaId, IEnumerable<string> attachmentUrls)
-        {
-            await using var ctx = CreateContext();
+		public async Task<List<AttachmentUrlEntity>> AddAttachmentUrls(int ideaId, IEnumerable<string> attachmentUrls)
+		{
+			await using var ctx = CreateContext();
 
-            var idea = await ctx.Ideas.FirstOrDefaultAsync(x => x.Id == ideaId);
+			var idea = await ctx.Ideas.FirstOrDefaultAsync(x => x.Id == ideaId);
 
-            if (idea is not null)
-            {
-                idea.AttachmentUrls = attachmentUrls.Select(x => new AttachmentUrlEntity()
-                {
-                    AttachmentUrl = x,
-                }).ToList();
+			if (idea is not null)
+			{
+				var attachmentEntities = attachmentUrls.Select(x => new AttachmentUrlEntity()
+				{
+					AttachmentUrl = x,
+				}).ToList();
 
-                await ctx.SaveChangesAsync();
-            }
-        }
+				if (idea.AttachmentUrls?.Any() ?? false)
+				{
+					idea.AttachmentUrls.AddRange(attachmentEntities);
+				}
+				else
+				{
+					idea.AttachmentUrls = attachmentEntities;
+				}
 
-        public async Task<AttachmentUrlEntity?> GetAttachmentUrl(int ideaId, int id)
-        {
-            await using var ctx = CreateContext();
+				await ctx.SaveChangesAsync();
 
-            return await ctx
-                .AttachmentUrls
-                .Include(x => x.Idea)
-                .FirstOrDefaultAsync(x => x.Id == id && x.IdeaId == ideaId);
-        }
+				return attachmentEntities;
+			}
 
-        public async Task DeleteAttachmentUrl(AttachmentUrlEntity entity)
-        {
-            await using var ctx = CreateContext();
+			return new();
+		}
 
-            ctx.AttachmentUrls.Remove(entity);
+		public async Task<AttachmentUrlEntity?> GetAttachmentUrl(int ideaId, int id)
+		{
+			await using var ctx = CreateContext();
 
-            await ctx.SaveChangesAsync();
-        }
-    }
+			return await ctx
+				.AttachmentUrls
+				.Include(x => x.Idea)
+				.FirstOrDefaultAsync(x => x.Id == id && x.IdeaId == ideaId);
+		}
+
+		public async Task DeleteAttachmentUrl(AttachmentUrlEntity entity)
+		{
+			await using var ctx = CreateContext();
+
+			ctx.AttachmentUrls.Remove(entity);
+
+			await ctx.SaveChangesAsync();
+		}
+	}
 }

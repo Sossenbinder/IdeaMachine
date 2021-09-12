@@ -77,6 +77,7 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 	}
 
 	const onFileInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+		debugger;
 		setFileUrls(Array.from(event.target.files).map(x => URL.createObjectURL(x)));
 	}
 
@@ -167,6 +168,9 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 					}}>
 					<UploadRow
 						attachments={fileUrls.map(x => ({ attachmentUrl: x }) as AttachmentUrl)}
+						onAttachmentAdded={(attachments) => {
+							//fileUrls
+						}}
 						ideaId={idea.id} />
 				</Cell>
 				<Cell

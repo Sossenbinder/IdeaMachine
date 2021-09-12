@@ -21,7 +21,7 @@ namespace IdeaMachine.Modules.Idea.Repository.Interface
 
         Task<IdeaDeleteErrorCode> Delete(Guid userId, int id);
 
-        Task AddAttachmentUrls(int ideaId, IEnumerable<string> attachmentUrls);
+        Task<List<AttachmentUrlEntity>> AddAttachmentUrls(int ideaId, IEnumerable<string> attachmentUrls);
 
         Task<AttachmentUrlEntity?> GetAttachmentUrl(int ideaId, int id);
 

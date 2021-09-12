@@ -68,10 +68,17 @@ export namespace Network {
 		export type Response = IdeaDeleteErrorCode;
 	}
 
+	export namespace UploadAttachment {
+		export type Request = {
+			ideaId: number,
+		};
+		export type Response = number;
+	}
+
 	export namespace DeleteAttachment {
 		export type Request = {
-			ideaId: number;
 			attachmentId: number;
+			ideaId: number;
 		}
 	}
 

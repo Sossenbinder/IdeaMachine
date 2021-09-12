@@ -1,5 +1,5 @@
 //Types
-import { NetworkResponse } from "common/helper/requests/types/NetworkDefinitions";
+import { NetworkResponse, GenericNetworkResponse } from "common/helper/requests/types/NetworkDefinitions";
 import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
 import { Idea } from "modules/ideas/types";
 import { RegisterInfo, SignInInfo, IdentityErrorCode } from "modules/account/types";
@@ -20,6 +20,7 @@ export interface IIdeaService extends IModuleService {
 	initializeOwnIdeas(): Promise<void>;
 	getSpecificIdea(id: number): Promise<void>;
 	deleteIdea(id: number): Promise<void>;
+	uploadAttachment(ideaId: number, file: File): Promise<void>;
 	deleteAttachment(ideaId: number, attachmentId: number): Promise<void>;
 }
 

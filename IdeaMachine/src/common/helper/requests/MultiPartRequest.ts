@@ -3,11 +3,11 @@ import { NetworkResponse } from "./types/NetworkDefinitions";
 const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] as HTMLInputElement;
 
 type Request<TRequest> = {
-	files: FileList;
+	files: FileList | Array<File>;
 	data?: TRequest;
 }
 
-export default class MultiPartRequest<TRequest, TResponse> {
+export default class MultiPartRequest<TRequest, TResponse = undefined> {
 
 	private m_url: string;
 

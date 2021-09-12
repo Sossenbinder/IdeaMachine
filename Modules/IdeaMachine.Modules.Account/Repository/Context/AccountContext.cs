@@ -7,7 +7,13 @@ using Microsoft.EntityFrameworkCore;
 namespace IdeaMachine.Modules.Account.Repository.Context
 {
 	public class AccountContext : IdentityDbContext<AccountEntity, IdentityRole<Guid>, Guid>
-	{
+	{       
+		//Migration
+		// public AccountContext()
+		// 	: base(new DbContextOptionsBuilder<AccountContext>().UseSqlServer("Server=tcp:localhost,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;").Options)
+		// {
+		// }
+
 		public AccountContext(DbContextOptions<AccountContext> options)
 			: base(options)
 		{

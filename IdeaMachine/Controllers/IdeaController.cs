@@ -11,6 +11,7 @@ using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Reaction.Service.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachine.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -83,6 +84,14 @@ namespace IdeaMachine.Controllers
             return result.IsFailure 
                 ? JsonDataResponse<IdeaUiModel?>.Error() 
                 : JsonDataResponse<IdeaUiModel?>.Success(await ToEnrichedUiModel(result.PayloadOrFail!));
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("Blub")]
+        public async Task Blub((int First, string Second) model)
+        {
+	        await Task.Yield();
         }
 
         [HttpPost]
