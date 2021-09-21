@@ -91,11 +91,14 @@ export const SignIn: React.FC = () => {
 				className={styles.ActionSection}
 				space="Between"
 				direction="Row">
-				<Link
-					className={styles.RegisterLink}
-					to="/Logon/Register">
-					Create an account instead?
-				</Link>
+				<Flex
+					crossAlign="Center">
+					<Link
+						className={styles.RegisterLink}
+						to="/Logon/Register">
+						Create an account instead?
+					</Link>
+				</Flex>
 				<LoadingButton
 					color="primary"
 					className={styles.Button}

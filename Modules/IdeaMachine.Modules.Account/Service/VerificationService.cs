@@ -31,7 +31,7 @@ namespace IdeaMachine.Modules.Account.Service
 
 			if (user is null)
 			{
-				return ServiceResponse.Failure(IdentityErrorCode.InvalidUserName);
+				return ServiceResponse.Failure(IdentityErrorCode.InvalidEmailOrUserName);
 			}
 
 			var result = await _userManager.ConfirmEmailAsync(user, verifyModel.Token);

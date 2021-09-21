@@ -46,6 +46,7 @@ export enum IdentityErrorCode {
 	PasswordMissing = 23,
 	EmailNotConfirmed = 24,
 	EmailAlreadyConfirmed = 25,
+	InvalidEmailOrUserName = 26,
 }
 
 export namespace Network {

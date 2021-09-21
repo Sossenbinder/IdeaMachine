@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
 using IdeaMachine.Common.Core.Extensions;
-using IdeaMachine.Common.Eventing.DataTypes;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
 using MassTransit;
+using MassTransit.ConsumeConfigurators;
 
 namespace IdeaMachine.Common.Eventing.MassTransit.Service
 {
@@ -45,12 +44,6 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 			return _busControl.Publish(message);
 		}
 
-		private HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Func<ConsumeContext<T>, Task> handler)
-			where T : class
-		{
-			return RegisterOnQueue(queueName, ep => ep.Handler<T>(ctx => handler(ctx)));
-		}
-
 		public HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Action<T> handler)
 			where T : class
 		{
@@ -62,24 +55,38 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 			return RegisterForEvent<T>(queueName, ctx => handler(ctx.Message));
 		}
 
-		public HostReceiveEndpointHandle RegisterConsumer<TConsumer>(string queueName, TConsumer consumer)
+		public HostReceiveEndpointHandle RegisterInstanceConsumer<TConsumer>(
+			string queueName, 
+			TConsumer consumer, 
+			Action<IReceiveEndpointConfigurator>? customConfigurator = null,
+			Action<IInstanceConfigurator<TConsumer>>? instanceConfigurator = null)
 			where TConsumer : class, IConsumer
 		{
-			return RegisterOnQueue(queueName, ep => ep.Instance(consumer));
+			return RegisterOnQueue(queueName, ep =>
+			{
+				ep.Instance(consumer, cfg =>
+				{
+					instanceConfigurator?.Invoke(cfg);
+					cfg.UseMessageRetry(retry => retry.Exponential(
+						10,
+						TimeSpan.FromSeconds(2),
+						TimeSpan.FromMinutes(5),
+						TimeSpan.FromSeconds(10)));
+				});
+
+				customConfigurator?.Invoke(ep);
+			});
+		}
+
+		private HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Func<ConsumeContext<T>, Task> handler)
+			where T : class
+		{
+			return RegisterOnQueue(queueName, ep => ep.Handler<T>(ctx => handler(ctx)));
 		}
 
 		private HostReceiveEndpointHandle RegisterOnQueue(string queueName, Action<IReceiveEndpointConfigurator> registrationCb)
 		{
-			return _receiveEndpointConnector.ConnectReceiveEndpoint(queueName, (cfg, ep) =>
-			{
-				ep.UseMessageRetry(retry => retry.Exponential(
-					10,
-					TimeSpan.FromSeconds(2),
-					TimeSpan.FromMinutes(5),
-					TimeSpan.FromSeconds(10)));
-
-				registrationCb(ep);
-			});
+			return _receiveEndpointConnector.ConnectReceiveEndpoint(queueName, (_, ep) => registrationCb(ep));
 		}
 	}
 }

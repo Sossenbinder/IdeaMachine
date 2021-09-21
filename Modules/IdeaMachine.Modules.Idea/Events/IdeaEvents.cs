@@ -1,5 +1,4 @@
 ﻿using IdeaMachine.Common.Eventing.Abstractions.Events;
-using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Modules.Idea.DataTypes.Events;
 using IdeaMachine.Modules.Idea.Events.Interface;
 
@@ -9,9 +8,14 @@ namespace IdeaMachine.Modules.Idea.Events
 	{
 		public IDistributedEvent<IdeaCreated> IdeaCreated { get; }
 
-		public IdeaEvents(MassTransitEventFactory eventFactory)
+		public IDistributedEvent<CommentAdded> CommentAdded { get; }
+
+		public IdeaEvents(
+			IDistributedEvent<IdeaCreated> ideaCreated, 
+			IDistributedEvent<CommentAdded> commentAdded)
 		{
-			IdeaCreated = eventFactory.CreateDistinct<IdeaCreated>();
+			IdeaCreated = ideaCreated;
+			CommentAdded = commentAdded;
 		}
 	}
 }

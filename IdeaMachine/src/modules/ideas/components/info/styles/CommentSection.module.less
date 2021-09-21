@@ -4,6 +4,7 @@
 
 	.CommentList {
 		overflow-y: scroll;
+		height: 75%;
 
 		&::-webkit-scrollbar {
 			width: 12px;
@@ -21,5 +22,15 @@
 		}
 	}
 
-	.CommentInput {}
+	.CommentInputSection {
+		height: 25%;
+
+		.Input {
+			flex-grow: 1;
+		}
+
+		.SendButton {			
+			margin: 15em 5em;
+		}
+	}
 }

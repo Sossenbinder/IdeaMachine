@@ -1,0 +1,29 @@
+﻿using System;
+using IdeaMachine.Modules.Idea.DataTypes.Entity;
+
+namespace IdeaMachine.Modules.Idea.DataTypes.Model
+{
+	public class CommentModel
+	{
+		public int CommentId { get; set; }
+
+		public Guid CommenterId {  get; set; }
+
+		public int IdeaId { get; set; }
+
+		public string Comment { get; set; } = null!;
+
+		public DateTime TimeStamp { get; set; }
+
+		public CommentEntity ToEntity()
+		{
+			return new CommentEntity()
+			{
+				CommenterId = CommenterId,
+				Content = Comment,
+				CreationDate = TimeStamp,
+				IdeaId = IdeaId,
+			};
+		}
+	}
+}

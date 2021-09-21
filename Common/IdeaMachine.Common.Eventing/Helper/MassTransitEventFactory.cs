@@ -1,5 +1,8 @@
-﻿using IdeaMachine.Common.Eventing.Events;
+﻿using System;
+using IdeaMachine.Common.Eventing.Events;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
+using MassTransit;
+using MassTransit.ConsumeConfigurators;
 using Microsoft.Extensions.Logging;
 
 namespace IdeaMachine.Common.Eventing.Helper
@@ -18,20 +21,20 @@ namespace IdeaMachine.Common.Eventing.Helper
 			_logger = logger;
 		}
 
-		public MtEvent<T> CreateDistinct<T>()
+		public MtEvent<T> CreateDistinct<T>(Action<IReceiveEndpointConfigurator>? customConfigurator = null, Action<IInstanceConfigurator<IConsumer<T>>>? instanceConfigurator = null)
 			where T : class =>
-			new(_massTransitEventingService, new DistinctQueueNameFactory(), _logger);
+			new(_massTransitEventingService, new DistinctQueueNameFactory(), _logger, customConfigurator, instanceConfigurator);
 
-		public MtEvent<T> CreateDistinct<T>(string queueName)
+		public MtEvent<T> CreateDistinct<T>(string queueName, Action<IReceiveEndpointConfigurator>? customConfigurator = null, Action<IInstanceConfigurator<IConsumer<T>>>? instanceConfigurator = null)
 			where T : class =>
-			new(queueName, _massTransitEventingService, new DistinctQueueNameFactory(), _logger);
+			new(queueName, _massTransitEventingService, new DistinctQueueNameFactory(), _logger, customConfigurator, instanceConfigurator);
 
-		public MtEvent<T> CreateRegular<T>()
+		public MtEvent<T> CreateShared<T>(Action<IReceiveEndpointConfigurator>? customConfigurator = null, Action<IInstanceConfigurator<IConsumer<T>>>? instanceConfigurator = null)
 			where T : class =>
-			new(_massTransitEventingService, new SharedQueueNameFactory(), _logger);
+			new(_massTransitEventingService, new SharedQueueNameFactory(), _logger, customConfigurator);
 
-		public MtEvent<T> CreateRegular<T>(string queueName)
+		public MtEvent<T> CreateShared<T>(string queueName, Action<IReceiveEndpointConfigurator>? customConfigurator = null, Action<IInstanceConfigurator<IConsumer<T>>>? instanceConfigurator = null)
 			where T : class =>
-			new(queueName, _massTransitEventingService, new SharedQueueNameFactory(), _logger);
+			new(queueName, _massTransitEventingService, new SharedQueueNameFactory(), _logger, customConfigurator, instanceConfigurator);
 	}
 }

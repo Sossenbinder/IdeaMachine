@@ -21,6 +21,8 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 
 		public List<AttachmentUrlEntity>? AttachmentUrls { get; set; }
 
+		public List<CommentEntity>? Comments { get; set; }
+
 		public IdeaModel ToModel()
 		{
 			return new()

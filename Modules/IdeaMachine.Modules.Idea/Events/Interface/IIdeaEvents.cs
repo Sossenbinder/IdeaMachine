@@ -6,5 +6,7 @@ namespace IdeaMachine.Modules.Idea.Events.Interface
 	public interface IIdeaEvents
 	{
 		IDistributedEvent<IdeaCreated> IdeaCreated { get; }
+
+		IDistributedEvent<CommentAdded> CommentAdded { get; }
 	}
 }

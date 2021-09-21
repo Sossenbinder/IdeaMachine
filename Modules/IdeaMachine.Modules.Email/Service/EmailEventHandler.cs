@@ -60,13 +60,15 @@ namespace IdeaMachine.Modules.Email.Service
 
 		private async Task OnIdeaCreated(IdeaCreated ideaCreated)
 		{
-			if (ideaCreated.Creator.Email.IsNullOrEmpty())
+			var (creator, _) = ideaCreated;
+
+			if (creator.Email.IsNullOrEmpty())
 			{
 				return;
 			}
 
 			var mail = MailFactory.CreateMail();
-			mail.To.Add(new MailboxAddress("Dear creative!", ideaCreated.Creator.Email));
+			mail.To.Add(new MailboxAddress("Dear creative!", creator.Email));
 			mail.Subject = "Thank you for your idea!";
 			mail.Body = new TextPart("plain")
 			{

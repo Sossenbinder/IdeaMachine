@@ -9,6 +9,7 @@ using IdeaMachine.Common.Eventing.Abstractions.Events;
 using IdeaMachine.Common.Eventing.Helper.Interface;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
 using MassTransit;
+using MassTransit.ConsumeConfigurators;
 using Microsoft.Extensions.Logging;
 
 namespace IdeaMachine.Common.Eventing.Events
@@ -34,7 +35,11 @@ namespace IdeaMachine.Common.Eventing.Events
 
 		private readonly IQueueNameFactory _queueNameFactory;
 
+
 		private readonly ILogger _logger;
+
+		private readonly Action<IReceiveEndpointConfigurator>? _customConfigurator;
+		private readonly Action<IInstanceConfigurator<IConsumer<TEventArgs>>>? _instanceConfigurator;
 
 		private readonly ConcurrentHashSet<Func<Fault<TEventArgs>, Task>> _faultHandlers = new();
 
@@ -47,22 +52,27 @@ namespace IdeaMachine.Common.Eventing.Events
 		public MtEvent(
 			IMassTransitEventingService massTransitEventingService,
 			IQueueNameFactory queueNameFactory,
-			ILogger logger)
-			: this(typeof(TEventArgs).Name, massTransitEventingService, queueNameFactory, logger)
+			ILogger logger,
+			Action<IReceiveEndpointConfigurator>? customConfigurator = null,
+			Action<IInstanceConfigurator<IConsumer<TEventArgs>>>? instanceConfigurator = null)
+			: this(typeof(TEventArgs).Name, massTransitEventingService, queueNameFactory, logger, customConfigurator)
 		{
-			_queueNameFactory = queueNameFactory;
 		}
 
 		public MtEvent(
 			string queueName,
 			IMassTransitEventingService massTransitEventingService,
 			IQueueNameFactory queueNameFactory,
-			ILogger logger)
+			ILogger logger,
+			Action<IReceiveEndpointConfigurator>? customConfigurator = null,
+			Action<IInstanceConfigurator<IConsumer<TEventArgs>>>? instanceConfigurator = null)
 		{
 			_queueName = queueName;
 			_massTransitEventingService = massTransitEventingService;
 			_queueNameFactory = queueNameFactory;
 			_logger = logger;
+			_customConfigurator = customConfigurator;
+			_instanceConfigurator = instanceConfigurator;
 		}
 
 		public override DisposableAction Register(Func<TEventArgs, Task> handler)
@@ -76,7 +86,7 @@ namespace IdeaMachine.Common.Eventing.Events
 					return disposableAction;
 				}
 
-				_regularEndpointHandle = _massTransitEventingService.RegisterConsumer<IConsumer<TEventArgs>>(_queueNameFactory.GetRegularQueueName(_queueName), this);
+				_regularEndpointHandle = _massTransitEventingService.RegisterInstanceConsumer(_queueNameFactory.GetRegularQueueName(_queueName), this, _customConfigurator, _instanceConfigurator);
 			}
 
 			return disposableAction;
@@ -98,7 +108,7 @@ namespace IdeaMachine.Common.Eventing.Events
 					return disposableAction;
 				}
 
-				_faultEndpointHandle = _massTransitEventingService.RegisterConsumer<IConsumer<Fault<TEventArgs>>>(_queueNameFactory.GetFaultQueueName(_queueName), this);
+				_faultEndpointHandle = _massTransitEventingService.RegisterInstanceConsumer(_queueNameFactory.GetFaultQueueName(_queueName), this, _customConfigurator, _instanceConfigurator);
 			}
 
 			return disposableAction;

@@ -130,28 +130,28 @@ namespace IdeaMachine.Modules.Idea.Repository
 
 			var idea = await ctx.Ideas.FirstOrDefaultAsync(x => x.Id == ideaId);
 
-			if (idea is not null)
+			if (idea is null)
 			{
-				var attachmentEntities = attachmentUrls.Select(x => new AttachmentUrlEntity()
-				{
-					AttachmentUrl = x,
-				}).ToList();
+				return new();
+			}
+			
+			var attachmentEntities = attachmentUrls.Select(x => new AttachmentUrlEntity()
+			{
+				AttachmentUrl = x,
+			}).ToList();
 
-				if (idea.AttachmentUrls?.Any() ?? false)
-				{
-					idea.AttachmentUrls.AddRange(attachmentEntities);
-				}
-				else
-				{
-					idea.AttachmentUrls = attachmentEntities;
-				}
-
-				await ctx.SaveChangesAsync();
-
-				return attachmentEntities;
+			if (idea.AttachmentUrls?.Any() ?? false)
+			{
+				idea.AttachmentUrls.AddRange(attachmentEntities);
+			}
+			else
+			{
+				idea.AttachmentUrls = attachmentEntities;
 			}
 
-			return new();
+			await ctx.SaveChangesAsync();
+
+			return attachmentEntities;
 		}
 
 		public async Task<AttachmentUrlEntity?> GetAttachmentUrl(int ideaId, int id)
@@ -169,6 +169,15 @@ namespace IdeaMachine.Modules.Idea.Repository
 			await using var ctx = CreateContext();
 
 			ctx.AttachmentUrls.Remove(entity);
+
+			await ctx.SaveChangesAsync();
+		}
+
+		public async Task AddComment(CommentEntity entity)
+		{
+			await using var ctx = CreateContext();
+
+			ctx.Comments.Add(entity);
 
 			await ctx.SaveChangesAsync();
 		}

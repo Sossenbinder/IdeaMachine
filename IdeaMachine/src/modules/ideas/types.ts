@@ -1,3 +1,5 @@
+import { Comment } from "modules/comments/types";
+
 export type Idea = {
 	id: number;
 	shortDescription: string;
@@ -7,6 +9,7 @@ export type Idea = {
 	tags: Array<string>;
 	attachmentUrls: Array<AttachmentUrl>;
 	ideaReactionMetaData: IdeaReactionMetaData;
+	comments?: Array<Comment>;
 }
 
 export type AttachmentUrl = {

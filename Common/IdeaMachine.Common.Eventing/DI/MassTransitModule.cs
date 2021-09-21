@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Autofac;
-using Autofac.Core.Resolving.Pipeline;
 using IdeaMachine.Common.Eventing.Abstractions.Events;
-using IdeaMachine.Common.Eventing.Events;
 using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Common.Eventing.MassTransit.Service;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
-using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
+using MassTransit;
+using MassTransit.ConsumeConfigurators;
+using Module = Autofac.Module;
 
 namespace IdeaMachine.Common.Eventing.DI
 {
-	public class MassTransitModule : Autofac.Module
+	public class MassTransitModule : Module
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
@@ -35,9 +34,13 @@ namespace IdeaMachine.Common.Eventing.DI
 
 					var factory = ctx.Resolve<MassTransitEventFactory>();
 
-					MethodInfo create = typeof(MassTransitEventFactory).GetMethod(nameof(MassTransitEventFactory.CreateRegular), new Type[0])?.MakeGenericMethod(type) ?? throw new ArgumentException($"Couldn't create generic {nameof(MassTransitEventFactory.CreateDistinct)}");
+					var method = typeof(MassTransitEventFactory)
+						.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+						.Single(x => x.Name == nameof(MassTransitEventFactory.CreateDistinct) && x.IsGenericMethodDefinition && x.GetParameters().Length == 2);
 
-					return create.Invoke(factory, new object[0])!;
+					var createInfo = method.MakeGenericMethod(type) ?? throw new ArgumentException($"Couldn't create generic {nameof(MassTransitEventFactory.CreateDistinct)}");
+
+					return createInfo.Invoke(factory, new object[] { null!, null! })!;
 				}).As(typeof(IDistributedEvent<>))
 				.SingleInstance();
 		}

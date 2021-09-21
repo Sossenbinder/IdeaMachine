@@ -52,7 +52,7 @@ export default abstract class AjaxRequest<TRequest, TResponse> {
 
 			return {
 				success: response.ok,
-				payload: json.data,
+				payload: json.data as TResponse,
 			};
 
 		} catch (e) {

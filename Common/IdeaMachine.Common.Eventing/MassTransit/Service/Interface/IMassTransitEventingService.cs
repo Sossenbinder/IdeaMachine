@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MassTransit;
+using MassTransit.ConsumeConfigurators;
 
 namespace IdeaMachine.Common.Eventing.MassTransit.Service.Interface
 {
@@ -15,7 +16,11 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service.Interface
 		HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Func<T, Task> handler)
 			where T : class;
 
-		HostReceiveEndpointHandle RegisterConsumer<TConsumer>(string queueName, TConsumer consumer)
+		HostReceiveEndpointHandle RegisterInstanceConsumer<TConsumer>(
+			string queueName,
+			TConsumer consumer,
+			Action<IReceiveEndpointConfigurator>? customConfigurator = null,
+			Action<IInstanceConfigurator<TConsumer>>? instanceConfigurator = null)
 			where TConsumer : class, IConsumer;
 	}
 }

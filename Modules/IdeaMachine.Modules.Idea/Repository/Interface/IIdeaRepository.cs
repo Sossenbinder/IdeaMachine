@@ -26,5 +26,7 @@ namespace IdeaMachine.Modules.Idea.Repository.Interface
         Task<AttachmentUrlEntity?> GetAttachmentUrl(int ideaId, int id);
 
         Task DeleteAttachmentUrl(AttachmentUrlEntity entity);
+
+        Task AddComment(CommentEntity entity);
     }
 }

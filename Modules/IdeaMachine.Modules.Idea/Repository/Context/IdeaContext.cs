@@ -12,6 +12,8 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 
 		public DbSet<AttachmentUrlEntity> AttachmentUrls { get; set; } = null!;
 
+		public DbSet<CommentEntity> Comments { get; set; } = null!;
+
 		public IdeaContext(string connectionString)
 			: base(connectionString)
 		{
@@ -32,6 +34,10 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 
 			modelBuilder.Entity<IdeaEntity>()
 				.HasMany(x => x.AttachmentUrls)
+				.WithOne(x => x.Idea);
+
+			modelBuilder.Entity<IdeaEntity>()
+				.HasMany(x => x.Comments)
 				.WithOne(x => x.Idea);
 
 			modelBuilder.Entity<TagEntity>()
@@ -57,6 +63,19 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 
 			modelBuilder.Entity<AttachmentUrlEntity>()
 				.ToTable("AttachmentUrls")
+				.HasKey(x => x.Id);
+
+			modelBuilder.Entity<CommentEntity>()
+				.Property(x => x.Id)
+				.ValueGeneratedOnAdd();
+
+			modelBuilder.Entity<CommentEntity>()
+				.HasOne(x => x.Idea)
+				.WithMany(x => x.Comments)
+				.HasForeignKey(x => x.IdeaId);
+
+			modelBuilder.Entity<CommentEntity>()
+				.ToTable("Comments")
 				.HasKey(x => x.Id);
 		}
 	}

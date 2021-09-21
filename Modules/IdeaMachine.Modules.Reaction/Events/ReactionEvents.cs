@@ -8,14 +8,9 @@ namespace IdeaMachine.Modules.Reaction.Events
 	{
 		public IDistributedEvent<LikeChange> LikeChange { get; }
 
-		public IDistributedEvent<CommentAdded> CommentAdded { get; }
-
-		public ReactionEvents(
-			IDistributedEvent<LikeChange> likeChange,
-			IDistributedEvent<CommentAdded> commentAdded)
+		public ReactionEvents(IDistributedEvent<LikeChange> likeChange)
 		{
 			LikeChange = likeChange;
-			CommentAdded = commentAdded;
 		}
 	}
 }

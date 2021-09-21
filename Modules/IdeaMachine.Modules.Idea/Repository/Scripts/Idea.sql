@@ -23,3 +23,11 @@ CREATE TABLE [dbo].[AttachmentUrls](
 	[IdeaId] [int] NOT NULL FOREIGN KEY REFERENCES Ideas(Id),
 	[AttachmentUrl] [varchar](500) NOT NULL
 );
+
+CREATE TABLE [dbo].[Comments](
+	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[IdeaId] [int] NOT NULL FOREIGN KEY REFERENCES Ideas(Id),
+	[CommenterId] [uniqueidentifier] NOT NULL FOREIGN KEY REFERENCES AspNetUsers(Id),
+	[CreationDate] [datetime2](7) NOT NULL,
+	[Content] [varchar](5000) NOT NULL,
+);

@@ -34,13 +34,11 @@ namespace IdeaMachine.Utils
 
 			var items = JsonConvert.DeserializeObject<Dictionary<string, object>>(requestBody);
 
-			var attributes = bindingContext
+			if (bindingContext
 				.ModelMetadata
 				.GetType()
 				.GetProperty("Attributes")
-				?.GetValue(bindingContext.ModelMetadata) as ModelAttributes;
-
-			if (attributes == null)
+				?.GetValue(bindingContext.ModelMetadata) is not ModelAttributes attributes)
 			{
 				throw new ArgumentException("No attributes found");
 			}

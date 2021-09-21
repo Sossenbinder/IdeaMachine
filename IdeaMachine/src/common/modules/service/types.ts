@@ -28,6 +28,11 @@ export interface IReactionService extends IModuleService {
 	modifyLike(ideaId: number, likeState: LikeState): Promise<void>;
 }
 
+export interface ICommentsService extends IModuleService {
+	addComment(ideaId: number, comment: string): Promise<void>;
+	queryComments(ideaId: number): Promise<void>;
+}
+
 export interface IAccountService extends IModuleService {
 	logout(): Promise<void>;
 	register(registerInfo: RegisterInfo): Promise<NetworkResponse<IdentityErrorCode>>;
@@ -37,6 +42,7 @@ export interface IAccountService extends IModuleService {
 
 export type Services = {
 	AccountService: IAccountService;
+	CommentsService: ICommentsService;
 	IdeaService: IIdeaService;
 	ReactionService: IReactionService;
 	SignalRConnectionProvider: ISignalRConnectionProvider;

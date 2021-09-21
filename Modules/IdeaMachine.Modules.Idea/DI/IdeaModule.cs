@@ -46,6 +46,14 @@ namespace IdeaMachine.Modules.Idea.DI
 			builder.Register(ctx => new BlobServiceClient(ctx.Resolve<IConfiguration>()["BlobStorageConnection"]))
 				.AsSelf()
 				.SingleInstance();
+
+			builder.RegisterType<CommentService>()
+				.As<ICommentService>()
+				.SingleInstance();
+
+			builder.RegisterType<CommentRepository>()
+				.As<ICommentRepository>()
+				.SingleInstance();
 		}
 	}
 }
