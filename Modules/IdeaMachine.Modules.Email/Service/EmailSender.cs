@@ -63,6 +63,8 @@ namespace IdeaMachine.Modules.Email.Service
 			{
 				await smtpClient.ConnectAsync("smtp.gmail.com", 587);
 
+				await smtpClient.AuthenticateAsync(new SaslMechanismPlain(Encoding.UTF8, _configuration["GmailUserName"], _configuration["GmailPassword"]));
+				var oauth2 = new SaslMechanismOAuth2(_configuration["GmailUserName"], await _credentials);
 				await smtpClient.AuthenticateAsync(oauth2);
 				await smtpClient.SendAsync(mail);
 				await smtpClient.DisconnectAsync(true);
