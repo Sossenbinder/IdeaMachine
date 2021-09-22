@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
@@ -34,7 +35,7 @@ namespace IdeaMachine.Modules.Email.Service
 		private async Task<string> CreateCredentials(IConfiguration configuration)
 		{
 			var serviceAccountInitializer = new ServiceAccountCredential
-				.Initializer("ideamachinemail@ideamachinemail.iam.gserviceaccount.com")
+				.Initializer("")
 				{
 					Scopes = new List<string> { "https://www.googleapis.com/auth/gmail.send" },
 					User = _configuration["GmailUserName"],
@@ -47,7 +48,7 @@ namespace IdeaMachine.Modules.Email.Service
 
 			if (!result)
 			{
-				_logger.LogError("Failed to retrieve access token for {UserName}", "ideamachinemail@ideamachinemail.iam.gserviceaccount.com");
+				_logger.LogError("Failed to retrieve access token for {UserName}", "");
 				throw new HttpRequestException();
 			}
 
@@ -62,7 +63,6 @@ namespace IdeaMachine.Modules.Email.Service
 			{
 				await smtpClient.ConnectAsync("smtp.gmail.com", 587);
 
-				var oauth2 = new SaslMechanismOAuth2(_configuration["GmailUserName"], await _credentials);
 				await smtpClient.AuthenticateAsync(oauth2);
 				await smtpClient.SendAsync(mail);
 				await smtpClient.DisconnectAsync(true);
