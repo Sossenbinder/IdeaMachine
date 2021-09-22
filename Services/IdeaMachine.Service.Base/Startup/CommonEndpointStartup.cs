@@ -43,13 +43,17 @@ namespace IdeaMachine.Service.Base.Startup
 
 			services.AddMassTransit(x =>
 			{
+				x.AddDelayedMessageScheduler();
+
 				x.AddSignalRHub<SignalRHub>();
 
 				x.UsingRabbitMq((ctx, cfg) =>
 				{
+#if DEBUG
 					cfg.Durable = false;
 					cfg.AutoDelete = true;
 					cfg.PurgeOnStartup = true;
+#endif
 
 					cfg.UseMessageRetry(retryConfig =>
 					{
@@ -59,6 +63,8 @@ namespace IdeaMachine.Service.Base.Startup
 					cfg.Host($"rabbitmq://{Configuration["IdeaMachine_RabbitMq"]}");
 
 					cfg.ConfigureEndpoints(ctx);
+
+					cfg.UseDelayedMessageScheduler();
 				});
 			});
 		}

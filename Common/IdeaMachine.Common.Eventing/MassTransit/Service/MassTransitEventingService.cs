@@ -67,8 +67,12 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 				ep.Instance(consumer, cfg =>
 				{
 					instanceConfigurator?.Invoke(cfg);
+
+					cfg.UseDelayedRedelivery(retry => retry
+						.Intervals(TimeSpan.FromMinutes(30), TimeSpan.FromMinutes(120), TimeSpan.FromMinutes(300)));
+
 					cfg.UseMessageRetry(retry => retry.Exponential(
-						10,
+						3,
 						TimeSpan.FromSeconds(2),
 						TimeSpan.FromMinutes(5),
 						TimeSpan.FromSeconds(10)));
