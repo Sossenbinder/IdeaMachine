@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Extensions.Hosting;
 
 namespace IdeaMachine.Service.Base.Utils.ConfigProvider
@@ -13,9 +12,13 @@ namespace IdeaMachine.Service.Base.Utils.ConfigProvider
 
 		protected override IConfigurationBuilder AddDeploymentConfig(IConfigurationBuilder configBuilder)
 		{
-			const string? keyVaultEndpoint = "https://ideamachine.vault.azure.net/";
+			var intermediateConfig = configBuilder.Build();
 
-			return configBuilder.AddAzureKeyVault(keyVaultEndpoint, new DefaultKeyVaultSecretManager());
+			configBuilder = configBuilder.AddAzureKeyVault("https://ideamachine.vault.azure.net/", intermediateConfig["KeyVaultClientId"], intermediateConfig["KeyVaultClientSecret"]);
+
+			intermediateConfig = configBuilder.Build();
+
+			return configBuilder.AddAzureAppConfiguration(intermediateConfig["AppConfigConnectionString"]);
 		}
 	}
 }
