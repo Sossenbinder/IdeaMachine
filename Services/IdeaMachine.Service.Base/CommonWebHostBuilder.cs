@@ -28,6 +28,7 @@ namespace IdeaMachine.Service.Base
 				.ConfigureLogging(x =>
 				{
 					x.SetMinimumLevel(LogLevel.Warning);
+					x.AddAzureWebAppDiagnostics();
 				});
 
 			hostBuilderEnricher?.Invoke(hostBuilder);

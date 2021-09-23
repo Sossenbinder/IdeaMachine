@@ -3,6 +3,8 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+ENV ASPNETCORE_ENVIRONMENT "Production"
+
 FROM node as webNode
 COPY ./IdeaMachine ./src
 WORKDIR /src
