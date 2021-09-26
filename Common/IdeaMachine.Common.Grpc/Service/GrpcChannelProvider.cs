@@ -30,7 +30,7 @@ namespace IdeaMachine.Common.Grpc.Service
 
 		private GrpcChannel CreateChannel(ServiceType serviceType)
 		{
-			var dns = _endpointService.GetDns(serviceType);
+			var dns = _endpointService.GetStatelessEndpointDomainName(serviceType);
 
 			return GrpcChannel.ForAddress($"http://{dns}:{Port}");
 		}
