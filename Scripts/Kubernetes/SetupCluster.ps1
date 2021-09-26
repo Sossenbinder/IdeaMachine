@@ -18,7 +18,7 @@ else {
 
 #docker network connect "kind" "kindRegistry"
 
-helm install ideamachinekeyvaultsecrets ./helm --set clientId=$clientId, clientPassword=$clientPassword
+helm install ideamachinekeyvaultsecrets ./helm --set clientId=$clientId --set clientPassword=$clientPassword
 
 kubectl create secret docker-registry acrimgpullsecret --docker-server=https://ideamachine.azurecr.io --docker-username=$clientId --docker-password=$clientPassword
 

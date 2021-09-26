@@ -41,6 +41,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ideamachine.azurecr.io/ideamachine_accountservice:latest
+          tags: ideamachine.azurecr.io/ideamachine-accountservice:latest
           context: .
           file: ./Services/IdeaMachine.AccountService/Dockerfile

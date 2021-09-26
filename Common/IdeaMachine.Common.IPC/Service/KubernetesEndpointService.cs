@@ -2,11 +2,11 @@
 
 namespace IdeaMachine.Common.IPC.Service
 {
-	public class DockerComposeEndpointService : IEndpointService
+	public class KubernetesEndpointService : IEndpointService
 	{
 		public string GetStatelessEndpointDomainName(ServiceType serviceType)
 		{
-			return $"ideamachine.{serviceType.ToString().ToLower()}";
+			return $"ideamachine-{serviceType.ToString().ToLower()}.default.svc.cluster.local";
 		}
 	}
 }

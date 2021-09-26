@@ -2,6 +2,6 @@
 {
 	public interface IEndpointService
 	{
-		string GetDns(ServiceType serviceType);
+		string GetStatelessEndpointDomainName(ServiceType serviceType);
 	}
 }

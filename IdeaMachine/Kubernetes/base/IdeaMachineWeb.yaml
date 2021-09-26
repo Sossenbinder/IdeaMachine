@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -11,9 +11,12 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: ideamachineweb
-              servicePort: 80
+              service:
+                name: ideamachineweb
+                port:
+                  number: 80
 ---
 apiVersion: v1
 kind: Service

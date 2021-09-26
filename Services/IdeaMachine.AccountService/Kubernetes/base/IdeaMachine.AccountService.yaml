@@ -1,0 +1,43 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: ideamachine-accountservice
+spec:
+  clusterIP: None
+  ports:
+    - name: http2
+      port: 11337
+      targetPort: 11337
+      protocol: TCP
+  selector:
+    name: ideamachine-accountservice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ideamachine-accountservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: ideamachine-accountservice
+  template:
+    metadata:
+      labels:
+        name: ideamachine-accountservice
+        serviceType: ideamachineFunctionalService
+    spec:
+      containers:
+        - image: ideamachine.azurecr.io/accountservice
+          name: ideamachine-accountservice
+          imagePullPolicy: Always
+          ports:
+            - name: http2
+              containerPort: 11337
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+      imagePullSecrets:
+        - name: acrimgpullsecret
