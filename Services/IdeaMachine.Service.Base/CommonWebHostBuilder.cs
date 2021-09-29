@@ -21,14 +21,15 @@ namespace IdeaMachine.Service.Base
 				.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
-					webBuilder.UseStartup<TStartUp>();
+					webBuilder
+						.UseStartup<TStartUp>()
+						.UseConfiguration(ConfigHelper.CreateConfiguration(args));
 
 					webHostBuilderEnricher?.Invoke(webBuilder);
 				})
 				.ConfigureLogging(x =>
 				{
 					x.SetMinimumLevel(LogLevel.Warning);
-					x.AddAzureWebAppDiagnostics();
 				});
 
 			hostBuilderEnricher?.Invoke(hostBuilder);

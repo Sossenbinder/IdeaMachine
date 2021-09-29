@@ -23,4 +23,4 @@ helm install ideamachinekeyvaultsecrets ./helm --set clientId=$clientId --set cl
 kubectl create secret docker-registry acrimgpullsecret --docker-server=https://ideamachine.azurecr.io --docker-username=$clientId --docker-password=$clientPassword
 
 kubectl apply -f ./rabbitmq.yaml
-kubectl apply -f ../../IdeaMachine/Kubernetes/IdeaMachineWeb.yaml
+kubectl apply -f ../IdeaMachine/Kubernetes/IdeaMachineWeb.yaml

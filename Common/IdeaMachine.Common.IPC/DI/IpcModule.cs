@@ -8,7 +8,12 @@ namespace IdeaMachine.Common.IPC.DI
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
+
+#if DEBUG
 			builder.RegisterType<DockerComposeEndpointService>()
+#else
+			builder.RegisterType<KubernetesEndpointService>()
+#endif
 				.As<IEndpointService>()
 				.SingleInstance();
 		}

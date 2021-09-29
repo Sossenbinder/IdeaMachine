@@ -9,3 +9,6 @@ spec:
       containers:
         - name: ideamachineweb
           image: ideamachine.azurecr.io/ideamachine
+          env:
+            - name: DeploymentLink
+              value: "https://localhost:1457"

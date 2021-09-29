@@ -31,6 +31,17 @@ spec:
         - image: ideamachine.azurecr.io/accountservice
           name: ideamachine-accountservice
           imagePullPolicy: Always
+          env:
+            - name: Seq_Server
+              valueFrom:
+                configMapKeyRef:
+                  name: ideamachinegenericcm
+                  key: seqEndpoint
+            - name: IdeaMachine_RabbitMq
+              valueFrom:
+                configMapKeyRef:
+                  name: ideamachinegenericcm
+                  key: rabbitMqEndpoint
           ports:
             - name: http2
               containerPort: 11337

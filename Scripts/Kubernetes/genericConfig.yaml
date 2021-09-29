@@ -1,0 +1,7 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ideamachinegenericcm
+data:
+  seqEndpoint: "http://ideamachine-seq:5341"
+  rabbitMqEndpoint: "ideamachine-rabbitmq"

@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ideamachine-seq
+  labels:
+    kind: ideamachineUtility
+spec:
+  type: ClusterIP
+  selector:
+    name: ideamachine-seq
+  ports:
+    - name: ui
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: dataingress
+      protocol: TCP
+      port: 5341
+      targetPort: 5341
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ideamachine-seq
+  labels:
+    kind: ideamachineUtility
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: ideamachine-seq
+  template:
+    metadata:
+      name: ideamachine-seq
+      labels:
+        name: ideamachine-seq
+        kind: ideamachineUtility
+    spec:
+      containers:
+        - name: ideamachine-seq
+          image: datalust/seq:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          ports:
+            - containerPort: 80
+            - containerPort: 5341
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
