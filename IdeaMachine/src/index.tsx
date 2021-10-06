@@ -42,16 +42,16 @@ const initCoreServices = async (signalRProvider: ISignalRConnectionProvider) => 
 
 	await signalRProvider.start();
 
-	const ideaService = new IdeaService();
+	const ideaService = new IdeaService(signalRProvider);
 	initPromises.push(initService("IdeaService", ideaService));
 
-	const commentsService = new CommentsService();
+	const commentsService = new CommentsService(signalRProvider);
 	initPromises.push(initService("CommentsService", commentsService));
 
-	const accountService = new AccountService();
+	const accountService = new AccountService(signalRProvider);
 	initPromises.push(initService("AccountService", accountService));
 
-	const reactionService = new ReactionService();
+	const reactionService = new ReactionService(signalRProvider);
 	initPromises.push(initService("ReactionService", reactionService));
 
 	await Promise.all(initPromises);

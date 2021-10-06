@@ -3,7 +3,10 @@ import * as signalR from "@microsoft/signalr";
 
 // Functionality
 import ISignalRConnectionProvider from "./interface/ISignalRConnectionProvider";
+
+// Types
 import { Notification } from "./types";
+import NotificationType from "./Notifications";
 
 export class SignalRConnectionProvider implements ISignalRConnectionProvider {
 
@@ -20,8 +23,12 @@ export class SignalRConnectionProvider implements ISignalRConnectionProvider {
 		await this.SignalRConnection.start();
 	}
 
-	public registerNotificationHandler<T>(notificationType: string, handler: (notification: Notification<T>) => Promise<void>): void {
-		this.SignalRConnection.on(notificationType.toString(), handler);
+	public on<T>(notificationType: NotificationType, handler: (notification: Notification<T>) => Promise<void>): void {
+		this.SignalRConnection.on(NotificationType[notificationType], handler);
+	}
+
+	public off<T>(notificationType: NotificationType, handler: (notification: Notification<T>) => Promise<void>): void {
+		this.SignalRConnection.off(NotificationType[notificationType], handler);
 	}
 }
 

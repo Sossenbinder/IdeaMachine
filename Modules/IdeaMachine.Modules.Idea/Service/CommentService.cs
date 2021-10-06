@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Utils.IPC;
+using IdeaMachine.Common.Eventing.DataTypes;
+using IdeaMachine.Common.Eventing.Helper;
+using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
 using IdeaMachine.Modules.Idea.DataTypes.Events;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Events.Interface;
 using IdeaMachine.Modules.Idea.Repository.Interface;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.ModulesServiceBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace IdeaMachine.Modules.Idea.Service
@@ -16,19 +21,43 @@ namespace IdeaMachine.Modules.Idea.Service
     {
 	    private readonly ICommentRepository _commentRepository;
 
+	    private readonly IIdeaRepository _ideaRepository;
+
+	    private readonly ISignalRService _signalRService;
+
 	    public CommentService(
 			ILogger<CommentService> logger,
 			ICommentRepository commentRepository,
-			IIdeaEvents ideaEvents)
+			IIdeaRepository ideaRepository,
+			IIdeaEvents ideaEvents,
+			ISignalRService signalRService)
 			: base(logger)
 	    {
 		    _commentRepository = commentRepository;
+		    _ideaRepository = ideaRepository;
+		    _signalRService = signalRService;
 		    RegisterEventHandler(ideaEvents.CommentAdded, OnCommentAdded);
 	    }
 
 		private async Task OnCommentAdded(CommentAdded commentAddedArgs)
 		{
-			await _commentRepository.Add(commentAddedArgs.Comment.ToEntity());
+			var comment = commentAddedArgs.Comment;
+			var entity = comment.ToEntity();
+
+			if (!await _commentRepository.Add(entity))
+			{
+				Logger.LogError("Something went wrong while trying to add comment \"{0}\" of user {1}.", comment.Comment, comment.CommenterId);
+				throw new DbUpdateException();
+			}
+
+			var ownerId = await _ideaRepository.GetOwner(commentAddedArgs.Comment.IdeaId);
+
+			if (ownerId is not null)
+			{
+				comment.TimeStamp = entity.CreationDate;
+				comment.IdeaId = entity.IdeaId;
+				await _signalRService.RaiseGroupSignalREvent(ownerId.Value.ToString(), NotificationFactory.Create(commentAddedArgs.Comment.ToUiModel(), NotificationType.Comment));
+			}
 		}
 
 		public async Task<ServiceResponse<List<CommentModel>>> GetComments(int ideaId)

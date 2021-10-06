@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.SignalR.Protocol;
 
 namespace IdeaMachine.Common.Eventing.MassTransit.Service
 {
-	public class MassTransitSignalRBackplaneService : IMassTransitSignalRBackplaneService
+	public class MassTransitSignalRService : ISignalRService
 	{
 		private readonly IBusControl _busControl;
 
@@ -20,7 +20,7 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 
 		private readonly List<IHubProtocol> _signalRProtocols;
 
-		public MassTransitSignalRBackplaneService(
+		public MassTransitSignalRService(
 			IBusControl busControl,
 			IClientTrackingService clientTrackingService)
 		{

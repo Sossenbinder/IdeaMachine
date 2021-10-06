@@ -5,5 +5,6 @@
 		Idea,
 		Reaction,
 		LikeCommited,
+		Comment,
 	}
 }

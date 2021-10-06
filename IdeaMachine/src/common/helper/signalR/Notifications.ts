@@ -1,1 +1,8 @@
-export const MentionNotification: string = "MentionNotification";
+export enum NotificationType {
+	Idea,
+	Reaction,
+	LikeCommited,
+	Comment,
+}
+
+export default NotificationType;

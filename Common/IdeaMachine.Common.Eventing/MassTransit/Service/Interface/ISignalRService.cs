@@ -4,7 +4,7 @@ using IdeaMachine.Common.Eventing.DataTypes;
 
 namespace IdeaMachine.Common.Eventing.MassTransit.Service.Interface
 {
-	public interface IMassTransitSignalRBackplaneService
+	public interface ISignalRService
 	{
 		Task RaiseAllSignalREvent<T>(Notification<T> notification, string[]? excludedConnectionIds = null);
 

@@ -15,6 +15,8 @@ namespace IdeaMachine.Modules.Idea.Repository.Interface
 
         Task<List<IdeaEntity>> GetForSpecificUser(Guid userId);
 
+        Task<Guid?> GetOwner(int id);
+
         Task<IdeaEntity?> GetSpecificIdea(int id);
 
         Task MigrateIdeas(Guid oldOwner, Guid newOwner);

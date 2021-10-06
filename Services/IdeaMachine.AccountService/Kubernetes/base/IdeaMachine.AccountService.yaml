@@ -32,6 +32,16 @@ spec:
           name: ideamachine-accountservice
           imagePullPolicy: Always
           env:
+            - name: KeyvaultClientId
+              valueFrom:
+                secretKeyRef:
+                  name: ideamachinekeyvaultsecrets
+                  key: clientId
+            - name: KeyvaultClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: ideamachinekeyvaultsecrets
+                  key: clientPassword
             - name: Seq_Server
               valueFrom:
                 configMapKeyRef:

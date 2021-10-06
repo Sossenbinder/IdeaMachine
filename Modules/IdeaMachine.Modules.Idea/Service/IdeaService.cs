@@ -18,16 +18,16 @@ namespace IdeaMachine.Modules.Idea.Service
 
 		private readonly IIdeaRepository _ideaRepository;
 
-		private readonly IMassTransitSignalRBackplaneService _massTransitSignalRBackplaneService;
+		private readonly ISignalRService _signalRService;
 
 		public IdeaService(
 			IIdeaEvents ideaEvents,
 			IIdeaRepository ideaRepository,
-			IMassTransitSignalRBackplaneService massTransitSignalRBackplaneService)
+			ISignalRService signalRService)
 		{
 			_ideaEvents = ideaEvents;
 			_ideaRepository = ideaRepository;
-			_massTransitSignalRBackplaneService = massTransitSignalRBackplaneService;
+			_signalRService = signalRService;
 		}
 
 		public async Task<int> Add(ISession session, IdeaModel ideaModel)
@@ -38,7 +38,7 @@ namespace IdeaMachine.Modules.Idea.Service
 
 			await _ideaEvents.IdeaCreated.Raise(new IdeaCreated(session.User, ideaModel));
 
-			await _massTransitSignalRBackplaneService.RaiseAllSignalREvent(NotificationFactory.Create(ideaModel, NotificationType.Idea));
+			await _signalRService.RaiseAllSignalREvent(NotificationFactory.Create(ideaModel, NotificationType.Idea));
 
 			return ideaModel.Id;
 		}

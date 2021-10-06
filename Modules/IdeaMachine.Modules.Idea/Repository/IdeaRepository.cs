@@ -75,6 +75,17 @@ namespace IdeaMachine.Modules.Idea.Repository
 				.ToListAsync();
 		}
 
+		public async Task<Guid?> GetOwner(int id)
+		{
+			await using var ctx = CreateContext();
+
+			return await ctx
+				.Ideas
+				.Where(x => x.Id == id)
+				.Select(x => x.Creator)
+				.FirstOrDefaultAsync();
+		}
+
 		public async Task<IdeaEntity?> GetSpecificIdea(int id)
 		{
 			await using var ctx = CreateContext();

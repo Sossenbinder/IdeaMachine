@@ -13,15 +13,15 @@ namespace IdeaMachine.Modules.Reaction.Service
 	{
 		private readonly IReactionRepository _reactionRepository;
 
-		private readonly IMassTransitSignalRBackplaneService _signalRBackplaneService;
+		private readonly ISignalRService _signalRService;
 
 		public ReactionHandler(
 			IReactionEvents reactionEvents,
 			IReactionRepository reactionRepository,
-			IMassTransitSignalRBackplaneService signalRBackplaneService)
+			ISignalRService signalRService)
 		{
 			_reactionRepository = reactionRepository;
-			_signalRBackplaneService = signalRBackplaneService;
+			_signalRService = signalRService;
 
 			RegisterEventHandler(reactionEvents.LikeChange, HandleLikeChange);
 		}
@@ -34,7 +34,7 @@ namespace IdeaMachine.Modules.Reaction.Service
 
 			if (putSuccess)
 			{
-				await _signalRBackplaneService.RaiseUserSignalREvent(userId, NotificationFactory.Update(ideaId, NotificationType.LikeCommited));
+				await _signalRService.RaiseUserSignalREvent(userId, NotificationFactory.Update(ideaId, NotificationType.LikeCommited));
 			}
 		}
 	}

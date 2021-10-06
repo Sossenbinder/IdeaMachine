@@ -1,5 +1,6 @@
 ﻿using System;
 using IdeaMachine.Modules.Idea.DataTypes.Entity;
+using IdeaMachine.Modules.Idea.DataTypes.UiModel;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Model
 {
@@ -23,6 +24,18 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Model
 				Content = Comment,
 				CreationDate = TimeStamp,
 				IdeaId = IdeaId,
+			};
+		}
+
+		public CommentUiModel ToUiModel()
+		{
+			return new CommentUiModel()
+			{
+				Comment = Comment,
+				CommenterId = CommenterId,
+				Id = CommentId,
+				IdeaId = IdeaId,
+				TimeStamp = TimeStamp,
 			};
 		}
 	}

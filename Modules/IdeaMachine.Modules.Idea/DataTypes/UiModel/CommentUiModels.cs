@@ -1,7 +1,7 @@
 ﻿using System;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 
-namespace IdeaMachine.DataTypes.UiModels.Comment
+namespace IdeaMachine.Modules.Idea.DataTypes.UiModel
 {
 	public class CommentUiModel
 	{

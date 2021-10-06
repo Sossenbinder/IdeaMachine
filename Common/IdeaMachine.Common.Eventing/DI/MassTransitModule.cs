@@ -20,8 +20,8 @@ namespace IdeaMachine.Common.Eventing.DI
 				.As<IStartable, IMassTransitEventingService>()
 				.SingleInstance();
 
-			builder.RegisterType<MassTransitSignalRBackplaneService>()
-				.As<IMassTransitSignalRBackplaneService>()
+			builder.RegisterType<MassTransitSignalRService>()
+				.As<ISignalRService>()
 				.SingleInstance();
 
 			builder.RegisterType<MassTransitEventFactory>()

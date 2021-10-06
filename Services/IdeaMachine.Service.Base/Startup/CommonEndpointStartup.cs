@@ -37,8 +37,6 @@ namespace IdeaMachine.Service.Base.Startup
 				grpcOptions.EnableDetailedErrors = true;
 			});
 
-			services.AddApplicationInsightsTelemetry();
-
 			services.AddControllers()
 				.AddApplicationPart(Assembly.GetExecutingAssembly())
 				.AddControllersAsServices();

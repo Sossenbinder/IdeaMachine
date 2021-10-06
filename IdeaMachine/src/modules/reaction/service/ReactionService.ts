@@ -5,12 +5,13 @@ import * as reactionCommunication from "modules/reaction/communication/ReactionC
 import { reducer as ideaReducer } from "modules/ideas/reducer/IdeaReducer";
 
 // Types
+import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
 import { LikeState } from "../types";
 
 export default class ReactionService extends ModuleService implements IReactionService {
 
-	public constructor() {
-		super();
+	public constructor(signalRConnectionProvider: ISignalRConnectionProvider) {
+		super(signalRConnectionProvider);
 	}
 
 	public start() {

@@ -1,11 +1,10 @@
-
 export enum Operation {
 	Create,
 	Update,
 	Delete
 }
 
-export type Notification<T> = {
+export type BackendNotification<T> = {
 
 	readonly operation: Operation;
 
@@ -13,3 +12,5 @@ export type Notification<T> = {
 
 	readonly payload: T;
 }
+
+export type Notification<T> = Omit<BackendNotification<T>, "NotificationType">;
