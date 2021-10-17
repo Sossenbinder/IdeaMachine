@@ -62,7 +62,7 @@ namespace IdeaMachine.Modules.Idea.Service
 
 		public async Task<ServiceResponse<List<CommentModel>>> GetComments(int ideaId)
 		{
-			var comments = await _commentRepository.Get(entity => entity.IdeaId == ideaId);
+			var comments = await _commentRepository.GetComments(ideaId);
 
 			return ServiceResponse.Success(comments.Select(x => x.ToModel()).ToList());
 		}

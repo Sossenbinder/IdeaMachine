@@ -35,11 +35,6 @@ namespace IdeaMachine.AccountService
 				.AddEntityFrameworkStores<AccountContext>()
 				.AddDefaultTokenProviders();
 
-			services.AddAuthorization(options =>
-			{
-				options.AddPolicy("Blub", policy => policy.RequireClaim(""));
-			});
-
 			services.AddSingleton<PasswordHasher<AccountEntity>>();
 
 			base.ConfigureServices(services);

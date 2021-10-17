@@ -9,16 +9,19 @@ namespace IdeaMachine.Modules.Idea.DataTypes.UiModel
 
 		public Guid CommenterId { get; set; }
 
+		public string CommenterName { get; set; } = null!;
+
 		public int IdeaId { get; set; }
 
 		public string Comment { get; set; } = null!;
 
 		public DateTime TimeStamp { get; set; }
 
-		public void Deconstruct(out int id, out Guid commenterId, out int ideaId, out string comment, out DateTime timeStamp)
+		public void Deconstruct(out int id, out Guid commenterId, out string commenterName, out int ideaId, out string comment, out DateTime timeStamp)
 		{
 			id = Id;
 			commenterId = CommenterId;
+			commenterName = CommenterName;
 			ideaId = IdeaId;
 			comment = Comment;
 			timeStamp = TimeStamp;
@@ -31,6 +34,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.UiModel
 				Id = model.CommentId,
 				IdeaId = model.IdeaId,
 				Comment = model.Comment,
+				CommenterName = model.CommenterName,
 				CommenterId = model.CommenterId,
 				TimeStamp = model.TimeStamp,
 			};

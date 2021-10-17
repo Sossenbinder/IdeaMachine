@@ -8,7 +8,7 @@ namespace IdeaMachine.Modules.Account.DataTypes.Entity
 	{
 		[Column("LastAccessedAt")]
 		public DateTime LastAccessedAt { get; set; }
-
+		
 		// ReSharper disable once NotNullMemberIsNotInitialized
 		public AccountEntity()
 		{

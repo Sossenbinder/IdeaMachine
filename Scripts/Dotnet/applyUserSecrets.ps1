@@ -3,12 +3,10 @@ param (
 	[string] $secretValue
 )
 
-$serviceFolders = @("../../Services/IdeaMachine.AccountService");
-$serviceFolders += "../../IdeaMachine";
+$projects = @("../../Services/IdeaMachine.AccountService/IdeaMachine.AccountService.csproj");
+$projects += "../../IdeaMachine/IdeaMachine.csproj";
 
-foreach ($folder in $serviceFolders)
-{
-	Set-Location $folder.FullName;
-	
-	dotnet user-secrets set $secretKey $secretValue
+foreach ($project in $projects)
+{	
+	dotnet user-secrets set $secretKey $secretValue --project $project
 }

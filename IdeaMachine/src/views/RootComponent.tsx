@@ -12,6 +12,8 @@ import ServiceUpdateEvent from "common/modules/service/ServiceUpdateEvent";
 import SignalRContextProvider from "common/helper/signalR/SignalRContextProvider";
 import MainContainer from "views/main/MainContainer";
 import IdeaFilterContextProvider from "modules/ideas/components/IdeaFilterContext";
+import AccountContextProvider from "modules/account/helper/accountContext";
+
 
 // Functionality
 import ISignalRConnectionProvider from 'common/helper/signalR/interface/ISignalRConnectionProvider';
@@ -50,19 +52,21 @@ const RootComponent: React.FC<Props> = ({ signalRConnectionProvider, initFunc, i
 			<BrowserRouter>
 				<QueryClientProvider client={queryClient}>
 					<ServiceContextProvider>
-						<SignalRContextProvider signalRConnectionProvider={signalRConnectionProvider}>
-							<Choose>
-								<When condition={loadedServices === initServiceCount && initialized}>
-									<IdeaFilterContextProvider>
-										<MainContainer />
-									</IdeaFilterContextProvider>
-								</When>
-								<Otherwise>
-									<LoadingBar
-										progress={(loadedServices / initServiceCount) * 100} />
-								</Otherwise>
-							</Choose>
-						</SignalRContextProvider>
+						<AccountContextProvider>
+							<SignalRContextProvider signalRConnectionProvider={signalRConnectionProvider}>
+								<Choose>
+									<When condition={loadedServices === initServiceCount && initialized}>
+										<IdeaFilterContextProvider>
+											<MainContainer />
+										</IdeaFilterContextProvider>
+									</When>
+									<Otherwise>
+										<LoadingBar
+											progress={(loadedServices / initServiceCount) * 100} />
+									</Otherwise>
+								</Choose>
+							</SignalRContextProvider>
+						</AccountContextProvider>
 					</ServiceContextProvider>
 				</QueryClientProvider>
 			</BrowserRouter>

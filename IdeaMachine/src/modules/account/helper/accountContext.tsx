@@ -16,10 +16,12 @@ export const AccountContextProvider: React.FC<ReduxProps> = ({ account, children
 	<AccountContext.Provider value={account}>
 		{ children }
 	</AccountContext.Provider>
-)
+);
 
-const mapStateToProps = (state: ReduxStore): ReduxProps => ({
-	account: state.accountReducer.data,
-});
+const mapStateToProps = (state: ReduxStore): ReduxProps => {
+	return {
+		account: state.accountReducer.data,
+	};
+};
 
 export default connect(mapStateToProps)(AccountContextProvider);

@@ -17,6 +17,9 @@ export const StyledTextField = styled(TextField)(() => ({
 	},
 	["& .MuiOutlinedInput-input"]: {
 		marginLeft: "15px",
+	},
+	["& .MuiInputBase-multiline"]: {
+		height: "100%",
 	}
 }));
 

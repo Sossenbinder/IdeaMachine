@@ -6,6 +6,12 @@
 		overflow-y: scroll;
 		height: 75%;
 
+		margin-top: 1rem;
+
+		> :not(:last-child) {
+			margin-bottom: 5px;
+		}
+
 		&::-webkit-scrollbar {
 			width: 12px;
 		}
@@ -25,12 +31,14 @@
 	.CommentInputSection {
 		height: 25%;
 
+		margin-top: 10px;
+
 		.Input {
 			flex-grow: 1;
 		}
 
 		.SendButton {			
-			margin: 15em 5em;
+			margin: 5px;
 		}
 	}
 }

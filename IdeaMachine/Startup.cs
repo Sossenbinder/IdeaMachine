@@ -19,6 +19,7 @@ using IdeaMachine.Common.RemotingProxies.Proxies;
 using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.Common.SignalR.DI;
+using IdeaMachine.DataTypes.Validation;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
@@ -31,6 +32,7 @@ using MassTransit;
 using MassTransit.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Serilog;
 
@@ -54,6 +56,7 @@ namespace IdeaMachine
 		public void ConfigureServices(IServiceCollection services)
 		{
 			ConfigureMassTransit(services);
+			ConfigureIdentity(services);
 
 			services.AddMvc(options =>
 			{
@@ -63,21 +66,12 @@ namespace IdeaMachine
 			services.AddMemoryCache();
 
 			services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(LogProvider.CreateLogger(Configuration)));
-
-			services
-				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-				.AddCookie(options =>
-				{
-					options.Events.OnRedirectToLogin = context =>
-					{
-						context.Response.StatusCode = 401;
-						return Task.CompletedTask;
-					};
-				});
-
+			
 			services.AddAntiforgery(x => x.HeaderName = "RequestVerificationToken");
 
 			services.AddResponseCompression();
+
+			services.Configure<ValidationInfo>(Configuration.GetSection("Validation"));
 
 			if (_isDevelopmentEnvironment)
 			{
@@ -91,6 +85,25 @@ namespace IdeaMachine
 				//	.PersistKeysToAzureBlobStorage(Configuration["CloudStorageAccountConnectionString"], "dataprotection", "keys")
 				//	.ProtectKeysWithAzureKeyVault(new Uri("https://picro.vault.azure.net/"), new DefaultAzureCredential());
 			}
+		}
+
+		private void ConfigureIdentity(IServiceCollection services)
+		{
+			services
+				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(options =>
+				{
+					options.Events.OnRedirectToLogin = context =>
+					{
+						context.Response.StatusCode = 401;
+						return Task.CompletedTask;
+					};
+				})
+				.AddGoogle(options =>
+				{
+					options.ClientId = Configuration["GoogleClientId"];
+					options.ClientSecret = Configuration["GoogleClientSecret"];
+				});
 		}
 
 		private void ConfigureMassTransit(IServiceCollection services)

@@ -4,6 +4,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
+ADD ../AzuriteCert/cert.pem /usr/local/share/ca-certificates/azuritecert.crt
+RUN chmod 644 /usr/local/share/ca-certificates/azuritecert.crt && update-ca-certificates
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src

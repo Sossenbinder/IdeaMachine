@@ -8,6 +8,7 @@ import Flex from "common/components/Flex";
 import LinkButton from "common/components/controls/LinkButton";
 import NavBarAnon from "./subComponents/NavBarAnon";
 import NavBarAuthenticated from "./subComponents/NavBarAuthenticated";
+import NotificationBell from "common/components/page/NotificationBell";
 import Separator from "common/components/controls/Separator";
 
 // Types
@@ -37,7 +38,7 @@ export const NavBar: React.FC<Props> = ({ account, history }) => {
 				<h2>IdeaMachine</h2>
 			</Flex>
 			<Flex
-				className={styles.LoginSection}
+				className={styles.ActionSection}
 				direction="Row"
 				crossAlignSelf="Center">
 				<LinkButton
@@ -45,6 +46,7 @@ export const NavBar: React.FC<Props> = ({ account, history }) => {
 					color="primary">
 					My ideas
 				</LinkButton>
+				<NotificationBell />
 				<Separator
 					direction="Vertical"
 					width="20px" />

@@ -77,7 +77,6 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 	}
 
 	const onFileInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-		debugger;
 		setFileUrls(Array.from(event.target.files).map(x => URL.createObjectURL(x)));
 	}
 
@@ -86,7 +85,7 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 			<Grid
 				className={styles.IdeaInput}
 				gridProperties={{
-					gridTemplateRows: "1fr 1fr 1fr 1fr 1fr 1fr",
+					gridTemplateRows: "20px 50px 1fr 4fr 1fr 65px",
 					gridTemplateColumns: "repeat(6, 1fr)",
 					gridTemplateAreas: `
 						"Intro Intro Intro Intro Intro Intro"

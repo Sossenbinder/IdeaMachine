@@ -6,6 +6,7 @@ using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.DataTypes.UiModels.Idea;
 using IdeaMachine.DataTypes.UiModels.Pagination;
+using IdeaMachine.DataTypes.Validation;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Reaction.Service.Interface;
@@ -14,12 +15,12 @@ using IdeaMachine.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace IdeaMachine.Controllers
 {
-    public record GetIdeasUiModel(int? PaginationToken = null);
-
-    [ApiController]
+	[ApiController]
     [Route("[controller]")]
     public class IdeaController : IdentityControllerBase
     {
@@ -31,18 +32,22 @@ namespace IdeaMachine.Controllers
 
         private readonly IIdeaAttachmentService _ideaAttachmentService;
 
+        private readonly IdeaValidationInfo _validationInfo;
+
         public IdeaController(
             ISessionService sessionService,
             IIdeaService ideaService,
             IIdeaRetrievalService ideaRetrievalService,
             IReactionRetrievalService reactionRetrievalService,
-            IIdeaAttachmentService ideaAttachmentService)
+            IIdeaAttachmentService ideaAttachmentService, 
+            IOptions<ValidationInfo> validationInfo)
             : base(sessionService)
         {
             _ideaService = ideaService;
             _ideaRetrievalService = ideaRetrievalService;
             _reactionRetrievalService = reactionRetrievalService;
             _ideaAttachmentService = ideaAttachmentService;
+            _validationInfo = validationInfo.Value.Idea;
         }
 
         [HttpPost]
@@ -86,33 +91,40 @@ namespace IdeaMachine.Controllers
                 : JsonDataResponse<IdeaUiModel?>.Success(await ToEnrichedUiModel(result.PayloadOrFail!));
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("Blub")]
-        public async Task Blub((int First, string Second) model)
-        {
-	        await Task.Yield();
-        }
-
         [HttpPost]
         [Route("Add")]
-        public async Task<JsonResponse> Add(
+        public async Task<JsonDataResponse<AddIdeaResult>> Add(
             [ModelBinder(BinderType = typeof(MultiPartJsonModelBinder))] IdeaModel ideaModel,
             IFormCollection form)
         {
             if (!ideaModel.Validate())
             {
-                return JsonResponse.Error();
+                return JsonResponse.Error(AddIdeaResult.ValidationFailure);
+            }
+
+            var hasFormFiles = form.Files.Any();
+
+            if (hasFormFiles)
+            {
+	            if (form.Files.Count > _validationInfo.MaxUploads)
+	            {
+		            return JsonResponse.Error(AddIdeaResult.TooManyUploads);
+                }
+
+	            if (form.Files.Any(x => x.Length == _validationInfo.MaxByteSize))
+	            {
+                    return JsonResponse.Error(AddIdeaResult.UploadTooBig);
+	            }
             }
 
             var ideaId = await _ideaService.Add(Session, ideaModel);
 
-            if (form.Files.Any())
+            if (hasFormFiles)
             {
                 await _ideaAttachmentService.UploadAttachments(Session, form.Files, ideaId);
             }
 
-            return JsonResponse.Success();
+            return JsonDataResponse<AddIdeaResult>.Success();
         }
 
         [HttpDelete]

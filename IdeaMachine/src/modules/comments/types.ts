@@ -1,6 +1,7 @@
 export type Comment = {
 	id: number;
 	commenterId: string;
+	commenterName: string;
 	ideaId: number;
 	comment: string;
 	timeStamp: Date;

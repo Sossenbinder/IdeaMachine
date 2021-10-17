@@ -38,13 +38,11 @@ namespace IdeaMachine.Controllers
 		[Route("Add")]
 	    public async Task<JsonResponse> Add([FromBody] CommentUiModel commentModel)
 	    {
-		    var (_, _, ideaId, comment, _) = commentModel;
-
 		    var model = new CommentModel()
 		    {
-			    Comment = comment,
+			    Comment = commentModel.Comment,
 			    CommenterId = UserId,
-			    IdeaId = ideaId,
+			    IdeaId = commentModel.IdeaId,
 				TimeStamp = DateTime.UtcNow,
 		    };
 

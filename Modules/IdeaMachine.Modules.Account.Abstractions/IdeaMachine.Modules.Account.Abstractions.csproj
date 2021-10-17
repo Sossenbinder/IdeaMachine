@@ -5,4 +5,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing.Abstractions\IdeaMachine.Common.Eventing.Abstractions.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="DataTypes\Entity\" />
+	</ItemGroup>
 </Project>

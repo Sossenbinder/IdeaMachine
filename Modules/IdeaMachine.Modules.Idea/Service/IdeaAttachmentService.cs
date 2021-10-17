@@ -31,6 +31,8 @@ namespace IdeaMachine.Modules.Idea.Service
             {
                 var client = blobServiceClient.GetBlobContainerClient("ideaattachments");
 
+                var test = await client.ExistsAsync();
+
                 await client.CreateIfNotExistsAsync(PublicAccessType.Blob);
 
                 return client;

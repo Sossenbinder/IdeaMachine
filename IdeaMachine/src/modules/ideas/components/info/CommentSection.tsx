@@ -1,11 +1,12 @@
 // Framework
 import * as React from "react";
-import { Button, TextField } from "@material-ui/core";
 
 // Components
 import { Flex } from "common/components";
 import { BlackSpinner } from "common/components/controls/Spinner";
 import Comment from "./Comment";
+import StyledTextField from "../input/StyledTextField";
+import StyledButton from "../input/StyledButton";
 
 // Functionality
 import useServices from "common/hooks/useServices";
@@ -53,17 +54,18 @@ export const CommentSection: React.FC<Props> = ({ idea }) => {
 			</div>
 			<Flex 
 				className={styles.CommentInputSection}
+				crossAlign="Center"
 				direction="Row">
-				<TextField
+				<StyledTextField
 					className={styles.Input}
 					color="primary"
 					label="Your comment" 
 					value={comment}					
 					onChange={e => setComment(e.currentTarget.value)} />
-				<Button
-					className={styles.SubmitButton}
+				<StyledButton
+					className={styles.SendButton}
 					color={"primary"}
-					disabled={account.isAnonymous}
+					disabled={!account.isAnonymous}
 					size={"medium"}
 					variant={"contained"}
 					onClick={async () => await addComment()}>
@@ -74,7 +76,7 @@ export const CommentSection: React.FC<Props> = ({ idea }) => {
 						<BlackSpinner
 							size={50} />
 					</If>
-				</Button>
+				</StyledButton>
 			</Flex>
 		</Flex>
 	);

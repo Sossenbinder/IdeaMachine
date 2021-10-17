@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Entity
@@ -7,8 +9,6 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 	{
 		public int Id { get; set; }
 
-		public Guid CommenterId { get; set; }
-
 		public int IdeaId { get; set; }
 
 		public string Content { get; set; } = null!;
@@ -16,6 +16,10 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 		public DateTime CreationDate { get; set; }
 
 		public IdeaEntity Idea { get; set; } = null!;
+		
+		public Guid CommenterId { get; set; }
+		public AccountEntity? Commenter { get; set; }
+		public string? CommenterName => Commenter?.UserName;
 
 		public CommentModel ToModel()
 		{
@@ -24,6 +28,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 				IdeaId = IdeaId,
 				Comment = Content,
 				CommenterId = CommenterId,
+				CommenterName = CommenterName ?? "",
 				TimeStamp = CreationDate,
 				CommentId = Id,
 			};

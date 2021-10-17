@@ -24,7 +24,7 @@ export const IdeaRoutes: React.FC = () => {
 			</Route>
 			<Route
 				path="/idea/:id"
-				render={props => <IdeaInfo {...props} />}
+				component={IdeaInfo}
 			/>
 		</Switch>
 	);

@@ -10,6 +10,8 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Model
 
 		public Guid CommenterId {  get; set; }
 
+		public string CommenterName { get; set; }
+
 		public int IdeaId { get; set; }
 
 		public string Comment { get; set; } = null!;

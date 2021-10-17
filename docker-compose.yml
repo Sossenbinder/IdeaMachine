@@ -1,6 +1,7 @@
 version: '3.4'
 
 volumes:
+  azurite: {}
   ideamachine_sql: {}
   seq: {}
 
@@ -16,9 +17,9 @@ services:
       - "1456:80"
       - "1457:443"
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
       DbConnectionString: "Server=tcp:ideamachine.sql,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
       IdeaMachine_RabbitMq: "ideamachine.rabbitmq"
+      BlobStorageConnection: AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=https;BlobEndpoint=https://ideamachine.azurite:10000/devstoreaccount1;QueueEndpoint=https://ideamachine.azurite:10001/devstoreaccount1;TableEndpoint=https://ideamachine.azurite:10002/devstoreaccount1
       GmailUserName: "ideamachinenews@gmail.com"
       Seq_Server: "http://ideamachine.seq:5341"
       DeploymentLink: "https://localhost:1457"
@@ -35,7 +36,6 @@ services:
       context: .
       dockerfile: Services/IdeaMachine.AccountService/Dockerfile
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
       DbConnectionString: "Server=tcp:ideamachine.sql,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
       IdeaMachine_RabbitMq: "ideamachine.rabbitmq"
       Seq_Server: "http://ideamachine.seq:5341"
@@ -74,3 +74,16 @@ services:
       - ideamachinecompose
     ports:
       - "15672:15672"
+
+  ideamachine.azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.14.0
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+    entrypoint: "azurite --loose -l /data --oauth=basic --cert=/azuriteDir/cert.pem --key=/azuriteDir/key.pem --blobPort 10000 --blobHost 0.0.0.0 --queuePort 10001 --queueHost 0.0.0.0 --tablePort 10002 --tableHost 0.0.0.0"
+    labels:
+      - ideamachinecompose
+    volumes:
+      - azurite:/data
+      - ./AzuriteCert:/azuriteDir
