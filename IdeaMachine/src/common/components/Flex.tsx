@@ -33,6 +33,8 @@ export type FlexProps = {
 	style?: React.CSSProperties;
 	direction?: keyof typeof FlexDirections;
 	wrap?: keyof typeof FlexWrap;
+	basis?: string | number;
+	grow?: number;
 	mainAlign?: keyof typeof FlexAlign;
 	mainAlignSelf?: keyof typeof FlexAlign;
 	crossAlign?: keyof typeof FlexAlign;
@@ -46,7 +48,13 @@ export type FlexProps = {
 
 export const Flex = React.forwardRef<HTMLDivElement, FlexProps>((props, ref) => {
 
-	const { className, style, direction = "Row", wrap, mainAlign, mainAlignSelf, crossAlign, crossAlignSelf, space, children, onClick = () => { }, onScroll = () => { }, title = null } = props;
+	const { className, style, direction = "Row", wrap, mainAlign, mainAlignSelf, crossAlign, crossAlignSelf, space, children, onClick = () => { }, onScroll = () => { }, title = null, basis, grow } = props;
+
+	const flexStyles: React.CSSProperties = {
+		...style,
+		flexBasis: basis ?? undefined,
+		flexGrow: grow ?? undefined,
+	};
 
 	const classes = classNames({
 		"flex": true,
@@ -76,7 +84,7 @@ export const Flex = React.forwardRef<HTMLDivElement, FlexProps>((props, ref) => 
 	return (
 		<div
 			className={classes}
-			style={style}
+			style={flexStyles}
 			onClick={onClick}
 			onScroll={onScroll}
 			ref={ref}
