@@ -59,6 +59,7 @@ spec:
             requests:
               memory: 64Mi
             limits:
+              cpu: 500m
               memory: 256Mi
       imagePullSecrets:
         - name: acrimgpullsecret

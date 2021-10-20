@@ -1,0 +1,11 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ideamachine-accountservice
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: ideamachine-accountservice
+          image: localhost:5000/ideamachine

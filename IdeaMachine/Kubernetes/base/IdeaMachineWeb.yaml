@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
         - name: ideamachineweb
-          image: moomed.azurecr.io/frontendservice
+          image: ideamachine.azurecr.io/frontendservice
           imagePullPolicy: Always
           ports:
             - containerPort: 80
