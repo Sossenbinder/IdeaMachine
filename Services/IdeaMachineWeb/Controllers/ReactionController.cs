@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
-using IdeaMachine.DataTypes.UiModels.Reaction;
 using IdeaMachine.Modules.Reaction.DataTypes.Events;
 using IdeaMachine.Modules.Reaction.Events.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
+using IdeaMachineWeb.DataTypes.UiModels.Reaction;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdeaMachine.Controllers
+namespace IdeaMachineWeb.Controllers
 {
 	[Route("Reaction")]
 	public class ReactionController : IdentityControllerBase

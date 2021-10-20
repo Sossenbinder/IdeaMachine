@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using IdeaMachine.Modules.Idea.Abstractions.DataTypes.Model;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 
-namespace IdeaMachine.DataTypes.UiModels.Idea
+namespace IdeaMachineWeb.DataTypes.UiModels.Idea
 {
 	public class IdeaUiModel
 	{

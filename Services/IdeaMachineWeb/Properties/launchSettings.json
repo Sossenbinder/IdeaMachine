@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IdeaMachine": {
+    "IdeaMachineWeb": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

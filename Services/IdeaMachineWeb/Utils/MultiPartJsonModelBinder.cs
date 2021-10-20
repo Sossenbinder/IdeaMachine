@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace IdeaMachine.Utils
+namespace IdeaMachineWeb.Utils
 {
 	public class MultiPartJsonModelBinder : IModelBinder
 	{

@@ -4,7 +4,7 @@ using System.Linq;
 using IdeaMachine.Common.Core.Utils.IPC;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 
-namespace IdeaMachine.Extensions
+namespace IdeaMachineWeb.Extensions
 {
 	public static class ServiceResponseFrontendExtensions
 	{

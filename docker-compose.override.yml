@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  ideamachine:
+  ideamachineweb:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
@@ -16,4 +16,3 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "80"
-

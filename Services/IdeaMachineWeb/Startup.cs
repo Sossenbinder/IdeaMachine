@@ -1,17 +1,9 @@
 using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
 using IdeaMachine.Common.Eventing.DI;
-using IdeaMachine.Common.Eventing.Extensions;
-using IdeaMachine.Common.Eventing.MassTransit;
 using IdeaMachine.Common.Grpc.DI;
 using IdeaMachine.Common.IPC.DI;
 using IdeaMachine.Common.Logging.Log;
@@ -19,7 +11,6 @@ using IdeaMachine.Common.RemotingProxies.Proxies;
 using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.Common.SignalR.DI;
-using IdeaMachine.DataTypes.Validation;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
@@ -27,16 +18,20 @@ using IdeaMachine.Modules.Idea.DI;
 using IdeaMachine.Modules.Reaction.DI;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
-using IdeaMachine.Utils;
+using IdeaMachineWeb.DataTypes.Validation;
+using IdeaMachineWeb.Utils;
 using MassTransit;
 using MassTransit.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace IdeaMachine
+namespace IdeaMachineWeb
 {
 	public class Startup
 	{
@@ -76,7 +71,7 @@ namespace IdeaMachine
 			if (_isDevelopmentEnvironment)
 			{
 				services.AddDataProtection()
-					.SetApplicationName("IdeaMachine")
+					.SetApplicationName("IdeaMachineWeb")
 					.PersistKeysToFileSystem(new DirectoryInfo("/keys/storage"));
 			}
 			else

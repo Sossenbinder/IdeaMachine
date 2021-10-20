@@ -34,9 +34,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ideamachine.azurecr.io/ideamachine:latest
+          tags: ideamachine.azurecr.io/ideamachineweb:latest
           context: .
-          file: ./IdeaMachine/Dockerfile.Production
+          file: ./Services/IdeaMachine/Dockerfile.Production
       - name: Publish AccountService to Registry
         uses: docker/build-push-action@v2
         with:

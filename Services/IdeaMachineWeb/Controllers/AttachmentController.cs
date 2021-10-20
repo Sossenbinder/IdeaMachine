@@ -1,15 +1,15 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
-using IdeaMachine.DataTypes.UiModels.Idea;
-using IdeaMachine.Extensions;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
-using IdeaMachine.Utils;
+using IdeaMachineWeb.DataTypes.UiModels.Idea;
+using IdeaMachineWeb.Extensions;
+using IdeaMachineWeb.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdeaMachine.Controllers
+namespace IdeaMachineWeb.Controllers
 {
 	public record UploadIdeaModel(int IdeaId);
 

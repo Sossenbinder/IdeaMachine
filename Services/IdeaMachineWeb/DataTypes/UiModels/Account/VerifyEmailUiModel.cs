@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IdeaMachine.DataTypes.UiModels.Account
+namespace IdeaMachineWeb.DataTypes.UiModels.Account
 {
 	public class VerifyEmailUiModel
 	{

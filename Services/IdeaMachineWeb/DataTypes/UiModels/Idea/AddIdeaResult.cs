@@ -1,4 +1,4 @@
-﻿namespace IdeaMachine.DataTypes.UiModels.Idea
+﻿namespace IdeaMachineWeb.DataTypes.UiModels.Idea
 {
     public enum AddIdeaResult
     {

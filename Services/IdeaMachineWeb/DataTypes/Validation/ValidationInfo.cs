@@ -1,4 +1,4 @@
-﻿namespace IdeaMachine.DataTypes.Validation
+﻿namespace IdeaMachineWeb.DataTypes.Validation
 {
     public class ValidationInfo
     {

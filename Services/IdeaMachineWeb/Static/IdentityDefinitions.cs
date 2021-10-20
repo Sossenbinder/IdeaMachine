@@ -1,4 +1,4 @@
-﻿namespace IdeaMachine.Static
+﻿namespace IdeaMachineWeb.Static
 {
 	public static class IdentityDefinitions
 	{

@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  ideamachine:
+  ideamachineweb:
     image: ideamachine.azurecr.io/ideamachine
     labels:
       - ideamachinecompose

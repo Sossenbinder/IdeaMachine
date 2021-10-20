@@ -6,13 +6,14 @@ volumes:
   seq: {}
 
 services:
-  ideamachine:
-    image: ${DOCKER_REGISTRY-}ideamachine
+
+  ideamachineweb:
+    image: ${DOCKER_REGISTRY-}ideamachineweb
     labels:
       - ideamachinecompose
     build:
       context: .
-      dockerfile: IdeaMachine/Dockerfile
+      dockerfile: Services/IdeaMachineWeb/Dockerfile
     ports:
       - "1456:80"
       - "1457:443"
@@ -87,3 +88,4 @@ services:
     volumes:
       - azurite:/data
       - ./AzuriteCert:/azuriteDir
+

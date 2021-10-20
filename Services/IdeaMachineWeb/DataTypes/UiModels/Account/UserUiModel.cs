@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IdeaMachine.DataTypes.UiModels.Account
+namespace IdeaMachineWeb.DataTypes.UiModels.Account
 {
 	public class UserUiModel
 	{

@@ -4,21 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Utils.Pagination;
 using IdeaMachine.Common.Web.DataTypes.Responses;
-using IdeaMachine.DataTypes.UiModels.Idea;
-using IdeaMachine.DataTypes.UiModels.Pagination;
-using IdeaMachine.DataTypes.Validation;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Reaction.Service.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
-using IdeaMachine.Utils;
-using Microsoft.AspNetCore.Authorization;
+using IdeaMachineWeb.DataTypes.UiModels.Idea;
+using IdeaMachineWeb.DataTypes.UiModels.Pagination;
+using IdeaMachineWeb.DataTypes.Validation;
+using IdeaMachineWeb.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace IdeaMachine.Controllers
+namespace IdeaMachineWeb.Controllers
 {
 	[ApiController]
     [Route("[controller]")]

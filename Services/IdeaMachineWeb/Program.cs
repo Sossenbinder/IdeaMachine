@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 using IdeaMachine.Service.Base;
+using Microsoft.Extensions.Hosting;
 
-namespace IdeaMachine
+namespace IdeaMachineWeb
 {
 	public class Program
 	{

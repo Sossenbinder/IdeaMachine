@@ -4,7 +4,7 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "ideamachine": "StartDebugging",
+        "ideamachineweb": "StartDebugging",
         "ideamachine.accountservice": "StartDebugging",
         "ideamachine.rabbitmq": "StartWithoutDebugging",
         "ideamachine.seq": "StartWithoutDebugging",

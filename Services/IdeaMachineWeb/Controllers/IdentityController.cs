@@ -1,10 +1,10 @@
 ﻿using System;
 using IdeaMachine.Modules.Session.Service.Interface;
-using IdeaMachine.Static;
+using IdeaMachineWeb.Static;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdeaMachine.Controllers
+namespace IdeaMachineWeb.Controllers
 {
 	[Route("Identity")]
 	public class IdentityController : IdentityControllerBase

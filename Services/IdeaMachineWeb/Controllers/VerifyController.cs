@@ -1,15 +1,14 @@
 ﻿using System.Threading.Tasks;
-using System.Web;
 using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.Web.DataTypes.Responses;
-using IdeaMachine.DataTypes.UiModels.Account;
-using IdeaMachine.Extensions;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
+using IdeaMachineWeb.DataTypes.UiModels.Account;
+using IdeaMachineWeb.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdeaMachine.Controllers
+namespace IdeaMachineWeb.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]

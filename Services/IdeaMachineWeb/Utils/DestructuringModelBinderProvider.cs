@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Extensions;
@@ -9,7 +8,7 @@ using IdeaMachine.Common.Web.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 
-namespace IdeaMachine.Utils
+namespace IdeaMachineWeb.Utils
 {
 	public class DestructuringModelBinderProvider : IModelBinderProvider
 	{

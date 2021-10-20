@@ -5,11 +5,11 @@ using IdeaMachine.Modules.Account.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
-using IdeaMachine.Static;
+using IdeaMachineWeb.Static;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace IdeaMachine.Controllers
+namespace IdeaMachineWeb.Controllers
 {
 	public abstract class IdentityControllerBase : Controller
 	{
