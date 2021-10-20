@@ -447,3 +447,8 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 /IdeaMachine/wwwroot/dist
+/AzuriteCert/__azurite_db_blob__.json
+/AzuriteCert/__azurite_db_blob_extent__.json
+/AzuriteCert/__azurite_db_queue__.json
+/AzuriteCert/__azurite_db_queue_extent__.json
+/AzuriteCert/__azurite_db_table__.json
