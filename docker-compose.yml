@@ -24,6 +24,8 @@ services:
       GmailUserName: "ideamachinenews@gmail.com"
       Seq_Server: "http://ideamachine.seq:5341"
       DeploymentLink: "https://localhost:1457"
+    volumes:
+      - 
     depends_on:
       - ideamachine.sql
       - ideamachine.rabbitmq

@@ -1,5 +1,5 @@
 param (
-	[string] $configuration = "testing"
+	[string] $configuration = "dev"
 )
 
 # Grab all kustomize folders matching the current configuration

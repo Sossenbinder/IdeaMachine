@@ -8,6 +8,10 @@
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..</DockerfileContext>
 	</PropertyGroup>
+	
+	<PropertyGroup>
+		<DockerImageName>ideamachineweb</DockerImageName>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.2.0" />
