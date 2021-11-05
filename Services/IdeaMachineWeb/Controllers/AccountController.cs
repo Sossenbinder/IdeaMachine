@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.Web.DataTypes.Responses;
@@ -95,7 +96,15 @@ namespace IdeaMachineWeb.Controllers
 
 			if (!loginResponse.IsSuccess)
 			{
-				return JsonResponse.Error(loginResponse.PayloadOrFail.ResultCode);
+				var resultCode = loginResponse.PayloadOrFail.ResultCode;
+				var statusCode = HttpStatusCode.InternalServerError;
+
+				if (resultCode is IdentityErrorCode.DuplicateEmail or IdentityErrorCode.LoginAlreadyAssociated)
+				{
+					statusCode = HttpStatusCode.BadRequest;
+				}
+
+				return JsonResponse.Error(loginResponse.PayloadOrFail.ResultCode, statusCode);
 			}
 
 			var account = loginResponse.PayloadOrFail.Account!;

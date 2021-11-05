@@ -99,10 +99,10 @@ export const SignIn: React.FC = () => {
 						Create an account instead?
 					</Link>
 				</Flex>
-				{/* <Flex
+				<Flex
 					crossAlign="Center">
 					<a href="/OAuth/GoogleLogin">Login with google instead</a>
-				</Flex> */}
+				</Flex>
 				<LoadingButton
 					color="primary"
 					className={styles.Button}

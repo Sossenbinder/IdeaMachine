@@ -8,7 +8,7 @@ import Flex from "common/components/Flex";
 import LinkButton from "common/components/controls/LinkButton";
 import NavBarAnon from "./subComponents/NavBarAnon";
 import NavBarAuthenticated from "./subComponents/NavBarAuthenticated";
-import NotificationBell from "common/components/page/NotificationBell";
+import NotificationBell from "./notifications/NotificationBell";
 import Separator from "common/components/controls/Separator";
 
 // Types

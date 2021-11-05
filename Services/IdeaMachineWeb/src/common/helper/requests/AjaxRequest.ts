@@ -40,6 +40,13 @@ export default abstract class AjaxRequest<TRequest, TResponse> {
 
 		try {
 			const response = await fetch(this.m_url, requestInit);
+			
+			if (response.status === 500) {			
+				return {
+					success: false,
+					payload: undefined,
+				};
+			}
 
 			const json = await response.json();
 

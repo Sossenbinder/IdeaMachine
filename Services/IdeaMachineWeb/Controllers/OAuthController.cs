@@ -35,14 +35,17 @@ namespace IdeaMachineWeb.Controllers
 		{
 			var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-			var claims = result.Principal.Identities
-				.FirstOrDefault().Claims.Select(claim => new
-				{
-					claim.Issuer,
-					claim.OriginalIssuer,
-					claim.Type,
-					claim.Value
-				});
+			var claimsIdentity = result.Principal?.Identities.FirstOrDefault();
+			if (claimsIdentity is not null)
+			{
+				var claims = claimsIdentity.Claims.Select(claim => new
+					{
+						claim.Issuer,
+						claim.OriginalIssuer,
+						claim.Type,
+						claim.Value
+					});
+			}
 
 			return Ok();
 	    }        

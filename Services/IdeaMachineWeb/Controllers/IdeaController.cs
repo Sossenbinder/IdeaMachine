@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Utils.Pagination;
+using IdeaMachine.Common.Core.Utils.Transaction;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Service.Interface;
@@ -114,7 +115,7 @@ namespace IdeaMachineWeb.Controllers
                     return JsonResponse.Error(AddIdeaResult.UploadTooBig);
 	            }
             }
-
+            
             var ideaId = await _ideaService.Add(Session, ideaModel);
 
             if (hasFormFiles)

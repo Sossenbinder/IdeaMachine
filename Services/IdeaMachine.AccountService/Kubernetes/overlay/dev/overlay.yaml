@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
         - name: ideamachine-accountservice
-          image: localhost:5000/ideamachine
+          image: localhost:5000/accountservice

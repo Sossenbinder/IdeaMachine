@@ -12,7 +12,7 @@ namespace IdeaMachine.Common.Core.Tests.Utils.Transaction
 		[Test]
 		public async Task TransactionShouldWorkForHappyPath()
 		{
-			var transaction = new TransactionBuilder()
+			var transaction = new ParallelTransactionBuilder()
 				.RegisterAction(() => Task.FromResult(true))
 				.WithCompensation(() =>
 				{
@@ -26,7 +26,7 @@ namespace IdeaMachine.Common.Core.Tests.Utils.Transaction
 		[Test]
 		public async Task TransactionShouldCompensateForFailure()
 		{
-			var transaction = new TransactionBuilder()
+			var transaction = new ParallelTransactionBuilder()
 				.RegisterAction(() => throw new Exception())
 				.WithCompensation(() =>
 				{
@@ -42,7 +42,7 @@ namespace IdeaMachine.Common.Core.Tests.Utils.Transaction
 		{
 			var compensatedActions = 0;
 
-			var transaction = new TransactionBuilder()
+			var transaction = new ParallelTransactionBuilder()
 				.RegisterAction(() => Task.CompletedTask)
 				.WithCompensation(() =>
 				{

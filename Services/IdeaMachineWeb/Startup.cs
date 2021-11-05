@@ -76,9 +76,8 @@ namespace IdeaMachineWeb
 			}
 			else
 			{
-				//services.AddDataProtection()
-				//	.PersistKeysToAzureBlobStorage(Configuration["CloudStorageAccountConnectionString"], "dataprotection", "keys")
-				//	.ProtectKeysWithAzureKeyVault(new Uri("https://picro.vault.azure.net/"), new DefaultAzureCredential());
+				services.AddDataProtection()
+					.PersistKeysToAzureBlobStorage(Configuration["BlobStorageConnection"], "dataprotection", "keys");
 			}
 		}
 

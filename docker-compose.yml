@@ -25,7 +25,7 @@ services:
       Seq_Server: "http://ideamachine.seq:5341"
       DeploymentLink: "https://localhost:1457"
     volumes:
-      - 
+      - /Keys/Storage:/keys/storage
     depends_on:
       - ideamachine.sql
       - ideamachine.rabbitmq
