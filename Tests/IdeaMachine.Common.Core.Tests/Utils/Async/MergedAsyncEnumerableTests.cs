@@ -12,7 +12,7 @@ namespace IdeaMachine.Common.Core.Tests.Utils.Async
 	    [Test]
 	    public async Task MergedAsyncEnumerableShouldWorkForHappyPath()
 	    {
-		    var asyncSet = Enumerable.Range(0, 2).Select(x => TestAsyncEnumerable(5)).ToList();
+		    var asyncSet = Enumerable.Range(0, 5).Select(x => TestAsyncEnumerable(5)).ToList();
 			var merger = new MergedAsyncEnumerable<int>(asyncSet);
 
 			var results = new List<int>();

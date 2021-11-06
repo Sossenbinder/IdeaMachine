@@ -29,33 +29,23 @@ namespace IdeaMachine.Common.Core.Extensions.Async
 
 			private readonly IAsyncEnumerator<T> _enumerator;
 
-			private readonly CancellationToken _ct;
-
-			private ValueTask<bool> _task;
-
 			public TaskInformation(int index, IAsyncEnumerator<T> enumerator, CancellationToken ct)
 			{
 				_index = index;
 				_enumerator = enumerator;
-				_ct = ct;
-				_task = enumerator.MoveNextAsync();
 			}
 
 			public async Task<AsyncIteratorResult> Move()
 			{
-				var moreValuesAvailable = await _task;
-
-				_task = moreValuesAvailable ? _enumerator.MoveNextAsync() : CreateFillerTask(_ct);
-
-				Console.WriteLine($"Index {_index} returning value {_enumerator.Current} - More values available? {moreValuesAvailable}");
+				var moreValuesAvailable = await _enumerator.MoveNextAsync().AsTask();
 				return new AsyncIteratorResult(_enumerator.Current, !moreValuesAvailable, _index);
 			}
+		}
 
-			private static async ValueTask<bool> CreateFillerTask(CancellationToken token)
-			{
-				await Task.Delay(-1, token).IgnoreTaskCancelledException();
-				return false;
-			}
+		private static async Task<AsyncIteratorResult> CreateFillerTask(CancellationToken token)
+		{
+			await Task.Delay(-1, token).IgnoreTaskCancelledException();
+			return new AsyncIteratorResult(default!, false, 0);
 		}
 
 		private async IAsyncEnumerable<T> Consume([EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -65,8 +55,6 @@ namespace IdeaMachine.Common.Core.Extensions.Async
 			var asyncEnumerators = _asyncStreams
 				.Select(x => x.GetAsyncEnumerator(cancellationToken))
 				.ToList();
-
-			var asyncEnumeratorsCount = asyncEnumerators.Count;
 
 			var taskList = asyncEnumerators
 				.Select((x, index) => new TaskInformation(index, x, drainingCts.Token))
@@ -78,27 +66,29 @@ namespace IdeaMachine.Common.Core.Extensions.Async
 
 			var finishedIterators = 0;
 
-			while (taskList.Any())
+			try
 			{
-				var completedTask = await Task.WhenAny(runningTasks);
-				var (result, done, index) = completedTask.Result;
+				while (finishedIterators != asyncEnumerators.Count)
+				{
+					var completedTask = await Task.WhenAny(runningTasks);
+					var (result, done, index) = completedTask.Result;
 
-				if (done)
-				{
-					finishedIterators++;
+					if (done)
+					{
+						finishedIterators++;
+						runningTasks[index] = CreateFillerTask(drainingCts.Token);
+					}
+					else
+					{
+						//Console.WriteLine($"Yielding {result} for index {index} - More values available? {!done}");
+						yield return result;
+						runningTasks[index] = taskList[index].Move();
+					}
 				}
-				else
-				{
-					Console.WriteLine($"Yielding {result} for index {index} - More values available? {!done}");
-					yield return result;
-					runningTasks[index] = taskList[index].Move();
-				}
-
-				if (finishedIterators == asyncEnumeratorsCount)
-				{
-					drainingCts.Cancel();
-					yield break;
-				}
+			}
+			finally
+			{
+				drainingCts.Cancel();
 			}
 		}
     }
