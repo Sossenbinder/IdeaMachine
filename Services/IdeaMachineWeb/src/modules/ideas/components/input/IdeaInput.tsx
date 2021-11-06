@@ -167,9 +167,7 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 					}}>
 					<UploadRow
 						attachments={fileUrls.map(x => ({ attachmentUrl: x }) as AttachmentUrl)}
-						onAttachmentAdded={(attachments) => {
-							//fileUrls
-						}}
+						onAttachmentAdded={(_) => void 0}
 						ideaId={idea.id} />
 				</Cell>
 				<Cell

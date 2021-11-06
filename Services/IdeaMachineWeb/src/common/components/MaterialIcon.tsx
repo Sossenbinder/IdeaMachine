@@ -21,7 +21,7 @@ export type MaterialIconProps<T> = {
 	type?: keyof typeof MaterialIconType;
 }
 
-export const MaterialIcon: React.FC<MaterialIconProps<void>> = ({ className, iconName, color, size, onClick, type = MaterialIconType.Filled }) => {
+export const MaterialIcon: React.FC<MaterialIconProps<void>> = ({ className, iconName, color, size, onClick, type = "Filled" }) => {
 
 	const classes = classNames({
 		"material-icons": type === "Filled",

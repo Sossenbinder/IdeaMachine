@@ -111,19 +111,17 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({ match: { params: { id }
 							cellStyles={{
 								gridColumn: "1/4",
 							}}>
-							<If condition={idea.attachmentUrls && idea.attachmentUrls.length > 0}>
-								<span className={styles.Attachments}>Attachments:</span>
-								<UploadRow
-									ideaId={idea.id}
-									isOwned={idea.creatorId === account.userId}
-									attachments={idea.attachmentUrls} 
-									onAttachmentAdded={(attachment) => {
-										const newIdea = {...idea};
-										newIdea.attachmentUrls.push({
-											attachmentUrl: URL.createObjectURL(attachment),
-										} as AttachmentUrl);
-									}}/>
-							</If>
+							<span className={styles.Attachments}>Attachments:</span>
+							<UploadRow
+								ideaId={idea.id}
+								isOwned={idea.creatorId === account.userId}
+								attachments={idea.attachmentUrls} 
+								onAttachmentAdded={(attachment) => {
+									const newIdea = {...idea};
+									newIdea.attachmentUrls.push({
+										attachmentUrl: URL.createObjectURL(attachment),
+									} as AttachmentUrl);
+								}}/>
 						</Cell>
 						<Cell
 							cellStyles={{

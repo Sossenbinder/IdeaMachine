@@ -141,7 +141,7 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 					<MaterialIcon
 						onClick={async event => navTo(event, `/idea/${id}`)}
 						iconName="info"
-						type={MaterialIconType.Outlined}
+						type="Outlined"
 						size={25} />
 					<MaterialIcon
 						onClick={async event => navTo(event, `/idea/${id}/reply`)}

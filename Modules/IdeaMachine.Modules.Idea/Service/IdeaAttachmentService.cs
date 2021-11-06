@@ -12,6 +12,8 @@ using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Repository.Interface;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using ISession = IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface.ISession;
 
 namespace IdeaMachine.Modules.Idea.Service
@@ -22,11 +24,15 @@ namespace IdeaMachine.Modules.Idea.Service
 
         private readonly IIdeaRepository _ideaRepository;
 
+        private readonly string _environmentName;
+
         public IdeaAttachmentService(
             BlobServiceClient blobServiceClient,
-            IIdeaRepository ideaRepository)
+            IIdeaRepository ideaRepository,
+            IHostingEnvironment hostingEnvironment)
         {
             _ideaRepository = ideaRepository;
+            _environmentName = hostingEnvironment.EnvironmentName;
             _containerClient = new AsyncLazy<BlobContainerClient>(async () =>
             {
                 var client = blobServiceClient.GetBlobContainerClient("ideaattachments");
@@ -49,6 +55,11 @@ namespace IdeaMachine.Modules.Idea.Service
 
                 await using var readStream = x.OpenReadStream();
                 await blobClient.UploadAsync(readStream, true);
+
+                if (_environmentName == Environments.Development && blobClient.Uri.ToString().Contains("ideamachine.azurite"))
+                {
+	                return new Uri(blobClient.Uri.ToString().Replace("ideamachine.azurite", "127.0.0.1"));
+                }
 
                 return blobClient.Uri;
             }));

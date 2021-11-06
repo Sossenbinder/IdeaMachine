@@ -5,12 +5,19 @@ volumes:
   ideamachine_sql: {}
   seq: {}
 
+networks:
+  ideamachinenetwork:
+    external:
+      name: ideamachinenetwork
+
 services:
 
   ideamachineweb:
     image: ${DOCKER_REGISTRY-}ideamachineweb
     labels:
       - ideamachinecompose
+    networks:
+      - ideamachinenetwork
     build:
       context: .
       dockerfile: Services/IdeaMachineWeb/Dockerfile
@@ -35,6 +42,8 @@ services:
     image: ${DOCKER_REGISTRY-}ideamachineaccountservice
     labels:
       - ideamachinecompose
+    networks:
+      - ideamachinenetwork
     build:
       context: .
       dockerfile: Services/IdeaMachine.AccountService/Dockerfile
@@ -50,6 +59,8 @@ services:
     image: mcr.microsoft.com/mssql/server
     labels:
       - ideamachinecompose
+    networks:
+      - ideamachinenetwork
     ports:
       - "1433:1433"
     environment:
@@ -64,6 +75,8 @@ services:
     image: datalust/seq:latest
     labels:
       - ideamachinecompose
+    networks:
+      - ideamachinenetwork
     ports:
       - "5341:80"
     environment:
@@ -75,11 +88,15 @@ services:
     image: docker.io/library/rabbitmq:3.8.6-management
     labels:
       - ideamachinecompose
+    networks:
+      - ideamachinenetwork
     ports:
       - "15672:15672"
 
   ideamachine.azurite:
     image: mcr.microsoft.com/azure-storage/azurite:3.14.0
+    networks:
+      - ideamachinenetwork
     ports:
       - "10000:10000"
       - "10001:10001"

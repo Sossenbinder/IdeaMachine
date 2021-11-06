@@ -65,7 +65,8 @@ export const CommentSection: React.FC<Props> = ({ idea }) => {
 				<StyledButton
 					className={styles.SendButton}
 					color={"primary"}
-					disabled={!account.isAnonymous}
+					disabled={account.isAnonymous}
+					title={account.isAnonymous ? "Not allowed for anonymous accounts" : ""}
 					size={"medium"}
 					variant={"contained"}
 					onClick={async () => await addComment()}>

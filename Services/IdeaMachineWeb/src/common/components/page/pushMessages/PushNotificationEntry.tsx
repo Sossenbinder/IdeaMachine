@@ -92,7 +92,7 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 							}}>
 							<MaterialIcon
 								className={styles.CloseIcon}
-								type={MaterialIconType.Outlined}
+								type="Outlined"
 								iconName="cancel"
 								onClick={() => setShow(false)} />
 						</Cell>
