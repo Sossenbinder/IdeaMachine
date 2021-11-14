@@ -18,6 +18,10 @@ namespace IdeaMachine.Modules.Account.DI
 				.As<ILoginService>()
 				.SingleInstance();
 
+			builder.RegisterType<AccountService>()
+				.As<IAccountService>()
+				.SingleInstance();
+
 			builder.RegisterType<VerificationService>()
 				.As<IVerificationService>()
 				.SingleInstance();

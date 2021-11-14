@@ -47,6 +47,7 @@ namespace IdeaMachine.AccountService
 			containerBuilder.RegisterGrpcService<RegistrationService>();
 			containerBuilder.RegisterGrpcService<LoginService>();
 			containerBuilder.RegisterGrpcService<VerificationService>();
+			containerBuilder.RegisterGrpcService<Modules.Account.Service.AccountService>();
 
 			base.ConfigureContainer(containerBuilder);
 		}
@@ -56,6 +57,7 @@ namespace IdeaMachine.AccountService
 			endpointRouteBuilder.MapGrpcService<IRegistrationService>();
 			endpointRouteBuilder.MapGrpcService<ILoginService>();
 			endpointRouteBuilder.MapGrpcService<IVerificationService>();
+			endpointRouteBuilder.MapGrpcService<IAccountService>();
 
 			base.RegisterEndpoints(endpointRouteBuilder);
 		}

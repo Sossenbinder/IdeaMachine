@@ -35,6 +35,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Model
 			{
 				Comment = Comment,
 				CommenterId = CommenterId,
+				CommenterName = CommenterName,
 				Id = CommentId,
 				IdeaId = IdeaId,
 				TimeStamp = TimeStamp,

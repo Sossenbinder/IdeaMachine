@@ -6,9 +6,7 @@ import { store, ReduxStore } from "common/redux/store";
 
 // Types
 import { IModuleService } from "./types";
-import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
-import { Notification } from "common/helper/signalR/types";
-import NotificationType from "common/helper/signalR/Notifications";
+import { IChannelProvider } from "../channel/ChannelProvider";
 
 export default abstract class ModuleService implements IModuleService {
 
@@ -16,22 +14,20 @@ export default abstract class ModuleService implements IModuleService {
 
 	private _store: ReduxStore;
 
-	private _signalRConnectionProvider: ISignalRConnectionProvider;
+	private _channelProvider: IChannelProvider;
 
-	protected constructor(signalRConnectionProvider: ISignalRConnectionProvider) {
+	protected get ChannelProvider(){ 
+		return this._channelProvider; 
+	}
+
+	protected constructor(channelProvider: IChannelProvider) {
 		this._store = store;
-		this._signalRConnectionProvider = signalRConnectionProvider;
+		this._channelProvider = channelProvider;
 	}
 
 	protected getStore(): ReduxStore {
 		return this._store.getState();
 	}
-
-	protected registerForNotification = <T>(notificationType: NotificationType, handler: (notification: Notification<T>) => Promise<void>) => 
-		this._signalRConnectionProvider.on(notificationType, handler);
-
-	protected unRegisterForNotification = <T>(notificationType: NotificationType, handler: (notification: Notification<T>) => Promise<void>) => 
-		this._signalRConnectionProvider.off(notificationType, handler);
 
 	protected dispatch(dispatchAction: Action) {
 		this._store.dispatch(dispatchAction);

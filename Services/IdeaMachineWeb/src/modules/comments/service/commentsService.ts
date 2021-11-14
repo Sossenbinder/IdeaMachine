@@ -3,23 +3,27 @@ import { ICommentsService } from "common/modules/service/types";
 import ModuleService from "common/modules/service/ModuleService";
 import * as commentsCommunication from "modules/comments/communication/commentsCommunication";
 import { reducer as ideaReducer } from "modules/ideas/reducer/IdeaReducer";
-import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
+
+// Functionality
+import { ensureArray } from "common/helper/arrayUtils";
 
 // Types
 import { Comment } from "../types";
 import { CouldBeArray } from "common/types/arrayTypes";
-import { ensureArray } from "common/helper/arrayUtils";
-import NotificationType from "common/helper/signalR/Notifications";
+import BackendNotification from "common/helper/signalR/Notifications";
 import { Notification, Operation } from "common/helper/signalR/types";
+import { IChannelProvider } from "common/modules/channel/ChannelProvider";
 
 export default class CommentsService extends ModuleService implements ICommentsService {
 
-	public constructor(signalRConnectionProvider: ISignalRConnectionProvider) {
-		super(signalRConnectionProvider);
+	public constructor(channelProvider: IChannelProvider) {
+		super(channelProvider);
 	}
 
 	public start() {
-		this.registerForNotification(NotificationType.Comment, this.onCommentNotification);
+		this.ChannelProvider
+			.getBackendChannel(BackendNotification.Comment)
+			.register(this.onCommentNotification);
 
 		return Promise.resolve();
 	}
@@ -35,10 +39,12 @@ export default class CommentsService extends ModuleService implements ICommentsS
 	}
 
 	public async addComment(ideaId: number, comment: string) {
-		await commentsCommunication.addComment({
+		const response = await commentsCommunication.addComment({
 			comment,
 			ideaId,
 		} as Comment);
+
+		return response.success;
 	}
 
 	public async queryComments(ideaId: number) {

@@ -8,7 +8,7 @@ namespace IdeaMachineWeb.Utils
 	{
 		public Task BindModelAsync(ModelBindingContext bindingContext)
 		{
-			if (bindingContext == null)
+			if (bindingContext is null)
 			{
 				throw new ArgumentNullException(nameof(bindingContext));
 			}
@@ -23,8 +23,14 @@ namespace IdeaMachineWeb.Utils
 
 			// Attempt to convert the input value
 			var valueAsString = valueProviderResult.FirstValue;
+
+			if (valueAsString is null)
+			{
+				return Task.CompletedTask;
+			}
+
 			var result = Newtonsoft.Json.JsonConvert.DeserializeObject(valueAsString, bindingContext.ModelType);
-			if (result == null)
+			if (result is null)
 			{
 				return Task.CompletedTask;
 			}

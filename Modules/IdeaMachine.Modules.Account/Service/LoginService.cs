@@ -44,7 +44,7 @@ namespace IdeaMachine.Modules.Account.Service
 			{
 				return ServiceResponse.Failure(LoginResult.WithCode(IdentityErrorCode.EmailNotConfirmed));
 			}
-
+			
 			if (!await _userManager.CheckPasswordAsync(account, loginModel.Password))
 			{
 				return ServiceResponse<LoginResult>.Failure(LoginResult.WithCode(IdentityErrorCode.PasswordMismatch));

@@ -1,8 +1,8 @@
-export enum NotificationType {
+export enum BackendNotification {
 	Idea,
 	Reaction,
 	LikeCommited,
 	Comment,
 }
 
-export default NotificationType;
+export default BackendNotification;

@@ -80,7 +80,6 @@ namespace IdeaMachine.Common.Core.Extensions.Async
 					}
 					else
 					{
-						//Console.WriteLine($"Yielding {result} for index {index} - More values available? {!done}");
 						yield return result;
 						runningTasks[index] = taskList[index].Move();
 					}

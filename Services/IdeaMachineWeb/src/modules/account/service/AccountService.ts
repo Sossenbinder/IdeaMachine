@@ -6,13 +6,13 @@ import { reducer as accountReducer } from "modules/account/reducer/AccountReduce
 import { NetworkResponse } from "common/helper/requests/types/NetworkDefinitions";
 
 // Types
-import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
+import { IChannelProvider } from "common/modules/channel/ChannelProvider";
 import { RegisterInfo, SignInInfo, IdentityErrorCode } from "../types";
 
 export default class AccountService extends ModuleService implements IAccountService {
 
-	public constructor(signalRConnectionProvider: ISignalRConnectionProvider) {
-		super(signalRConnectionProvider);
+	public constructor(channelProvider: IChannelProvider) {
+		super(channelProvider);
 	}
 
 	public async start() {

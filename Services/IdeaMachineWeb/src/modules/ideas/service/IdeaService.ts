@@ -11,14 +11,14 @@ import { updateIdeaPagination } from "common/redux/reducer/PaginationReducer";
 import { ensureArray } from "common/helper/arrayUtils";
 
 // Types
-import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
+import { IChannelProvider } from "common/modules/channel/ChannelProvider";
 import { Idea, IdeaDeleteErrorCode, IdeaInputResult } from "../types";
 import { CouldBeArray } from "common/types/arrayTypes";
 
 export default class IdeaService extends ModuleService implements IIdeaService {
 
-	public constructor(signalRConnectionProvider: ISignalRConnectionProvider) {
-		super(signalRConnectionProvider);
+	public constructor(channelProvider: IChannelProvider) {
+		super(channelProvider);
 	}
 
 	public start() {

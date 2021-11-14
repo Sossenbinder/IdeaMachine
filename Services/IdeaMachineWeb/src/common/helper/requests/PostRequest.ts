@@ -1,11 +1,11 @@
-﻿import AjaxRequest, { RequestMethods } from "./AjaxRequest"
+﻿import HttpRequest, { RequestMethods } from "./HttpRequest"
 import { NetworkResponse, Pagination } from "./types/NetworkDefinitions";
 
 type VerificationTokenRequest = {
 	__RequestVerificationToken?: string;
 }
 
-export default class PostRequest<TRequest, TResponse> extends AjaxRequest<TRequest, TResponse> {
+export default class PostRequest<TRequest, TResponse> extends HttpRequest<TRequest, TResponse> {
 
 	constructor(url: string) {
 		super(url, RequestMethods.POST);
@@ -19,7 +19,7 @@ export default class PostRequest<TRequest, TResponse> extends AjaxRequest<TReque
 	}
 }
 
-export class PagedPostRequest<TResponse, TTokenType = string> extends AjaxRequest<{ paginationToken: TTokenType }, Pagination.PaginationResult<TTokenType, TResponse>> {
+export class PagedPostRequest<TResponse, TTokenType = string> extends HttpRequest<{ paginationToken: TTokenType }, Pagination.PaginationResult<TTokenType, TResponse>> {
 
 	public post = (paginationToken: TTokenType = null) => super.send({
 		paginationToken,

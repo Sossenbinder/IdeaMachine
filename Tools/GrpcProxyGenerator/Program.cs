@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
+using System.ServiceModel;
 using GrpcProxyGenerator.Service;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.ModulesServiceBase.Interface;
@@ -17,6 +18,7 @@ namespace GrpcProxyGenerator
 				.Select(x => x.GetTypes())
 				.SelectMany(x => x)
 				.Where(x => x.IsInterface && x.HasInterface(typeof(IGrpcService)))
+				.Where(x => x.GetCustomAttributes(typeof(ServiceContractAttribute)).Any())
 				.OrderBy(x => x.FullName)
 				.ToList();
 

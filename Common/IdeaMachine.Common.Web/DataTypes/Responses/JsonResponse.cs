@@ -24,6 +24,8 @@ namespace IdeaMachine.Common.Web.DataTypes.Responses
             return new(data, internalSuccess, HttpStatusCode.OK);
         }
 
+        public static JsonResponse ClientError(object? data = null) => Error(data, HttpStatusCode.BadRequest);
+
         public static JsonResponse Error(object? data = null, HttpStatusCode statusCode = HttpStatusCode.InternalServerError)
         {
             return new(data, false, statusCode);
@@ -33,13 +35,14 @@ namespace IdeaMachine.Common.Web.DataTypes.Responses
         {
             return new(data, internalSuccess, HttpStatusCode.OK);
         }
+        public static JsonDataResponse<TPayload> ClientError<TPayload>(TPayload? data = default) => Error(data, HttpStatusCode.BadRequest);
 
         public static JsonDataResponse<TPayload> Error<TPayload>(TPayload? data = default, HttpStatusCode statusCode = HttpStatusCode.InternalServerError)
         {
             return new(data, false, statusCode);
         }
 
-        public override Task ExecuteResultAsync([NotNull] ActionContext context)
+        public override Task ExecuteResultAsync(ActionContext context)
         {
             context.HttpContext.Response.StatusCode = (int)_statusCode;
             return base.ExecuteResultAsync(context);

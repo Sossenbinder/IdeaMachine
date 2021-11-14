@@ -29,7 +29,7 @@ export interface IReactionService extends IModuleService {
 }
 
 export interface ICommentsService extends IModuleService {
-	addComment(ideaId: number, comment: string): Promise<void>;
+	addComment(ideaId: number, comment: string): Promise<boolean>;
 	queryComments(ideaId: number): Promise<void>;
 }
 

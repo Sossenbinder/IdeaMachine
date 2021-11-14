@@ -8,7 +8,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.UiModel
 		public int Id { get; set; }
 
 		public Guid CommenterId { get; set; }
-
+		
 		public string CommenterName { get; set; } = null!;
 
 		public int IdeaId { get; set; }

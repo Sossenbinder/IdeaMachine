@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using GrpcProxyGenerator.DataTypes;
@@ -33,7 +34,7 @@ namespace GrpcProxyGenerator.Service.InternalGenerators
 		{
 			var methods = metaData.Type.GetMethods();
 
-			foreach (var methodInfo in methods)
+			foreach (var methodInfo in methods.Where(x => x.GetCustomAttributes(typeof(OperationContractAttribute)).Any()))
 			{
 				AddMethod(stringBuilder, methodInfo);
 			}

@@ -12,21 +12,23 @@ import CommentsService from "modules/comments/service/commentsService";
 
 // Types
 import { Services, IModuleService } from "common/modules/service/types";
+import { ChannelProvider, IChannelProvider } from "./common/modules/channel/ChannelProvider";
 
 window.onload = async () => {
 
 	await fetch("/Identity/Identify");
 
 	const signalRConnectionProvider = new SignalRConnectionProvider();
+	const channelProvider = new ChannelProvider(signalRConnectionProvider);
 
-	renderRoot(signalRConnectionProvider, () => initCoreServices(signalRConnectionProvider), 5);
+	renderRoot(channelProvider, () => initCoreServices(signalRConnectionProvider, channelProvider), 5);
 }
 
-const initCoreServices = async (signalRProvider: ISignalRConnectionProvider) => {
+const initCoreServices = async (signalRConnectionProvider: ISignalRConnectionProvider, channelProvider: IChannelProvider) => {
 
 	await ServiceUpdateEvent.Raise({
 		name: "SignalRConnectionProvider",
-		service: signalRProvider,
+		service: signalRConnectionProvider,
 	});
 
 	const initPromises: Array<Promise<void>> = [];
@@ -40,18 +42,18 @@ const initCoreServices = async (signalRProvider: ISignalRConnectionProvider) => 
 		});
 	}
 
-	await signalRProvider.start();
+	await signalRConnectionProvider.start();
 
-	const ideaService = new IdeaService(signalRProvider);
+	const ideaService = new IdeaService(channelProvider);
 	initPromises.push(initService("IdeaService", ideaService));
 
-	const commentsService = new CommentsService(signalRProvider);
+	const commentsService = new CommentsService(channelProvider);
 	initPromises.push(initService("CommentsService", commentsService));
 
-	const accountService = new AccountService(signalRProvider);
+	const accountService = new AccountService(channelProvider);
 	initPromises.push(initService("AccountService", accountService));
 
-	const reactionService = new ReactionService(signalRProvider);
+	const reactionService = new ReactionService(channelProvider);
 	initPromises.push(initService("ReactionService", reactionService));
 
 	await Promise.all(initPromises);

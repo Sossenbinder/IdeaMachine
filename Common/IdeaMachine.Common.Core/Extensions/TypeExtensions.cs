@@ -30,7 +30,7 @@ namespace IdeaMachine.Common.Core.Extensions
 
 		public static string GetRealTypeName(this Type type, Func<Type, string> propSelector)
 		{
-			var toInspect = propSelector(type);
+			var toInspect = propSelector(type).Replace("+", ".");
 
 			if (!type.IsGenericType)
 			{

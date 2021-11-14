@@ -12,6 +12,7 @@ import StyledButton from "../input/StyledButton";
 import useServices from "common/hooks/useServices";
 import useAsyncCall from "common/hooks/useAsyncCall";
 import useAccount from "common/hooks/useAccount";
+import { sortByDateDesc } from "common/utils/collection";
 
 // Types
 import { Idea } from "modules/ideas/types";
@@ -31,7 +32,13 @@ export const CommentSection: React.FC<Props> = ({ idea }) => {
 
 	const [comment, setComment] = React.useState("");
 
-	const addComment = () => call(() => CommentsService.addComment(idea.id, comment));
+	const addComment = () => call(async () => {		
+		const success = await CommentsService.addComment(idea.id, comment);
+
+		if (success) {
+			setComment("");
+		}		
+	});
 
 	React.useEffect(() => {
 		if (!idea.comments) {
@@ -39,28 +46,35 @@ export const CommentSection: React.FC<Props> = ({ idea }) => {
 		}
 	}, [idea]);
 
+	const orderedComments = React.useMemo(() => sortByDateDesc(idea.comments, x => x.timeStamp), [idea.comments]);
+
 	return (
 		<Flex
 			className={styles.CommentSection}
 			direction="Column">
 			<div className={styles.CommentList}>
 				{
-					idea.comments?.map(x => (
-						<Comment 
+					orderedComments.map(x => (
+						<Comment
 							comment={x}
 							key={x.id} />
 					))
 				}
 			</div>
-			<Flex 
+			<Flex
 				className={styles.CommentInputSection}
 				crossAlign="Center"
 				direction="Row">
 				<StyledTextField
 					className={styles.Input}
 					color="primary"
-					label="Your comment" 
-					value={comment}					
+					label="Your comment"
+					value={comment}
+					onKeyUp={async e => {
+						if (e.key === "Enter"){
+							await addComment();
+						}
+					}}
 					onChange={e => setComment(e.currentTarget.value)} />
 				<StyledButton
 					className={styles.SendButton}

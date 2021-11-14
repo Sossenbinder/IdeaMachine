@@ -3,14 +3,14 @@ import * as signalR from "@microsoft/signalr";
 
 // Types
 import { Notification } from "common/helper/signalR/types";
-import NotificationType from "../Notifications";
+import BackendNotification from "../Notifications";
 
 export interface ISignalRConnectionProvider {
 	start(): Promise<void>;
 
-	on<T>(notificationType: NotificationType, handler: (notification: Notification<T>) => Promise<void>): void;
+	register<T>(notificationType: BackendNotification, handler: (notification: Notification<T>) => Promise<void>): void;
 
-	off<T>(notificationType: NotificationType, handler: (notification: Notification<T>) => Promise<void>): void;
+	unregister<T>(notificationType: BackendNotification, handler: (notification: Notification<T>) => Promise<void>): void;
 
 	readonly SignalRConnection: signalR.HubConnection;
 }

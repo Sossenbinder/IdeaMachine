@@ -1,21 +1,30 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using System.Net;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace IdeaMachine.ProfilePictureService
 {
-	public static class Upload
-	{
-		[FunctionName("UploadProfilePicture")]
-		public static async Task<IActionResult> Run(
-			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-			ILogger log)
-		{
-			
-			return new OkResult();
-		}
-	}
+    public class Upload
+    {
+        private readonly ILogger _logger;
+
+        public Upload(ILoggerFactory loggerFactory)
+        {
+            _logger = loggerFactory.CreateLogger<Upload>();
+        }
+
+        [Function(nameof(UploadPicture))]
+        public HttpResponseData UploadPicture([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+
+            response.WriteString("Welcome to Azure Functions!");
+
+            return response;
+        }
+    }
 }

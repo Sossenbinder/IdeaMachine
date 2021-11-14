@@ -9,29 +9,26 @@ import { Provider } from "react-redux";
 import LoadingBar from "common/components/state/LoadingBar";
 import ServiceContextProvider from "common/modules/service/ServiceContextProvider";
 import ServiceUpdateEvent from "common/modules/service/ServiceUpdateEvent";
-import SignalRContextProvider from "common/helper/signalR/SignalRContextProvider";
 import MainContainer from "views/main/MainContainer";
 import IdeaFilterContextProvider from "modules/ideas/components/IdeaFilterContext";
+import ChannelProviderContextProvider from "../common/modules/channel/ChannelProviderContext";
 import AccountContextProvider from "modules/account/helper/accountContext";
-
-
-// Functionality
-import ISignalRConnectionProvider from 'common/helper/signalR/interface/ISignalRConnectionProvider';
 
 // Types
 import { store } from "common/redux/store";
 
 import "./styles/RootComponent.less";
+import { IChannelProvider } from "../common/modules/channel/ChannelProvider";
 
 const queryClient = new QueryClient();
 
 type Props = {
-	signalRConnectionProvider: ISignalRConnectionProvider;
+	channelProvider: IChannelProvider;
 	initFunc(): Promise<void>;
 	initServiceCount: number;
 }
 
-const RootComponent: React.FC<Props> = ({ signalRConnectionProvider, initFunc, initServiceCount }) => {
+const RootComponent: React.FC<Props> = ({ channelProvider, initFunc, initServiceCount }) => {
 
 	const [initialized, setInitialized] = React.useState(false);
 	const [loadedServices, setLoadedServices] = React.useState(0);
@@ -53,7 +50,7 @@ const RootComponent: React.FC<Props> = ({ signalRConnectionProvider, initFunc, i
 				<QueryClientProvider client={queryClient}>
 					<ServiceContextProvider>
 						<AccountContextProvider>
-							<SignalRContextProvider signalRConnectionProvider={signalRConnectionProvider}>
+							<ChannelProviderContextProvider channelProvider={channelProvider}>
 								<Choose>
 									<When condition={loadedServices === initServiceCount && initialized}>
 										<IdeaFilterContextProvider>
@@ -65,7 +62,7 @@ const RootComponent: React.FC<Props> = ({ signalRConnectionProvider, initFunc, i
 											progress={(loadedServices / initServiceCount) * 100} />
 									</Otherwise>
 								</Choose>
-							</SignalRContextProvider>
+							</ChannelProviderContextProvider>
 						</AccountContextProvider>
 					</ServiceContextProvider>
 				</QueryClientProvider>
@@ -74,9 +71,9 @@ const RootComponent: React.FC<Props> = ({ signalRConnectionProvider, initFunc, i
 	);
 }
 
-const renderRoot = (signalRConnectionProvider: ISignalRConnectionProvider, initFunc: () => Promise<void>, initServiceCount: number) => render(
+const renderRoot = (channelProvider: IChannelProvider, initFunc: () => Promise<void>, initServiceCount: number) => render(
 	<RootComponent
-		signalRConnectionProvider={signalRConnectionProvider}
+		channelProvider={channelProvider}
 		initFunc={initFunc}
 		initServiceCount={initServiceCount} />,
 	document.getElementById("reactRoot")

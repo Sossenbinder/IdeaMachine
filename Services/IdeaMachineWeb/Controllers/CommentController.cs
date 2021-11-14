@@ -36,7 +36,7 @@ namespace IdeaMachineWeb.Controllers
 	    [HttpPost]
 	    [Authorize]
 		[Route("Add")]
-	    public async Task<JsonResponse> Add([FromBody] CommentUiModel commentModel)
+	    public async Task<JsonResponse> Add([FromBody] AddCommentUiModel commentModel)
 	    {
 		    var model = new CommentModel()
 		    {

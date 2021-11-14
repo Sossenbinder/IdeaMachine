@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<UserSecretsId>02cb9515-1947-40e4-a8d6-53122efecb99</UserSecretsId>
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 		<DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
@@ -42,4 +42,5 @@
 		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Session\IdeaMachine.Modules.Session.csproj" />
 		<ProjectReference Include="..\..\Services\IdeaMachine.Service.Base\IdeaMachine.Service.Base.csproj" />
 	</ItemGroup>
+
 </Project>

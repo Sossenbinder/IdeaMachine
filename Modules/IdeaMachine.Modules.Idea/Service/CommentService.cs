@@ -6,6 +6,8 @@ using IdeaMachine.Common.Core.Utils.IPC;
 using IdeaMachine.Common.Eventing.DataTypes;
 using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Model;
+using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Idea.DataTypes.Events;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Events.Interface;
@@ -25,17 +27,21 @@ namespace IdeaMachine.Modules.Idea.Service
 
 	    private readonly ISignalRService _signalRService;
 
-	    public CommentService(
+	    private readonly IAccountService _accountService;
+
+		public CommentService(
 			ILogger<CommentService> logger,
 			ICommentRepository commentRepository,
 			IIdeaRepository ideaRepository,
 			IIdeaEvents ideaEvents,
-			ISignalRService signalRService)
+			ISignalRService signalRService, 
+			IAccountService accountService)
 			: base(logger)
 	    {
 		    _commentRepository = commentRepository;
 		    _ideaRepository = ideaRepository;
 		    _signalRService = signalRService;
+		    _accountService = accountService;
 		    RegisterEventHandler(ideaEvents.CommentAdded, OnCommentAdded);
 	    }
 
@@ -54,9 +60,12 @@ namespace IdeaMachine.Modules.Idea.Service
 
 			if (ownerId is not null)
 			{
+				var accountNameResponse = await _accountService.GetAccountName(new GetAccountName.Request(comment.CommenterId));
+				comment.CommenterName = accountNameResponse.UserName ?? "Unknown";
+
 				comment.TimeStamp = entity.CreationDate;
 				comment.IdeaId = entity.IdeaId;
-				await _signalRService.RaiseGroupSignalREvent(ownerId.Value.ToString(), NotificationFactory.Create(commentAddedArgs.Comment.ToUiModel(), NotificationType.Comment));
+				await _signalRService.RaiseGroupSignalREvent(ownerId.Value.ToString(), NotificationFactory.Create(comment.ToUiModel(), NotificationType.Comment));
 			}
 		}
 

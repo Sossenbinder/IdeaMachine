@@ -8,7 +8,7 @@ export enum RequestMethods {
 
 const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] as HTMLInputElement;
 
-export default abstract class AjaxRequest<TRequest, TResponse> {
+export default abstract class HttpRequest<TRequest, TResponse> {
 
 	private m_url: string;
 
@@ -41,7 +41,12 @@ export default abstract class AjaxRequest<TRequest, TResponse> {
 		try {
 			const response = await fetch(this.m_url, requestInit);
 			
-			if (response.status === 500) {			
+			if (response.status === 500 || response.status === 400) {
+
+				if (response.status === 500) {
+					
+				}
+				
 				return {
 					success: false,
 					payload: undefined,
