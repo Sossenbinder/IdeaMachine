@@ -32,5 +32,10 @@ namespace IdeaMachine.Modules.Session.Service
 		{
 			return _sessionCache.GetSession(userId);
 		}
+
+		public void UpdateSession(Guid userId, Action<Abstractions.DataTypes.Session?> sessionUpdater)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

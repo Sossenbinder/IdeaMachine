@@ -71,7 +71,6 @@ namespace IdeaMachineWeb.Controllers
 		    await _publishEndpoint.Publish(new AccountProfilePictureUpdated(Session.User.UserId, profilePicturePath!));
 
 		    return JsonResponse.Success();
-
 	    }
 	}
 }

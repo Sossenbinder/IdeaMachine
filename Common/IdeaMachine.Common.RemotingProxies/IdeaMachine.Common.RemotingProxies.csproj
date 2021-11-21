@@ -11,7 +11,9 @@
 		<ProjectReference Include="..\IdeaMachine.Common.Grpc\IdeaMachine.Common.Grpc.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Common.IPC\IdeaMachine.Common.IPC.csproj" />
 	</ItemGroup>
+
 	<ItemGroup>
 		<Folder Include="Proxies\" />
 	</ItemGroup>
+
 </Project>
