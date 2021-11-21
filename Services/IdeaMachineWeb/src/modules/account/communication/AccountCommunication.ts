@@ -4,6 +4,7 @@ import { RegisterInfo, SignInInfo, Network } from "../types";
 // Functionality
 import GetRequest from "common/helper/requests/GetRequest";
 import PostRequest from "common/helper/requests/PostRequest";
+import MultiPartRequest from "common/helper/requests/MultiPartRequest";
 
 const Urls = {
 	GetAccount: "/Account/Get",
@@ -11,6 +12,7 @@ const Urls = {
 	SignIn: "/Account/SignIn",
 	Verify: "/Verify/VerifyMail",
 	Logout: "/Account/Logout",
+	UpdateProfilePicture: "/ProfilePicture/UpdateProfilePicture",
 }
 
 export const getAccount = async () => {
@@ -38,5 +40,13 @@ export const verifyEmail = async (userName: string, token: string) => {
 	return await request.post({
 		userName,
 		token,
+	});
+}
+
+export const updateProfilePicture = async (files: FileList) => {
+	const request = new MultiPartRequest<void>(Urls.UpdateProfilePicture);
+
+	return await request.post({
+		files,
 	});
 }

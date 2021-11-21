@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Common.Core.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachineWeb", "Services\IdeaMachineWeb\IdeaMachineWeb.csproj", "{CCB3AB54-77B7-4CFB-9162-5EE48EAB55AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.ProfilePictureService", "Services\IdeaMachine.ProfilePictureService\IdeaMachine.ProfilePictureService.csproj", "{857C175A-7C59-4297-BBFE-0013D912D18B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.ProfilePictureService", "Services\IdeaMachine.ProfilePictureService\IdeaMachine.ProfilePictureService.csproj", "{207A219D-7E07-4335-B76B-A76F00366E60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,10 +195,10 @@ Global
 		{CCB3AB54-77B7-4CFB-9162-5EE48EAB55AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCB3AB54-77B7-4CFB-9162-5EE48EAB55AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCB3AB54-77B7-4CFB-9162-5EE48EAB55AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{857C175A-7C59-4297-BBFE-0013D912D18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{857C175A-7C59-4297-BBFE-0013D912D18B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{857C175A-7C59-4297-BBFE-0013D912D18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{857C175A-7C59-4297-BBFE-0013D912D18B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{207A219D-7E07-4335-B76B-A76F00366E60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{207A219D-7E07-4335-B76B-A76F00366E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{207A219D-7E07-4335-B76B-A76F00366E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{207A219D-7E07-4335-B76B-A76F00366E60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -232,7 +232,7 @@ Global
 		{CFC94A50-D742-44AB-8AAF-C83EE2605239} = {32AB01DD-C846-4192-938A-11DEAC05B772}
 		{19B8A5D5-100E-4083-A077-CD896BAF19B8} = {4A0A011D-700E-4824-9DC8-DCB6CF73A95A}
 		{CCB3AB54-77B7-4CFB-9162-5EE48EAB55AA} = {42816EEC-3FED-4342-B3FB-546CF3067EC9}
-		{857C175A-7C59-4297-BBFE-0013D912D18B} = {42816EEC-3FED-4342-B3FB-546CF3067EC9}
+		{207A219D-7E07-4335-B76B-A76F00366E60} = {42816EEC-3FED-4342-B3FB-546CF3067EC9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43FF27FF-5FB7-41C5-A060-392626E2A889}

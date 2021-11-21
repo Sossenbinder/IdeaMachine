@@ -60,8 +60,8 @@ namespace IdeaMachine.Modules.Idea.Service
 
 			if (ownerId is not null)
 			{
-				var accountNameResponse = await _accountService.GetAccountName(new GetAccountName.Request(comment.CommenterId));
-				comment.CommenterName = accountNameResponse.UserName ?? "Unknown";
+				var accountNameResponse = await _accountService.GetAccountName(new GetAccountNameRequest(comment.CommenterId));
+				comment.CommenterName = accountNameResponse.PayloadOrNull ?? "Unknown";
 
 				comment.TimeStamp = entity.CreationDate;
 				comment.IdeaId = entity.IdeaId;

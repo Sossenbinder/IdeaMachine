@@ -4,6 +4,9 @@ FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated6.0 AS b
 WORKDIR /home/site/wwwroot
 EXPOSE 80
 
+COPY AzuriteCert/dockercert.crt /usr/local/share/ca-certificates
+RUN "update-ca-certificates"
+
 FROM mcr.microsoft.com/dotnet/runtime:3.1 as runtime3_1
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 # Copy .NET Core 3.1 runtime from the 3.1 image
@@ -11,6 +14,7 @@ COPY --from=runtime3_1 /usr/share/dotnet/host /usr/share/dotnet/host
 COPY --from=runtime3_1 /usr/share/dotnet/shared /usr/share/dotnet/shared
 WORKDIR /src
 COPY ["Services/IdeaMachine.ProfilePictureService/IdeaMachine.ProfilePictureService.csproj", "Services/IdeaMachine.ProfilePictureService/"]
+COPY ["Common/IdeaMachine.Common.Logging/IdeaMachine.Common.Logging.csproj", "Common/IdeaMachine.Common.Logging/"]
 RUN dotnet restore "Services/IdeaMachine.ProfilePictureService/IdeaMachine.ProfilePictureService.csproj"
 COPY . .
 WORKDIR "/src/Services/IdeaMachine.ProfilePictureService"

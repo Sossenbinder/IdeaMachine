@@ -5,25 +5,27 @@ namespace IdeaMachine.Service.Base.Utils.ConfigProvider
 {
 	public class AbstractConfigProvider
 	{
-		protected IConfigurationBuilder ConfigBuilder;
+		protected IConfigurationBuilder ConfigBuilder = null!;
 
 		private readonly string _environment;
 
 		protected AbstractConfigProvider(string environment)
 		{
 			_environment = environment;
-
-			ConfigBuilder = new ConfigurationBuilder();
 		}
 
-		public IConfiguration BuildConfig(string[] args)
+		public IConfiguration BuildConfig(string[] args, IConfigurationBuilder? configurationBuilder = null)
 		{
-			ConfigBuilder
+			var builder = configurationBuilder ?? new ConfigurationBuilder();
+
+			builder
 				.AddEnvironmentVariables()
 				.AddJsonFile("appsettings.json", true, true)
 				.AddJsonFile($"appsettings.{_environment}.json", true, true)
 				.AddInMemoryCollection(LoggerConstants.GetConstantsAsInMemoryDict())
 				.AddCommandLine(args);
+
+			ConfigBuilder = builder;
 
 			var finalBuilder = AddDeploymentConfig(ConfigBuilder);
 

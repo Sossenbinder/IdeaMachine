@@ -18,6 +18,7 @@ using IdeaMachine.Modules.Idea.DI;
 using IdeaMachine.Modules.Reaction.DI;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
+using IdeaMachineWeb.Controllers;
 using IdeaMachineWeb.DataTypes.Validation;
 using IdeaMachineWeb.Utils;
 using MassTransit;
@@ -58,12 +59,10 @@ namespace IdeaMachineWeb
 				options.ModelBinderProviders.Insert(0, new DestructuringModelBinderProvider());
 			});
 
-			services.AddMemoryCache();
-
 			services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(LogProvider.CreateLogger(Configuration)));
+			services.AddHttpClient<ProfilePictureController>();
 			
 			services.AddAntiforgery(x => x.HeaderName = "RequestVerificationToken");
-
 			services.AddResponseCompression();
 
 			services.Configure<ValidationInfo>(Configuration.GetSection("Validation"));

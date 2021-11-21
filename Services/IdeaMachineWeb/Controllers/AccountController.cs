@@ -79,7 +79,6 @@ namespace IdeaMachineWeb.Controllers
 		[Route("SignIn")]
 		[HttpPost]
 		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
 		public async Task<JsonDataResponse<IdentityErrorCode>> SignIn([FromBody] SignInInfo signInInfo)
 		{
 			if (!ModelState.IsValid)

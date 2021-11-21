@@ -8,6 +8,7 @@
 		<PackageReference Include="protobuf-net.Grpc" Version="1.0.152" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Common.IPC\IdeaMachine.Common.IPC.csproj" />
 	</ItemGroup>
 </Project>

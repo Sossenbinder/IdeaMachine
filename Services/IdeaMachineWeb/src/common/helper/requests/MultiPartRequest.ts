@@ -7,7 +7,7 @@ type Request<TRequest> = {
 	data?: TRequest;
 }
 
-export default class MultiPartRequest<TRequest, TResponse = undefined> {
+export default class MultiPartRequest<TRequest, TResponse = void> {
 
 	private m_url: string;
 

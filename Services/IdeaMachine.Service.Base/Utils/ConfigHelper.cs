@@ -20,13 +20,13 @@ namespace IdeaMachine.Service.Base.Utils
 			};
 		}
 
-		public static IConfiguration CreateConfiguration(string[] args)
+		public static IConfiguration CreateConfiguration(string[] args, IConfigurationBuilder? configurationBuilder = default)
 		{
 			var environment = EnvHelper.GetDeployment();
 
 			Console.WriteLine($"Building config for environment {environment}");
 
-			return ConfigProviders[environment ?? throw new InvalidOperationException()].BuildConfig(args);
+			return ConfigProviders[environment ?? throw new InvalidOperationException()].BuildConfig(args, configurationBuilder);
 		}
 	}
 }

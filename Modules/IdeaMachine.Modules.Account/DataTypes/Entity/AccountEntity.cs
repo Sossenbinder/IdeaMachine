@@ -8,6 +8,9 @@ namespace IdeaMachine.Modules.Account.DataTypes.Entity
 	{
 		[Column("LastAccessedAt")]
 		public DateTime LastAccessedAt { get; set; }
+
+		[Column("ProfilePictureUrl")] 
+		public string? ProfilePictureUrl { get; set; } = null;
 		
 		// ReSharper disable once NotNullMemberIsNotInitialized
 		public AccountEntity()

@@ -7,9 +7,10 @@
 );
 
 CREATE TABLE [dbo].[Reactions](
-	[UserID] [uniqueidentifier] NOT NULL PRIMARY KEY,
+	[UserID] [uniqueidentifier] NOT NULL,
 	[IdeaId] [int] NOT NULL,
-	[LikeState] [int] NULL
+	[LikeState] [int] NULL,
+    PRIMARY KEY (UserID, IdeaId)
 );
 
 CREATE TABLE [dbo].[Tags](

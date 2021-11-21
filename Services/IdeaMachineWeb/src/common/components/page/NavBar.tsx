@@ -25,6 +25,7 @@ type ReduxProps = {
 type Props = RouteComponentProps & ReduxProps;
 
 export const NavBar: React.FC<Props> = ({ account, history }) => {
+
 	return (
 		<Flex
 			className={styles.NavBar}
@@ -40,7 +41,8 @@ export const NavBar: React.FC<Props> = ({ account, history }) => {
 			<Flex
 				className={styles.ActionSection}
 				direction="Row"
-				crossAlignSelf="Center">
+				crossAlignSelf="Center"
+				mainAlign="End">
 				<LinkButton
 					to="/idea/own"
 					color="primary">

@@ -11,6 +11,7 @@ namespace IdeaMachine.Common.Logging.Log
 			var defaultLoggerConfiguration = new LoggerConfiguration()
 				.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
 				.Enrich.FromLogContext()
+				.Enrich.With(new ServiceNameEnricher())
 				.WriteTo.Console();
 
 			var seqServer = configuration["Seq_Server"];

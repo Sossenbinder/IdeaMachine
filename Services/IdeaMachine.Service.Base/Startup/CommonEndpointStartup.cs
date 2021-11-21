@@ -1,25 +1,41 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
+using Grpc.AspNetCore.Server;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
+using IdeaMachine.Common.Grpc.Interceptors;
 using IdeaMachine.Common.IPC.DI;
+using IdeaMachine.Common.Logging.Log;
 using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.ModulesServiceBase.Interface;
 using IdeaMachine.Service.Base.Extensions;
 using MassTransit;
+using MassTransit.ExtensionsDependencyInjectionIntegration;
+using MassTransit.RabbitMqTransport;
 using MassTransit.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ProtoBuf.Grpc.Server;
+using Serilog;
 
 namespace IdeaMachine.Service.Base.Startup
 {
+	public class X : IConsumer<EventInfo>
+	{
+		public Task Consume(ConsumeContext<EventInfo> context)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
 	public abstract class CommonEndpointStartup
 	{
 		protected IConfiguration Configuration { get; }
@@ -35,38 +51,18 @@ namespace IdeaMachine.Service.Base.Startup
 			services.AddCodeFirstGrpc(grpcOptions =>
 			{
 				grpcOptions.EnableDetailedErrors = true;
+				grpcOptions.Interceptors.Add<GrpcServiceResponseInterceptor>();
 			});
 
-			services.AddControllers()
-				.AddApplicationPart(Assembly.GetExecutingAssembly())
-				.AddControllersAsServices();
+			services.AddControllers();
 
-			services.AddMassTransit(x =>
+			services.AddLogging(loggingBuilder =>
 			{
-				x.AddDelayedMessageScheduler();
-
-				x.AddSignalRHub<SignalRHub>();
-
-				x.UsingRabbitMq((ctx, cfg) =>
-				{
-#if DEBUG
-					cfg.Durable = false;
-					cfg.AutoDelete = true;
-					cfg.PurgeOnStartup = true;
-#endif
-
-					cfg.UseMessageRetry(retryConfig =>
-					{
-						retryConfig.Exponential(5, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(2));
-					});
-
-					cfg.Host($"rabbitmq://{Configuration["IdeaMachine_RabbitMq"]}");
-
-					cfg.ConfigureEndpoints(ctx);
-
-					cfg.UseDelayedMessageScheduler();
-				});
+				loggingBuilder.AddConsole();
+				loggingBuilder.AddSerilog(LogProvider.CreateLogger(Configuration));
 			});
+
+			SetupMassTransit(services);
 		}
 
 		// Autofac entry point
@@ -88,6 +84,44 @@ namespace IdeaMachine.Service.Base.Startup
 		protected virtual void RegisterEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
 		{
 			endpointRouteBuilder.MapControllers();
+		}
+		
+		// Masstransit setup
+		private void SetupMassTransit(IServiceCollection services)
+		{
+			services.AddMassTransit(x =>
+			{
+				SetupMassTransitBus(x);
+
+				x.AddDelayedMessageScheduler();
+
+				x.AddSignalRHub<SignalRHub>();
+
+				x.UsingRabbitMq((ctx, cfg) =>
+				{
+					SetupRabbitMq(ctx, cfg);
+
+					cfg.UseMessageRetry(retryConfig =>
+					{
+						retryConfig.Exponential(5, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(2));
+					});
+
+					cfg.Host($"rabbitmq://{Configuration["IdeaMachine_RabbitMq"]}");
+
+					cfg.ConfigureEndpoints(ctx);
+
+					cfg.UseDelayedMessageScheduler();
+				});
+			});
+		}
+		protected virtual void SetupMassTransitBus(IServiceCollectionBusConfigurator cfg)
+		{
+
+		}
+
+		protected virtual void SetupRabbitMq(IBusRegistrationContext ctx, IRabbitMqBusFactoryConfigurator cfg)
+		{
+
 		}
 	}
 

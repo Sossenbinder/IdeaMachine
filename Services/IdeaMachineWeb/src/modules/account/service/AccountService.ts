@@ -8,6 +8,7 @@ import { NetworkResponse } from "common/helper/requests/types/NetworkDefinitions
 // Types
 import { IChannelProvider } from "common/modules/channel/ChannelProvider";
 import { RegisterInfo, SignInInfo, IdentityErrorCode } from "../types";
+import { Notification } from "common/modules/channel/types";
 
 export default class AccountService extends ModuleService implements IAccountService {
 
@@ -16,11 +17,20 @@ export default class AccountService extends ModuleService implements IAccountSer
 	}
 
 	public async start() {
+
+		this.ChannelProvider
+			.getChannel<FileList>(Notification.ProfilePictureUpdated)
+			.register(this.onProfilePictureUpdated);
+		
 		const accountRequest = await accountCommunication.getAccount();
 
 		if (accountRequest.success) {
 			this.dispatch(accountReducer.replace(accountRequest.payload));
 		}
+	}
+
+	async onProfilePictureUpdated(fileList: FileList) {
+		await accountCommunication.updateProfilePicture(fileList);
 	}
 
 	logout = async () => {

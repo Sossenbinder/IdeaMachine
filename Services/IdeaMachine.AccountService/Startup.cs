@@ -3,11 +3,15 @@ using Autofac;
 using IdeaMachine.Common.AspNetIdentity.Helper;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DI;
+using IdeaMachine.Modules.Account.Events;
 using IdeaMachine.Modules.Account.Repository.Context;
 using IdeaMachine.Modules.Account.Service;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Service.Base.Extensions;
 using IdeaMachine.Service.Base.Startup;
+using MassTransit;
+using MassTransit.ExtensionsDependencyInjectionIntegration;
+using MassTransit.RabbitMqTransport;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
@@ -60,6 +64,11 @@ namespace IdeaMachine.AccountService
 			endpointRouteBuilder.MapGrpcService<IAccountService>();
 
 			base.RegisterEndpoints(endpointRouteBuilder);
+		}
+
+		protected override void SetupMassTransitBus(IServiceCollectionBusConfigurator cfg)
+		{
+			cfg.AddConsumer<AccountProfilePictureUpdatedConsumer>();
 		}
 	}
 }

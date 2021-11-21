@@ -41,18 +41,6 @@ export default abstract class HttpRequest<TRequest, TResponse> {
 		try {
 			const response = await fetch(this.m_url, requestInit);
 			
-			if (response.status === 500 || response.status === 400) {
-
-				if (response.status === 500) {
-					
-				}
-				
-				return {
-					success: false,
-					payload: undefined,
-				};
-			}
-
 			const json = await response.json();
 
 			if (json.data === undefined) {
