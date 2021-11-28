@@ -4,6 +4,7 @@ export type Account = {
 	email: string;
 	lastAccessedAt: Date;
 	userId: string;
+	profilePictureUrl: string;
 }
 
 export type SignInInfo = {

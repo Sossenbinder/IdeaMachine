@@ -1,6 +1,4 @@
 ﻿using Autofac;
-using IdeaMachine.Modules.Session.Cache;
-using IdeaMachine.Modules.Session.Cache.Interface;
 using IdeaMachine.Modules.Session.Service;
 using IdeaMachine.Modules.Session.Service.Interface;
 
@@ -12,10 +10,6 @@ namespace IdeaMachine.Modules.Session.DI
 		{
 			builder.RegisterType<SessionService>()
 				.As<ISessionService>()
-				.SingleInstance();
-
-			builder.RegisterType<SessionCache>()
-				.As<ISessionCache>()
 				.SingleInstance();
 		}
 	}

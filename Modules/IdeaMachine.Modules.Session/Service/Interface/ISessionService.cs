@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace IdeaMachine.Modules.Session.Service.Interface
 {
@@ -6,6 +7,6 @@ namespace IdeaMachine.Modules.Session.Service.Interface
 	{
 		Abstractions.DataTypes.Session? GetSession(Guid userId);
 
-		void UpdateSession(Guid userId, Action<Abstractions.DataTypes.Session?> sessionUpdater);
+		Task UpdateSession(Guid userId, Action<Abstractions.DataTypes.Session> sessionUpdater);
 	}
 }

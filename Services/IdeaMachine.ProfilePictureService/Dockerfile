@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated6.0 AS b
 WORKDIR /home/site/wwwroot
 EXPOSE 80
 
-COPY AzuriteCert/dockercert.crt /usr/local/share/ca-certificates
+COPY AzuriteCert/azuriteCert.crt /usr/local/share/ca-certificates
 RUN "update-ca-certificates"
 
 FROM mcr.microsoft.com/dotnet/runtime:3.1 as runtime3_1

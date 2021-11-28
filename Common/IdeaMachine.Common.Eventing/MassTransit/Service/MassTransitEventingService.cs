@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Autofac;
 using GreenPipes;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
@@ -9,39 +8,24 @@ using MassTransit.ConsumeConfigurators;
 
 namespace IdeaMachine.Common.Eventing.MassTransit.Service
 {
-	public class MassTransitEventingService : IStartable, IDisposable, IAsyncDisposable, IMassTransitEventingService
+	public class MassTransitEventingService : IMassTransitEventingService
 	{
-		private readonly IBusControl _busControl;
+		private readonly IPublishEndpoint _publishEndpoint;
 
 		private readonly IReceiveEndpointConnector _receiveEndpointConnector;
 
 		public MassTransitEventingService(
-			IBusControl busControl,
+			IPublishEndpoint publishEndpoint,
 			IReceiveEndpointConnector receiveEndpointConnector)
 		{
-			_busControl = busControl;
+			_publishEndpoint = publishEndpoint;
 			_receiveEndpointConnector = receiveEndpointConnector;
-		}
-
-		public void Start()
-		{
-			_busControl.Start();
-		}
-
-		public void Dispose()
-		{
-			_busControl.Stop();
-		}
-
-		public async ValueTask DisposeAsync()
-		{
-			await _busControl.StopAsync();
 		}
 
 		public Task RaiseEvent<T>(T message)
 			where T : class
 		{
-			return _busControl.Publish(message);
+			return _publishEndpoint.Publish(message);
 		}
 
 		public HostReceiveEndpointHandle RegisterForEvent<T>(string queueName, Action<T> handler)

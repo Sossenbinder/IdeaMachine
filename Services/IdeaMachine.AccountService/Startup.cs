@@ -7,11 +7,10 @@ using IdeaMachine.Modules.Account.Events;
 using IdeaMachine.Modules.Account.Repository.Context;
 using IdeaMachine.Modules.Account.Service;
 using IdeaMachine.Modules.Account.Service.Interface;
+using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
 using IdeaMachine.Service.Base.Startup;
-using MassTransit;
-using MassTransit.ExtensionsDependencyInjectionIntegration;
-using MassTransit.RabbitMqTransport;
+using MassTransit.AutofacIntegration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
@@ -47,6 +46,7 @@ namespace IdeaMachine.AccountService
 		public override void ConfigureContainer(ContainerBuilder containerBuilder)
 		{
 			containerBuilder.RegisterModule<InternalAccountModule>();
+			containerBuilder.RegisterModule<SessionModule>();
 
 			containerBuilder.RegisterGrpcService<RegistrationService>();
 			containerBuilder.RegisterGrpcService<LoginService>();
@@ -66,7 +66,7 @@ namespace IdeaMachine.AccountService
 			base.RegisterEndpoints(endpointRouteBuilder);
 		}
 
-		protected override void SetupMassTransitBus(IServiceCollectionBusConfigurator cfg)
+		protected override void SetupMassTransitBus(IContainerBuilderBusConfigurator cfg)
 		{
 			cfg.AddConsumer<AccountProfilePictureUpdatedConsumer>();
 		}

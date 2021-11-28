@@ -13,5 +13,7 @@ namespace IdeaMachineWeb.DataTypes.UiModels.Account
 		public string Email { get; set; } = null!;
 
 		public DateTime LastAccessedAt { get; set; }
+
+		public string? ProfilePictureUrl { get; set; }
 	}
 }

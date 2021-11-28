@@ -52,26 +52,21 @@ namespace IdeaMachine.Modules.Account.Service
 
 			var result = await _signInManager.PasswordSignInAsync(account, loginModel.Password, loginModel.RememberMe, false);
 
-			if (result.Succeeded)
+			if (!result.Succeeded)
 			{
-				var accountModel = new Abstractions.DataTypes.Account()
-				{
-					UserId = account.Id,
-					Email = account.Email,
-					UserName = account.UserName,
-					LastAccessedAt = account.LastAccessedAt,
-				};
-
-				await _accountEvents.AccountSignedIn.Raise(new AccountSignedIn(accountModel));
-
-				return ServiceResponse<LoginResult>.Success(new LoginResult()
-				{
-					ResultCode = IdentityErrorCode.Success,
-					Account = accountModel
-				});
+				return ServiceResponse.Failure(LoginResult.WithCode(IdentityErrorCode.DefaultError));
 			}
 
-			return ServiceResponse.Failure(LoginResult.WithCode(IdentityErrorCode.DefaultError));
+			var accountModel = account.ToModel();
+
+			await _accountEvents.AccountSignedIn.Raise(new AccountSignedIn(accountModel));
+
+			return ServiceResponse<LoginResult>.Success(new LoginResult()
+			{
+				ResultCode = IdentityErrorCode.Success,
+				Account = accountModel
+			});
+
 		}
 
 		public async Task Logout(ISession session)

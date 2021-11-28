@@ -18,5 +18,8 @@ namespace IdeaMachine.Modules.Account.Abstractions.DataTypes
 
 		[ProtoMember(4)]
 		public DateTime LastAccessedAt { get; set; }
+
+		[ProtoMember(5)] 
+		public string? ProfilePictureUrl { get; set; }
 	}
 }

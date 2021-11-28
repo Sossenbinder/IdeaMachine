@@ -34,7 +34,7 @@ namespace IdeaMachine.Modules.Reaction.Service
 
 			if (putSuccess)
 			{
-				await _signalRService.RaiseUserSignalREvent(userId, NotificationFactory.Update(ideaId, NotificationType.LikeCommited));
+				await _signalRService.RaiseGroupSignalREvent(userId.ToString(), NotificationFactory.Update(ideaId, NotificationType.LikeCommited));
 			}
 		}
 	}

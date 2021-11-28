@@ -45,6 +45,7 @@ namespace IdeaMachineWeb.Controllers
 				UserName = Session.User.UserName,
 				IsAnonymous = Session.User is AnonymousUser,
 				LastAccessedAt = Session.User.LastAccessedAt,
+				ProfilePictureUrl = Session.User.ProfilePictureUrl,
 			});
 		}
 

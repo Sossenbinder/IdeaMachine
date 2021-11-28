@@ -11,6 +11,7 @@ using IdeaMachine.Modules.Account.Repository.Context;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
@@ -20,6 +21,8 @@ namespace IdeaMachine.ProfilePictureService
 {
 	public class Upload
 	{
+		private readonly IHostEnvironment _hostEnv;
+
 		private readonly AccountContext _accountContext;
 
 		private readonly ILogger _logger;
@@ -27,10 +30,12 @@ namespace IdeaMachine.ProfilePictureService
 		private readonly AsyncLazy<BlobContainerClient> _containerClient;
 
 		public Upload(
+			IHostEnvironment hostEnv,
 			ILoggerFactory loggerFactory,
 			BlobServiceClient blobServiceClient,
 			AccountContext accountContext)
 		{
+			_hostEnv = hostEnv;
 			_accountContext = accountContext;
 			_logger = loggerFactory.CreateLogger<Upload>();
 
@@ -77,6 +82,11 @@ namespace IdeaMachine.ProfilePictureService
 			_logger.LogInformation("Uploaded profile pictures for user {UserId}", userId);
 
 			var resizedImageUrl = $"{containerClient.Uri}/{resizedImageName}";
+
+			if (_hostEnv.IsEnvironment(Environments.Development))
+			{
+				resizedImageUrl = resizedImageUrl.Replace("ideamachine.azurite", "localhost");
+			}
 
 			await UpdateUser(userId, resizedImageUrl);
 

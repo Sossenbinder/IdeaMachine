@@ -101,7 +101,7 @@ services:
       - "10000:10000"
       - "10001:10001"
       - "10002:10002"
-    entrypoint: "azurite --loose -l /data --oauth=basic --cert=/azuriteDir/cert.pem --key=/azuriteDir/key.pem --blobPort 10000 --blobHost 0.0.0.0 --queuePort 10001 --queueHost 0.0.0.0 --tablePort 10002 --tableHost 0.0.0.0"
+    entrypoint: "azurite --loose -l /data --oauth=basic --cert=/azuriteDir/azuriteCert.crt --key=/azuriteDir/azuriteKey.pem --blobPort 10000 --blobHost 0.0.0.0 --queuePort 10001 --queueHost 0.0.0.0 --tablePort 10002 --tableHost 0.0.0.0"
     labels:
       - ideamachinecompose
     volumes:

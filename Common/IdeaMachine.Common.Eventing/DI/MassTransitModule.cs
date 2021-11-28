@@ -6,8 +6,6 @@ using IdeaMachine.Common.Eventing.Abstractions.Events;
 using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Common.Eventing.MassTransit.Service;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
-using MassTransit;
-using MassTransit.ConsumeConfigurators;
 using Module = Autofac.Module;
 
 namespace IdeaMachine.Common.Eventing.DI
@@ -17,7 +15,7 @@ namespace IdeaMachine.Common.Eventing.DI
 		protected override void Load(ContainerBuilder builder)
 		{
 			builder.RegisterType<MassTransitEventingService>()
-				.As<IStartable, IMassTransitEventingService>()
+				.As<IMassTransitEventingService>()
 				.SingleInstance();
 
 			builder.RegisterType<MassTransitSignalRService>()

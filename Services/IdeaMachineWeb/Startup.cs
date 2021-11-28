@@ -143,6 +143,11 @@ namespace IdeaMachineWeb
 			builder.RegisterGrpcProxy<ILoginService, LoginServiceProxy>();
 			builder.RegisterGrpcProxy<IVerificationService, VerificationServiceProxy>();
 			builder.RegisterGrpcProxy<IAccountService, AccountServiceProxy>();
+
+			builder.RegisterBuildCallback(lts =>
+			{
+				lts.Resolve<IBusControl>().Start();
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

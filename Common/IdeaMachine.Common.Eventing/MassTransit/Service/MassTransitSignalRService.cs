@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.Eventing.DataTypes;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
 using IdeaMachine.Common.SignalR;
-using IdeaMachine.Common.SignalR.Service.Interface;
 using MassTransit;
 using MassTransit.SignalR.Contracts;
 using MassTransit.SignalR.Utils;
@@ -14,18 +13,13 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 {
 	public class MassTransitSignalRService : ISignalRService
 	{
-		private readonly IBusControl _busControl;
-
-		private readonly IClientTrackingService _clientTrackingService;
+		private readonly IPublishEndpoint _publishEndpoint;
 
 		private readonly List<IHubProtocol> _signalRProtocols;
 
-		public MassTransitSignalRService(
-			IBusControl busControl,
-			IClientTrackingService clientTrackingService)
+		public MassTransitSignalRService(IPublishEndpoint publishEndpoint)
 		{
-			_busControl = busControl;
-			_clientTrackingService = clientTrackingService;
+			_publishEndpoint = publishEndpoint;
 
 			_signalRProtocols = new List<IHubProtocol>() { new JsonHubProtocol() };
 		}
@@ -38,7 +32,7 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 				Messages = CreateProtocolDict(notification)
 			};
 
-			await _busControl.Publish<All<SignalRHub>>(signalRParams);
+			await _publishEndpoint.Publish<All<SignalRHub>>(signalRParams);
 		}
 
 		public async Task RaiseConnectionSignalREvent<T>(string connectionId, Notification<T> notification)
@@ -49,7 +43,7 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 				Messages = CreateProtocolDict(notification)
 			};
 
-			await _busControl.Publish<Connection<SignalRHub>>(signalRParams);
+			await _publishEndpoint.Publish<Connection<SignalRHub>>(signalRParams);
 		}
 
 		public async Task RaiseGroupSignalREvent<T>(string groupName, Notification<T> notification, string[]? excludedConnectionIds = null)
@@ -61,18 +55,18 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 				Messages = CreateProtocolDict(notification)
 			};
 
-			await _busControl.Publish<Group<SignalRHub>>(signalRParams);
+			await _publishEndpoint.Publish<Group<SignalRHub>>(signalRParams);
 		}
 
 		public async Task RaiseUserSignalREvent<T>(Guid userId, Notification<T> notification)
 		{
 			var signalRParams = new
 			{
-				UserId = userId.ToString(),
+				UserId = userId,
 				Messages = CreateProtocolDict(notification)
 			};
 
-			await _busControl.Publish<User<SignalRHub>>(signalRParams);
+			await _publishEndpoint.Publish<User<SignalRHub>>(signalRParams);
 		}
 
 		private IReadOnlyDictionary<string, byte[]> CreateProtocolDict<T>(Notification<T> notification)
@@ -88,8 +82,8 @@ namespace IdeaMachine.Common.Eventing.MassTransit.Service
 			{
 				new
 				{
-					Operation = notification.Operation,
-					Payload = notification.Payload,
+					notification.Operation, 
+					notification.Payload,
 				}
 			};
 

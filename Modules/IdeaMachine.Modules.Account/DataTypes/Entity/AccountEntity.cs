@@ -17,15 +17,14 @@ namespace IdeaMachine.Modules.Account.DataTypes.Entity
 		{
 		}
 
-		public Abstractions.DataTypes.Account ToModel()
-		{
-			return new()
+		public Abstractions.DataTypes.Account ToModel() =>
+			new()
 			{
 				UserId = Id,
 				Email = Email,
 				UserName = UserName,
 				LastAccessedAt = LastAccessedAt,
+				ProfilePictureUrl = ProfilePictureUrl,
 			};
-		}
 	}
 }

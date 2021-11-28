@@ -12,10 +12,14 @@ namespace IdeaMachine.Common.Core.Cache.Implementations.Interface
     {
 	    TValue Get(TKey key);
 
+	    bool TryGetValue(TKey key, out TValue value);
+
 	    TValue GetOrAdd(TKey key, Func<ICacheEntry, TValue> factory);
 
 	    Task<LockedCacheItem<TValue>> GetLocked(TKey key);
-        
+
+	    Task<LockedCacheItem<TValue>?> TryGetLocked(TKey key);
+
 	    void Set(TKey key, TValue value);
     }
 }

@@ -1,4 +1,5 @@
 {
-	"tsimporter.doubleQuotes": true,
-	"discord.enabled": true,
+  "tsimporter.doubleQuotes": true,
+  "discord.enabled": true,
+  "editor.tabSize": 4
 }

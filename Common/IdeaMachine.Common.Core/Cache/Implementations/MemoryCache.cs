@@ -26,7 +26,12 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 			return _cache.Get<TValue>(key) ?? throw new KeyNotFoundException($"Item for key {key} not found");
 		}
 
-        public TValue GetOrAdd(TKey key, Func<ICacheEntry, TValue> factory)
+	    public bool TryGetValue(TKey key, out TValue value)
+	    {
+		    return _cache.TryGetValue(key, out value);
+	    }
+
+	    public TValue GetOrAdd(TKey key, Func<ICacheEntry, TValue> factory)
         {
 	        return _cache.GetOrCreate(key, factory);
         }
@@ -47,8 +52,25 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 	        // In case the item is not there, remove the lock again and return null
 	        _cacheLockManager.ReleaseLock(key);
 	        throw new KeyNotFoundException($"Item for key {key} not found");
-
         }
+
+        public async Task<LockedCacheItem<TValue>?> TryGetLocked(TKey key)
+		{
+			// Get our lock first - Then we can check if an item is there at all.
+			// If we would check first, then there is no guarantee the item is still
+			// there at the point in time we get our turn on the lock
+			var @lock = await _cacheLockManager.GetLockLocked(key);
+			var value = Get(key);
+
+			if (value != null)
+			{
+				return new LockedCacheItem<TValue>(value, @lock);
+			}
+
+			// In case the item is not there, remove the lock again and return null
+			_cacheLockManager.ReleaseLock(key);
+			return null;
+		}
 
         public void Set(TKey key, TValue value)
         {

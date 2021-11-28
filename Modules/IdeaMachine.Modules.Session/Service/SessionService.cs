@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
+using IdeaMachine.Common.Core.Cache.Implementations;
+using IdeaMachine.Common.Core.Cache.Implementations.Interface;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
-using IdeaMachine.Modules.Session.Cache.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachine.ModulesServiceBase;
 
@@ -9,33 +11,41 @@ namespace IdeaMachine.Modules.Session.Service
 {
 	public class SessionService : ServiceBaseWithoutLogger, ISessionService
 	{
-		private readonly ISessionCache _sessionCache;
+		private readonly ICache<Guid, Abstractions.DataTypes.Session> _sessionCache;
 
-		public SessionService(
-			IAccountEvents accountEvents,
-			ISessionCache sessionCache)
+		public SessionService(IAccountEvents accountEvents)
 		{
-			_sessionCache = sessionCache;
+			_sessionCache = new MemoryCache<Guid, Abstractions.DataTypes.Session>();
 
 			RegisterEventHandler(accountEvents.AccountSignedIn, OnAccountSignedIn);
 		}
 
 		private void OnAccountSignedIn(AccountSignedIn accountSignedIn)
 		{
-			_sessionCache.Insert(new Abstractions.DataTypes.Session()
+			var session = new Abstractions.DataTypes.Session()
 			{
 				User = accountSignedIn.Account,
-			});
+			};
+
+			_sessionCache.Set(session.User.UserId, session);
 		}
 
 		public Abstractions.DataTypes.Session? GetSession(Guid userId)
 		{
-			return _sessionCache.GetSession(userId);
+			return _sessionCache.TryGetValue(userId, out var value) ? value : null;
 		}
 
-		public void UpdateSession(Guid userId, Action<Abstractions.DataTypes.Session?> sessionUpdater)
+		public async Task UpdateSession(Guid userId, Action<Abstractions.DataTypes.Session> sessionUpdater)
 		{
-			throw new NotImplementedException();
+			var lockedItem = await _sessionCache.TryGetLocked(userId);
+
+			if (lockedItem is not null)
+			{
+				await using (lockedItem)
+				{
+					sessionUpdater(lockedItem.Value);
+				}
+			}
 		}
 	}
 }

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using IdeaMachine.Common.Eventing.DataTypes;
+using IdeaMachine.Common.Eventing.Helper;
+using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Session.Service.Interface;
 using MassTransit;
@@ -10,11 +13,26 @@ namespace IdeaMachine.Modules.Account.Events
     {
 	    private readonly ISessionService _sessionService;
 
-	    public AccountProfilePictureUpdatedConsumer(ISessionService sessionService) => _sessionService = sessionService;
-		
+	    private readonly ISignalRService _signalRService;
+
+	    public AccountProfilePictureUpdatedConsumer(
+		    ISessionService sessionService, 
+		    ISignalRService signalRService)
+	    {
+		    _sessionService = sessionService;
+		    _signalRService = signalRService;
+	    }
+
 	    public async Task Consume(ConsumeContext<AccountProfilePictureUpdated> context)
 	    {
-			//await _sessionService.
-	    }
+		    var (accountId, profilePictureUrl) = context.Message;
+
+		    await _sessionService.UpdateSession(accountId, session =>
+		    {
+			    session.User.ProfilePictureUrl = profilePictureUrl;
+		    });
+			
+			await _signalRService.RaiseGroupSignalREvent(accountId.ToString(), NotificationFactory.Update(_sessionService.GetSession(accountId)!.User, NotificationType.UserDetails));
+		}
     }
 }
