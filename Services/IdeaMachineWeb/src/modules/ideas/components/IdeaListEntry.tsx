@@ -24,39 +24,46 @@ import styles from "./styles/IdeaListEntry.module.less";
 
 type Props = RouteComponentProps & {
 	idea: Idea;
-}
+};
 
-export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creationDate, longDescription, id, tags, attachmentUrls, ideaReactionMetaData: { totalLike, ownLikeState } }, history }) => {
-
+export const IdeaListEntry: React.FC<Props> = ({
+	idea: {
+		shortDescription,
+		creationDate,
+		longDescription,
+		id,
+		tags,
+		attachmentUrls,
+		ideaReactionMetaData: { totalLike, ownLikeState }
+	},
+	history
+}) => {
 	const [previewOpen, setPreviewOpen] = React.useState(false);
 
 	const { filters, updateFilters } = React.useContext(IdeaFilterContext);
 
 	const { ReactionService, IdeaService } = useServices();
 
-	const containerClassNames = classNames(
-		styles.Container,
-		{ [styles.Open]: previewOpen }
-	)
+	const containerClassNames = classNames(styles.Container, { [styles.Open]: previewOpen });
 
 	const navTo = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, navLink: string) => {
 		event.stopPropagation();
 		event.preventDefault();
 
 		history.push(navLink);
-	}
+	};
 
 	const modifyLikeState = async (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, likeState: LikeState) => {
 		event.stopPropagation();
 		event.preventDefault();
 		await ReactionService.modifyLike(id, likeState);
-	}
+	};
 
 	const deleteIdea = async (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
 		event.stopPropagation();
 		event.preventDefault();
 		await IdeaService.deleteIdea(id);
-	}
+	};
 
 	const onTagClick = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, tag: string) => {
 		event.stopPropagation();
@@ -68,14 +75,12 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 
 		updateFilters({
 			...filters,
-			tags: [...filters.tags, tag],
+			tags: [...filters.tags, tag]
 		});
-	}
+	};
 
 	return (
-		<div
-			className={containerClassNames}
-			onClick={() => setPreviewOpen(!previewOpen)}>
+		<div className={containerClassNames} onClick={() => setPreviewOpen(!previewOpen)}>
 			<Grid
 				className={styles.Idea}
 				gridProperties={{
@@ -84,106 +89,73 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 					gridTemplateAreas: `
 						"TotalLike ShortDescription Actions Timestamp Expand"
 						"TotalLike LongDescription Tags Tags ."
-					`,
-				}}>
+					`
+				}}
+			>
 				<Cell
 					cellStyles={{
 						gridArea: "TotalLike"
-					}}>
-					<Flex
-						className={styles.TotalLikeContainer}
-						direction="Row"
-						crossAlign="Center">
-						<Flex
-							space="Around"
-							direction="Column">
+					}}
+				>
+					<Flex className={styles.TotalLikeContainer} direction="Row" crossAlign="Center">
+						<Flex space="Around" direction="Column">
 							<MaterialIcon
 								className={styles.ThumbButton}
-								onClick={async ev => await modifyLikeState(ev, LikeState.Like)}
+								onClick={async (ev) => await modifyLikeState(ev, LikeState.Like)}
 								iconName="thumb_up"
 								size={14}
-								color={ownLikeState === LikeState.Like ? "blue" : "black"} />
+								color={ownLikeState === LikeState.Like ? "blue" : "black"}
+							/>
 							{`${totalLike >= 0 ? "+" : ""}${totalLike}`}
 							<MaterialIcon
 								className={styles.ThumbButton}
-								onClick={async ev => await modifyLikeState(ev, LikeState.Dislike)}
+								onClick={async (ev) => await modifyLikeState(ev, LikeState.Dislike)}
 								iconName="thumb_down"
 								size={14}
-								color={ownLikeState === LikeState.Dislike ? "blue" : "black"} />
+								color={ownLikeState === LikeState.Dislike ? "blue" : "black"}
+							/>
 						</Flex>
-						<Separator
-							direction="Vertical"
-							width="20px" />
+						<Separator direction="Vertical" width="20px" />
 					</Flex>
 				</Cell>
-				<span className={styles.ShortDescription}>
-					{shortDescription}
-				</span>
-				<Flex
-					className={styles.ControlSection}
-					direction="Row"
-					crossAlign="Start">
+				<span className={styles.ShortDescription}>{shortDescription}</span>
+				<Flex className={styles.ControlSection} direction="Row" crossAlign="Start">
 					<If condition={attachmentUrls && attachmentUrls.length > 0}>
-						<Flex
-							direction="Row"
-							crossAlign="Center"
-							className={styles.Attachments}>
-							<span className={styles.Number}>
-								{attachmentUrls.length}
-							</span>
+						<Flex direction="Row" crossAlign="Center" className={styles.Attachments}>
+							<span className={styles.Number}>{attachmentUrls.length}</span>
 							<MaterialIcon
 								className={styles.AttachmentIcon}
-								onClick={async event => navTo(event, `/idea/${id}`)}
+								onClick={async (event) => navTo(event, `/idea/${id}`)}
 								iconName="attachment"
-								size={25} />
+								size={25}
+							/>
 						</Flex>
 					</If>
-					<MaterialIcon
-						onClick={async event => navTo(event, `/idea/${id}`)}
-						iconName="info"
-						type="Outlined"
-						size={25} />
-					<MaterialIcon
-						onClick={async event => navTo(event, `/idea/${id}/reply`)}
-						iconName="reply"
-						size={25} />
-					<FeedbackMaterialIcon
-						onClick={async event => await deleteIdea(event)}
-						iconName="delete"
-						size={25} />
+					<MaterialIcon onClick={(event) => navTo(event, `/idea/${id}`)} iconName="info" type="Outlined" size={25} />
+					<MaterialIcon onClick={(event) => navTo(event, `/idea/${id}/reply`)} iconName="share" size={25} />
+					<FeedbackMaterialIcon onClick={async (event) => await deleteIdea(event)} iconName="delete" size={25} />
 				</Flex>
 				<Flex direction="Column">
 					<span>{getUsDate(creationDate)}</span>
 					<span>{getUsTime(creationDate)}</span>
 				</Flex>
-				<MaterialIcon
-					className={styles.ExpandMore}
-					iconName={`expand_${previewOpen ? "less" : "more"}`}
-					size={40} />
+				<MaterialIcon className={styles.ExpandMore} iconName={`expand_${previewOpen ? "less" : "more"}`} size={40} />
 				<If condition={previewOpen}>
 					<Cell
 						cellStyles={{
-							gridArea: "LongDescription",
-						}}>
+							gridArea: "LongDescription"
+						}}
+					>
 						<span>{longDescription}</span>
 					</Cell>
 					<Cell
 						cellStyles={{
-							gridArea: "Tags",
-						}}>
-						<Flex
-							className={styles.Chips}
-							direction="Row"
-							wrap="Wrap">
+							gridArea: "Tags"
+						}}
+					>
+						<Flex className={styles.Chips} direction="Row" wrap="Wrap">
 							{tags.map((data, index) => {
-								return (
-									<Chip
-										label={data}
-										color="info"
-										key={`Tags_${index}`}
-										onClick={event => onTagClick(event, data)}
-									/>
-								);
+								return <Chip label={data} color="info" key={`Tags_${index}`} onClick={(event) => onTagClick(event, data)} />;
 							})}
 						</Flex>
 					</Cell>
@@ -191,6 +163,6 @@ export const IdeaListEntry: React.FC<Props> = ({ idea: { shortDescription, creat
 			</Grid>
 		</div>
 	);
-}
+};
 
 export default withRouter(IdeaListEntry);
