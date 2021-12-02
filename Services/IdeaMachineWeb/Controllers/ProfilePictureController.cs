@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using IdeaMachine.Common.IPC;
-using IdeaMachine.Common.IPC.Service.Interface;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Session.Service.Interface;
@@ -16,21 +13,13 @@ namespace IdeaMachineWeb.Controllers
 	[Route("ProfilePicture")]
 	public class ProfilePictureController : IdentityControllerBase
 	{
-	    private readonly IEndpointService _endpointService;
-
-	    private readonly HttpClient _httpClient;
-
-	    private readonly IPublishEndpoint _publishEndpoint;
+		private readonly IPublishEndpoint _publishEndpoint;
 
 	    public ProfilePictureController(
 		    ISessionService sessionService,
-			IEndpointService endpointService,
-		    HttpClient httpClient, 
 		    IPublishEndpoint publishEndpoint)
 			: base(sessionService)
 	    {
-		    _endpointService = endpointService;
-		    _httpClient = httpClient;
 		    _publishEndpoint = publishEndpoint;
 	    }
 
@@ -44,31 +33,11 @@ namespace IdeaMachineWeb.Controllers
 		    }
 
 		    await using var imageStream = form.Files[0].OpenReadStream();
-
-		    var endpoint = _endpointService.GetStatelessEndpointDomainName(ServiceType.ProfilePictureService);
-
-		    var uploadContent = new MultipartFormDataContent()
-		    {
-				new StreamContent(imageStream),
-		    };
-
-		    var response = await _httpClient.PostAsync($"http://{endpoint}:30555/api/UploadPicture/{Session.User.UserId}", uploadContent);
-
-		    if (!response.IsSuccessStatusCode)
-		    {
-			    return JsonResponse.Error();
-		    }
-
-		    var responseStream = await response.Content.ReadAsStreamAsync();
-		    var responseJson = await System.Text.Json.JsonSerializer.DeserializeAsync<Dictionary<string, string>>(responseStream);
-
-		    string? profilePicturePath = null;
-		    if (!(responseJson?.TryGetValue("ProfilePicturePath", out profilePicturePath) ?? false))
-		    {
-			    return JsonResponse.Error();
-			}
-
-		    await _publishEndpoint.Publish(new AccountProfilePictureUpdated(Session.User.UserId, profilePicturePath!));
+		    var buffer = new Memory<byte>();
+		    await imageStream.ReadAsync(buffer);
+		    var base64Image = Convert.ToBase64String(buffer.ToArray());
+			
+		    await _publishEndpoint.Publish(new AccountUpdateProfilePicture(Session.User.UserId, base64Image));
 
 		    return JsonResponse.Success();
 	    }

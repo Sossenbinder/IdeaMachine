@@ -11,5 +11,7 @@ namespace IdeaMachine.Modules.Account.Abstractions.DataTypes.Events
 
 	public record AccountVerified(IUser OldAnonymousUser, IUser NewUser);
 
+	public record AccountUpdateProfilePicture(Guid AccountId, string Base64ProfilePicture);
+
 	public record AccountProfilePictureUpdated(Guid AccountId, string ProfilePictureUrl);
 }

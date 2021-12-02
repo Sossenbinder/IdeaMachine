@@ -1,15 +1,13 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using HttpMultipartParser;
 using IdeaMachine.Common.Core.Utils.Async;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Repository.Context;
+using MassTransit;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -25,6 +23,8 @@ namespace IdeaMachine.ProfilePictureService
 
 		private readonly AccountContext _accountContext;
 
+		private readonly IPublishEndpoint _publishEndpoint;
+
 		private readonly ILogger _logger;
 
 		private readonly AsyncLazy<BlobContainerClient> _containerClient;
@@ -33,10 +33,12 @@ namespace IdeaMachine.ProfilePictureService
 			IHostEnvironment hostEnv,
 			ILoggerFactory loggerFactory,
 			BlobServiceClient blobServiceClient,
-			AccountContext accountContext)
+			AccountContext accountContext,
+			IPublishEndpoint publishEndpoint)
 		{
 			_hostEnv = hostEnv;
 			_accountContext = accountContext;
+			_publishEndpoint = publishEndpoint;
 			_logger = loggerFactory.CreateLogger<Upload>();
 
 			_containerClient = new AsyncLazy<BlobContainerClient>(async () =>
@@ -50,24 +52,14 @@ namespace IdeaMachine.ProfilePictureService
 		}
 
 		[Function(nameof(UploadPicture))]
-		public async Task<HttpResponseData> UploadPicture(
-			[HttpTrigger(AuthorizationLevel.Function, "post", Route = "UploadPicture/{userId:guid}")] HttpRequestData req,
-			Guid userId)
+		public async Task UploadPicture([RabbitMQTrigger(nameof(AccountUpdateProfilePicture), ConnectionStringSetting = "RabbitMqConnectionString")] AccountProfilePictureUpdated message)
 		{
-			var multiPartData = await MultipartFormDataParser.ParseAsync(req.Body);
-
-			if (!multiPartData.Files.Any())
-			{
-				return req.CreateResponse(HttpStatusCode.BadRequest);
-			}
+			var (userId, base64Message) = message;
 
 			_logger.LogInformation("Received profile picture for user {UserId}", userId);
-
-			var profilePicture = multiPartData.Files.Single();
-
 			var containerClient = await _containerClient;
 
-			var rawData = await BinaryData.FromStreamAsync(profilePicture.Data);
+			var rawData = BinaryData.FromBytes(Convert.FromBase64String(base64Message));
 
 			await using var resizedImageStream = await ConvertToSmallImage(rawData);
 			resizedImageStream.Position = 0;
@@ -90,13 +82,7 @@ namespace IdeaMachine.ProfilePictureService
 
 			await UpdateUser(userId, resizedImageUrl);
 
-			var response = req.CreateResponse(HttpStatusCode.OK);
-			await response.WriteAsJsonAsync(new
-			{
-				ProfilePicturePath = resizedImageUrl,
-			});
-
-			return response;
+			//await _publishEndpoint.Publish(new AccountProfilePictureUpdated(Session.User.UserId, profilePicturePath!));
 		}
 
 		private async Task OverwriteBlob(string blobName, Stream imgStream)
