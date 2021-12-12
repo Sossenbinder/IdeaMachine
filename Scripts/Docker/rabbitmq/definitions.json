@@ -1,0 +1,32 @@
+{
+	"rabbit_version": "3.6.6",
+	"users": [],
+	"vhosts": [{
+		"name": "/"
+	}],
+	"parameters": [],
+	"policies": [],
+	"queues": [{
+		"name": "AccountUpdateProfilePicture",
+		"vhost": "/",
+		"durable": true,
+		"auto_delete": false,
+		"arguments": {}
+	}],
+	"exchanges": [{
+		"name": "IdeaMachine.Modules.Account.Abstractions.DataTypes.Events:AccountUpdateProfilePicture",
+		"vhost": "/",
+		"type": "fanout",
+		"durable": true,
+		"auto_delete": false,
+		"arguments": {}
+	}],
+	"bindings": [{
+		"source": "IdeaMachine.Modules.Account.Abstractions.DataTypes.Events:AccountUpdateProfilePicture",
+		"vhost": "/",
+		"destination": "AccountUpdateProfilePicture",
+		"destination_type": "queue",
+		"routing_key": "*",
+		"arguments": {}
+	}]
+}

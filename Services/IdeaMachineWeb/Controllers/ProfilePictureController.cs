@@ -33,7 +33,7 @@ namespace IdeaMachineWeb.Controllers
 		    }
 
 		    await using var imageStream = form.Files[0].OpenReadStream();
-		    var buffer = new Memory<byte>();
+		    var buffer = new Memory<byte>(new byte[imageStream.Length]);
 		    await imageStream.ReadAsync(buffer);
 		    var base64Image = Convert.ToBase64String(buffer.ToArray());
 			

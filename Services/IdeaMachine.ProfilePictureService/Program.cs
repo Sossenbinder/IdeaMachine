@@ -1,9 +1,7 @@
-using System;
+using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Hosting;
 using IdeaMachine.Common.Logging.Log;
-using IdeaMachine.Common.SignalR;
-using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Repository.Context;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +14,7 @@ namespace IdeaMachine.ProfilePictureService
 {
 	public class Program
 	{
-		public static void Main()
+		public static async Task Main()
 		{
 			var host = new HostBuilder()
 				.ConfigureFunctionsWorkerDefaults()
@@ -42,8 +40,7 @@ namespace IdeaMachine.ProfilePictureService
 							cfg.AutoDelete = true;
 							cfg.PurgeOnStartup = true;
 
-							cfg.Host($"rabbitmq://{registrationCtx.GetRequiredService<IConfiguration>()["RabbitMqConnectionString"]}");
-							cfg.ReceiveEndpoint(nameof(AccountUpdateProfilePicture), _ => {});
+							cfg.Host($"{registrationCtx.GetRequiredService<IConfiguration>()["RabbitMqConnectionString"]}");
 						});
 					});
 				})
@@ -54,7 +51,7 @@ namespace IdeaMachine.ProfilePictureService
 				})
 				.Build();
 
-			host.Run();
+			await host.RunAsync();
 		}
 	}
 }

@@ -103,12 +103,12 @@ namespace IdeaMachine.Common.Eventing.Events
 
 			lock (_registrationLock)
 			{
-				if (_regularEndpointHandle is not null)
+				if (_faultEndpointHandle is not null)
 				{
 					return disposableAction;
 				}
 
-				_faultEndpointHandle = _massTransitEventingService.RegisterInstanceConsumer(_queueNameFactory.GetFaultQueueName(_queueName), this, _customConfigurator, _instanceConfigurator);
+				_faultEndpointHandle = _massTransitEventingService.RegisterInstanceConsumer(_queueNameFactory.GetFaultQueueName(_queueName), this, _customConfigurator);
 			}
 
 			return disposableAction;

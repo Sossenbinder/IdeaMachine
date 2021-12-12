@@ -86,6 +86,7 @@ namespace IdeaMachine.Modules.Account.Service
 					Email = account.Email,
 					UserName = account.UserName,
 					LastAccessedAt = account.LastAccessedAt,
+					ProfilePictureUrl = account.ProfilePictureUrl,
 				};
 
 				await _accountEvents.AccountSignedIn.Raise(new AccountSignedIn(accountModel));

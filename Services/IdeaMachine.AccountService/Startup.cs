@@ -1,6 +1,7 @@
 using System;
 using Autofac;
 using IdeaMachine.Common.AspNetIdentity.Helper;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Events;

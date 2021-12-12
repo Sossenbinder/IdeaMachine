@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.4"
 
 volumes:
   azurite: {}
@@ -11,7 +11,6 @@ networks:
       name: ideamachinenetwork
 
 services:
-
   ideamachineweb:
     image: ${DOCKER_REGISTRY-}ideamachineweb
     labels:
@@ -36,7 +35,6 @@ services:
     depends_on:
       - ideamachine.sql
       - ideamachine.rabbitmq
-
 
   ideamachine.accountservice:
     image: ${DOCKER_REGISTRY-}ideamachineaccountservice
@@ -67,8 +65,8 @@ services:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "^dEbX2Ew"
     volumes:
-        - ideamachine_sql:/var/opt/mssql
-        - ./database:/Scripts/dbInit.sql
+      - ideamachine_sql:/var/opt/mssql
+      - ./database:/Scripts/dbInit.sql
     restart: unless-stopped
 
   ideamachine.seq:
@@ -85,7 +83,7 @@ services:
       - seq:/data
 
   ideamachine.rabbitmq:
-    image: docker.io/library/rabbitmq:3.8.6-management
+    image: rabbitmqtest
     labels:
       - ideamachinecompose
     networks:
@@ -107,4 +105,3 @@ services:
     volumes:
       - azurite:/data
       - ./AzuriteCert:/azuriteDir
-

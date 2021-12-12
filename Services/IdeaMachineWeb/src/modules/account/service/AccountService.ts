@@ -39,7 +39,7 @@ export default class AccountService extends ModuleService implements IAccountSer
 				this.dispatch(
 					accountReducer.update({
 						...this.getStore().accountReducer.data,
-						profilePictureUrl: payload.profilePictureUrl
+						profilePictureUrl: `${payload.profilePictureUrl}?${new Date().getTime()}`
 					})
 				);
 				break;

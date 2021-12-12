@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
@@ -6,11 +7,13 @@ using Azure.Storage.Blobs.Models;
 using IdeaMachine.Common.Core.Utils.Async;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Repository.Context;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using MassTransit;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
@@ -51,10 +54,12 @@ namespace IdeaMachine.ProfilePictureService
 			});
 		}
 
+		public record MassTransitMessage(AccountUpdateProfilePicture Message);
+
 		[Function(nameof(UploadPicture))]
-		public async Task UploadPicture([RabbitMQTrigger(nameof(AccountUpdateProfilePicture), ConnectionStringSetting = "RabbitMqConnectionString")] AccountProfilePictureUpdated message)
+		public async Task UploadPicture([RabbitMQTrigger(nameof(AccountUpdateProfilePicture), ConnectionStringSetting = "RabbitMqConnectionString")] MassTransitMessage massTransitMessage)
 		{
-			var (userId, base64Message) = message;
+			var (userId, base64Message) = massTransitMessage.Message;
 
 			_logger.LogInformation("Received profile picture for user {UserId}", userId);
 			var containerClient = await _containerClient;
@@ -82,7 +87,7 @@ namespace IdeaMachine.ProfilePictureService
 
 			await UpdateUser(userId, resizedImageUrl);
 
-			//await _publishEndpoint.Publish(new AccountProfilePictureUpdated(Session.User.UserId, profilePicturePath!));
+			await _publishEndpoint.Publish(new AccountProfilePictureUpdated(userId, resizedImageUrl));
 		}
 
 		private async Task OverwriteBlob(string blobName, Stream imgStream)

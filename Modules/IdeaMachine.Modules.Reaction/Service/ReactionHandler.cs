@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using IdeaMachine.Common.Eventing.DataTypes;
 using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
@@ -6,6 +7,7 @@ using IdeaMachine.Modules.Reaction.DataTypes.Events;
 using IdeaMachine.Modules.Reaction.Events.Interface;
 using IdeaMachine.Modules.Reaction.Repository.Interface;
 using IdeaMachine.ModulesServiceBase;
+using MassTransit;
 
 namespace IdeaMachine.Modules.Reaction.Service
 {
