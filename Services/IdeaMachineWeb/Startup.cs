@@ -12,6 +12,7 @@ using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.Common.SignalR.DI;
 using IdeaMachine.Modules.Account.DI;
+using IdeaMachine.Modules.Account.Events;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
@@ -61,7 +62,7 @@ namespace IdeaMachineWeb
 
 			services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(LogProvider.CreateLogger(Configuration)));
 			services.AddHttpClient<ProfilePictureController>();
-			
+
 			services.AddAntiforgery(x => x.HeaderName = "RequestVerificationToken");
 			services.AddResponseCompression();
 
@@ -122,6 +123,8 @@ namespace IdeaMachineWeb
 
 					cfg.ConfigureEndpoints(ctx);
 				});
+
+				x.AddConsumer<AccountProfilePictureUpdatedConsumer>();
 			});
 		}
 

@@ -13,8 +13,7 @@ import useChannel from "common/hooks/useChannel";
 
 // Types
 import { Account } from "modules/account/types";
-import useAsyncCall from "common/hooks/useAsyncCall";
-import { Notification } from "common/modules/channel/types";
+import useNotificationBackedCall from "common/hooks/useNotificationBackedCall";
 
 // Styles
 import styles from "./styles/NavBarAuthenticated.module.less";
@@ -26,20 +25,23 @@ type Props = {
 export const NavBarAuthenticated: React.FC<Props> = ({ account }) => {
 	const { AccountService } = useServices();
 
-	const channel = useChannel<FileList>(Notification.ProfilePictureUpdated);
+	const channel = useChannel<FileList>("UpdateProfilePictureTriggered");
 
-	const [running, call] = useAsyncCall();
+	const [running, call] = useNotificationBackedCall("UserDetails");
 
 	const onLogoutClick = async () => {
 		await AccountService.logout();
 	};
 
-	const uploadPicture = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-		const files = event.currentTarget.files;
-		if (files.length > 0) {
-			call(() => channel.publish(files));
-		}
-	}, []);
+	const uploadPicture = React.useCallback(
+		(event: React.ChangeEvent<HTMLInputElement>) => {
+			const files = event.currentTarget.files;
+			if (files.length > 0) {
+				call(() => channel.publish(files));
+			}
+		},
+		[call]
+	);
 
 	return (
 		<Flex className={styles.Container} crossAlign="Center" direction="Row">

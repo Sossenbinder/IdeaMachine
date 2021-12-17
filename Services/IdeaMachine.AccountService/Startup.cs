@@ -29,7 +29,7 @@ namespace IdeaMachine.AccountService
 		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
-		public sealed override void ConfigureServices(IServiceCollection services)
+		public override sealed void ConfigureServices(IServiceCollection services)
 		{
 			services.AddSignalR();
 			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
@@ -65,11 +65,6 @@ namespace IdeaMachine.AccountService
 			endpointRouteBuilder.MapGrpcService<IAccountService>();
 
 			base.RegisterEndpoints(endpointRouteBuilder);
-		}
-
-		protected override void SetupMassTransitBus(IContainerBuilderBusConfigurator cfg)
-		{
-			cfg.AddConsumer<AccountProfilePictureUpdatedConsumer>();
 		}
 	}
 }

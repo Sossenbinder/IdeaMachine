@@ -27,6 +27,11 @@ namespace IdeaMachine.Modules.Account.Events
 	    {
 		    var (accountId, profilePictureUrl) = context.Message;
 
+		    if (_sessionService.GetSession(accountId) is null)
+		    {
+			    return;
+		    }
+
 		    await _sessionService.UpdateSession(accountId, session =>
 		    {
 			    session.User.ProfilePictureUrl = profilePictureUrl;

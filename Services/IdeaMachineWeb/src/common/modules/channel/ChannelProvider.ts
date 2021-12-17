@@ -13,7 +13,6 @@ export interface IChannelProvider {
 }
 
 export class ChannelProvider implements IChannelProvider {
-
 	private _channels: Map<NotificationType, IChannel<any>>;
 
 	private _signalRContextProvider: ISignalRConnectionProvider;
@@ -28,7 +27,7 @@ export class ChannelProvider implements IChannelProvider {
 
 		if (!channelKnown) {
 			const channel = new Channel<TPayload>();
-			this._channels.set(notificationType, channel);			
+			this._channels.set(notificationType, channel);
 		}
 
 		const channel = this._channels.get(notificationType);
@@ -37,13 +36,15 @@ export class ChannelProvider implements IChannelProvider {
 	}
 
 	getBackendChannel<TPayload>(notificationType: BackendNotification): IChannel<Notification<TPayload>> {
-		const channelKnown = this._channels.has(notificationType);
-		const channel = this.getChannel<Notification<TPayload>>(notificationType);
+		const stringifiedNotification = BackendNotification[notificationType] as NotificationType;
+
+		const channelKnown = this._channels.has(stringifiedNotification);
+		const channel = this.getChannel<Notification<TPayload>>(stringifiedNotification);
 
 		if (!channelKnown) {
 			this._signalRContextProvider.register(notificationType, channel.publish);
 		}
-		
+
 		return channel;
 	}
 }

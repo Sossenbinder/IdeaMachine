@@ -8,7 +8,6 @@ import { NetworkResponse } from "common/helper/requests/types/NetworkDefinitions
 // Types
 import { IChannelProvider } from "common/modules/channel/ChannelProvider";
 import { RegisterInfo, SignInInfo, IdentityErrorCode, Account } from "../types";
-import { Notification as ChannelNotification } from "common/modules/channel/types";
 import { Notification, Operation } from "common/helper/signalR/types";
 import BackendNotification from "common/helper/signalR/Notifications";
 
@@ -18,7 +17,7 @@ export default class AccountService extends ModuleService implements IAccountSer
 	}
 
 	public async start() {
-		this.ChannelProvider.getChannel<FileList>(ChannelNotification.ProfilePictureUpdated).register(this.onProfilePictureUpdated);
+		this.ChannelProvider.getChannel<FileList>("UpdateProfilePictureTriggered").register(this.onProfilePictureUpdated);
 
 		this.ChannelProvider.getBackendChannel<Account>(BackendNotification.UserDetails).register(this.onUserDetailsUpdated);
 

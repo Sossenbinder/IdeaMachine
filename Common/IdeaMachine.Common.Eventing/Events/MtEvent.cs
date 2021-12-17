@@ -35,7 +35,6 @@ namespace IdeaMachine.Common.Eventing.Events
 
 		private readonly IQueueNameFactory _queueNameFactory;
 
-
 		private readonly ILogger _logger;
 
 		private readonly Action<IReceiveEndpointConfigurator>? _customConfigurator;
@@ -150,10 +149,10 @@ namespace IdeaMachine.Common.Eventing.Events
 			}
 		}
 
-		public Task Raise(TEventArgs eventArgs)
+		public async Task Raise(TEventArgs eventArgs)
 		{
-			// ReSharper disable once InconsistentlySynchronizedField
-			return _massTransitEventingService.RaiseEvent(eventArgs);
+			await WaitForHandles();
+			await _massTransitEventingService.RaiseEvent(eventArgs);
 		}
 
 		public void Dispose()
@@ -169,5 +168,7 @@ namespace IdeaMachine.Common.Eventing.Events
 			await Task.WhenAll(StopIfNecessary(_regularEndpointHandle), StopIfNecessary(_faultEndpointHandle));
 			GC.SuppressFinalize(this);
 		}
+
+		public Task WaitForHandles() => Task.WhenAll(_regularEndpointHandle?.Ready ?? Task.CompletedTask, _faultEndpointHandle?.Ready ?? Task.CompletedTask);
 	}
 }
