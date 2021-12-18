@@ -49,5 +49,5 @@ jobs:
         with:
           push: true
           tags: ideamachine.azurecr.io/ideamachinerabbitmq:latest
-          context: .
+          context: ./Scripts/Docker/rabbitmq
           file: ./Scripts/Docker/rabbitmq/Dockerfile
