@@ -15,34 +15,36 @@ import { Notification, Operation } from "common/helper/signalR/types";
 import { IChannelProvider } from "common/modules/channel/ChannelProvider";
 
 export default class CommentsService extends ModuleService implements ICommentsService {
-
 	public constructor(channelProvider: IChannelProvider) {
 		super(channelProvider);
 	}
 
 	public start() {
-		this.ChannelProvider
-			.getBackendChannel(BackendNotification.Comment)
-			.register(this.onCommentNotification);
+		this.ChannelProvider.getBackendChannel(BackendNotification.Comment).register(this.onCommentNotification);
 
 		return Promise.resolve();
 	}
 
 	private onCommentNotification = ({ operation, payload }: Notification<Comment>) => {
-
 		switch (operation) {
 			case Operation.Create:
 				this.addCommentsToRedux(payload.ideaId, payload);
 		}
 
 		return Promise.resolve();
-	}
+	};
 
 	public async addComment(ideaId: number, comment: string) {
-		const response = await commentsCommunication.addComment({
+		const commentEntity = {
 			comment,
-			ideaId,
-		} as Comment);
+			ideaId
+		} as Comment;
+
+		const response = await commentsCommunication.addComment(commentEntity);
+
+		if (response.success) {
+			this.addCommentsToRedux(ideaId, commentEntity);
+		}
 
 		return response.success;
 	}
@@ -56,11 +58,19 @@ export default class CommentsService extends ModuleService implements ICommentsS
 	}
 
 	private addCommentsToRedux(ideaId: number, comments: CouldBeArray<Comment>) {
-		const idea = this.getStore().ideaReducer.data.find(x => x.id === ideaId)
+		const store = this.getStore();
 
-		this.dispatch(ideaReducer.put({
-			...idea,
-			comments: [ ...(idea.comments ?? []), ...ensureArray(comments)],
-		}));
+		const idea = store.ideaReducer.data.find((x) => x.id === ideaId);
+		const name = store.accountReducer.data.userName;
+
+		this.dispatch(
+			ideaReducer.put({
+				...idea,
+				comments: [...(idea.comments ?? []), ...ensureArray(comments)].map((x) => ({
+					...x,
+					commenterName: name
+				}))
+			})
+		);
 	}
 }

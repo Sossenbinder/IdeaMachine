@@ -1,15 +1,15 @@
 // Framework
-import { Button } from "@material-ui/core";
-import { styled } from "@material-ui/core/styles";
+import Button from "@mui/material/Button";
+import { styled } from "@mui/system";
 
 export const StyledButton = styled(Button)(() => ({
 	"& .Mui-disabled": {
 		backgroundColor: "white",
-		color: "red",
+		color: "red"
 	},
 	".MuiButton-root": {
-		border: "1px solid black",
-	},
+		border: "1px solid black"
+	}
 }));
 
 export default StyledButton;

@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Components
-import { TextFieldProps } from "@material-ui/core";
+import { TextFieldProps } from "@mui/material/TextField";
 import StyledTextField from "./StyledTextField";
 
 // Functionality
@@ -13,7 +13,6 @@ type Props = TextFieldProps & {
 };
 
 export const ValidatableTextField: React.FC<Props> = (props) => {
-
 	const [touched, setTouched] = useOnceFlag();
 
 	const [valid, setValid] = React.useState(true);
@@ -30,7 +29,7 @@ export const ValidatableTextField: React.FC<Props> = (props) => {
 	const validate = (value: string) => {
 		const isValid = props.validate(value);
 		setValid(isValid);
-	}
+	};
 
 	const onChange = (event) => {
 		const value = event.currentTarget.value;
@@ -47,22 +46,15 @@ export const ValidatableTextField: React.FC<Props> = (props) => {
 
 		timeoutRef.current = window.setTimeout(() => {
 			setTouched();
-			validate
+			validate;
 		}, 500);
-	}
+	};
 
 	const showError = touched && !valid;
 
 	const { validate: _, ...propsWithoutValidate } = props;
 
-	return (
-		<StyledTextField
-			{...propsWithoutValidate}
-			error={showError}
-			helperText={showError ? props.helperText : ""}
-			onChange={onChange}
-		/>
-	);
-}
+	return <StyledTextField {...propsWithoutValidate} error={showError} helperText={showError ? props.helperText : ""} onChange={onChange} />;
+};
 
 export default ValidatableTextField;

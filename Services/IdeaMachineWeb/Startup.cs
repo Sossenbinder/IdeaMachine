@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
+using IdeaMachine.Common.AspNetIdentity.Helper;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
 using IdeaMachine.Common.IPC.DI;
@@ -11,8 +12,10 @@ using IdeaMachine.Common.RemotingProxies.Proxies;
 using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.Common.SignalR.DI;
+using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Events;
+using IdeaMachine.Modules.Account.Repository.Context;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
@@ -28,6 +31,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -98,6 +103,13 @@ namespace IdeaMachineWeb
 					options.ClientId = Configuration["GoogleClientId"];
 					options.ClientSecret = Configuration["GoogleClientSecret"];
 				});
+
+			services.AddDbContext<AccountContext>();
+
+			services.AddIdentity<AccountEntity, IdentityRole<Guid>>(IdentityOptionsProvider.ApplyDefaultOptions)
+				.AddErrorDescriber<CodeIdentityErrorDescriber>()
+				.AddEntityFrameworkStores<AccountContext>()
+				.AddDefaultTokenProviders();
 		}
 
 		private void ConfigureMassTransit(IServiceCollection services)

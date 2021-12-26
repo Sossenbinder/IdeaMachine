@@ -1,6 +1,6 @@
 // Framework
 import * as React from "react";
-import { Chip } from "@material-ui/core";
+import Chip from "@mui/material/Chip";
 
 // Components
 import Flex from "common/components/Flex";
@@ -11,10 +11,9 @@ import styles from "./styles/TagDisplay.module.less";
 type Props = {
 	tags: Array<string>;
 	setTags: React.Dispatch<Array<string>>;
-}
+};
 
 export const TagDisplay: React.FC<Props> = ({ tags, setTags }) => {
-
 	const [currentText, setCurrentText] = React.useState("");
 
 	const onKeyDown = (event: KeyboardEvent) => {
@@ -22,16 +21,13 @@ export const TagDisplay: React.FC<Props> = ({ tags, setTags }) => {
 			setTags(tags.concat(currentText));
 			setCurrentText("");
 		}
-	}
+	};
 
 	return (
 		<StyledTextField
 			InputProps={{
 				startAdornment: (
-					<Flex
-						className={styles.Chips}
-						direction="Row"
-						wrap="Wrap">
+					<Flex className={styles.Chips} direction="Row" wrap="Wrap">
 						{tags.map((data, index) => {
 							return (
 								<Chip
@@ -51,7 +47,7 @@ export const TagDisplay: React.FC<Props> = ({ tags, setTags }) => {
 							);
 						})}
 					</Flex>
-				),
+				)
 			}}
 			multiline
 			rows={1}
@@ -63,6 +59,6 @@ export const TagDisplay: React.FC<Props> = ({ tags, setTags }) => {
 			variant="outlined"
 		/>
 	);
-}
+};
 
 export default TagDisplay;

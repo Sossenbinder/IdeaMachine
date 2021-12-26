@@ -1,9 +1,9 @@
 // Framework
-import { CircularProgress } from "@material-ui/core";
-import { styled } from "@material-ui/core/styles";
+import CircularProgress from "@mui/material/CircularProgress";
+import { styled } from "@mui/system";
 
 export const BlackSpinner = styled(CircularProgress)({
-    color: "black",
+	color: "black"
 });
 
 export default BlackSpinner;

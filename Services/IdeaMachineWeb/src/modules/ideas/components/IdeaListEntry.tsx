@@ -2,11 +2,11 @@
 import * as React from "react";
 import classNames from "classnames";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Chip } from "@material-ui/core";
+import Chip from "@mui/material/Chip";
 
 // Components
 import { Grid, Cell, Flex } from "common/components";
-import MaterialIcon, { MaterialIconType } from "common/components/MaterialIcon";
+import MaterialIcon from "common/components/MaterialIcon";
 import { FeedbackMaterialIcon } from "common/components/FeedbackMaterialIcon";
 import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
 import Separator from "common/components/controls/Separator";
