@@ -1,0 +1,31 @@
+@use "common/styles/colors.scss" as colors;
+
+.Container {
+	min-height: 200px;
+	max-height: 300px;
+	width: 200px;
+
+	border: 5px groove colors.$lightblue;
+	border-radius: 5px;
+	background-color: colors.$altoGrey;
+
+	position: absolute;
+	left: 100%;
+	top: 0;
+
+	margin: 5px;
+
+	.Heading {
+		align-self: center;
+		font-weight: bold;
+		margin-top: 5px;
+	}
+
+	.TagDisplay {
+		margin: 5px 0;
+
+		label {
+			color: black;
+		}
+	}
+}

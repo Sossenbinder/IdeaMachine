@@ -20,7 +20,7 @@ import useServices from "common/hooks/useServices";
 import { AttachmentUrl, Idea, IdeaInputResult } from "modules/ideas/types";
 
 // Styles
-import styles from "./styles/IdeaInput.module.less";
+import styles from "./styles/IdeaInput.module.scss";
 
 type Errors = {
 	shortDescriptionMissing: boolean;

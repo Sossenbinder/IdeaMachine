@@ -5,41 +5,33 @@ import { Route } from "react-router-dom";
 // Components
 import Flex from "common/components/Flex";
 import IdeaListAll from "modules/ideas/components/IdeaListAll";
-import CreateButton from 'modules/ideas/components/CreateButton';
+import CreateButton from "modules/ideas/components/CreateButton";
 import LogonView from "views/login/LogonView";
 import EmailVerification from "views/emailVerification/EmailVerification";
 import AccountRoutes from "views/account/AccountRoutes";
 import IdeaRoutes from "views/ideas/IdeaRoutes";
 
 // Styles
-import styles from "./styles/Content.module.less";
+import styles from "./styles/Content.module.scss";
 
 export const Content: React.FC = () => {
 	return (
-		<Flex
-			className={styles.ContentWrapper}
-			space="Around">
+		<Flex className={styles.ContentWrapper} space="Around">
 			<div className={styles.Content}>
 				<div className={styles.InnerContentWrapper}>
-					<Route
-						path="/Logon">
+					<Route path="/Logon">
 						<LogonView />
 					</Route>
-					<Route
-						path="/VerifyEmail">
+					<Route path="/VerifyEmail">
 						<EmailVerification />
 					</Route>
-					<Route
-						path="/account">
+					<Route path="/account">
 						<AccountRoutes />
 					</Route>
-					<Route
-						path="/Idea">
+					<Route path="/Idea">
 						<IdeaRoutes />
 					</Route>
-					<Route
-						exact={true}
-						path="/">
+					<Route exact={true} path="/">
 						<IdeaListAll />
 					</Route>
 				</div>
@@ -47,6 +39,6 @@ export const Content: React.FC = () => {
 			<CreateButton />
 		</Flex>
 	);
-}
+};
 
 export default Content;

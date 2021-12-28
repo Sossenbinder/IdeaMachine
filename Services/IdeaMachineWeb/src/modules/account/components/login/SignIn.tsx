@@ -18,7 +18,7 @@ import { listAvailableProviders } from "modules/account/communication/SocialLogi
 import { IdentityErrorCode, SignInInfo } from "modules/account/types";
 
 // Styles
-import styles from "./styles/SignIn.module.less";
+import styles from "./styles/SignIn.module.scss";
 
 export const SignIn: React.FC = () => {
 	const { AccountService } = useServices();

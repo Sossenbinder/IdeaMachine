@@ -18,7 +18,7 @@ import { sortByDateDesc } from "common/utils/collection";
 import { Idea } from "modules/ideas/types";
 
 // Styles
-import styles from "./styles/CommentSection.module.less";
+import styles from "./styles/CommentSection.module.scss";
 
 type Props = {
 	idea: Idea;

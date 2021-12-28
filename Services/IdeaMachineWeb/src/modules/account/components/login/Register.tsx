@@ -15,7 +15,7 @@ import { getTranslationForErrorCode } from "modules/account/helper/IdentityError
 import { RegisterInfo, IdentityErrorCode } from "modules/account/types";
 
 // Styles
-import styles from "./styles/Register.module.less";
+import styles from "./styles/Register.module.scss";
 
 type PasswordType = keyof Pick<RegisterInfo, "password" | "confirmPassword">;
 

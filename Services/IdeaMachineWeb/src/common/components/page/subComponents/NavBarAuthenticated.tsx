@@ -16,7 +16,7 @@ import { Account } from "modules/account/types";
 import useNotificationBackedCall from "common/hooks/useNotificationBackedCall";
 
 // Styles
-import styles from "./styles/NavBarAuthenticated.module.less";
+import styles from "./styles/NavBarAuthenticated.module.scss";
 
 type Props = {
 	account: Account;

@@ -8,12 +8,12 @@ import Flex from "common/components/Flex";
 import { range } from "common/helper/arrayUtils";
 
 // Styles
-import styles from "./styles/LoadingBubbles.module.less";
+import styles from "./styles/LoadingBubbles.module.scss";
 
 type Props = {
 	amountOfBubbles?: number;
 	color?: string;
-}
+};
 
 export const LoadingBubbles: React.FC<Props> = ({ amountOfBubbles = 3, color = "black" }) => {
 	const bubbles = React.useMemo(() => {
@@ -22,16 +22,13 @@ export const LoadingBubbles: React.FC<Props> = ({ amountOfBubbles = 3, color = "
 				className={styles.LoadingButtonBubble}
 				key={`loadingBubble_${i}`}
 				style={{
-					background: color,
+					background: color
 				}}
-			/>));
-	}, [amountOfBubbles])
+			/>
+		));
+	}, [amountOfBubbles]);
 
-	return (
-		<Flex className={styles.LoadingButtonBubbleContainer}>
-			{bubbles}
-		</Flex>
-	);
-}
+	return <Flex className={styles.LoadingButtonBubbleContainer}>{bubbles}</Flex>;
+};
 
 export default LoadingBubbles;

@@ -9,17 +9,12 @@ import Flex from "common/components/Flex";
 // Types
 
 // Styles
-import styles from "./styles/accountOverview.module.less";
+import styles from "./styles/accountOverview.module.scss";
 
-type Props = {
-
-}
+type Props = {};
 
 export const AccountOverview: React.FC<Props> = () => {
-	return (
-		<>
-		</>
-	);
-}
+	return <></>;
+};
 
 export default AccountOverview;

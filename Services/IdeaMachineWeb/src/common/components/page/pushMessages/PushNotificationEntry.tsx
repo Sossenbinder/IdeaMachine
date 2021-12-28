@@ -15,14 +15,13 @@ import { reducer as pushNotificationReducer } from "common/redux/reducer/PushNot
 import { PushNotification } from "common/definitions/PushNotificationTypes";
 
 // Styles
-import styles from "./styles/PushNotificationEntry.module.less";
+import styles from "./styles/PushNotificationEntry.module.scss";
 
 type Props = {
 	notification: PushNotification;
-}
+};
 
 export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
-
 	const notificationRef = React.useRef<HTMLDivElement>(undefined);
 	const dispatch = useDispatch();
 
@@ -30,7 +29,7 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 
 	const onExit = async () => {
 		dispatch(pushNotificationReducer.delete(notification));
-	}
+	};
 
 	React.useEffect(() => {
 		if (notification.timeout) {
@@ -61,13 +60,11 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 					appearActive: styles.ContainerEnterActive,
 					enterActive: styles.ContainerEnterActive,
 					exitActive: styles.ContainerExitActive,
-					exit: styles.ContainerExit,
+					exit: styles.ContainerExit
 				}}
-				onExited={onExit}>
-				<div
-					className={styles.Container}
-					ref={notificationRef}
-					style={{ backgroundColor: color }}>
+				onExited={onExit}
+			>
+				<div className={styles.Container} ref={notificationRef} style={{ backgroundColor: color }}>
 					<Grid
 						className={styles.Content}
 						gridProperties={{
@@ -76,30 +73,28 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 								'body body body'
 							`,
 							gridTemplateColumns: "2fr 8fr 25px",
-							gridTemplateRows: "1fr 1fr",
-						}}>
+							gridTemplateRows: "1fr 1fr"
+						}}
+					>
 						<Cell
 							cellStyles={{
-								gridArea: "time",
-							}}>
-							<span className={styles.TimeStamp}>
-								{getUsTime(notification.timeStamp)}
-							</span>
+								gridArea: "time"
+							}}
+						>
+							<span className={styles.TimeStamp}>{getUsTime(notification.timeStamp)}</span>
 						</Cell>
 						<Cell
 							cellStyles={{
-								gridArea: "close",
-							}}>
-							<MaterialIcon
-								className={styles.CloseIcon}
-								type="Outlined"
-								iconName="cancel"
-								onClick={() => setShow(false)} />
+								gridArea: "close"
+							}}
+						>
+							<MaterialIcon className={styles.CloseIcon} type="Outlined" iconName="cancel" onClick={() => setShow(false)} />
 						</Cell>
 						<Cell
 							cellStyles={{
-								gridArea: "body",
-							}}>
+								gridArea: "body"
+							}}
+						>
 							{notification.message}
 						</Cell>
 					</Grid>
@@ -107,6 +102,6 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 			</CSSTransition>
 		</div>
 	);
-}
+};
 
 export default PushNotificationEntry;

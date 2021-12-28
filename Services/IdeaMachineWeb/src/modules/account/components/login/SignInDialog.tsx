@@ -12,27 +12,19 @@ import Register from "./Register";
 // Types
 
 // Styles
-import styles from "./styles/SignInDialog.module.less";
+import styles from "./styles/SignInDialog.module.scss";
 
 export const SignInDialog: React.FC = () => {
 	return (
-		<Flex
-			className={styles.SignInDialogFormContainer}
-			direction="Column"
-			crossAlign="Center"
-			crossAlignSelf="Center">
-			<Route
-				exact
-				path="/Logon/login">
+		<Flex className={styles.SignInDialogFormContainer} direction="Column" crossAlign="Center" crossAlignSelf="Center">
+			<Route exact path="/Logon/login">
 				<SignIn />
 			</Route>
-			<Route
-				exact
-				path="/Logon/Register">
+			<Route exact path="/Logon/Register">
 				<Register />
 			</Route>
 		</Flex>
 	);
-}
+};
 
 export default withRouter(SignInDialog);

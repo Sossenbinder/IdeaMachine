@@ -4,31 +4,27 @@ import * as React from "react";
 // Components
 import Flex from "common/components/Flex";
 
-import "./styles/CheckBoxToggle.less";
+import "./styles/CheckBoxToggle.scss";
 
 type Props = {
 	toggleState: boolean;
 	onChange: React.Dispatch<boolean>;
-}
+};
 
 export const CheckBoxToggle: React.FC<Props> = ({ toggleState, onChange }) => {
-
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.checked;
-		onChange(value)
+		onChange(value);
 	};
 
 	return (
-		<Flex
-			className="CheckBoxToggle"
-			direction="Row"
-			crossAlign="Center">
+		<Flex className="CheckBoxToggle" direction="Row" crossAlign="Center">
 			<label className="SwitchContainer">
 				<input type="checkbox" checked={toggleState} className="Switch" onChange={handleChange} />
 				<span className="SwitchSlider"></span>
 			</label>
 		</Flex>
 	);
-}
+};
 
 export default CheckBoxToggle;

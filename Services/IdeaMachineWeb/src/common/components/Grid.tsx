@@ -2,14 +2,24 @@
 import * as React from "react";
 import classNames from "classnames";
 
-import "./styles/Grid.less";
+import "./styles/Grid.scss";
 
 enum GridDisplay {
 	Regular,
 	Inline
 }
 
-type GridStyleKeys = "columnGap" | "rowGap" | 'gridTemplateColumns' | 'gridAutoColumns' | 'gridAutoRows' | 'gridTemplateRows' | 'justifyContent' | 'alignContent' | 'gridTemplateAreas' | 'gap';
+type GridStyleKeys =
+	| "columnGap"
+	| "rowGap"
+	| "gridTemplateColumns"
+	| "gridAutoColumns"
+	| "gridAutoRows"
+	| "gridTemplateRows"
+	| "justifyContent"
+	| "alignContent"
+	| "gridTemplateAreas"
+	| "gap";
 
 type GridStyles = Pick<React.CSSProperties, GridStyleKeys>;
 
@@ -18,27 +28,19 @@ type GridProps = {
 	display?: GridDisplay;
 
 	gridProperties?: GridStyles;
-}
+};
 
-export const Grid: React.FC<GridProps> = ({
-	className,
-	gridProperties,
-	display = GridDisplay.Regular,
-	children
-}) => {
-
+export const Grid: React.FC<GridProps> = ({ className, gridProperties, display = GridDisplay.Regular, children }) => {
 	const classes = classNames({
-		"grid": display === GridDisplay.Regular,
-		"inlineGrid": display === GridDisplay.Inline,
+		grid: display === GridDisplay.Regular,
+		inlineGrid: display === GridDisplay.Inline
 	});
 
 	return (
-		<div
-			className={`${classes} ${typeof className !== "undefined" ? className : ""}`}
-			style={gridProperties}>
+		<div className={`${classes} ${typeof className !== "undefined" ? className : ""}`} style={gridProperties}>
 			{children}
 		</div>
-	)
-}
+	);
+};
 
 export default Grid;

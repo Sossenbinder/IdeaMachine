@@ -20,7 +20,7 @@ import { LikeState } from "modules/reaction/types";
 import { Idea } from "../types";
 
 // Styles
-import styles from "./styles/IdeaListEntry.module.less";
+import styles from "./styles/IdeaListEntry.module.scss";
 
 type Props = RouteComponentProps & {
 	idea: Idea;

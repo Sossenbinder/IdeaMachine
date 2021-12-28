@@ -6,7 +6,7 @@ import Chip from "@mui/material/Chip";
 import Flex from "common/components/Flex";
 import StyledTextField from "./StyledTextField";
 
-import styles from "./styles/TagDisplay.module.less";
+import styles from "./styles/TagDisplay.module.scss";
 
 type Props = {
 	tags: Array<string>;

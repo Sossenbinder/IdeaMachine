@@ -16,16 +16,17 @@ import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
 import { Idea, OrderDirection } from "modules/ideas/types";
 
 // Styles
-import styles from "./styles/IdeaList.module.less";
+import styles from "./styles/IdeaList.module.scss";
 import { OrderType } from "../types";
 
 type Props = {
 	ideas: Array<Idea>;
-}
+};
 
 export const IdeaList: React.FC<Props> = ({ ideas }) => {
-
-	const { filters: { order, direction, tags } } = React.useContext(IdeaFilterContext);
+	const {
+		filters: { order, direction, tags }
+	} = React.useContext(IdeaFilterContext);
 
 	const scrollRef = React.createRef<HTMLDivElement>();
 
@@ -39,7 +40,7 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 		let newDataSet = [...ideas];
 
 		if (tags && tags.length > 0) {
-			newDataSet = newDataSet.filter(x => tags.every(y => x.tags.includes(y)));
+			newDataSet = newDataSet.filter((x) => tags.every((y) => x.tags.includes(y)));
 		}
 
 		let sortCb: (a: Idea, b: Idea) => number;
@@ -50,7 +51,7 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 						return right.creationDate.getTime() - left.creationDate.getTime();
 					}
 					return left.creationDate.getTime() - right.creationDate.getTime();
-				}
+				};
 				break;
 			case OrderType.Description:
 				sortCb = (left, right) => {
@@ -58,7 +59,7 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 						return left.shortDescription.localeCompare(right.shortDescription);
 					}
 					return right.shortDescription.localeCompare(left.shortDescription);
-				}
+				};
 				break;
 			case OrderType.Popularity:
 				sortCb = (left, right) => {
@@ -66,19 +67,14 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 						return left.ideaReactionMetaData.totalLike - right.ideaReactionMetaData.totalLike;
 					}
 					return right.ideaReactionMetaData.totalLike - left.ideaReactionMetaData.totalLike;
-				}
+				};
 				break;
 		}
 
 		return newDataSet.sort(sortCb);
 	}, [ideas, order, direction, tags]);
 
-	const ideasRendered = React.useMemo(() => ideasSorted
-		.map(idea => (
-			<IdeaListEntry
-				idea={idea}
-				key={idea.id} />
-		)), [ideasSorted]);
+	const ideasRendered = React.useMemo(() => ideasSorted.map((idea) => <IdeaListEntry idea={idea} key={idea.id} />), [ideasSorted]);
 
 	React.useEffect(() => {
 		if (ideas.length === 0) {
@@ -87,7 +83,7 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 	}, []);
 
 	const onScroll = async (ev: Event) => {
-		const element = (ev.target) as any;
+		const element = ev.target as any;
 		const maxScroll = element.scrollHeight - element.clientHeight;
 		const currentScroll = element.scrollTop;
 
@@ -104,11 +100,10 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 			}
 
 			element.scrollTop = currentScroll;
-
 		} finally {
 			scrollHandlingInProgress.current = false;
 		}
-	}
+	};
 
 	React.useEffect(() => {
 		if (!scrollRef.current) {
@@ -119,19 +114,15 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 
 	return (
 		<>
-			<Flex
-				className={styles.IdeaList}
-				direction="Column"
-				ref={scrollRef}>
+			<Flex className={styles.IdeaList} direction="Column" ref={scrollRef}>
 				{ideasRendered}
 				<If condition={moreLoading}>
-					<LoadingBubbles
-						color="white" />
+					<LoadingBubbles color="white" />
 				</If>
 			</Flex>
 			<IdeaListFilters />
 		</>
 	);
-}
+};
 
 export default IdeaList;

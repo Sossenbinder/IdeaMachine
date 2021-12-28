@@ -19,7 +19,7 @@ import { IChannelProvider } from "../common/modules/channel/ChannelProvider";
 // Types
 import { store } from "common/redux/store";
 
-import "./styles/RootComponent.less";
+import "./styles/RootComponent.scss";
 
 const queryClient = new QueryClient();
 

@@ -9,7 +9,7 @@ import useOnceFlag from "common/hooks/useOnceFlag";
 // Types
 import MaterialIcon, { MaterialIconProps } from "./MaterialIcon";
 
-import styles from "./styles/FeedbackMaterialIcon.module.less";
+import styles from "./styles/FeedbackMaterialIcon.module.scss";
 
 type FeedbackMaterialIcon = MaterialIconProps<Promise<void>>;
 

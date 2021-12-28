@@ -1,0 +1,20 @@
+.LoadingBar {
+	display: grid;
+	place-items: center;
+
+	height: 100%;
+
+	.Bar {
+
+		position: relative;
+
+		width: 50vw;
+		height: 5vh;
+		border: 1px solid rgb(102, 98, 98);
+		border-radius: 15px;
+
+		.ProgressLabel {
+			height: 100%;
+		}
+	}
+}

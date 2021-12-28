@@ -1,0 +1,37 @@
+.IdeaInput {
+	height: 100%;
+	width: 100%;
+
+	color: white;
+
+	padding: 15px;
+	width: calc(100% - 30px);
+
+	@mixin CommonWidth {
+		width: 100%;
+	}
+
+	@include CommonWidth();
+
+	.ShortDescription {
+		@include CommonWidth();
+		margin-bottom: 15px;
+	}
+
+	.LongDescription {
+		@include CommonWidth();
+		height: 100%;
+	}
+
+	.TagsArea {
+		margin: 10px 0;
+	}
+
+	.UploadAttachmentButton {
+		cursor: pointer;
+
+		label {
+			cursor: inherit;
+		}
+	}
+}

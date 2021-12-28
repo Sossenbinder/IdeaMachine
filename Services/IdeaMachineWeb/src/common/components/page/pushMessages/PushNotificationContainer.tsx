@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 // Components
 import Flex from "common/components/Flex";
-import PushNotificationEntry from "./PushNotificationEntry";;
+import PushNotificationEntry from "./PushNotificationEntry";
 
 // Functionality
 
@@ -13,28 +13,24 @@ import { PushNotification } from "common/definitions/PushNotificationTypes";
 import { ReduxStore } from "common/redux/store";
 
 // Styles
-import styles from "./styles/PushNotificationContainer.module.less";
+import styles from "./styles/PushNotificationContainer.module.scss";
 
 type ReduxProps = {
 	messages: Array<PushNotification>;
-}
+};
 
 export const PushNotificationContainer: React.FC<ReduxProps> = ({ messages }) => {
 	return (
-		<Flex
-			className={styles.Container}
-			direction="Column">
-			{messages.map(x => (
-				<PushNotificationEntry
-					notification={x}
-					key={x.timeStamp.toString()} />
+		<Flex className={styles.Container} direction="Column">
+			{messages.map((x) => (
+				<PushNotificationEntry notification={x} key={x.timeStamp.toString()} />
 			))}
 		</Flex>
 	);
-}
+};
 
 const mapStateToProps = (state: ReduxStore): ReduxProps => ({
-	messages: state.pushNotificationReducer.data,
+	messages: state.pushNotificationReducer.data
 });
 
 export default connect(mapStateToProps)(PushNotificationContainer);

@@ -13,7 +13,7 @@ import { IdeaFilterContext } from "../IdeaFilterContext";
 import { OrderType } from "modules/ideas/types";
 
 // Styles
-import styles from "./styles/IdeaListFilters.module.less";
+import styles from "./styles/IdeaListFilters.module.scss";
 
 export const IdeaListFilters: React.FC = () => {
 	const { filters, updateFilters } = React.useContext(IdeaFilterContext);

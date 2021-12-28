@@ -13,7 +13,7 @@ import openUploadModal from "./UploadModal";
 import { AttachmentUrl } from "modules/ideas/types";
 
 // Styles
-import styles from "./styles/UploadRow.module.less";
+import styles from "./styles/UploadRow.module.scss";
 import useAsyncCall from "common/hooks/useAsyncCall";
 import CircularProgress from "@mui/material/CircularProgress";
 

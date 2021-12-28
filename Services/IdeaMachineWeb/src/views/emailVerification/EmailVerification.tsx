@@ -17,11 +17,9 @@ import { useTranslations } from "common/hooks/useTranslations";
 import { IdentityErrorCode } from "modules/account/types";
 
 // Styles
-import styles from "./styles/EmailVerification.module.less";
-
+import styles from "./styles/EmailVerification.module.scss";
 
 export const EmailVerification: React.FC = () => {
-
 	const translations = useTranslations();
 	const { AccountService } = useServices();
 
@@ -30,7 +28,7 @@ export const EmailVerification: React.FC = () => {
 	const token = urlParams.get("token");
 
 	const verifyMutation = useMutation(async () => {
-		const result = await AccountService.verifyEmail(userName, token.replace(/\s/g, '+'));
+		const result = await AccountService.verifyEmail(userName, token.replace(/\s/g, "+"));
 
 		if (result.success) {
 			return IdentityErrorCode.Success;
@@ -40,13 +38,8 @@ export const EmailVerification: React.FC = () => {
 	});
 
 	return (
-		<Flex
-			direction="Row"
-			mainAlign="Center">
-			<Flex
-				className={styles.EmailVerificationContainer}
-				direction="Column"
-				crossAlign="Center">
+		<Flex direction="Row" mainAlign="Center">
+			<Flex className={styles.EmailVerificationContainer} direction="Column" crossAlign="Center">
 				<h2>Email Verification:</h2>
 				<Choose>
 					<When condition={!userName || !token}>
@@ -56,9 +49,7 @@ export const EmailVerification: React.FC = () => {
 						<Choose>
 							<When condition={verifyMutation.data === IdentityErrorCode.Success}>
 								<p>Great, you're now verified!</p>
-								<Link to="/Logon/login">
-									Login now!
-								</Link>
+								<Link to="/Logon/login">Login now!</Link>
 							</When>
 							<Otherwise>
 								<p>Sorry, something failed during verifying.</p>
@@ -75,7 +66,8 @@ export const EmailVerification: React.FC = () => {
 								verifyMutation.mutate();
 								return Promise.resolve();
 							}}
-							variant="contained">
+							variant="contained"
+						>
 							Verify
 						</LoadingButton>
 					</Otherwise>
@@ -83,6 +75,6 @@ export const EmailVerification: React.FC = () => {
 			</Flex>
 		</Flex>
 	);
-}
+};
 
 export default EmailVerification;
