@@ -9,6 +9,10 @@ const config = {
 		contentBase: "./wwwroot",
 		port: 21534,
 		proxy: {
+			"/signalRHub": {
+				target: "ws://localhost:1457/signalRHub",
+				ws: true
+			},
 			"/": {
 				target: "https://localhost:1457",
 				secure: false

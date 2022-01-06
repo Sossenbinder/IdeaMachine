@@ -8,7 +8,7 @@ namespace IdeaMachine.Common.Core.Extensions
 	public static class MethodInfoExtensions
 	{
 		/// <summary>
-		/// Fetch all the involved types of a method. If a parameter is wrapped as Task, return
+		/// Fetch all the involved types of a method (Parameter AND return type). If a parameter is wrapped as Task, return
 		/// it unwrapped
 		/// </summary>
 		/// <param name="methodInfo">MethodInfo</param>

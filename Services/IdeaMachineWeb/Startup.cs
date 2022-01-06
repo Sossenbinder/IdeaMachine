@@ -35,7 +35,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace IdeaMachineWeb
@@ -65,7 +67,12 @@ namespace IdeaMachineWeb
 				options.ModelBinderProviders.Insert(0, new DestructuringModelBinderProvider());
 			});
 
-			services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(LogProvider.CreateLogger(Configuration)));
+			services.AddLogging(loggingBuilder =>
+			{
+				loggingBuilder.AddConsole();
+				loggingBuilder.AddSerilog(LogProvider.CreateLogger(Configuration));
+			});
+
 			services.AddHttpClient<ProfilePictureController>();
 
 			services.AddAntiforgery(x => x.HeaderName = "RequestVerificationToken");
@@ -89,7 +96,16 @@ namespace IdeaMachineWeb
 		private void ConfigureIdentity(IServiceCollection services)
 		{
 			services
-				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddAuthentication(options =>
+				{
+					options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+					options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+				})
+				.AddCookie(IdentityConstants.ExternalScheme, o =>
+				{
+					o.Cookie.Name = IdentityConstants.ExternalScheme;
+					o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+				})
 				.AddCookie(options =>
 				{
 					options.Events.OnRedirectToLogin = context =>
@@ -102,14 +118,14 @@ namespace IdeaMachineWeb
 				{
 					options.ClientId = Configuration["GoogleClientId"];
 					options.ClientSecret = Configuration["GoogleClientSecret"];
+					options.SignInScheme = IdentityConstants.ExternalScheme;
 				});
 
-			services.AddDbContext<AccountContext>();
-
-			services.AddIdentity<AccountEntity, IdentityRole<Guid>>(IdentityOptionsProvider.ApplyDefaultOptions)
-				.AddErrorDescriber<CodeIdentityErrorDescriber>()
-				.AddEntityFrameworkStores<AccountContext>()
-				.AddDefaultTokenProviders();
+			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
+			services.TryAddScoped<SignInManager<AccountEntity>>();
+			services.AddIdentityCore<AccountEntity>()
+				.AddEntityFrameworkStores<AccountContext>();
+			services.AddHttpContextAccessor();
 		}
 
 		private void ConfigureMassTransit(IServiceCollection services)
@@ -158,6 +174,7 @@ namespace IdeaMachineWeb
 			builder.RegisterGrpcProxy<ILoginService, LoginServiceProxy>();
 			builder.RegisterGrpcProxy<IVerificationService, VerificationServiceProxy>();
 			builder.RegisterGrpcProxy<IAccountService, AccountServiceProxy>();
+			builder.RegisterGrpcProxy<ISocialLoginService, SocialLoginServiceProxy>();
 
 			builder.RegisterBuildCallback(lts =>
 			{

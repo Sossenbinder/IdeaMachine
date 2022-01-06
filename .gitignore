@@ -452,3 +452,4 @@ $RECYCLE.BIN/
 /AzuriteCert/__azurite_db_queue__.json
 /AzuriteCert/__azurite_db_queue_extent__.json
 /AzuriteCert/__azurite_db_table__.json
+/Scripts/Terraform/stack/.terraform/providers/registry.terraform.io/hashicorp/azurerm/2.46.0/windows_amd64/terraform-provider-azurerm_v2.46.0_x5.exe

@@ -2,14 +2,16 @@
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Utils.IPC;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Model;
+using IdeaMachine.ModulesServiceBase.Attributes;
 using IdeaMachine.ModulesServiceBase.Interface;
 
 namespace IdeaMachine.Modules.Account.Service.Interface
 {
 	[ServiceContract]
-    public interface IAccountService : IGrpcService
+	[GrpcServiceIdentifier(1)]
+	public interface IAccountService : IGrpcService
 	{
 		[OperationContract]
 		Task<ServiceResponse<string>> GetAccountName(GetAccountNameRequest getAccountNameModel);
-    }
+	}
 }

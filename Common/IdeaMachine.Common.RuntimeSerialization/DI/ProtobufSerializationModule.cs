@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using IdeaMachine.Common.RuntimeSerialization.Serialize;
+using IdeaMachine.Common.RuntimeSerialization.Serialize.Interface;
 
 namespace IdeaMachine.Common.RuntimeSerialization.DI
 {
@@ -6,16 +8,16 @@ namespace IdeaMachine.Common.RuntimeSerialization.DI
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<GrpcServiceTypeSerializer>()
+			builder.RegisterType<SerializationModelBinderService>()
 				.AsSelf()
 				.SingleInstance();
 
-			builder.RegisterType<SerializationModelBinderService>()
-				.SingleInstance()
-				.AutoActivate();
+			builder.RegisterType<UserSessionContainerSerializer>()
+				.As<ISectionSerializer>()
+				.SingleInstance();
 
-			builder.RegisterType<SerializationHelper>()
-				.AsSelf()
+			builder.RegisterType<GrpcServiceTypeSerializer>()
+				.As<ISectionSerializer>()
 				.SingleInstance();
 		}
 	}

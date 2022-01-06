@@ -5,63 +5,71 @@ using System.Reflection;
 using System.ServiceModel;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Common.Core.Utils.IPC;
+using IdeaMachine.Common.RuntimeSerialization.Extensions;
+using IdeaMachine.Common.RuntimeSerialization.Serialize.Interface;
+using IdeaMachine.ModulesServiceBase.Attributes;
 using IdeaMachine.ModulesServiceBase.Interface;
+using Microsoft.Extensions.Logging;
 using ProtoBuf.Meta;
 
-namespace IdeaMachine.Common.RuntimeSerialization
+namespace IdeaMachine.Common.RuntimeSerialization.Serialize
 {
 	/// <summary>
 	/// Dynamically registers all parameters and return types of involved
 	/// IGrpcService so all of them are known to Grpc
 	/// </summary>
-	public class GrpcServiceTypeSerializer
+	public class GrpcServiceTypeSerializer : ISectionSerializer
 	{
+		private readonly ILogger _logger;
+
+		private readonly IEnumerable<IGrpcService> _services;
+
 		private const int PreAllocatedProtoPerService = 100;
 
-		private readonly SerializationHelper _serializationHelper;
+		private Dictionary<Type, int> _protoDict = null!;
 
-		private readonly Dictionary<Type, int> _protoDict;
-
-		public GrpcServiceTypeSerializer(SerializationHelper serializationHelper)
+		public GrpcServiceTypeSerializer(
+			ILogger<GrpcServiceTypeSerializer> logger,
+			IEnumerable<IGrpcService> services)
 		{
-			_serializationHelper = serializationHelper;
-
-			var allGrpcServices = Assembly.GetEntryAssembly()
-				.GetReferencedAssemblies()
-				.Select(Assembly.Load)
-				.Select(x => x.GetTypes())
-				.SelectMany(x => x)
-				.Where(x => x.IsInterface)
-				.Where(x => x.HasInterface(typeof(IGrpcService)))
-				.OrderBy(x => x.FullName)
-				.ToList();
-
-			_protoDict = new Dictionary<Type, int>();
-			for (var i = 0; i < allGrpcServices!.Count; ++i)
-			{
-				_protoDict.Add(allGrpcServices[i], (i + 1) * PreAllocatedProtoPerService);
-			}
+			_logger = logger;
+			_services = services;
 		}
 
-		public void SerializeGrpcServices(IEnumerable<IGrpcService> services)
+		public void SerializeSection()
 		{
 			// Get the types for each registered grpc service. This also includes
 			// the type of the currently running service
-			var grpcServicesTypes = services
-				.Select(x =>
-				{
-					var upwardContractInterface = x
-						.GetType()
-						.GetFirstUpwardInterfaceChainMatchOrNull(type => type.GetCustomAttribute<ServiceContractAttribute>() is not null);
-					return upwardContractInterface;
-				})
+			List<Type> grpcServicesTypes = _services
+				.Select(x => x.GetType().GetFirstUpwardInterfaceChainMatchOrNull(type => type.GetCustomAttribute<ServiceContractAttribute>() is not null))
 				.Where(x => x is not null)
-				.ToList();
+				.ToList()!;
+
+			PrepareProtoReservations(grpcServicesTypes);
 
 			foreach (var grpcServiceType in grpcServicesTypes)
 			{
 				InitializeBindingsForGrpcService(grpcServiceType!);
 			}
+		}
+
+		private void PrepareProtoReservations(IEnumerable<Type> grpcServices)
+		{
+			_protoDict = grpcServices
+				.ToDictionary(
+					x => x, x =>
+					{
+						var identifierAttribute = x.GetCustomAttribute<GrpcServiceIdentifierAttribute>();
+
+						if (identifierAttribute is not null)
+						{
+							return identifierAttribute.Identifier * PreAllocatedProtoPerService;
+						}
+
+						var exception = new ArgumentException($"Service of type {x.FullName} does not have a {nameof(GrpcServiceIdentifierAttribute)} attached to it");
+						_logger.LogException(exception);
+						throw exception;
+					});
 		}
 
 		private void InitializeBindingsForGrpcService(Type grpcServiceType)
@@ -78,10 +86,19 @@ namespace IdeaMachine.Common.RuntimeSerialization
 					.GetInvolvedTypesUnwrapped()
 					.ToList();
 
+				var genericTypes = involvedTypes.Where(x => x.IsGenericType).ToList();
 				// Start by registering the generic type chains
-				RegisterGenericTypeChain(involvedTypes.Where(x => x.IsGenericType), grpcServiceType);
+				RegisterGenericTypeChain(genericTypes, grpcServiceType);
+				involvedTypes.RemoveRange(genericTypes);
 
-				RegisterPlainTypes(involvedTypes.Where(x => !x.IsGenericType));
+				// Now remove the types which are plain types, but are part of System.*
+				involvedTypes.RemoveWhere(x => x.IsNativeType());
+
+				RegisterPlainTypes(involvedTypes);
+
+				// The types themselves are registered now -
+				var externalTypes = involvedTypes.SelectMany(x => x.GetNestedProperties(y => y.IsNativeType() || y.Namespace!.StartsWith("IdeaMachine", StringComparison.InvariantCultureIgnoreCase))).ToList();
+				RegisterPlainTypes(externalTypes);
 			}
 		}
 
@@ -93,7 +110,7 @@ namespace IdeaMachine.Common.RuntimeSerialization
 		{
 			foreach (var genericType in genericTypes)
 			{
-				_serializationHelper.RegisterTypeBaseChain(GetAndIncrementIndex(grpcServiceType), genericType);
+				genericType.RegisterTypeBaseChain(GetAndIncrementIndex(grpcServiceType));
 			}
 		}
 
@@ -101,10 +118,7 @@ namespace IdeaMachine.Common.RuntimeSerialization
 		{
 			foreach (var type in plainTypes)
 			{
-				if (!type.Namespace?.StartsWith("System") ?? false)
-				{
-					RuntimeTypeModel.Default.Add(type);
-				}
+				RuntimeTypeModel.Default.Add(type);
 			}
 		}
 

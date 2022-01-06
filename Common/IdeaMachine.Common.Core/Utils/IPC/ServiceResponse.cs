@@ -4,7 +4,7 @@ using ProtoBuf;
 namespace IdeaMachine.Common.Core.Utils.IPC
 {
 	[ProtoContract]
-	[ProtoInclude(500, typeof(ServiceResponse))]
+	[ProtoInclude(80, typeof(ServiceResponse))]
 	public abstract class ServiceResponseBase
 	{
 		[ProtoMember(1)]
@@ -55,7 +55,6 @@ namespace IdeaMachine.Common.Core.Utils.IPC
 	}
 
 	[ProtoContract]
-	// Simple base class to transport the result of a backend task to the frontend and provide a way to check whether call was successful
 	public class ServiceResponse<TPayload> : ServiceResponseBase
 	{
 		[ProtoMember(3)]

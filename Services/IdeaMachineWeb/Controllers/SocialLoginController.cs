@@ -3,9 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
+using IdeaMachine.Modules.Account.DataTypes.Model;
+using IdeaMachine.Modules.Account.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,21 +18,14 @@ namespace IdeaMachineWeb.Controllers
 	{
 		private readonly SignInManager<AccountEntity> _signInManager;
 
-		public SocialLoginController(SignInManager<AccountEntity> signInManager)
+		private readonly ISocialLoginService _socialLoginService;
+
+		public SocialLoginController(
+			SignInManager<AccountEntity> signInManager,
+			ISocialLoginService socialLoginService)
 		{
 			_signInManager = signInManager;
-		}
-
-		[HttpGet]
-		[Route("GoogleLogin")]
-		public IActionResult GoogleLogin()
-		{
-			var properties = new AuthenticationProperties
-			{
-				RedirectUri = Url.Action("GoogleOauthCallback")
-			};
-
-			return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+			_socialLoginService = socialLoginService;
 		}
 
 		[HttpGet]
@@ -42,27 +34,41 @@ namespace IdeaMachineWeb.Controllers
 		{
 			var schemes = await _signInManager.GetExternalAuthenticationSchemesAsync();
 
-			return JsonDataResponse<List<string>>.Success(schemes.Select(x => x.DisplayName).ToList());
+			return JsonDataResponse<List<string>>.Success(schemes.Select(x => x.DisplayName).ToList()!);
 		}
 
 		[HttpGet]
-		[Route("GoogleOauthCallback")]
-		public async Task<IActionResult> GoogleOauthCallback()
+		[Route("ExternalLogin")]
+		public IActionResult ExternalLogin([FromQuery] string provider)
 		{
-			var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+			var redirectUrl = Url.Action(nameof(SocialLoginCallback), "SocialLogin");
+			var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+			return Challenge(properties, provider);
+		}
 
-			var claimsIdentity = result.Principal?.Identities.FirstOrDefault();
-			if (claimsIdentity is not null)
+		[HttpGet]
+		[Route("SocialLoginCallback")]
+		public async Task<IActionResult> SocialLoginCallback()
+		{
+			var info = await _signInManager.GetExternalLoginInfoAsync();
+
+			if (info is null)
 			{
-				var claims = claimsIdentity.Claims.Select(claim => new
-				{
-					claim.Issuer,
-					claim.OriginalIssuer,
-					claim.Type,
-					claim.Value
-				});
+				return Redirect("/Logon/login");
 			}
 
+			var signinResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+
+			if (signinResult.Succeeded)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+			else
+			{
+				var result = await _socialLoginService.AddExternalUser(new SocialLoginInformation { ExternalLoginInfo = info });
+			}
+
+			return Redirect("/Logon/login/associate");
 			return Ok();
 		}
 	}

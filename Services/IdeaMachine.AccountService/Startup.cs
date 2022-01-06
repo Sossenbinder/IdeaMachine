@@ -32,8 +32,8 @@ namespace IdeaMachine.AccountService
 		public override sealed void ConfigureServices(IServiceCollection services)
 		{
 			services.AddSignalR();
-			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
 
+			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
 			services.AddIdentity<AccountEntity, IdentityRole<Guid>>(IdentityOptionsProvider.ApplyDefaultOptions)
 				.AddErrorDescriber<CodeIdentityErrorDescriber>()
 				.AddEntityFrameworkStores<AccountContext>()
@@ -53,6 +53,7 @@ namespace IdeaMachine.AccountService
 			containerBuilder.RegisterGrpcService<LoginService>();
 			containerBuilder.RegisterGrpcService<VerificationService>();
 			containerBuilder.RegisterGrpcService<Modules.Account.Service.AccountService>();
+			containerBuilder.RegisterGrpcService<SocialLoginService>();
 
 			base.ConfigureContainer(containerBuilder);
 		}
@@ -63,6 +64,7 @@ namespace IdeaMachine.AccountService
 			endpointRouteBuilder.MapGrpcService<ILoginService>();
 			endpointRouteBuilder.MapGrpcService<IVerificationService>();
 			endpointRouteBuilder.MapGrpcService<IAccountService>();
+			endpointRouteBuilder.MapGrpcService<ISocialLoginService>();
 
 			base.RegisterEndpoints(endpointRouteBuilder);
 		}

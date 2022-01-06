@@ -19,6 +19,7 @@ import { IdentityErrorCode, SignInInfo } from "modules/account/types";
 
 // Styles
 import styles from "./styles/SignIn.module.scss";
+import SocialSignIn from "./SocialSignIn";
 
 export const SignIn: React.FC = () => {
 	const { AccountService } = useServices();
@@ -103,9 +104,7 @@ export const SignIn: React.FC = () => {
 			<If condition={identityErrorCode !== IdentityErrorCode.Success}>
 				<span className={styles.ErrorDescription}>{getTranslationForErrorCode(translations, identityErrorCode)}</span>
 			</If>
-			<Flex crossAlign="Center">
-				<a href="/OAuth/GoogleLogin">Login with google instead</a>
-			</Flex>
+			<SocialSignIn providers={providers} />
 			<Flex className={styles.ActionSection} direction="Row" mainAlign="End">
 				<Button color="secondary" className={styles.Button} variant="contained" onClick={() => history.push("/Logon/Register")}>
 					Register
