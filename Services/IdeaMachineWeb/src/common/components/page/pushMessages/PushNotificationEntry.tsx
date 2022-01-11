@@ -67,36 +67,20 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 				<div className={styles.Container} ref={notificationRef} style={{ backgroundColor: color }}>
 					<Grid
 						className={styles.Content}
-						gridProperties={{
-							gridTemplateAreas: `
-								'time . close' 
-								'body body body'
-							`,
-							gridTemplateColumns: "2fr 8fr 25px",
-							gridTemplateRows: "1fr 1fr"
-						}}
+						gridTemplateAreas={`
+							'time . close' 
+							'body body body'
+						`}
+						gridTemplateColumns={"2fr 8fr 25px"}
+						gridTemplateRows={"1fr 1fr"}
 					>
-						<Cell
-							cellStyles={{
-								gridArea: "time"
-							}}
-						>
+						<Cell gridArea="time">
 							<span className={styles.TimeStamp}>{getUsTime(notification.timeStamp)}</span>
 						</Cell>
-						<Cell
-							cellStyles={{
-								gridArea: "close"
-							}}
-						>
+						<Cell gridArea="close">
 							<MaterialIcon className={styles.CloseIcon} type="Outlined" iconName="cancel" onClick={() => setShow(false)} />
 						</Cell>
-						<Cell
-							cellStyles={{
-								gridArea: "body"
-							}}
-						>
-							{notification.message}
-						</Cell>
+						<Cell gridArea="body">{notification.message}</Cell>
 					</Grid>
 				</div>
 			</CSSTransition>

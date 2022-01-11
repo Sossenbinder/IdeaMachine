@@ -8,26 +8,23 @@ type CellStyleKeys = "gridColumn" | "gridRow" | "gridArea";
 
 type CellStyles = Pick<React.CSSProperties, CellStyleKeys>;
 
-type CellProps = {
+type CellProps = CellStyles & {
 	className?: string;
 	gridArea?: string;
-	cellStyles?: CellStyles;
 
 	children?: React.ReactNode;
 	onClick?: () => void;
 	ref?: React.Ref<any>;
 };
 
-export const Cell: React.FC<CellProps> = ({ className, cellStyles, gridArea, children, onClick, ref }) => {
+export const Cell: React.FC<CellProps> = ({ className, gridColumn, gridRow, gridArea, children, onClick, ref }) => {
 	const styles: React.CSSProperties = {
-		...cellStyles,
+		gridColumn,
+		gridRow,
+		gridArea,
 		height: "100%",
 		width: "100%"
 	};
-
-	if (gridArea) {
-		styles.gridArea = gridArea;
-	}
 
 	return (
 		<div className={className} style={styles} onClick={onClick} ref={ref}>

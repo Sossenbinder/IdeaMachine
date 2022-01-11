@@ -22,14 +22,12 @@ export const Comment = ({ comment: { comment, timeStamp, commenterName } }: Prop
 		<div className={styles.CommentContainer}>
 			<Grid
 				className={styles.Comment}
-				gridProperties={{
-					gridTemplateAreas: `
+				gridTemplateAreas={`
 						'commenter . time'
 						'comment comment time'
-					`,
-					gridTemplateColumns: "1fr 8fr 1fr",
-					gridTemplateRows: "0.9rem minmax(0, 1fr)"
-				}}
+					`}
+				gridTemplateColumns="1fr 8fr 1fr"
+				gridTemplateRows="0.9rem minmax(0, 1fr)"
 			>
 				<Cell className={styles.CommenterName} gridArea="commenter">
 					{commenterName}

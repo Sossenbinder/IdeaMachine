@@ -11,6 +11,19 @@ networks:
       name: ideamachinenetwork
 
 services:
+  nginx.ingress:
+    image: nginx
+    labels:
+      - ideamachinecompose
+    networks:
+      - ideamachinenetwork
+    ports:
+      - 1253:443
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./Scripts/Docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./Scripts/Docker/nginx/cert:/etc/nginx/cert
+
   ideamachineweb:
     image: ${DOCKER_REGISTRY-}ideamachineweb
     labels:
@@ -21,7 +34,6 @@ services:
       context: .
       dockerfile: Services/IdeaMachineWeb/Dockerfile
     ports:
-      - "1456:80"
       - "1457:443"
     environment:
       DbConnectionString: "Server=tcp:ideamachine.sql,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
@@ -29,7 +41,7 @@ services:
       BlobStorageConnection: AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=https;BlobEndpoint=https://ideamachine.azurite:10000/devstoreaccount1;QueueEndpoint=https://ideamachine.azurite:10001/devstoreaccount1;TableEndpoint=https://ideamachine.azurite:10002/devstoreaccount1
       GmailUserName: "ideamachinenews@gmail.com"
       Seq_Server: "http://ideamachine.seq:5341"
-      DeploymentLink: "https://localhost:1457"
+      DeploymentLink: "http://localhost:1253/"
     volumes:
       - /Keys/Storage:/keys/storage
     depends_on:
@@ -45,6 +57,8 @@ services:
     build:
       context: .
       dockerfile: Services/IdeaMachine.AccountService/Dockerfile
+    ports:
+      - "1458:443"
     environment:
       DbConnectionString: "Server=tcp:ideamachine.sql,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
       IdeaMachine_RabbitMq: "ideamachine.rabbitmq"

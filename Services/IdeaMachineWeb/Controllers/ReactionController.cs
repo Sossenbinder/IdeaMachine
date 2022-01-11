@@ -2,8 +2,8 @@
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Reaction.DataTypes.Events;
 using IdeaMachine.Modules.Reaction.Events.Interface;
-using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachineWeb.DataTypes.UiModels.Reaction;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachineWeb.Controllers
@@ -13,12 +13,14 @@ namespace IdeaMachineWeb.Controllers
 	{
 		private readonly IReactionEvents _reactionEvents;
 
+		private readonly IPublishEndpoint _publishEndpoint;
+
 		public ReactionController(
-			ISessionService sessionService,
-			IReactionEvents reactionEvents)
-			: base(sessionService)
+			IReactionEvents reactionEvents,
+			IPublishEndpoint publishEndpoint)
 		{
 			_reactionEvents = reactionEvents;
+			_publishEndpoint = publishEndpoint;
 		}
 
 		[HttpPost]
@@ -28,6 +30,15 @@ namespace IdeaMachineWeb.Controllers
 			var (ideaId, likeState) = modifyLikeUiModel;
 
 			await _reactionEvents.LikeChange.Raise(new LikeChange(UserId, ideaId, likeState));
+
+			return JsonResponse.Success();
+		}
+
+		[HttpPost]
+		[Route("Share")]
+		public async Task<JsonResponse> Respond([FromBody] RespondUiModel responseModel)
+		{
+			await _publishEndpoint.Publish(responseModel.AsDto(UserId));
 
 			return JsonResponse.Success();
 		}

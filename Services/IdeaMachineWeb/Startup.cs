@@ -20,10 +20,13 @@ using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
 using IdeaMachine.Modules.Reaction.DI;
+using IdeaMachine.Modules.Reaction.Events.Handlers;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
 using IdeaMachineWeb.Controllers;
 using IdeaMachineWeb.DataTypes.Validation;
+using IdeaMachineWeb.Extensions;
+using IdeaMachineWeb.Middleware;
 using IdeaMachineWeb.Utils;
 using MassTransit;
 using MassTransit.SignalR;
@@ -31,6 +34,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -95,37 +99,30 @@ namespace IdeaMachineWeb
 
 		private void ConfigureIdentity(IServiceCollection services)
 		{
-			services
-				.AddAuthentication(options =>
+			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
+			services.AddIdentityWithoutDefaultAuthSchemes<AccountEntity, IdentityRole<Guid>>()
+				.AddEntityFrameworkStores<AccountContext>();
+
+			var authBuilder = services.AddAuthentication(options =>
 				{
-					options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+					options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+					options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
 					options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 				})
-				.AddCookie(IdentityConstants.ExternalScheme, o =>
+				.AddCookie(IdentityConstants.ApplicationScheme, o =>
 				{
-					o.Cookie.Name = IdentityConstants.ExternalScheme;
-					o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-				})
-				.AddCookie(options =>
-				{
-					options.Events.OnRedirectToLogin = context =>
-					{
-						context.Response.StatusCode = 401;
-						return Task.CompletedTask;
-					};
-				})
-				.AddGoogle(options =>
+					o.LoginPath = new PathString("/Logon/login");
+				});
+
+			authBuilder.AddExternalCookie();
+			authBuilder.AddTwoFactorRememberMeCookie();
+			authBuilder.AddTwoFactorUserIdCookie();
+			authBuilder.AddGoogle(options =>
 				{
 					options.ClientId = Configuration["GoogleClientId"];
 					options.ClientSecret = Configuration["GoogleClientSecret"];
 					options.SignInScheme = IdentityConstants.ExternalScheme;
 				});
-
-			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
-			services.TryAddScoped<SignInManager<AccountEntity>>();
-			services.AddIdentityCore<AccountEntity>()
-				.AddEntityFrameworkStores<AccountContext>();
-			services.AddHttpContextAccessor();
 		}
 
 		private void ConfigureMassTransit(IServiceCollection services)
@@ -153,6 +150,7 @@ namespace IdeaMachineWeb
 				});
 
 				x.AddConsumer<AccountProfilePictureUpdatedConsumer>();
+				x.AddConsumer<ResponseSentHandler>();
 			});
 		}
 
@@ -175,6 +173,8 @@ namespace IdeaMachineWeb
 			builder.RegisterGrpcProxy<IVerificationService, VerificationServiceProxy>();
 			builder.RegisterGrpcProxy<IAccountService, AccountServiceProxy>();
 			builder.RegisterGrpcProxy<ISocialLoginService, SocialLoginServiceProxy>();
+
+			builder.RegisterType<SessionContextMiddleware>().SingleInstance();
 
 			builder.RegisterBuildCallback(lts =>
 			{
@@ -202,6 +202,8 @@ namespace IdeaMachineWeb
 
 			app.UseAuthentication();
 			app.UseAuthorization();
+
+			app.UseSessionContextMiddleware();
 
 			app.UseEndpoints(endpoints =>
 			{

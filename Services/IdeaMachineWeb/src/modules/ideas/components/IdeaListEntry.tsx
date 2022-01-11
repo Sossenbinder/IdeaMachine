@@ -83,20 +83,14 @@ export const IdeaListEntry: React.FC<Props> = ({
 		<div className={containerClassNames} onClick={() => setPreviewOpen(!previewOpen)}>
 			<Grid
 				className={styles.Idea}
-				gridProperties={{
-					gridTemplateColumns: "30px 7fr 100px 1fr 40px",
-					gridTemplateRows: "1fr 1fr",
-					gridTemplateAreas: `
+				gridTemplateColumns="30px 7fr 100px 1fr 40px"
+				gridTemplateRows="1fr 1fr"
+				gridTemplateAreas={`
 						"TotalLike ShortDescription Actions Timestamp Expand"
 						"TotalLike LongDescription Tags Tags ."
-					`
-				}}
+					`}
 			>
-				<Cell
-					cellStyles={{
-						gridArea: "TotalLike"
-					}}
-				>
+				<Cell gridArea="TotalLike">
 					<Flex className={styles.TotalLikeContainer} direction="Row" crossAlign="Center">
 						<Flex space="Around" direction="Column">
 							<MaterialIcon
@@ -141,18 +135,10 @@ export const IdeaListEntry: React.FC<Props> = ({
 				</Flex>
 				<MaterialIcon className={styles.ExpandMore} iconName={`expand_${previewOpen ? "less" : "more"}`} size={40} />
 				<If condition={previewOpen}>
-					<Cell
-						cellStyles={{
-							gridArea: "LongDescription"
-						}}
-					>
+					<Cell gridArea="LongDescription">
 						<span>{longDescription}</span>
 					</Cell>
-					<Cell
-						cellStyles={{
-							gridArea: "Tags"
-						}}
-					>
+					<Cell gridArea="Tags">
 						<Flex className={styles.Chips} direction="Row" wrap="Wrap">
 							{tags.map((data, index) => {
 								return <Chip label={data} color="info" key={`Tags_${index}`} onClick={(event) => onTagClick(event, data)} />;

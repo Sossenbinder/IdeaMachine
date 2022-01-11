@@ -85,38 +85,24 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 		<Card>
 			<Grid
 				className={styles.IdeaInput}
-				gridProperties={{
-					gridTemplateRows: "20px 50px 1fr 4fr 1fr 65px",
-					gridTemplateColumns: "repeat(6, 1fr)",
-					gridTemplateAreas: `
+				gridTemplateRows="20px 50px 1fr 4fr 1fr 65px"
+				gridTemplateColumns="repeat(6, 1fr)"
+				gridTemplateAreas={`
 						"Intro Intro Intro Intro Intro Intro"
 						"Separator Separator Separator Separator Separator Separator"
 						"ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription"
 						"LongDescription LongDescription LongDescription LongDescription LongDescription LongDescription"
 						"UploadRow UploadRow UploadRow Tags Tags Tags"
 						"Upload Upload . . . Submit"
-					`
-				}}
+					`}
 			>
-				<Cell
-					cellStyles={{
-						gridArea: "Intro"
-					}}
-				>
+				<Cell gridArea="Intro">
 					<span>{translations.AddIdea}</span>
 				</Cell>
-				<Cell
-					cellStyles={{
-						gridArea: "Separator"
-					}}
-				>
+				<Cell gridArea="Separator">
 					<Separator className={styles.Separator} direction="Horizontal" />
 				</Cell>
-				<Cell
-					cellStyles={{
-						gridArea: "ShortDescription"
-					}}
-				>
+				<Cell gridArea="ShortDescription">
 					<ValidatableTextField
 						label={translations.AddIdeaShortDescription}
 						className={styles.ShortDescription}
@@ -134,11 +120,7 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 						}
 					/>
 				</Cell>
-				<Cell
-					cellStyles={{
-						gridArea: "LongDescription"
-					}}
-				>
+				<Cell gridArea="LongDescription">
 					<ValidatableTextField
 						label={translations.AddIdeaLongDescription}
 						className={styles.LongDescription}
@@ -158,26 +140,13 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 						}}
 					/>
 				</Cell>
-				<Cell
-					className={styles.TagsArea}
-					cellStyles={{
-						gridArea: "Tags"
-					}}
-				>
+				<Cell className={styles.TagsArea} gridArea="Tags">
 					<TagDisplay tags={tags} setTags={setTags} />
 				</Cell>
-				<Cell
-					cellStyles={{
-						gridArea: "UploadRow"
-					}}
-				>
+				<Cell gridArea="UploadRow">
 					<UploadRow attachments={fileUrls.map((x) => ({ attachmentUrl: x } as AttachmentUrl))} onAttachmentAdded={(_) => void 0} ideaId={idea.id} />
 				</Cell>
-				<Cell
-					cellStyles={{
-						gridArea: "Upload"
-					}}
-				>
+				<Cell gridArea="Upload">
 					<input type="file" name="uploadFile" ref={uploadFileRef} onChange={onFileInputChange} accept="image/*" multiple hidden />
 					<Button variant="contained" color="primary" className={styles.UploadAttachmentButton} onClick={onUploadClick}>
 						<Flex direction="Row" crossAlign="Center">
@@ -186,11 +155,7 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 						</Flex>
 					</Button>
 				</Cell>
-				<Cell
-					cellStyles={{
-						gridArea: "Submit"
-					}}
-				>
+				<Cell gridArea="Submit">
 					<Button variant="contained" color="primary" onClick={onClick}>
 						Submit
 					</Button>

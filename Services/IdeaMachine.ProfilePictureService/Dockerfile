@@ -3,6 +3,7 @@
 FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated6.0 AS base
 WORKDIR /home/site/wwwroot
 EXPOSE 80
+EXPOSE 443
 
 COPY AzuriteCert/azuriteCert.crt /usr/local/share/ca-certificates
 RUN "update-ca-certificates"

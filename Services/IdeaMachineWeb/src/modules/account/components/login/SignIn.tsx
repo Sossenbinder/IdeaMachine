@@ -28,7 +28,6 @@ export const SignIn: React.FC = () => {
 	const history = useHistory();
 
 	const [providers, setProviders] = React.useState<Array<string>>([]);
-	const [loading, call] = useAsyncCall();
 
 	const [signInInfo, setSignInInfo] = React.useState<SignInInfo>({
 		emailUserName: "",
@@ -44,16 +43,6 @@ export const SignIn: React.FC = () => {
 			return;
 		}
 	};
-
-	React.useEffect(() => {
-		call(async () => {
-			const providersResponse = await listAvailableProviders();
-
-			if (providersResponse.success) {
-				setProviders(providersResponse.payload);
-			}
-		});
-	}, []);
 
 	return (
 		<Flex className={styles.SignInContainer} direction="Column" crossAlign="Center">
@@ -104,7 +93,7 @@ export const SignIn: React.FC = () => {
 			<If condition={identityErrorCode !== IdentityErrorCode.Success}>
 				<span className={styles.ErrorDescription}>{getTranslationForErrorCode(translations, identityErrorCode)}</span>
 			</If>
-			<SocialSignIn providers={providers} />
+			<SocialSignIn rememberMe={signInInfo.rememberMe} />
 			<Flex className={styles.ActionSection} direction="Row" mainAlign="End">
 				<Button color="secondary" className={styles.Button} variant="contained" onClick={() => history.push("/Logon/Register")}>
 					Register

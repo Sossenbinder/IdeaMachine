@@ -12,6 +12,7 @@ using IdeaMachineWeb.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachineWeb.Controllers
@@ -25,10 +26,8 @@ namespace IdeaMachineWeb.Controllers
 		private readonly IRegistrationService _registrationService;
 
 		public AccountController(
-			ISessionService sessionService,
 			ILoginService loginService,
 			IRegistrationService registrationService)
-			: base(sessionService)
 		{
 			_loginService = loginService;
 			_registrationService = registrationService;
@@ -54,7 +53,7 @@ namespace IdeaMachineWeb.Controllers
 		[HttpPost]
 		public async Task<JsonResponse> Logout()
 		{
-			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+			await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 			return JsonResponse.Success();
 		}
 
@@ -109,13 +108,13 @@ namespace IdeaMachineWeb.Controllers
 
 			var account = loginResponse.PayloadOrFail.Account!;
 
-			var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+			var identity = new ClaimsIdentity(IdentityConstants.ApplicationScheme);
 			identity.AddClaim(new Claim(ClaimTypes.Name, account.UserId.ToString()));
 
 			var principal = new ClaimsPrincipal(identity);
 
 			await HttpContext.SignInAsync(
-				CookieAuthenticationDefaults.AuthenticationScheme,
+				IdentityConstants.ApplicationScheme,
 				principal,
 				new AuthenticationProperties()
 				{

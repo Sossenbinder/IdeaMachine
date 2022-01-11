@@ -14,8 +14,8 @@ namespace IdeaMachineWeb.Utils
 	{
 		public IModelBinder? GetBinder(ModelBinderProviderContext context)
 		{
-			return typeof(ITuple).IsAssignableFrom(context.Metadata.ModelType) 
-				? new DestructuringModelBinder() 
+			return typeof(ITuple).IsAssignableFrom(context.Metadata.ModelType)
+				? new DestructuringModelBinder()
 				: null;
 		}
 	}
@@ -24,7 +24,7 @@ namespace IdeaMachineWeb.Utils
 	{
 		public async Task BindModelAsync(ModelBindingContext bindingContext)
 		{
-			if (bindingContext == null)
+			if (bindingContext is null)
 			{
 				throw new ArgumentNullException(nameof(bindingContext));
 			}
@@ -33,6 +33,7 @@ namespace IdeaMachineWeb.Utils
 
 			var items = JsonConvert.DeserializeObject<Dictionary<string, object>>(requestBody);
 
+			// For the calling context, grab the Attributes of the metadata (these are the attribute of the actual controller method, basically)
 			if (bindingContext
 				.ModelMetadata
 				.GetType()
@@ -52,6 +53,7 @@ namespace IdeaMachineWeb.Utils
 				throw new ArgumentException("No custom tuple names specified");
 			}
 
+			// Now, construct the actual tuple from the tuple info and the raw body
 			var tuple = CreateTupleFromBody(items, bindingContext.ModelType, tupleElementNamesAttribute);
 
 			if (tuple == null)
@@ -59,35 +61,36 @@ namespace IdeaMachineWeb.Utils
 				throw new ArgumentException("Invalid arguments");
 			}
 
+			// Set the result
 			bindingContext.Result = ModelBindingResult.Success(tuple);
 		}
 
 		private ITuple? CreateTupleFromBody(
-			Dictionary<string, object> values,
+			IReadOnlyDictionary<string, object> values,
 			Type tupleType,
 			TupleElementNamesAttribute tupleNames)
 		{
 			var parameters = new List<object?>();
 
+			// Get the tuples constructor and the parameters
 			var constructor = tupleType
 				.GetConstructors()
 				.First();
-
 			var constructorParameters = constructor
 				.GetParameters()
 				.Select(x => x.ParameterType);
 
-			foreach (var (enumParam, index) in constructorParameters.AsIndexedIterable())
+			foreach (var (parameterType, index) in constructorParameters.AsIndexedIterable())
 			{
+				// Grab the name (indexed), and try to grab it from the body. Otherwise assign it as default
 				var paramTupleName = tupleNames.TransformNames[index];
 
-				if (values.TryGetValue(paramTupleName, out var val))
+				if (paramTupleName is not null && values.TryGetValue(paramTupleName, out var val))
 				{
-					if (val.GetType() != enumParam)
+					if (val.GetType() != parameterType)
 					{
-						val = Convert.ChangeType(val, enumParam);
+						val = Convert.ChangeType(val, parameterType);
 					}
-
 					parameters.Add(val);
 				}
 				else
@@ -99,9 +102,6 @@ namespace IdeaMachineWeb.Utils
 			return constructor.Invoke(parameters.ToArray()) as ITuple;
 		}
 
-		private static object? DefaultFromType(Type type)
-		{
-			return type.IsValueType ? Activator.CreateInstance(type) : null;
-		}
+		private static object? DefaultFromType(Type type) => type.IsValueType ? Activator.CreateInstance(type) : default;
 	}
 }

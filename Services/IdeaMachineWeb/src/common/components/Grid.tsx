@@ -19,25 +19,52 @@ type GridStyleKeys =
 	| "justifyContent"
 	| "alignContent"
 	| "gridTemplateAreas"
-	| "gap";
+	| "gap"
+	| "placeItems";
 
 type GridStyles = Pick<React.CSSProperties, GridStyleKeys>;
 
-type GridProps = {
+type GridProps = GridStyles & {
 	className?: string;
 	display?: GridDisplay;
-
-	gridProperties?: GridStyles;
 };
 
-export const Grid: React.FC<GridProps> = ({ className, gridProperties, display = GridDisplay.Regular, children }) => {
+export const Grid: React.FC<GridProps> = ({
+	className,
+	columnGap,
+	rowGap,
+	gridTemplateColumns,
+	gridAutoColumns,
+	gridTemplateRows,
+	justifyContent,
+	alignContent,
+	gridTemplateAreas,
+	gap,
+	placeItems,
+	display = GridDisplay.Regular,
+	children
+}) => {
 	const classes = classNames({
 		grid: display === GridDisplay.Regular,
 		inlineGrid: display === GridDisplay.Inline
 	});
 
 	return (
-		<div className={`${classes} ${typeof className !== "undefined" ? className : ""}`} style={gridProperties}>
+		<div
+			className={`${classes} ${typeof className !== "undefined" ? className : ""}`}
+			style={{
+				columnGap,
+				rowGap,
+				gridTemplateColumns,
+				gridAutoColumns,
+				gridTemplateRows,
+				justifyContent,
+				alignContent,
+				gridTemplateAreas,
+				gap,
+				placeItems
+			}}
+		>
 			{children}
 		</div>
 	);

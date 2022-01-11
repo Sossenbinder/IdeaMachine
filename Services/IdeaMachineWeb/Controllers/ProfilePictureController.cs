@@ -15,31 +15,28 @@ namespace IdeaMachineWeb.Controllers
 	{
 		private readonly IPublishEndpoint _publishEndpoint;
 
-	    public ProfilePictureController(
-		    ISessionService sessionService,
-		    IPublishEndpoint publishEndpoint)
-			: base(sessionService)
-	    {
-		    _publishEndpoint = publishEndpoint;
-	    }
+		public ProfilePictureController(IPublishEndpoint publishEndpoint)
+		{
+			_publishEndpoint = publishEndpoint;
+		}
 
-	    [Route("UpdateProfilePicture")]
-	    [HttpPost]
-	    public async Task<JsonResponse> UpdateProfilePicture(IFormCollection form)
-	    {
-		    if (!form.Files.Any() || form.Files[0].Length == 0)
-		    {
-			    return JsonResponse.ClientError();
-		    }
+		[Route("UpdateProfilePicture")]
+		[HttpPost]
+		public async Task<JsonResponse> UpdateProfilePicture(IFormCollection form)
+		{
+			if (!form.Files.Any() || form.Files[0].Length == 0)
+			{
+				return JsonResponse.ClientError();
+			}
 
-		    await using var imageStream = form.Files[0].OpenReadStream();
-		    var buffer = new Memory<byte>(new byte[imageStream.Length]);
-		    await imageStream.ReadAsync(buffer);
-		    var base64Image = Convert.ToBase64String(buffer.ToArray());
-			
-		    await _publishEndpoint.Publish(new AccountUpdateProfilePicture(Session.User.UserId, base64Image));
+			await using var imageStream = form.Files[0].OpenReadStream();
+			var buffer = new Memory<byte>(new byte[imageStream.Length]);
+			await imageStream.ReadAsync(buffer);
+			var base64Image = Convert.ToBase64String(buffer.ToArray());
 
-		    return JsonResponse.Success();
-	    }
+			await _publishEndpoint.Publish(new AccountUpdateProfilePicture(Session.User.UserId, base64Image));
+
+			return JsonResponse.Success();
+		}
 	}
 }

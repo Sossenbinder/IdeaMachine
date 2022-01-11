@@ -17,47 +17,45 @@ namespace IdeaMachineWeb.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-    public class CommentController : IdentityControllerBase
-    {
-	    private readonly IIdeaEvents _ideaEvents;
+	public class CommentController : IdentityControllerBase
+	{
+		private readonly IIdeaEvents _ideaEvents;
 
-	    private readonly ICommentService _commentService;
+		private readonly ICommentService _commentService;
 
-	    public CommentController(
-		    ISessionService sessionService,
-		    IIdeaEvents ideaEvents, 
-		    ICommentService commentService)
-		    : base(sessionService)
-	    {
-		    _ideaEvents = ideaEvents;
-		    _commentService = commentService;
-	    }
+		public CommentController(
+			IIdeaEvents ideaEvents,
+			ICommentService commentService)
+		{
+			_ideaEvents = ideaEvents;
+			_commentService = commentService;
+		}
 
-	    [HttpPost]
-	    [Authorize]
+		[HttpPost]
+		[Authorize]
 		[Route("Add")]
-	    public async Task<JsonResponse> Add([FromBody] AddCommentUiModel commentModel)
-	    {
-		    var model = new CommentModel()
-		    {
-			    Comment = commentModel.Comment,
-			    CommenterId = UserId,
-			    IdeaId = commentModel.IdeaId,
+		public async Task<JsonResponse> Add([FromBody] AddCommentUiModel commentModel)
+		{
+			var model = new CommentModel()
+			{
+				Comment = commentModel.Comment,
+				CommenterId = UserId,
+				IdeaId = commentModel.IdeaId,
 				TimeStamp = DateTime.UtcNow,
-		    };
+			};
 
-		    await _ideaEvents.CommentAdded.Raise(new CommentAdded(model));
+			await _ideaEvents.CommentAdded.Raise(new CommentAdded(model));
 
-		    return JsonResponse.Success();
-	    }
+			return JsonResponse.Success();
+		}
 
-	    [HttpPost]
-	    [Route("GetComments")]
+		[HttpPost]
+		[Route("GetComments")]
 		public async Task<JsonDataResponse<List<CommentUiModel>>> GetComments([FromBody] GetCommentUiModel commentUiModel)
-	    {
-		    var comments = await _commentService.GetComments(commentUiModel.IdeaId);
+		{
+			var comments = await _commentService.GetComments(commentUiModel.IdeaId);
 
-		    return comments.ToJsonDataResponse(CommentUiModel.FromModel);
-	    }
-    }
+			return comments.ToJsonDataResponse(CommentUiModel.FromModel);
+		}
+	}
 }

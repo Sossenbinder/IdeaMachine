@@ -65,51 +65,51 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 				<When condition={!!idea}>
 					<Grid
 						className={styles.IdeaInfoGrid}
-						gridProperties={{
-							gridTemplateColumns: "9fr 1fr 2fr",
-							gridTemplateRows: "50px 4fr 1fr minmax(0px, 4fr)",
-							rowGap: "20px"
-						}}
+						gridTemplateColumns="9fr 1fr 2fr"
+						gridTemplateRows="50px 4fr 1fr minmax(0px, 4fr)"
+						rowGap="20px"
+						gridTemplateAreas={`
+							"ShortDescription Reply Timestamp"
+							"LongDescription LongDescription Rating"
+							"Attachments Attachments Attachments"
+							"Comments Comments Comments"
+						`}
 					>
-						<Cell>
+						<Cell gridArea="ShortDescription">
 							<h2>
 								<u>{idea.shortDescription}</u>
 							</h2>
 						</Cell>
-						<MaterialIcon onClick={async () => history.push(`/idea/${id}/reply`)} iconName="reply" color="white" size={40} />
-						<Flex direction="Column">
-							<span>{getUsDate(idea.creationDate)}</span>
-							<span>{getUsTime(idea.creationDate)}</span>
-						</Flex>
-						<Cell
-							cellStyles={{
-								gridColumn: "1/3"
-							}}
-						>
-							{idea.longDescription}
+						<Cell gridArea="Reply">
+							<MaterialIcon onClick={async () => history.push(`/idea/${id}/reply`)} iconName="reply" color="white" size={40} />
 						</Cell>
-						<Flex className={styles.ReactionSection} direction="Column" crossAlign="Center">
-							<MaterialIcon
-								className={styles.ThumbButton}
-								onClick={async (_) => await ReactionService.modifyLike(idea.id, LikeState.Like)}
-								iconName="thumb_up"
-								size={25}
-								color={idea.ideaReactionMetaData.ownLikeState === LikeState.Like ? "blue" : "black"}
-							/>
-							<span>{`${idea.ideaReactionMetaData.totalLike >= 0 ? "+" : ""}${idea.ideaReactionMetaData.totalLike}`}</span>
-							<MaterialIcon
-								className={styles.ThumbButton}
-								onClick={async (_) => await ReactionService.modifyLike(idea.id, LikeState.Dislike)}
-								iconName="thumb_down"
-								size={25}
-								color={idea.ideaReactionMetaData.ownLikeState === LikeState.Dislike ? "blue" : "black"}
-							/>
-						</Flex>
-						<Cell
-							cellStyles={{
-								gridColumn: "1/4"
-							}}
-						>
+						<Cell gridArea="Timestamp">
+							<Flex direction="Column">
+								<span>{getUsDate(idea.creationDate)}</span>
+								<span>{getUsTime(idea.creationDate)}</span>
+							</Flex>
+						</Cell>
+						<Cell gridArea="LongDescription">{idea.longDescription}</Cell>
+						<Cell gridArea="Rating">
+							<Flex className={styles.ReactionSection} direction="Column" crossAlign="Center">
+								<MaterialIcon
+									className={styles.ThumbButton}
+									onClick={async (_) => await ReactionService.modifyLike(idea.id, LikeState.Like)}
+									iconName="thumb_up"
+									size={25}
+									color={idea.ideaReactionMetaData.ownLikeState === LikeState.Like ? "blue" : "black"}
+								/>
+								<span>{`${idea.ideaReactionMetaData.totalLike >= 0 ? "+" : ""}${idea.ideaReactionMetaData.totalLike}`}</span>
+								<MaterialIcon
+									className={styles.ThumbButton}
+									onClick={async (_) => await ReactionService.modifyLike(idea.id, LikeState.Dislike)}
+									iconName="thumb_down"
+									size={25}
+									color={idea.ideaReactionMetaData.ownLikeState === LikeState.Dislike ? "blue" : "black"}
+								/>
+							</Flex>
+						</Cell>
+						<Cell gridArea="Attachments">
 							<span className={styles.Attachments}>Attachments:</span>
 							<UploadRow
 								ideaId={idea.id}
@@ -123,11 +123,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 								}}
 							/>
 						</Cell>
-						<Cell
-							cellStyles={{
-								gridColumn: "1/4"
-							}}
-						>
+						<Cell gridArea="Comments">
 							<CommentSection idea={idea} />
 						</Cell>
 					</Grid>

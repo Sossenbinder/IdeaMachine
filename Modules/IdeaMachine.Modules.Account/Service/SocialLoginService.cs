@@ -1,5 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Common.Core.Utils.IPC;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DataTypes.Model;
@@ -19,21 +22,19 @@ namespace IdeaMachine.Modules.Account.Service
 
 		public async Task<ServiceResponse> AddExternalUser(SocialLoginInformation socialLoginInformation)
 		{
-			var loginInfo = socialLoginInformation.ExternalLoginInfo;
+			var (email, userName) = socialLoginInformation;
 
-			var email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
-			var username = loginInfo.Principal.FindFirstValue(ClaimTypes.Name);
-
+			new List<int>().ToList()
 			AccountEntity? account = default;
 
-			if (email is not null)
+			if (email.IsNotNullOrEmpty())
 			{
 				account = await _userManager.FindByEmailAsync(email);
 			}
 
-			if (account is null && username is not null)
+			if (userName.IsNotNullOrEmpty())
 			{
-				account = await _userManager.FindByNameAsync(username);
+				account = await _userManager.FindByNameAsync(userName);
 			}
 
 			if (account is not null)
@@ -44,7 +45,7 @@ namespace IdeaMachine.Modules.Account.Service
 			account = new AccountEntity()
 			{
 				Email = email,
-				UserName = username,
+				UserName = userName,
 			};
 
 			if (!(await _userManager.CreateAsync(account)).Succeeded)
@@ -52,10 +53,10 @@ namespace IdeaMachine.Modules.Account.Service
 				return ServiceResponse.Failure();
 			}
 
-			if (!(await _userManager.AddLoginAsync(account, loginInfo)).Succeeded)
-			{
-				return ServiceResponse.Failure();
-			}
+			//if (!(await _userManager.AddLoginAsync(account, loginInfo)).Succeeded)
+			//{
+			//	return ServiceResponse.Failure();
+			//}
 
 			return ServiceResponse.Success();
 		}

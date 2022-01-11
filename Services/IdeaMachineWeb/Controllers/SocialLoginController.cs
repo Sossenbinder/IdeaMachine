@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
-using IdeaMachine.Modules.Account.DataTypes.Model;
-using IdeaMachine.Modules.Account.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +17,14 @@ namespace IdeaMachineWeb.Controllers
 	{
 		private readonly SignInManager<AccountEntity> _signInManager;
 
-		private readonly ISocialLoginService _socialLoginService;
+		private readonly UserManager<AccountEntity> _userManager;
 
 		public SocialLoginController(
 			SignInManager<AccountEntity> signInManager,
-			ISocialLoginService socialLoginService)
+			UserManager<AccountEntity> userManager)
 		{
 			_signInManager = signInManager;
-			_socialLoginService = socialLoginService;
+			_userManager = userManager;
 		}
 
 		[HttpGet]
@@ -39,36 +38,60 @@ namespace IdeaMachineWeb.Controllers
 
 		[HttpGet]
 		[Route("ExternalLogin")]
-		public IActionResult ExternalLogin([FromQuery] string provider)
+		public IActionResult ExternalLogin([FromQuery] string provider, [FromQuery] bool rememberMe)
 		{
-			var redirectUrl = Url.Action(nameof(SocialLoginCallback), "SocialLogin");
+			var redirectUrl = Url.Action("SocialLoginCallback", "SocialLogin", new
+			{
+				rememberMe
+			});
 			var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 			return Challenge(properties, provider);
 		}
 
+		// TODO: Move this endpoint to the accountservice
 		[HttpGet]
 		[Route("SocialLoginCallback")]
-		public async Task<IActionResult> SocialLoginCallback()
+		public async Task<IActionResult> SocialLoginCallback([FromQuery] bool rememberMe)
 		{
-			var info = await _signInManager.GetExternalLoginInfoAsync();
+			// Grab the external login information from the http context
+			var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
 
-			if (info is null)
+			if (loginInfo is null)
 			{
 				return Redirect("/Logon/login");
 			}
 
-			var signinResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+			var signinResult = await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, rememberMe, true);
 
 			if (signinResult.Succeeded)
 			{
 				return RedirectToAction("Index", "Home");
 			}
-			else
+
+			// No associated login, let's provide an account
+
+			var email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+			var userName = loginInfo.Principal.FindFirstValue(ClaimTypes.Name);
+
+			if (email is null)
 			{
-				var result = await _socialLoginService.AddExternalUser(new SocialLoginInformation { ExternalLoginInfo = info });
+				return Problem();
 			}
 
-			return Redirect("/Logon/login/associate");
+			var account = await _userManager.FindByEmailAsync(email);
+
+			if (account is null && !(await _userManager.CreateAsync(new AccountEntity()
+			{
+				Email = email,
+				UserName = userName,
+			})).Succeeded)
+			{
+				return Problem();
+			}
+
+			await _userManager.AddLoginAsync(account!, loginInfo);
+			await _signInManager.SignInAsync(account!, false);
+
 			return Ok();
 		}
 	}

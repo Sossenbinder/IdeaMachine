@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using ProtoBuf;
+﻿using ProtoBuf;
 
 namespace IdeaMachine.Modules.Account.DataTypes.Model
 {
 	[ProtoContract]
-	public class SocialLoginInformation
-	{
-		[ProtoMember(1)]
-		public ExternalLoginInfo ExternalLoginInfo { get; set; }
-	}
+	public record SocialLoginInformation(
+		[property: ProtoMember(1)] string Email,
+		[property: ProtoMember(2)] string Name);
 }

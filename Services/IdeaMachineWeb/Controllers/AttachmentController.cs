@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Idea.Service.Interface;
-using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachineWeb.DataTypes.UiModels.Idea;
 using IdeaMachineWeb.Extensions;
 using IdeaMachineWeb.Utils;
@@ -19,10 +18,7 @@ namespace IdeaMachineWeb.Controllers
 	{
 		private readonly IIdeaAttachmentService _ideaAttachmentService;
 
-		public AttachmentController(
-			ISessionService sessionService,
-			IIdeaAttachmentService ideaAttachmentService)
-			: base(sessionService)
+		public AttachmentController(IIdeaAttachmentService ideaAttachmentService)
 		{
 			_ideaAttachmentService = ideaAttachmentService;
 		}

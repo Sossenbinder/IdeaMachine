@@ -78,7 +78,7 @@ namespace IdeaMachine.Common.Core.Extensions
 
 		public void Dispose()
 		{
-			Current = default;
+			Current = default!;
 			_enumerator = null;
 
 			GC.SuppressFinalize(this);
