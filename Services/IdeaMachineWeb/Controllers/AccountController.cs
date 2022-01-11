@@ -86,7 +86,7 @@ namespace IdeaMachineWeb.Controllers
 				return JsonResponse.Error(IdentityErrorCode.DefaultError);
 			}
 
-			var loginResponse = await _loginService.Login(new LoginModel()
+			var loginResponse = await _loginService.Login(new LoginModel
 			{
 				EmailUserName = signInInfo.EmailUserName,
 				Password = signInInfo.Password,

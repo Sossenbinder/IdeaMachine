@@ -172,7 +172,6 @@ namespace IdeaMachineWeb
 			builder.RegisterGrpcProxy<ILoginService, LoginServiceProxy>();
 			builder.RegisterGrpcProxy<IVerificationService, VerificationServiceProxy>();
 			builder.RegisterGrpcProxy<IAccountService, AccountServiceProxy>();
-			builder.RegisterGrpcProxy<ISocialLoginService, SocialLoginServiceProxy>();
 
 			builder.RegisterType<SessionContextMiddleware>().SingleInstance();
 

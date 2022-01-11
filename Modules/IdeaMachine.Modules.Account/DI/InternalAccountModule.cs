@@ -26,10 +26,6 @@ namespace IdeaMachine.Modules.Account.DI
 				.As<IVerificationService>()
 				.SingleInstance();
 
-			builder.RegisterType<SocialLoginService>()
-				.As<ISocialLoginService>()
-				.SingleInstance();
-
 			base.Load(builder);
 		}
 	}
