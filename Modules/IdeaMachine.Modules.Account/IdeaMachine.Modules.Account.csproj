@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net6.0</TargetFrameworks>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.2.0" />
@@ -21,9 +21,13 @@
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing.Abstractions\IdeaMachine.Common.Eventing.Abstractions.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing\IdeaMachine.Common.Eventing.csproj" />
-		<ProjectReference Include="..\..\Tools\GrpcProxySourceGenerator\GrpcProxySourceGenerator\GrpcProxySourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\IdeaMachine.Modules.Account.Abstractions\IdeaMachine.Modules.Account.Abstractions.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Modules.Session\IdeaMachine.Modules.Session.csproj" />
+	</ItemGroup>
+
+	<!--TODO: Run this as source generator once it is net6 compatible 🙏-->
+	<!--<ItemGroup>
+		<ProjectReference Include="..\..\Tools\GrpcProxySourceGenerator\GrpcProxySourceGenerator\GrpcProxySourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,5 +35,5 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-	</ItemGroup>
+	</ItemGroup>-->
 </Project>

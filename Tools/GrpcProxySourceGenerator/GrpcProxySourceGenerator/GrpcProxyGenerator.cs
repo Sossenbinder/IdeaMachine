@@ -9,9 +9,9 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace GrpcProxySourceGenerator
 {
-    [Generator]
-    public class GrpcProxyGenerator : ISourceGenerator
-    {
+	[Generator]
+	public class GrpcProxyGenerator : ISourceGenerator
+	{
 		public class SyntaxReceiver : ISyntaxReceiver
 		{
 			public List<InterfaceDeclarationSyntax> EligibleInterfaceNodes { get; } = new List<InterfaceDeclarationSyntax>();
@@ -27,21 +27,19 @@ namespace GrpcProxySourceGenerator
 
 		public void Initialize(GeneratorInitializationContext context)
 		{
+			Debugger.Launch();
 			context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
-	    }
+		}
 
-	    public void Execute(GeneratorExecutionContext context)
-	    {
-			// Short-circuit for now
-		    return;
-
-		    if (!(context.SyntaxReceiver is SyntaxReceiver receiver))
-		    {
+		public void Execute(GeneratorExecutionContext context)
+		{
+			if (!(context.SyntaxReceiver is SyntaxReceiver receiver))
+			{
 				return;
-		    }
+			}
 
 			var interfacesToGenerateFor = receiver.EligibleInterfaceNodes;
-			
+
 			foreach (var service in interfacesToGenerateFor)
 			{
 				var sb = new StringBuilder();
@@ -81,25 +79,25 @@ namespace GrpcProxySourceGenerator
 
 				context.AddSource(className, SourceText.From(sb.ToString(), Encoding.UTF8));
 			}
-	    }
+		}
 
-	    private string GenerateProxyMethod(MethodDeclarationSyntax method)
-	    {
-		    var methodIdentifier = method.Identifier.Text;
+		private string GenerateProxyMethod(MethodDeclarationSyntax method)
+		{
+			var methodIdentifier = method.Identifier.Text;
 
-		    return $@"
+			return $@"
 				public {method.ReturnType} {methodIdentifier} ({GenerateParameters(method.ParameterList)})
 					=> {(method.ReturnType is GenericNameSyntax ? "InvokeWithResult" : "Invoke")}(service => service.{methodIdentifier}(
 							{method.ParameterList.Parameters.Select(x => x.Identifier.Text)}
 						));
 			";
-	    }
+		}
 
-	    private static string GenerateParameters(BaseParameterListSyntax parameterList)
-	    {
-		    return string.Join(" ", parameterList
-			    .Parameters
-			    .Select(x => $"{(x.Type as SimpleNameSyntax)!.Identifier.Text} {x.Identifier.Text}"));
-	    }
-    }
+		private static string GenerateParameters(BaseParameterListSyntax parameterList)
+		{
+			return string.Join(" ", parameterList
+				.Parameters
+				.Select(x => $"{(x.Type as SimpleNameSyntax)!.Identifier.Text} {x.Identifier.Text}"));
+		}
+	}
 }

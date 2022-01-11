@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.Core.Utils.IPC;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
@@ -7,7 +6,6 @@ using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
-using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using Microsoft.AspNetCore.Identity;
 
