@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Google.Apis.Auth.OAuth2;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachineWeb.Static;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdeaMachineWeb.Middleware
 {
@@ -28,18 +33,37 @@ namespace IdeaMachineWeb.Middleware
 
 		private void HandleRequest(HttpContext context)
 		{
-			// Try to initialize a known session
-			if (Guid.TryParse(context.User.Identity?.Name, out var userId))
+			if (context.User.Identity?.IsAuthenticated ?? false)
 			{
-				var session = TryInitializeKnownSession(userId.ToString());
-				if (session is not null)
-				{
-					context.Items[SessionContextIdentifier] = session;
-					return;
-				}
-			}
+				string? name = null;
+				var authenticationMethod = context.User.Claims.Any(x => x.Type == ClaimTypes.AuthenticationMethod);
 
-			// TODO: Properly fix the scheme setup here
+				if (!authenticationMethod)
+				{
+					// Try to initialize a known username/password session
+					name = context.User.Identity?.Name;
+				}
+				else
+				{
+					// Has to be an external scheme then
+					if (context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.AuthenticationMethod)?.Value == GoogleDefaults.AuthenticationScheme)
+					{
+						name = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+					}
+				}
+
+				if (name is not null && Guid.TryParse(name, out var userId))
+				{
+					var session = TryInitializeKnownSession(userId.ToString());
+					if (session is not null)
+					{
+						context.Items[SessionContextIdentifier] = session;
+						return;
+					}
+				}
+
+				// TODO: Properly fix the scheme setup here
+			}
 
 			// It has to be an anonymous user then
 			var isUserAnonymous = context.Request.Cookies.TryGetValue(IdentityDefinitions.AnonymousIdentification, out var anonCookieValue);
