@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace IdeaMachine.Common.Core.Extensions
 {
+	// ReSharper disable once InconsistentNaming
 	public static class IEnumerableExtensions
 	{
 		public static bool IsNullOrEmpty<T>(this IEnumerable<T>? enumerable)
@@ -70,6 +71,7 @@ namespace IdeaMachine.Common.Core.Extensions
 			var current = _enumerator.Current;
 
 			_action(current);
+			Current = current;
 
 			return true;
 		}

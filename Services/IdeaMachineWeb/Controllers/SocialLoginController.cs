@@ -2,11 +2,14 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Google.Apis.Logging;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
+using IdeaMachineWeb.DataTypes.UiModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace IdeaMachineWeb.Controllers
 {
@@ -15,14 +18,18 @@ namespace IdeaMachineWeb.Controllers
 	[Route("SocialLogin")]
 	public class SocialLoginController : ControllerBase
 	{
+		private readonly ILogger<SocialLoginController> _logger;
+
 		private readonly SignInManager<AccountEntity> _signInManager;
 
 		private readonly UserManager<AccountEntity> _userManager;
 
 		public SocialLoginController(
+			ILogger<SocialLoginController> logger,
 			SignInManager<AccountEntity> signInManager,
 			UserManager<AccountEntity> userManager)
 		{
+			_logger = logger;
 			_signInManager = signInManager;
 			_userManager = userManager;
 		}
@@ -58,41 +65,54 @@ namespace IdeaMachineWeb.Controllers
 
 			if (loginInfo is null)
 			{
-				return Redirect("/Logon/login");
+				_logger.LogError("Someone tried to login, but no information was returned from the external login");
+				return SocialLoginRedirect(SocialLoginResponseCode.InfoUnavailable);
 			}
 
 			var signinResult = await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, rememberMe, true);
 
 			if (signinResult.Succeeded)
 			{
+				_logger.LogInformation("");
 				return RedirectToAction("Index", "Home");
 			}
 
 			// No associated login, let's provide an account
-
 			var email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
 			var userName = loginInfo.Principal.FindFirstValue(ClaimTypes.Name);
 
 			if (email is null)
 			{
-				return Problem();
+				if (userName is not null)
+				{
+					_logger.LogError("External login attempted for unknown user, but no email was found. Username: {0}", userName);
+				}
+
+				return SocialLoginRedirect(SocialLoginResponseCode.EmailNotKnown);
 			}
 
 			var account = await _userManager.FindByEmailAsync(email);
 
-			if (account is null && !(await _userManager.CreateAsync(new AccountEntity()
+			var creationResult = await _userManager.CreateAsync(new AccountEntity()
 			{
 				Email = email,
 				UserName = userName,
-			})).Succeeded)
+			});
+
+			if (account is null && !creationResult.Succeeded)
 			{
-				return Problem();
+				_logger.LogError("User with email {0} and name {1} tried to login, but no account was found and generation failed. Errors: {3}", email, userName, creationResult
+					.Errors
+					.Select(x => $"\n{x.Code} - {x.Description}"));
+				return SocialLoginRedirect(SocialLoginResponseCode.CouldntCreateAccount);
 			}
 
 			await _userManager.AddLoginAsync(account!, loginInfo);
 			await _signInManager.SignInAsync(account!, false);
 
-			return Ok();
+			return RedirectToAction("Index", "Home");
 		}
+
+		private IActionResult SocialLoginRedirect(SocialLoginResponseCode code) => Redirect($"/Logon/Error/{(int)code}");
 	}
 }

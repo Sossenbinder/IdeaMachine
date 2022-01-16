@@ -6,6 +6,7 @@ import { Route, withRouter } from "react-router-dom";
 import Flex from "common/components/Flex";
 import SignIn from "./SignIn";
 import Register from "./Register";
+import SocialLoginErrorView from "./SocialLoginErrorView";
 
 // Functionality
 
@@ -22,6 +23,9 @@ export const SignInDialog: React.FC = () => {
 			</Route>
 			<Route exact path="/Logon/Register">
 				<Register />
+			</Route>
+			<Route path="/Logon/Error/:errorCode">
+				<SocialLoginErrorView />
 			</Route>
 		</Flex>
 	);

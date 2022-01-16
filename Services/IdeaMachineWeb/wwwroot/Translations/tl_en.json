@@ -3,6 +3,8 @@
 	"AddIdeaShortDescription": "Short description of your idea",
 	"AddIdeaLongDescription": "A lot of space to write down a lot of thoughts about your idea",
 	"AddIdeaYourEmail": "What's your email?",
+	"Home": "Home",
+	"GenericError": "Error",
 	"IdentityError_DefaultError": "An error has occured.",
 	"IdentityError_ConcurrencyFailure": "A problem occured due to a concurrently occuring operation.",
 	"IdentityError_PasswordMismatch": "Incorrect password.",
@@ -28,5 +30,10 @@
 	"IdentityError_PasswordRequiresUpper": "Password requires uppercase character.",
 	"IdentityError_PasswordMissing": "Missing password.",
 	"IdentityError_EmailNotConfirmed": "Email not confirmed yet.",
-	"IdentityError_EmailAlreadyConfirmed": "Email already confirmed."
+	"IdentityError_EmailAlreadyConfirmed": "Email already confirmed.",
+	"SocialLoginErrorHeading": "Something went wrong",
+	"SocialLoginError_Unknown": "Sadly we don't quite know what happened - Feel free to try again.",
+	"SocialLoginError_InfoUnavailable": "It seems like your login partner did not properly forward the required info to us.",
+	"SocialLoginError_EmailNotKnown": "We could not determine your email from what the login partner forwarded to us.",
+	"SocialLoginError_CouldntCreateAccount": "We couldn't find an existing account for this email, and were also not able to create a new one for you."
 }

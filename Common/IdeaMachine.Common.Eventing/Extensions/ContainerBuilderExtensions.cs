@@ -1,22 +1,22 @@
-﻿using System;
-using Autofac;
-using IdeaMachine.Common.DI.DataTypes;
+﻿using Autofac;
 using MassTransit;
+using MassTransit.Definition;
 
 namespace IdeaMachine.Common.Eventing.Extensions
 {
 	public static class ContainerBuilderExtensions
 	{
-		public static void RegisterMtConsumer<TConsumer>(this ContainerBuilder builder)
-			where TConsumer : IConsumer
+		public static void RegisterConsumer<TConsumer, TConsumerDefinition>(this ContainerBuilder builder)
+			where TConsumer : class, IConsumer
+			where TConsumerDefinition : IConsumerDefinition<TConsumer>
 		{
-			builder.RegisterInstance(DataContainer<Type>.Create(typeof(TConsumer)))
-				.As<DataContainer<Type>>()
-				.SingleInstance();
-
 			builder.RegisterType<TConsumer>()
 				.AsSelf()
 				.InstancePerDependency();
+
+			builder.RegisterType<TConsumerDefinition>()
+				.AsSelf()
+				.SingleInstance();
 		}
 	}
 }

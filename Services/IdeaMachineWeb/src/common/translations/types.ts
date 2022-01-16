@@ -3,6 +3,8 @@ export type TL = {
 	AddIdeaShortDescription: string;
 	AddIdeaLongDescription: string;
 	AddIdeaYourEmail: string;
+	Home: "Home";
+	GenericError: "Error";
 	IdentityError_DefaultError: string;
 	IdentityError_ConcurrencyFailure: string;
 	IdentityError_PasswordMismatch: string;
@@ -29,6 +31,11 @@ export type TL = {
 	IdentityError_PasswordMissing: string;
 	IdentityError_EmailNotConfirmed: string;
 	IdentityError_EmailAlreadyConfirmed: string;
-}
+	SocialLoginErrorHeading: "Something went wrong";
+	SocialLoginError_Unknown: "Sadly we don't quite know what happened - Feel free to try again.";
+	SocialLoginError_InfoUnavailable: "It seems like your login partner did not properly forward the required info to us.";
+	SocialLoginError_EmailNotKnown: "We could not determine your email from what the login partner forwarded to us.";
+	SocialLoginError_CouldntCreateAccount: "We couldn't find an existing account for this email, and were also not able to create a new one for you.";
+};
 
 export default TL;

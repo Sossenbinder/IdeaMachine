@@ -1,6 +1,7 @@
 param (
 	[string] $clientId,
 	[string] $clientPassword,
+	[string] $dockerPassword,
 	[string] $configuration = "dev"
 )
 
@@ -16,11 +17,14 @@ else {
 	Invoke-Expression "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml"
 }
 
-#docker network connect "kind" "kindRegistry"
-
 helm install ideamachinekeyvaultsecrets ./helm --set clientId=$clientId --set clientPassword=$clientPassword
-
 kubectl create secret docker-registry acrimgpullsecret --docker-server=https://ideamachine.azurecr.io --docker-username=$clientId --docker-password=$clientPassword
+& "./acrAccess.ps1" 
 
+# Required dependencies
 kubectl apply -f ./rabbitmq.yaml
-kubectl apply -f ../IdeaMachine/Kubernetes/IdeaMachineWeb.yaml
+kubectl apply -f ./genericConfig.yaml
+kubectl apply -f ./seq.yaml
+
+# Services
+& "./services/DeployServices.ps1" $configuration 

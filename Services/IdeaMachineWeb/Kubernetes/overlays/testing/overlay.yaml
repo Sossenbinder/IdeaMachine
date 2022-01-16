@@ -8,7 +8,9 @@ spec:
     spec:
       containers:
         - name: ideamachineweb
-          image: ideamachine.azurecr.io/ideamachineweb
+          image: ideamachine.azurecr.io/ideamachineweb:testing
           env:
             - name: DeploymentLink
               value: "https://localhost:1457"
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Staging

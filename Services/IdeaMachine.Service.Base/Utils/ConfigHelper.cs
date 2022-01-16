@@ -16,6 +16,7 @@ namespace IdeaMachine.Service.Base.Utils
 			ConfigProviders = new Dictionary<string, AbstractConfigProvider>()
 			{
 				{ Environments.Development, new DevelopmentConfigProvider() },
+				{ Environments.Staging, new ProductionConfigProvider() },
 				{ Environments.Production, new ProductionConfigProvider() },
 			};
 		}

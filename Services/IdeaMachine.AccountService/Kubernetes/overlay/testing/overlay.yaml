@@ -8,4 +8,7 @@ spec:
     spec:
       containers:
         - name: ideamachine-accountservice
-          image: ideamachine.azurecr.io/ideamachine
+          image: ideamachine.azurecr.io/accountservice:testing
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Staging

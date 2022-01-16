@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ideamachine-rabbitmq
+spec:
+  selector:
+    matchLabels:
+      name: ideamachine-rabbitmq
+  template:
+    spec:
+      containers:
+        - name: ideamachine-rabbitmq
+          image: localhost:5000/ideamachinerabbitmq

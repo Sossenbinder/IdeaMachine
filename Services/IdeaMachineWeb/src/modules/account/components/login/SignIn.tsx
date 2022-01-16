@@ -11,8 +11,6 @@ import LoadingButton from "common/components/controls/LoadingButton";
 import useServices from "common/hooks/useServices";
 import { getTranslationForErrorCode } from "modules/account/helper/IdentityErrorCodeHelper";
 import useTranslations from "common/hooks/useTranslations";
-import useAsyncCall from "common/hooks/useAsyncCall";
-import { listAvailableProviders } from "modules/account/communication/SocialLoginCommunication";
 
 // Types
 import { IdentityErrorCode, SignInInfo } from "modules/account/types";

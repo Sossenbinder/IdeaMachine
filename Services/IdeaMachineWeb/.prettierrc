@@ -1,13 +1,21 @@
 {
-	"singleQuote": false,
-	"printWidth": 160,
-	"editor.formatOnSave": true,
-	"proseWrap": "always",
-	"tabWidth": 4,
-	"requireConfig": false,
-	"useTabs": true,
-	"trailingComma": "none",
+	"arrowParens": "always",
+	"endOfLine": "auto",
 	"bracketSpacing": true,
-	"jsxBracketSameLine": false,
-	"semi": true
+	"embeddedLanguageFormatting": "auto",
+	"htmlWhitespaceSensitivity": "css",
+	"singleQuote": false,
+	"insertPragma": false,
+	"printWidth": 160,
+	"proseWrap": "preserve",
+	"tabWidth": 4,
+	"trailingComma": "all",
+	"useTabs": true,
+	"importOrder": [
+		"^hooks/?(.*)$",
+		"(^components/(.*)$)",
+		"(\\.styles|\\.less|\\.scss)$",
+		"^[\\./]"
+	],
+	"importOrderSeparation": true
 }
