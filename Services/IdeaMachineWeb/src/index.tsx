@@ -14,6 +14,8 @@ import CommentsService from "modules/comments/service/commentsService";
 import { Services, IModuleService } from "common/modules/service/types";
 import { ChannelProvider, IChannelProvider } from "./common/modules/channel/ChannelProvider";
 
+import "./twRoot.scss";
+
 window.onload = async () => {
 
 	await fetch("/Identity/Identify");

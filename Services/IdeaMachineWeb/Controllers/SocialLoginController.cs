@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Google.Apis.Logging;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachineWeb.DataTypes.UiModels.Account;

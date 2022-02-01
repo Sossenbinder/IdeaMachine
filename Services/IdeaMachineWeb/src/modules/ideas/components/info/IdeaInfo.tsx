@@ -39,11 +39,11 @@ type ReduxProps = {
 
 export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 	match: {
-		params: { id }
+		params: { id },
 	},
 	idea,
 	history,
-	account
+	account,
 }) => {
 	const idParsed = Number(id);
 
@@ -76,7 +76,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 						`}
 					>
 						<Cell gridArea="ShortDescription">
-							<h2>
+							<h2 className="text-xl">
 								<u>{idea.shortDescription}</u>
 							</h2>
 						</Cell>
@@ -118,7 +118,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 								onAttachmentAdded={(attachment) => {
 									const newIdea = { ...idea };
 									newIdea.attachmentUrls.push({
-										attachmentUrl: URL.createObjectURL(attachment)
+										attachmentUrl: URL.createObjectURL(attachment),
 									} as AttachmentUrl);
 								}}
 							/>
@@ -146,7 +146,7 @@ const mapStateToProps = (state: ReduxStore, ownProps: Props): ReduxProps => {
 
 	return {
 		account: state.accountReducer.data,
-		idea: state.ideaReducer.data.find((x) => x.id === idParsed)
+		idea: state.ideaReducer.data.find((x) => x.id === idParsed),
 	};
 };
 

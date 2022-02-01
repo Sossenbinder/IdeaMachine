@@ -23,14 +23,14 @@ export const Comment = ({ comment: { comment, timeStamp, commenterName } }: Prop
 			<Grid
 				className={styles.Comment}
 				gridTemplateAreas={`
-						'commenter . time'
+						'commenter commenter time'
 						'comment comment time'
 					`}
 				gridTemplateColumns="1fr 8fr 1fr"
 				gridTemplateRows="0.9rem minmax(0, 1fr)"
 			>
-				<Cell className={styles.CommenterName} gridArea="commenter">
-					{commenterName}
+				<Cell gridArea="commenter">
+					<span className={styles.CommenterName}>{commenterName}</span>
 				</Cell>
 				<Cell gridArea="time">
 					<span title={`${timeUtils.getUsDate(timeStamp)} - ${timeUtils.getUsTime(timeStamp)}`}>{timeUtils.getFormattedTimeDistance(timeStamp)}</span>

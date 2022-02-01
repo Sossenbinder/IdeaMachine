@@ -9,14 +9,10 @@ import { Notification } from "./types";
 import BackendNotification from "./Notifications";
 
 export class SignalRConnectionProvider implements ISignalRConnectionProvider {
-
 	public readonly SignalRConnection: signalR.HubConnection;
 
 	public constructor() {
-		this.SignalRConnection = new signalR.HubConnectionBuilder()
-			.withUrl("/signalRHub")
-			.configureLogging(signalR.LogLevel.Error)
-			.build();
+		this.SignalRConnection = new signalR.HubConnectionBuilder().withUrl("/signalRHub").configureLogging(signalR.LogLevel.Error).build();
 	}
 
 	async start(): Promise<void> {
