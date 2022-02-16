@@ -25,4 +25,4 @@ Still to come:
 
 ### Installing
 
-* Just download and run. For now, there is no productive deployment yet, and no shared public database. The compose fill will create a persistent postgresql volume for data.
+* Just download and run. For now, there is no productive deployment yet, and no shared public database. The compose fill will create a persistent mssql volume for data.

@@ -8,7 +8,7 @@ namespace IdeaMachine.Common.Eventing.Abstractions.Events
 	{
 		DisposableAction Register(Func<Task> handler);
 
-		void Unregister(Func<Task> handler);
+		void UnRegister(Func<Task> handler);
 	}
 
 	/// <summary>

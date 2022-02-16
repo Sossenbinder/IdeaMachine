@@ -19,31 +19,31 @@ using Microsoft.Extensions.Logging;
 
 namespace IdeaMachine.Modules.Idea.Service
 {
-    public class CommentService : ServiceBase, ICommentService
-    {
-	    private readonly ICommentRepository _commentRepository;
+	public class CommentService : ServiceBase, ICommentService
+	{
+		private readonly ICommentRepository _commentRepository;
 
-	    private readonly IIdeaRepository _ideaRepository;
+		private readonly IIdeaRepository _ideaRepository;
 
-	    private readonly ISignalRService _signalRService;
+		private readonly INotificationService _notificationService;
 
-	    private readonly IAccountService _accountService;
+		private readonly IAccountService _accountService;
 
 		public CommentService(
 			ILogger<CommentService> logger,
 			ICommentRepository commentRepository,
 			IIdeaRepository ideaRepository,
 			IIdeaEvents ideaEvents,
-			ISignalRService signalRService, 
+			INotificationService notificationService,
 			IAccountService accountService)
 			: base(logger)
-	    {
-		    _commentRepository = commentRepository;
-		    _ideaRepository = ideaRepository;
-		    _signalRService = signalRService;
-		    _accountService = accountService;
-		    RegisterEventHandler(ideaEvents.CommentAdded, OnCommentAdded);
-	    }
+		{
+			_commentRepository = commentRepository;
+			_ideaRepository = ideaRepository;
+			_notificationService = notificationService;
+			_accountService = accountService;
+			RegisterEventHandler(ideaEvents.CommentAdded, OnCommentAdded);
+		}
 
 		private async Task OnCommentAdded(CommentAdded commentAddedArgs)
 		{
@@ -65,7 +65,7 @@ namespace IdeaMachine.Modules.Idea.Service
 
 				comment.TimeStamp = entity.CreationDate;
 				comment.IdeaId = entity.IdeaId;
-				await _signalRService.RaiseGroupSignalREvent(ownerId.Value.ToString(), NotificationFactory.Create(comment.ToUiModel(), NotificationType.Comment));
+				await _notificationService.RaiseForGroup(ownerId.Value.ToString(), NotificationFactory.Create(comment.ToUiModel(), NotificationType.Comment));
 			}
 		}
 
@@ -75,5 +75,5 @@ namespace IdeaMachine.Modules.Idea.Service
 
 			return ServiceResponse.Success(comments.Select(x => x.ToModel()).ToList());
 		}
-    }
+	}
 }

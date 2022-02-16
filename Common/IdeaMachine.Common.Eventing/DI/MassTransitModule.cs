@@ -18,8 +18,8 @@ namespace IdeaMachine.Common.Eventing.DI
 				.As<IMassTransitEventingService>()
 				.SingleInstance();
 
-			builder.RegisterType<MassTransitSignalRService>()
-				.As<ISignalRService>()
+			builder.RegisterType<MassTransitNotificationService>()
+				.As<INotificationService>()
 				.SingleInstance();
 
 			builder.RegisterType<MassTransitEventFactory>()

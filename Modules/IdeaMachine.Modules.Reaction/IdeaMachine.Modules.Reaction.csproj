@@ -12,6 +12,7 @@
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing\IdeaMachine.Common.Eventing.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Modules.Account.Abstractions\IdeaMachine.Modules.Account.Abstractions.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Modules.Idea.Abstractions\IdeaMachine.Modules.Idea.Abstractions.csproj" />
+		<ProjectReference Include="..\IdeaMachine.Modules.Idea\IdeaMachine.Modules.Idea.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Modules.Reaction.Abstractions\IdeaMachine.Modules.Reaction.Abstractions.csproj" />
 		<ProjectReference Include="..\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
 	</ItemGroup>

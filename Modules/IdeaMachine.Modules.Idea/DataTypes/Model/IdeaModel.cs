@@ -27,7 +27,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Model
 		{
 			return new()
 			{
-				Creator = session.User.UserId,
+				CreatorId = session.User.UserId,
 				CreationDate = CreationDate,
 				LongDescription = LongDescription,
 				ShortDescription = ShortDescription,

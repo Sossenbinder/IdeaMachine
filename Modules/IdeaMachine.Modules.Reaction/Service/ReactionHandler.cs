@@ -15,15 +15,15 @@ namespace IdeaMachine.Modules.Reaction.Service
 	{
 		private readonly IReactionRepository _reactionRepository;
 
-		private readonly ISignalRService _signalRService;
+		private readonly INotificationService _notificationService;
 
 		public ReactionHandler(
 			IReactionEvents reactionEvents,
 			IReactionRepository reactionRepository,
-			ISignalRService signalRService)
+			INotificationService notificationService)
 		{
 			_reactionRepository = reactionRepository;
-			_signalRService = signalRService;
+			_notificationService = notificationService;
 
 			RegisterEventHandler(reactionEvents.LikeChange, HandleLikeChange);
 		}
@@ -36,7 +36,7 @@ namespace IdeaMachine.Modules.Reaction.Service
 
 			if (putSuccess)
 			{
-				await _signalRService.RaiseGroupSignalREvent(userId.ToString(), NotificationFactory.Update(ideaId, NotificationType.LikeCommited));
+				await _notificationService.RaiseForGroup(userId.ToString(), NotificationFactory.Update(ideaId, NotificationType.LikeCommited));
 			}
 		}
 	}

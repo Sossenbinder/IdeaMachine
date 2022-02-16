@@ -6,6 +6,7 @@
 		Reaction,
 		LikeCommited,
 		Comment,
-		UserDetails
+		UserDetails,
+		IdeaResponse,
 	}
 }

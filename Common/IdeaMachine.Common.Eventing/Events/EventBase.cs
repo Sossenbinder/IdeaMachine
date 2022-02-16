@@ -16,10 +16,10 @@ namespace IdeaMachine.Common.Eventing.Events
 		{
 			Handlers.Add(handler);
 
-			return new DisposableAction(() => Unregister(handler));
+			return new DisposableAction(() => UnRegister(handler));
 		}
 
-		public void Unregister(Func<Task> handler)
+		public void UnRegister(Func<Task> handler)
 		{
 			Handlers.Remove(handler);
 		}

@@ -1,4 +1,5 @@
-﻿using IdeaMachine.Common.Database.Context;
+﻿using System;
+using IdeaMachine.Common.Database.Context;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Idea.DataTypes.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,15 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 
 			modelBuilder.Entity<IdeaEntity>()
 				.HasKey(x => x.Id);
+
+			modelBuilder.Entity<IdeaEntity>()
+				.Property(x => x.CreatorId)
+				.HasColumnName("Creator");
+
+			modelBuilder.Entity<IdeaEntity>()
+				.HasOne(x => x.Creator)
+				.WithMany()
+				.HasForeignKey(x => x.CreatorId);
 
 			modelBuilder.Entity<IdeaEntity>()
 				.HasMany(x => x.Tags)

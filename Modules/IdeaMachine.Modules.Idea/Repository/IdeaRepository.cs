@@ -69,7 +69,7 @@ namespace IdeaMachine.Modules.Idea.Repository
 			await using var ctx = CreateContext();
 
 			return await ctx.Ideas
-				.Where(x => x.Creator == userId)
+				.Where(x => x.CreatorId == userId)
 				.Include(x => x.Tags)
 				.Include(x => x.AttachmentUrls)
 				.ToListAsync();
@@ -82,7 +82,7 @@ namespace IdeaMachine.Modules.Idea.Repository
 			return await ctx
 				.Ideas
 				.Where(x => x.Id == id)
-				.Select(x => x.Creator)
+				.Select(x => x.CreatorId)
 				.FirstOrDefaultAsync();
 		}
 
@@ -101,12 +101,12 @@ namespace IdeaMachine.Modules.Idea.Repository
 			await using var ctx = CreateContext();
 
 			var oldIdeas = await ctx.Ideas
-				.Where(x => x.Creator == oldOwner)
+				.Where(x => x.CreatorId == oldOwner)
 				.ToListAsync();
 
 			foreach (var ideaOfOldOwner in oldIdeas)
 			{
-				ideaOfOldOwner.Creator = newOwner;
+				ideaOfOldOwner.CreatorId = newOwner;
 			}
 
 			await ctx.SaveChangesAsync();
@@ -123,7 +123,7 @@ namespace IdeaMachine.Modules.Idea.Repository
 				return IdeaDeleteErrorCode.NotFound;
 			}
 
-			if (idea.Creator != userId)
+			if (idea.CreatorId != userId)
 			{
 				return IdeaDeleteErrorCode.NotOwned;
 			}
@@ -145,7 +145,7 @@ namespace IdeaMachine.Modules.Idea.Repository
 			{
 				return new();
 			}
-			
+
 			var attachmentEntities = attachmentUrls.Select(x => new AttachmentUrlEntity()
 			{
 				AttachmentUrl = x,

@@ -13,14 +13,14 @@ namespace IdeaMachine.Modules.Account.Events
     {
 	    private readonly ISessionService _sessionService;
 
-	    private readonly ISignalRService _signalRService;
+	    private readonly INotificationService _notificationService;
 
 	    public AccountProfilePictureUpdatedConsumer(
 		    ISessionService sessionService, 
-		    ISignalRService signalRService)
+		    INotificationService notificationService)
 	    {
 		    _sessionService = sessionService;
-		    _signalRService = signalRService;
+		    _notificationService = notificationService;
 	    }
 
 	    public async Task Consume(ConsumeContext<AccountProfilePictureUpdated> context)
@@ -37,7 +37,7 @@ namespace IdeaMachine.Modules.Account.Events
 			    session.User.ProfilePictureUrl = profilePictureUrl;
 		    });
 			
-			await _signalRService.RaiseGroupSignalREvent(accountId.ToString(), NotificationFactory.Update(_sessionService.GetSession(accountId)!.User, NotificationType.UserDetails));
+			await _notificationService.RaiseForGroup(accountId.ToString(), NotificationFactory.Update(_sessionService.GetSession(accountId)!.User, NotificationType.UserDetails));
 		}
     }
 }

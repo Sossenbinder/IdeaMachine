@@ -37,14 +37,11 @@ namespace IdeaMachine.Modules.Session.Service
 
 		public async Task UpdateSession(Guid userId, Action<Abstractions.DataTypes.Session> sessionUpdater)
 		{
-			var lockedItem = await _sessionCache.TryGetLocked(userId);
+			await using var lockedItem = await _sessionCache.TryGetLocked(userId);
 
 			if (lockedItem is not null)
 			{
-				await using (lockedItem)
-				{
-					sessionUpdater(lockedItem.Value);
-				}
+				sessionUpdater(lockedItem.Value);
 			}
 		}
 	}

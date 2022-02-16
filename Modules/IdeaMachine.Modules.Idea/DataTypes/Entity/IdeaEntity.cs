@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Entity
@@ -9,13 +10,15 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 	{
 		public int Id { get; set; } = 0;
 
-		public Guid Creator { get; set; }
+		public Guid CreatorId { get; set; }
 
 		public string ShortDescription { get; set; } = null!;
 
 		public string? LongDescription { get; set; }
 
 		public DateTime CreationDate { get; set; }
+
+		public AccountEntity Creator { get; set; } = null!;
 
 		public List<TagEntity>? Tags { get; set; }
 
@@ -28,7 +31,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 			return new()
 			{
 				CreationDate = CreationDate,
-				CreatorId = Creator,
+				CreatorId = CreatorId,
 				ShortDescription = ShortDescription,
 				LongDescription = LongDescription,
 				Id = Id,

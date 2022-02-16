@@ -4,25 +4,17 @@ using System.Threading.Tasks;
 
 namespace IdeaMachine.Common.Eventing.Abstractions.Events
 {
-	public interface IAsyncEvent
+	public interface IAsyncEvent : IEvent
 	{
 		Task<IEnumerable<Exception>> Raise();
 
 		void RaiseFireAndForget();
-
-		void Register(Action actionItem);
-
-		void Unregister(Func<Task> actionItem);
 	}
 
-	public interface IAsyncEvent<T>
+	public interface IAsyncEvent<T> : IEvent<T>
 	{
 		Task<IEnumerable<Exception>> Raise(T eventArgs);
 
 		void RaiseFireAndForget(T eventArgs);
-
-		void Register(Action<T> actionItem);
-
-		void Unregister(Func<T, Task> actionItem);
 	}
 }
