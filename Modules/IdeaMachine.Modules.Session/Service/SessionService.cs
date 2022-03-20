@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Cache.Implementations;
 using IdeaMachine.Common.Core.Cache.Implementations.Interface;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachine.ModulesServiceBase;
@@ -18,16 +19,22 @@ namespace IdeaMachine.Modules.Session.Service
 			_sessionCache = new MemoryCache<Guid, Abstractions.DataTypes.Session>();
 
 			RegisterEventHandler(accountEvents.AccountSignedIn, OnAccountSignedIn);
+			RegisterEventHandler(accountEvents.AccountSignedOut, OnAccountSignedOut);
 		}
 
-		private void OnAccountSignedIn(AccountSignedIn accountSignedIn)
+		private async Task OnAccountSignedOut(AccountLoggedOut account)
+		{
+			await _sessionCache.Delete(GetKey(account.Session));
+		}
+
+		private async Task OnAccountSignedIn(AccountSignedIn accountSignedIn)
 		{
 			var session = new Abstractions.DataTypes.Session()
 			{
 				User = accountSignedIn.Account,
 			};
 
-			_sessionCache.Set(session.User.UserId, session);
+			await _sessionCache.Set(session.User.UserId, session);
 		}
 
 		public Abstractions.DataTypes.Session? GetSession(Guid userId)
@@ -44,5 +51,7 @@ namespace IdeaMachine.Modules.Session.Service
 				sessionUpdater(lockedItem.Value);
 			}
 		}
+
+		private static Guid GetKey(IUser user) => user.UserId;
 	}
 }

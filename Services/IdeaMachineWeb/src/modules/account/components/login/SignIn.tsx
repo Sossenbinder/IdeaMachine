@@ -30,7 +30,7 @@ export const SignIn: React.FC = () => {
 	const [signInInfo, setSignInInfo] = React.useState<SignInInfo>({
 		emailUserName: "",
 		password: "",
-		rememberMe: false
+		rememberMe: false,
 	});
 
 	const onSignInClick = async () => {
@@ -44,14 +44,14 @@ export const SignIn: React.FC = () => {
 
 	return (
 		<Flex className={styles.SignInContainer} direction="Column" crossAlign="Center">
-			<h2>Sign in:</h2>
+			<span className="text-2xl font-bold">Sign in:</span>
 			<TextField
 				className={styles.InputField}
 				label="Email/Username"
 				onChange={(e) =>
 					setSignInInfo({
 						...signInInfo,
-						emailUserName: e.currentTarget.value
+						emailUserName: e.currentTarget.value,
 					})
 				}
 				value={signInInfo.emailUserName}
@@ -63,7 +63,7 @@ export const SignIn: React.FC = () => {
 				onChange={(e) =>
 					setSignInInfo({
 						...signInInfo,
-						password: e.currentTarget.value
+						password: e.currentTarget.value,
 					})
 				}
 				type="password"
@@ -78,7 +78,7 @@ export const SignIn: React.FC = () => {
 							onChange={(e) =>
 								setSignInInfo({
 									...signInInfo,
-									rememberMe: e.currentTarget.checked
+									rememberMe: e.currentTarget.checked,
 								})
 							}
 							color="primary"

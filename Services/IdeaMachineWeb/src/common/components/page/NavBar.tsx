@@ -29,7 +29,7 @@ export const NavBar: React.FC<Props> = ({ account, history }) => {
 		<Flex className={styles.NavBar} space="Between">
 			<Flex direction="Row" crossAlign="Center" className={styles.Branding} onClick={() => history.push("/")}>
 				<img className={styles.BrandIcon} src="/Resources/Icons/ideablub.svg" />
-				<h2>IdeaMachine</h2>
+				<span className="text-xl">IdeaMachine</span>
 			</Flex>
 			<Flex className={styles.ActionSection} direction="Row" crossAlignSelf="Center" mainAlign="End">
 				<LinkButton to="/idea/own" color="primary">
@@ -52,7 +52,7 @@ export const NavBar: React.FC<Props> = ({ account, history }) => {
 
 const mapStateToProps = (state: ReduxStore): ReduxProps => {
 	return {
-		account: state.accountReducer.data
+		account: state.accountReducer.data,
 	};
 };
 

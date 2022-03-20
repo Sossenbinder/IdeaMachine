@@ -81,7 +81,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 							</h2>
 						</Cell>
 						<Cell gridArea="Reply">
-							<MaterialIcon onClick={async () => history.push(`/idea/${id}/reply`)} iconName="reply" color="white" size={40} />
+							<MaterialIcon onClick={() => history.push(`/idea/${id}/reply`)} iconName="reply" color="white" size={40} />
 						</Cell>
 						<Cell gridArea="Timestamp">
 							<Flex direction="Column">

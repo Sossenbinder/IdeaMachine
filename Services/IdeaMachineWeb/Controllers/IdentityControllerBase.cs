@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
-using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachineWeb.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

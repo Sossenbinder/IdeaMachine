@@ -1,7 +1,6 @@
 ﻿using IdeaMachine.Common.Database.Context;
 using IdeaMachine.Modules.Reaction.DataTypes.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace IdeaMachine.Modules.Reaction.Repository.Context
 {

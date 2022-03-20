@@ -11,7 +11,7 @@ namespace IdeaMachine.Modules.Account.Events
 
 		public IDistributedEvent<AccountSignedIn> AccountSignedIn { get; }
 
-		public IDistributedEvent<AccountLoggedOut> AccountLoggedOut { get; }
+		public IDistributedEvent<AccountLoggedOut> AccountSignedOut { get; }
 
 		public IDistributedEvent<AccountVerified> AccountVerified { get; }
 
@@ -23,7 +23,7 @@ namespace IdeaMachine.Modules.Account.Events
 		{
 			AccountCreated = accountCreated;
 			AccountSignedIn = accountSignedIn;
-			AccountLoggedOut = accountLoggedOut;
+			AccountSignedOut = accountLoggedOut;
 			AccountVerified = accountVerified;
 		}
 	}

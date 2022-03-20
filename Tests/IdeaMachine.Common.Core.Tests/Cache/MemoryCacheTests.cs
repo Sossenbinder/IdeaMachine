@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Cache.Implementations;
 using NUnit.Framework;
 
@@ -16,12 +17,12 @@ namespace IdeaMachine.Common.Core.Tests.Cache
 	    }
 
 		[Test]
-	    public void CacheGetShouldWorkForHappyPath()
+	    public async Task CacheGetShouldWorkForHappyPath()
 	    {
 		    const string cacheKey = "Key_1";
 
 		    var originalItem = new TestItem(5);
-		    _cache.Set(cacheKey, originalItem);
+		    await _cache.Set(cacheKey, originalItem);
 
 		    var resolvedItem = _cache.Get(cacheKey);
 
@@ -52,13 +53,13 @@ namespace IdeaMachine.Common.Core.Tests.Cache
 		}
 
 	    [Test]
-	    public void CacheGetShouldWorkWithGetOrAddForCreate()
+	    public async Task CacheGetShouldWorkWithGetOrAddForCreate()
 	    {
 		    const string cacheKey = "Key_1";
 
 		    var originalItem = new TestItem(5);
 		    var cache = new MemoryCache<string, TestItem>();
-			cache.Set(cacheKey, originalItem);
+			await cache.Set(cacheKey, originalItem);
 
 		    var resolvedItem = cache.GetOrAdd(cacheKey, _ => new TestItem(9));
 

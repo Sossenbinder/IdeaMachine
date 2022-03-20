@@ -68,7 +68,7 @@ namespace IdeaMachine.Modules.Account.Service
 
 		public async Task Logout(ISession session)
 		{
-			await _accountEvents.AccountLoggedOut.Raise(new AccountLoggedOut(session.User));
+			await _accountEvents.AccountSignedOut.Raise(new AccountLoggedOut(session.User));
 		}
 
 		public async Task RefreshLogin(RefreshLoginModel refreshLoginModel)

@@ -1,9 +1,7 @@
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
-using IdeaMachine.Common.AspNetIdentity.Helper;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
 using IdeaMachine.Common.IPC.DI;
@@ -30,17 +28,14 @@ using IdeaMachineWeb.Middleware;
 using IdeaMachineWeb.Utils;
 using MassTransit;
 using MassTransit.SignalR;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -129,16 +124,16 @@ namespace IdeaMachineWeb
 		private void ConfigureMassTransit(IServiceCollection services)
 		{
 			services.AddSignalR();
-
 			services.AddMassTransit(x =>
 			{
 				x.AddSignalRHub<SignalRHub>();
 
 				x.UsingRabbitMq((ctx, cfg) =>
 				{
-					cfg.Durable = false;
+					cfg.Durable = true;
 					cfg.AutoDelete = true;
-					cfg.PurgeOnStartup = true;
+
+					cfg.QueueExpiration = TimeSpan.FromHours(1);
 
 					cfg.UseMessageRetry(retryConfig =>
 					{

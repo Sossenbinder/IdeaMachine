@@ -38,23 +38,21 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 
         public async Task<LockedCacheItem<TValue>> GetLocked(TKey key)
         {
-            // Get our lock first - Then we can check if an item is there at all.
-            // If we would check first, then there is no guarantee the item is still
-            // there at the point in time we get our turn on the lock
-            var @lock = await _cacheLockManager.GetLockLocked(key);
-	        var value = Get(key);
+	        var @lock = await TryGetLockedInternal(key);
 
-	        if (value != null)
-	        {
-		        return new LockedCacheItem<TValue>(value, @lock);
-	        }
+			// In case the item is not there, throw
+			if (@lock is null)
+			{
+				throw new KeyNotFoundException($"Item for key {key} not found");
+			}
 
-	        // In case the item is not there, remove the lock again and return null
-	        _cacheLockManager.ReleaseLock(key);
-	        throw new KeyNotFoundException($"Item for key {key} not found");
+			return @lock;
         }
 
-        public async Task<LockedCacheItem<TValue>?> TryGetLocked(TKey key)
+        public Task<LockedCacheItem<TValue>?> TryGetLocked(TKey key)
+	        => TryGetLockedInternal(key);
+
+        private async Task<LockedCacheItem<TValue>?> TryGetLockedInternal(TKey key)
 		{
 			// Get our lock first - Then we can check if an item is there at all.
 			// If we would check first, then there is no guarantee the item is still
@@ -64,17 +62,26 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 
 			if (value != null)
 			{
-				return new LockedCacheItem<TValue>(value, @lock);
+				return new LockedCacheItem<TValue>(key.ToString() ?? "Unknown", value, @lock);
 			}
 
 			// In case the item is not there, remove the lock again and return null
-			_cacheLockManager.ReleaseLock(key);
-			return null;
+			await using (@lock)
+			{
+				return null;
+			}
 		}
 
-        public void Set(TKey key, TValue value)
+        public ValueTask Set(TKey key, TValue value)
         {
 	        _cache.Set(key, value);
+	        return default;
+        }
+
+        public ValueTask Delete(TKey key)
+        {
+	        _cache.Remove(key);
+	        return default;
         }
     }
 }

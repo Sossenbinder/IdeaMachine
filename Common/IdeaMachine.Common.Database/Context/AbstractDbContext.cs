@@ -1,16 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace IdeaMachine.Common.Database.Context
 {
 	public abstract class AbstractDbContext : DbContext
 	{
-		protected AbstractDbContext([NotNull] string connectionString)
+		protected AbstractDbContext(string connectionString)
 			: base(GetContextOptions(connectionString))
 		{
 		}
 
-		private static DbContextOptions GetContextOptions([NotNull] string connectionString)
+		private static DbContextOptions GetContextOptions(string connectionString)
 		{
 			return new DbContextOptionsBuilder()
 				.UseSqlServer(connectionString)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using IdeaMachine.Common.Core.Cache.Locking.Extensions;
 using IdeaMachine.Common.Core.Cache.Locking.Interface;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -20,12 +21,8 @@ namespace IdeaMachine.Common.Core.Cache.Locking
 
 	    public async Task<ICacheLock> GetLockLocked(TKey key)
 	    {
-		    var lazyLock = new Lazy<ICacheLock>(() => _cacheLockFactory());
-
-		    var @lock = _cacheLocks.GetOrCreate(key, _ => lazyLock.Value);
-			
+		    var @lock = _cacheLocks.GetOrCreateOnce(key, _cacheLockFactory);
 		    await @lock.Lock();
-
 		    return @lock;
 	    }
 

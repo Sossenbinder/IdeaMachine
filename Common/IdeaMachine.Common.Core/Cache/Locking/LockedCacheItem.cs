@@ -3,12 +3,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Cache.Locking.Interface;
 using IdeaMachine.Common.Core.Extensions.Async;
+using Serilog;
 
 namespace IdeaMachine.Common.Core.Cache.Locking
 {
+	/// <summary>
+	/// Wraps a cache item with a lock. Takes care of auto-releasing the lock after X seconds as well
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	public class LockedCacheItem<T> : IDisposable, IAsyncDisposable
 	{
 		public T Value { get; set; }
+
+		private readonly string _keyValue;
 
 		private readonly ICacheLock _cacheLock;
 
@@ -19,10 +26,12 @@ namespace IdeaMachine.Common.Core.Cache.Locking
 		private readonly TimeSpan _timeSpan = TimeSpan.FromSeconds(5);
 
 		public LockedCacheItem(
+			string keyValue,
 			T value,
 			ICacheLock cacheLock)
 		{
 			_cancellationTokenSource = new CancellationTokenSource();
+			_keyValue = keyValue;
 			_cacheLock = cacheLock;
 			Value = value;
 
@@ -32,6 +41,13 @@ namespace IdeaMachine.Common.Core.Cache.Locking
 		private async Task RunAutoRelease()
 		{
 			await Task.Delay(_timeSpan, _cancellationTokenSource.Token);
+
+			if (_isDisposed)
+			{
+				return;
+			}
+
+			Log.Information("Auto-releasing cache item with key {key}", _keyValue);
 			await Release();
 		}
 

@@ -10,6 +10,7 @@ namespace IdeaMachine.Common.Core.Cache.Implementations.Interface
 	/// </summary>
 	public interface ICache<in TKey, TValue>
     {
+		// Getter
 	    TValue Get(TKey key);
 
 	    bool TryGetValue(TKey key, out TValue value);
@@ -20,6 +21,8 @@ namespace IdeaMachine.Common.Core.Cache.Implementations.Interface
 
 	    Task<LockedCacheItem<TValue>?> TryGetLocked(TKey key);
 
-	    void Set(TKey key, TValue value);
+	    ValueTask Set(TKey key, TValue value);
+
+	    ValueTask Delete(TKey key);
     }
 }

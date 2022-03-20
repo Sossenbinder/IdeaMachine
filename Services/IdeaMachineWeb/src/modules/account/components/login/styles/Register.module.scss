@@ -1,5 +1,4 @@
 .RegisterContainer {
-
 	width: 80%;
 
 	.InputField {
@@ -13,6 +12,10 @@
 
 	.ActionSection {
 		margin: 5px 0 5px 0;
+
+		button:first-of-type {
+			margin-right: 1rem;
+		}
 
 		.Button {
 			height: 36px;

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Service.Interface;
@@ -10,10 +9,12 @@ using IdeaMachineWeb.Static;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 
 namespace IdeaMachineWeb.Middleware
 {
+	/// <summary>
+	/// Middleware to initialize sessions based on the session cache
+	/// </summary>
 	public class SessionContextMiddleware : IMiddleware
 	{
 		public static string SessionContextIdentifier = "IdeaMachineSessionContext";

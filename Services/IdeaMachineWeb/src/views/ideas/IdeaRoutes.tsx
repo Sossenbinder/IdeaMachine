@@ -10,24 +10,18 @@ import IdeaListOwn from "modules/ideas/components/IdeaListOwn";
 export const IdeaRoutes: React.FC = () => {
 	return (
 		<Switch>
-			<Route
-				path="/idea/own">
+			<Route path="/idea/own">
 				<IdeaListOwn />
 			</Route>
-			<Route
-				path="/idea/input">
+			<Route path="/idea/input">
 				<IdeaInput />
 			</Route>
-			<Route
-				path="/idea/:id/reply">
+			<Route path="/idea/:id/reply">
 				<IdeaInput />
 			</Route>
-			<Route
-				path="/idea/:id"
-				component={IdeaInfo}
-			/>
+			<Route path="/idea/:id" component={IdeaInfo} />
 		</Switch>
 	);
-}
+};
 
 export default IdeaRoutes;

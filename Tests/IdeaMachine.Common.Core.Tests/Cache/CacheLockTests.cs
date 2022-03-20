@@ -27,14 +27,14 @@ namespace IdeaMachine.Common.Core.Tests.Cache
 
 			var testItem = new TestItem(5);
 
-			_cache.Set(key, testItem);
+			await _cache.Set(key, testItem);
 
 			var lockedCacheItem = await _cache.GetLocked(key);
 			await lockedCacheItem!.Release();
 
 			var secondItem = await _cache.GetLocked(key);
 
-			Assert.True(secondItem!.Value.Counter == testItem.Counter);
+			Assert.True(secondItem.Value.Counter == testItem.Counter);
 		}
 
 		[Test]
@@ -44,7 +44,7 @@ namespace IdeaMachine.Common.Core.Tests.Cache
 
 			var testItem = new TestItem(5);
 
-			_cache.Set(key, testItem);
+			await _cache.Set(key, testItem);
 
 			var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
@@ -83,14 +83,12 @@ namespace IdeaMachine.Common.Core.Tests.Cache
 			var testItem = new TestItem(5);
 			const int newVal = 3;
 
-			_cache.Set(key, testItem);
+			await _cache.Set(key, testItem);
 
 			async Task DoStuff()
 			{
-				await using (var lockedItem = await _cache.GetLocked(key))
-				{
-					lockedItem.Value.Counter = newVal;
-				}
+				await using var lockedItem = await _cache.GetLocked(key);
+				lockedItem.Value.Counter = newVal;
 			}
 
 			var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));

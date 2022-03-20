@@ -75,7 +75,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.ProfilePictureS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcProxySourceGenerator", "Tools\GrpcProxySourceGenerator\GrpcProxySourceGenerator\GrpcProxySourceGenerator.csproj", "{21E26209-EB55-4FA4-963F-DA396E003050}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Common.Eventing.Tests", "Tests\IdeaMachine.Common.Eventing.Tests\IdeaMachine.Common.Eventing.Tests.csproj", "{DFB9F91D-00E2-4DBB-A007-5D95EC7A295E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Common.Eventing.Tests", "Tests\IdeaMachine.Common.Eventing.Tests\IdeaMachine.Common.Eventing.Tests.csproj", "{DFB9F91D-00E2-4DBB-A007-5D95EC7A295E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Modules.Session.Tests", "Tests\IdeaMachine.Modules.Session.Tests\IdeaMachine.Modules.Session.Tests.csproj", "{3D9D9D05-5DAE-4E48-A4A8-F6E021ECEDA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Tests.Core", "Tests\IdeaMachine.Tests.Core\IdeaMachine.Tests.Core.csproj", "{CFDF9231-D341-4535-9B25-41F5ABCFD5C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -211,6 +215,14 @@ Global
 		{DFB9F91D-00E2-4DBB-A007-5D95EC7A295E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB9F91D-00E2-4DBB-A007-5D95EC7A295E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFB9F91D-00E2-4DBB-A007-5D95EC7A295E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D9D9D05-5DAE-4E48-A4A8-F6E021ECEDA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D9D9D05-5DAE-4E48-A4A8-F6E021ECEDA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D9D9D05-5DAE-4E48-A4A8-F6E021ECEDA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D9D9D05-5DAE-4E48-A4A8-F6E021ECEDA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFDF9231-D341-4535-9B25-41F5ABCFD5C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFDF9231-D341-4535-9B25-41F5ABCFD5C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFDF9231-D341-4535-9B25-41F5ABCFD5C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFDF9231-D341-4535-9B25-41F5ABCFD5C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -247,6 +259,8 @@ Global
 		{207A219D-7E07-4335-B76B-A76F00366E60} = {42816EEC-3FED-4342-B3FB-546CF3067EC9}
 		{21E26209-EB55-4FA4-963F-DA396E003050} = {3A25ED1F-BDBB-41F3-B78F-EF38472136EA}
 		{DFB9F91D-00E2-4DBB-A007-5D95EC7A295E} = {4A0A011D-700E-4824-9DC8-DCB6CF73A95A}
+		{3D9D9D05-5DAE-4E48-A4A8-F6E021ECEDA1} = {4A0A011D-700E-4824-9DC8-DCB6CF73A95A}
+		{CFDF9231-D341-4535-9B25-41F5ABCFD5C7} = {4A0A011D-700E-4824-9DC8-DCB6CF73A95A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43FF27FF-5FB7-41C5-A060-392626E2A889}

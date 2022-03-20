@@ -80,7 +80,6 @@ namespace IdeaMachine.Service.Base.Startup
 				SetupMassTransitBus(configurator);
 
 				configurator.AddDelayedMessageScheduler();
-
 				configurator.UsingRabbitMq((ctx, cfg) =>
 				{
 					SetupRabbitMq(ctx, cfg);

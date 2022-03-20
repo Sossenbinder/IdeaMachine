@@ -16,17 +16,21 @@ import { RegisterInfo, IdentityErrorCode } from "modules/account/types";
 
 // Styles
 import styles from "./styles/Register.module.scss";
+import { Button } from "@mui/material";
+import { useHistory } from "react-router";
 
 type PasswordType = keyof Pick<RegisterInfo, "password" | "confirmPassword">;
 
 enum State {
 	Register,
-	Success
+	Success,
 }
 
 export const Register: React.FC = () => {
 	const { AccountService } = useServices();
 	const translations = useTranslations();
+
+	const history = useHistory();
 
 	const [state, setState] = React.useState<State>(State.Register);
 	const [identityErrorCode, setIdentityErrorCode] = React.useState<IdentityErrorCode>(IdentityErrorCode.Success);
@@ -35,7 +39,7 @@ export const Register: React.FC = () => {
 		email: "",
 		userName: "",
 		password: "",
-		confirmPassword: ""
+		confirmPassword: "",
 	});
 
 	const [incompatiblePassword, setIncompatiblePassword] = React.useState(false);
@@ -63,7 +67,7 @@ export const Register: React.FC = () => {
 
 	return (
 		<Flex className={styles.RegisterContainer} direction="Column" crossAlign="Center">
-			<h2>Register:</h2>
+			<span className="text-2xl font-bold">Register:</span>
 			<Choose>
 				<When condition={state === State.Register}>
 					<TextField
@@ -72,7 +76,7 @@ export const Register: React.FC = () => {
 						onChange={(e) =>
 							setRegisterInfo({
 								...registerInfo,
-								email: e.currentTarget.value
+								email: e.currentTarget.value,
 							})
 						}
 						value={registerInfo.email}
@@ -84,7 +88,7 @@ export const Register: React.FC = () => {
 						onChange={(e) =>
 							setRegisterInfo({
 								...registerInfo,
-								userName: e.currentTarget.value
+								userName: e.currentTarget.value,
 							})
 						}
 						value={registerInfo.userName}
@@ -112,6 +116,9 @@ export const Register: React.FC = () => {
 						<span className={styles.ErrorDescription}>{getTranslationForErrorCode(translations, identityErrorCode)}</span>
 					</If>
 					<Flex className={styles.ActionSection} crossAlignSelf="End">
+						<Button color="secondary" className={styles.Button} variant="contained" onClick={() => history.push("/Logon/Login")}>
+							Login
+						</Button>
 						<LoadingButton
 							color="primary"
 							className={styles.Button}

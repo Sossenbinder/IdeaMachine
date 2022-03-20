@@ -22,7 +22,7 @@ namespace IdeaMachine.Common.Core.Disposable
 
 		protected void RegisterAsyncDisposable(IAsyncDisposable asyncDisposable) => _asyncDisposables.Add(asyncDisposable);
 
-		public void Dispose() => AsyncUtils.RunSafe(async () => await DisposeAsync());
+		public void Dispose() => DisposeAsync().GetAwaiter().GetResult();
 
 		public ValueTask DisposeAsync()
 		{
