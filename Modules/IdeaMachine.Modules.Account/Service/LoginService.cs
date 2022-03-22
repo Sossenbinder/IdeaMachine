@@ -66,11 +66,6 @@ namespace IdeaMachine.Modules.Account.Service
 			});
 		}
 
-		public async Task Logout(ISession session)
-		{
-			await _accountEvents.AccountSignedOut.Raise(new AccountLoggedOut(session.User));
-		}
-
 		public async Task RefreshLogin(RefreshLoginModel refreshLoginModel)
 		{
 			var account = await _userManager.FindByIdAsync(refreshLoginModel.UserId.ToString());

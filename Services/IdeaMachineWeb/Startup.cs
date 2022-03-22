@@ -32,6 +32,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -95,6 +96,10 @@ namespace IdeaMachineWeb
 
 		private void ConfigureIdentity(IServiceCollection services)
 		{
+			services.Configure<ForwardedHeadersOptions>(options =>
+			{
+				options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+			});
 			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
 			services.AddIdentityWithoutDefaultAuthSchemes<AccountEntity, IdentityRole<Guid>>()
 				.AddEntityFrameworkStores<AccountContext>();
@@ -190,6 +195,16 @@ namespace IdeaMachineWeb
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+			var forwardedHeadersOptions = new ForwardedHeadersOptions
+			{
+				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+				RequireHeaderSymmetry = false
+			};
+			forwardedHeadersOptions.KnownNetworks.Clear();
+			forwardedHeadersOptions.KnownProxies.Clear();
+
+			app.UseForwardedHeaders(forwardedHeadersOptions);
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 

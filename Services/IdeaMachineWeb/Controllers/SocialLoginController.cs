@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Org.BouncyCastle.Ocsp;
 
 namespace IdeaMachineWeb.Controllers
 {
@@ -47,10 +48,12 @@ namespace IdeaMachineWeb.Controllers
 		[Route("ExternalLogin")]
 		public IActionResult ExternalLogin([FromQuery] string provider, [FromQuery] bool rememberMe)
 		{
+			var forwardedHeader = Request.Headers["X-Forwarded-For"].FirstOrDefault();
 			var redirectUrl = Url.Action("SocialLoginCallback", "SocialLogin", new
-			{
-				rememberMe
-			});
+				{
+					rememberMe
+				}, HttpContext.Request.Scheme, host: forwardedHeader ?? Request.Host.Value);
+
 			var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 			return Challenge(properties, provider);
 		}

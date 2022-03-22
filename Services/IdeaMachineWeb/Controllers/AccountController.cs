@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachineWeb.DataTypes.UiModels.Account;
 using IdeaMachineWeb.Extensions;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -25,12 +27,16 @@ namespace IdeaMachineWeb.Controllers
 
 		private readonly IRegistrationService _registrationService;
 
+		private readonly IPublishEndpoint _publishEndpoint;
+
 		public AccountController(
 			ILoginService loginService,
-			IRegistrationService registrationService)
+			IRegistrationService registrationService, 
+			IPublishEndpoint publishEndpoint)
 		{
 			_loginService = loginService;
 			_registrationService = registrationService;
+			_publishEndpoint = publishEndpoint;
 		}
 
 		[Route("Get")]
@@ -54,6 +60,7 @@ namespace IdeaMachineWeb.Controllers
 		public async Task<JsonResponse> Logout()
 		{
 			await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+			await _publishEndpoint.Publish(new AccountLoggedOut(Session.User));
 			return JsonResponse.Success();
 		}
 
