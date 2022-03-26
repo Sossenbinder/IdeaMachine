@@ -7,10 +7,10 @@ using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachineWeb.DataTypes.UiModels.Account;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Org.BouncyCastle.Ocsp;
 
 namespace IdeaMachineWeb.Controllers
 {
@@ -44,7 +44,7 @@ namespace IdeaMachineWeb.Controllers
 			return JsonDataResponse<List<string>>.Success(schemes.Select(x => x.DisplayName).ToList()!);
 		}
 
-		[HttpGet]
+		[HttpGet] 
 		[Route("ExternalLogin")]
 		public IActionResult ExternalLogin([FromQuery] string provider, [FromQuery] bool rememberMe)
 		{

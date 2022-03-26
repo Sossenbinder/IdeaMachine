@@ -196,15 +196,7 @@ namespace IdeaMachineWeb
 				app.UseHsts();
 			}
 
-			var forwardedHeadersOptions = new ForwardedHeadersOptions
-			{
-				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-				RequireHeaderSymmetry = false
-			};
-			forwardedHeadersOptions.KnownNetworks.Clear();
-			forwardedHeadersOptions.KnownProxies.Clear();
-
-			app.UseForwardedHeaders(forwardedHeadersOptions);
+			app.UseForwardedHeaders();
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
