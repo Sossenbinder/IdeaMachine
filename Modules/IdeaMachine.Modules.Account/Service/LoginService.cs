@@ -6,7 +6,6 @@ using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
-using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using Microsoft.AspNetCore.Identity;
 
 namespace IdeaMachine.Modules.Account.Service

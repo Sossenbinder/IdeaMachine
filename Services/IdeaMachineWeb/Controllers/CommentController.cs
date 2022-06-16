@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
+using IdeaMachine.Common.Web.Extensions;
 using IdeaMachine.Modules.Idea.DataTypes.Events;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.DataTypes.UiModel;
 using IdeaMachine.Modules.Idea.Events.Interface;
 using IdeaMachine.Modules.Idea.Service.Interface;
-using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachineWeb.DataTypes.UiModels.Comment;
-using IdeaMachineWeb.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

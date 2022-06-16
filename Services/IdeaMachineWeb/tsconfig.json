@@ -1,5 +1,5 @@
 {
-    "compilerOptions": {
+	"compilerOptions": {
 		"baseUrl": "src",
 		"removeComments": true,
 		"sourceMap": true,
@@ -8,18 +8,15 @@
 		"jsx": "react",
 		"allowSyntheticDefaultImports": true,
 		"moduleResolution": "node",
-		// "noImplicitAny": true,
-		// "noUnusedLocals": true,
-		// "noUnusedParameters": true,
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"allowJs": false,
 		"paths": {
-			"common": [ "common/*" ],
-			"views": [ "views/*" ],
-			"modules": [ "modules/*" ],
+			"common": ["common/*"],
+			"views": ["views/*"],
+			"modules": ["modules/*"]
 		}
-    },
-	"exclude": [
-		"node_modules",
-		"wwwroot",
-	]
+	},
+	"exclude": ["node_modules", "wwwroot"]
 }

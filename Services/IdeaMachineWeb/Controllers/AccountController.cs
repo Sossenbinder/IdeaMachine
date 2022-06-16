@@ -5,14 +5,12 @@ using IdeaMachine.Common.AspNetIdentity.DataTypes;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.UiModels;
 using IdeaMachine.Modules.Account.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
-using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachineWeb.DataTypes.UiModels.Account;
-using IdeaMachineWeb.Extensions;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,17 +23,13 @@ namespace IdeaMachineWeb.Controllers
 	{
 		private readonly ILoginService _loginService;
 
-		private readonly IRegistrationService _registrationService;
-
 		private readonly IPublishEndpoint _publishEndpoint;
 
 		public AccountController(
 			ILoginService loginService,
-			IRegistrationService registrationService, 
 			IPublishEndpoint publishEndpoint)
 		{
 			_loginService = loginService;
-			_registrationService = registrationService;
 			_publishEndpoint = publishEndpoint;
 		}
 
@@ -62,25 +56,6 @@ namespace IdeaMachineWeb.Controllers
 			await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 			await _publishEndpoint.Publish(new AccountLoggedOut(Session.User));
 			return JsonResponse.Success();
-		}
-
-		[Route("Register")]
-		[HttpPost]
-		public async Task<JsonDataResponse<IdentityErrorCode>> Register([FromBody] RegisterUiModel model)
-		{
-			if (!ModelState.IsValid)
-			{
-				return JsonDataResponse<IdentityErrorCode>.Error();
-			}
-
-			var registrationResponse = await _registrationService.RegisterAccount(new RegisterModel()
-			{
-				Email = model.Email,
-				Password = model.Password,
-				UserName = model.UserName,
-			});
-
-			return registrationResponse.ToJsonDataResponse();
 		}
 
 		[Route("SignIn")]

@@ -33,15 +33,14 @@ services:
     build:
       context: .
       dockerfile: Services/IdeaMachineWeb/Dockerfile
-    ports:
-      - "1457:443"
     environment:
+      ASPNETCORE_URLS: "http://+:80"
       DbConnectionString: "Server=tcp:ideamachine.sql,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
       IdeaMachine_RabbitMq: "ideamachine.rabbitmq"
       BlobStorageConnection: AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=https;BlobEndpoint=https://ideamachine.azurite:10000/devstoreaccount1;QueueEndpoint=https://ideamachine.azurite:10001/devstoreaccount1;TableEndpoint=https://ideamachine.azurite:10002/devstoreaccount1
       GmailUserName: "ideamachinenews@gmail.com"
       Seq_Server: "http://ideamachine.seq:5341"
-      DeploymentLink: "http://localhost:1253/"
+      DeploymentLink: "https://localhost:1253/"
     volumes:
       - /Keys/Storage:/keys/storage
     depends_on:
@@ -57,12 +56,13 @@ services:
     build:
       context: .
       dockerfile: Services/IdeaMachine.AccountService/Dockerfile
-    ports:
-      - "1458:443"
     environment:
+      ASPNETCORE_URLS: "http://+:80"
       DbConnectionString: "Server=tcp:ideamachine.sql,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
       IdeaMachine_RabbitMq: "ideamachine.rabbitmq"
       Seq_Server: "http://ideamachine.seq:5341"
+    volumes:
+      - /Keys/Storage:/keys/storage
     depends_on:
       - ideamachine.sql
       - ideamachine.rabbitmq

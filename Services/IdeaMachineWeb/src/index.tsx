@@ -14,20 +14,16 @@ import CommentsService from "modules/comments/service/commentsService";
 import { Services, IModuleService } from "common/modules/service/types";
 import { ChannelProvider, IChannelProvider } from "./common/modules/channel/ChannelProvider";
 
-import "./twRoot.scss";
-
 window.onload = async () => {
-
 	await fetch("/Identity/Identify");
 
 	const signalRConnectionProvider = new SignalRConnectionProvider();
 	const channelProvider = new ChannelProvider(signalRConnectionProvider);
 
 	renderRoot(channelProvider, () => initCoreServices(signalRConnectionProvider, channelProvider), 5);
-}
+};
 
 const initCoreServices = async (signalRConnectionProvider: ISignalRConnectionProvider, channelProvider: IChannelProvider) => {
-
 	await ServiceUpdateEvent.Raise({
 		name: "SignalRConnectionProvider",
 		service: signalRConnectionProvider,
@@ -42,7 +38,7 @@ const initCoreServices = async (signalRConnectionProvider: ISignalRConnectionPro
 			name: serviceName,
 			service: service,
 		});
-	}
+	};
 
 	await signalRConnectionProvider.start();
 
@@ -59,4 +55,4 @@ const initCoreServices = async (signalRConnectionProvider: ISignalRConnectionPro
 	initPromises.push(initService("ReactionService", reactionService));
 
 	await Promise.all(initPromises);
-}
+};

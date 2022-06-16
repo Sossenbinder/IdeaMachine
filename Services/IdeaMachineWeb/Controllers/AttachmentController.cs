@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
+using IdeaMachine.Common.Web.Extensions;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachineWeb.DataTypes.UiModels.Idea;
-using IdeaMachineWeb.Extensions;
 using IdeaMachineWeb.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

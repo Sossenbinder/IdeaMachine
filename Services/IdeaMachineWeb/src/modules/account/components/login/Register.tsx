@@ -67,7 +67,7 @@ export const Register: React.FC = () => {
 
 	return (
 		<Flex className={styles.RegisterContainer} direction="Column" crossAlign="Center">
-			<span className="text-2xl font-bold">Register:</span>
+			<span>Register:</span>
 			<Choose>
 				<When condition={state === State.Register}>
 					<TextField

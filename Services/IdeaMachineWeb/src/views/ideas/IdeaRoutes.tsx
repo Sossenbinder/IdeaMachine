@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import IdeaInput from "modules/ideas/components/input/IdeaInput";
 import IdeaInfo from "modules/ideas/components/info/IdeaInfo";
 import IdeaListOwn from "modules/ideas/components/IdeaListOwn";
+import IdeaReply from "modules/ideas/components/info/reply/IdeaReply";
 
 export const IdeaRoutes: React.FC = () => {
 	return (
@@ -17,7 +18,7 @@ export const IdeaRoutes: React.FC = () => {
 				<IdeaInput />
 			</Route>
 			<Route path="/idea/:id/reply">
-				<IdeaInput />
+				<IdeaReply />
 			</Route>
 			<Route path="/idea/:id" component={IdeaInfo} />
 		</Switch>

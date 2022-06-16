@@ -76,7 +76,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 						`}
 					>
 						<Cell gridArea="ShortDescription">
-							<h2 className="text-xl">
+							<h2>
 								<u>{idea.shortDescription}</u>
 							</h2>
 						</Cell>

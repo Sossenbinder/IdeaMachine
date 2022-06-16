@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Autofac;
 using GreenPipes;
+using IdeaMachine.Common.AspNetIdentity.Extension;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
 using IdeaMachine.Common.IPC.DI;
@@ -10,6 +11,7 @@ using IdeaMachine.Common.RemotingProxies.Proxies;
 using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.Common.SignalR.DI;
+using IdeaMachine.Common.Web.Extensions;
 using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Events;
@@ -23,7 +25,6 @@ using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
 using IdeaMachineWeb.Controllers;
 using IdeaMachineWeb.DataTypes.Validation;
-using IdeaMachineWeb.Extensions;
 using IdeaMachineWeb.Middleware;
 using IdeaMachineWeb.Utils;
 using MassTransit;
@@ -84,7 +85,7 @@ namespace IdeaMachineWeb
 			if (_isDevelopmentEnvironment)
 			{
 				services.AddDataProtection()
-					.SetApplicationName("IdeaMachineWeb")
+					.SetApplicationName("IdeaMachine")
 					.PersistKeysToFileSystem(new DirectoryInfo("/keys/storage"));
 			}
 			else
@@ -98,7 +99,9 @@ namespace IdeaMachineWeb
 		{
 			services.Configure<ForwardedHeadersOptions>(options =>
 			{
-				options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+				options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+				options.KnownNetworks.Clear();
+				options.KnownProxies.Clear();
 			});
 			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
 			services.AddIdentityWithoutDefaultAuthSchemes<AccountEntity, IdentityRole<Guid>>()
@@ -188,6 +191,11 @@ namespace IdeaMachineWeb
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
+				app.Use((context, next) =>
+				{
+					context.Request.Scheme = "https";
+					return next(context);
+				});
 			}
 			else
 			{
@@ -197,7 +205,6 @@ namespace IdeaMachineWeb
 			}
 
 			app.UseForwardedHeaders();
-			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
 			app.UseRouting();

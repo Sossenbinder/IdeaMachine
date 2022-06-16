@@ -62,10 +62,11 @@ namespace IdeaMachine.Service.Base.Startup
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			app.UseRouting();
 			app.UseEndpoints(RegisterEndpoints);
+			app.UseForwardedHeaders();
 		}
 
 		protected virtual void RegisterEndpoints(IEndpointRouteBuilder endpointRouteBuilder)

@@ -1,5 +1,6 @@
 // Framework
 import * as React from "react";
+import { AppShell } from "@mantine/core";
 
 // Components
 import NavBar from "common/components/page/NavBar";
@@ -12,6 +13,7 @@ import { getTranslations } from "common/translations/translations";
 
 // Styles
 import styles from "./styles/MainContainer.module.scss";
+import Header from "common/components/page/Header";
 
 export const MainContainer = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
@@ -29,10 +31,16 @@ export const MainContainer = () => {
 			<If condition={loading}>Loading...</If>
 			<If condition={!loading}>
 				<PushNotificationContainer />
-				<Flex className={styles.MainGrid} direction="Column">
-					<NavBar />
+				<AppShell
+					header={<Header />}
+					styles={{
+						root: { height: "100vh", display: "flex", flexDirection: "column" },
+						main: { padding: 0 },
+						body: { flexGrow: 1 },
+					}}
+				>
 					<Content />
-				</Flex>
+				</AppShell>
 			</If>
 		</Flex>
 	);

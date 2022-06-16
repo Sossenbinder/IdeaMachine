@@ -10,7 +10,7 @@ namespace IdeaMachine.Service.Base.Extensions
 			return webHostBuilder
 				.UseKestrel(options =>
 				{
-					// Compatibility to allow regular calls for health checks
+					// Compatibility to allow regular calls. Also, we only need 80 since services are meant to sit behind a TLS terminating proxy
 					options.ListenAnyIP(80);
 
 					// Grpc port listener

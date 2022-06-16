@@ -44,7 +44,7 @@ export const SignIn: React.FC = () => {
 
 	return (
 		<Flex className={styles.SignInContainer} direction="Column" crossAlign="Center">
-			<span className="text-2xl font-bold">Sign in:</span>
+			<span>Sign in:</span>
 			<TextField
 				className={styles.InputField}
 				label="Email/Username"
