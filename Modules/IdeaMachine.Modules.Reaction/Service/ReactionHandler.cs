@@ -6,8 +6,7 @@ using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
 using IdeaMachine.Modules.Reaction.DataTypes.Events;
 using IdeaMachine.Modules.Reaction.Events.Interface;
 using IdeaMachine.Modules.Reaction.Repository.Interface;
-using IdeaMachine.ModulesServiceBase;
-using MassTransit;
+using IdeaMachine.Modules.ServiceBase;
 
 namespace IdeaMachine.Modules.Reaction.Service
 {

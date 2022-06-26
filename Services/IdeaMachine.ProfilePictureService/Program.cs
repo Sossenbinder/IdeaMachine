@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using IdeaMachine.Common.Eventing.Abstractions.Options;
 using Microsoft.Extensions.Hosting;
 using IdeaMachine.Common.Logging.Log;
 using IdeaMachine.Modules.Account.Repository.Context;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace IdeaMachine.ProfilePictureService
@@ -29,6 +31,8 @@ namespace IdeaMachine.ProfilePictureService
 				})
 				.ConfigureServices((ctx, serviceCollection) =>
 				{
+					var configuration = ctx.Configuration;
+					serviceCollection.Configure<RabbitMqOptions>(configuration.GetSection("RabbitMqSettings"));
 					serviceCollection.AddDbContext<AccountContext>(options => options.UseSqlServer(ctx.Configuration["DbConnectionString"]));
 					serviceCollection.AddSingleton(context => new BlobServiceClient(context.GetRequiredService<IConfiguration>()["BlobStorageConnection"]));
 
@@ -40,7 +44,13 @@ namespace IdeaMachine.ProfilePictureService
 							cfg.AutoDelete = true;
 							cfg.PurgeOnStartup = true;
 
-							cfg.Host($"{registrationCtx.GetRequiredService<IConfiguration>()["RabbitMqConnectionString"]}");
+							var options = registrationCtx.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
+							cfg.Host($"rabbitmq://{options.UserName}:{options.Password}@{options.BrokerAddress}");
+							//cfg.Host($"rabbitmq://{options.BrokerAddress}", "/", rabbitMqConfig =>
+							//{
+							//	rabbitMqConfig.Username(options.UserName);
+							//	rabbitMqConfig.Password(options.Password);
+							//});
 						});
 					});
 				})

@@ -5,7 +5,7 @@ using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Common.Eventing.Abstractions.Events;
 using MassTransit;
 
-namespace IdeaMachine.ModulesServiceBase
+namespace IdeaMachine.Modules.ServiceBase
 {
 	/// <summary>
 	/// Handles event registrations with the respective dispose backup. Imagine a service registering on an event

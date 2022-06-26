@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Common.Eventing
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Common.Eventing.Abstractions", "Common\IdeaMachine.Common.Eventing.Abstractions\IdeaMachine.Common.Eventing.Abstractions.csproj", "{96CC1BFA-37EF-4E0B-B4D7-6C39D60B9AFE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.ModulesServiceBase", "Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj", "{BC423E7A-9B9A-401C-B899-26E5FBF5D79A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Modules.ServiceBase", "Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.Modules.ServiceBase.csproj", "{BC423E7A-9B9A-401C-B899-26E5FBF5D79A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Common.DI", "Common\IdeaMachine.Common.DI\IdeaMachine.Common.DI.csproj", "{8D7A71D6-99AA-47F6-9691-661E756EAF55}"
 EndProject
@@ -77,9 +77,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcProxySourceGenerator", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Common.Eventing.Tests", "Tests\IdeaMachine.Common.Eventing.Tests\IdeaMachine.Common.Eventing.Tests.csproj", "{DFB9F91D-00E2-4DBB-A007-5D95EC7A295E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Modules.Session.Tests", "Tests\IdeaMachine.Modules.Session.Tests\IdeaMachine.Modules.Session.Tests.csproj", "{3D9D9D05-5DAE-4E48-A4A8-F6E021ECEDA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Modules.Session.Tests", "Tests\IdeaMachine.Modules.Session.Tests\IdeaMachine.Modules.Session.Tests.csproj", "{3D9D9D05-5DAE-4E48-A4A8-F6E021ECEDA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeaMachine.Tests.Core", "Tests\IdeaMachine.Tests.Core\IdeaMachine.Tests.Core.csproj", "{CFDF9231-D341-4535-9B25-41F5ABCFD5C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdeaMachine.Tests.Core", "Tests\IdeaMachine.Tests.Core\IdeaMachine.Tests.Core.csproj", "{CFDF9231-D341-4535-9B25-41F5ABCFD5C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

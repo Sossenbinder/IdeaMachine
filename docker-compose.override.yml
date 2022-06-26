@@ -10,3 +10,7 @@ services:
   ideamachine.accountservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+
+  ideamachine.profilepictureservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

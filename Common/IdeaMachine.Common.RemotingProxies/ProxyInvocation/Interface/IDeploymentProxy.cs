@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using IdeaMachine.ModulesServiceBase.Interface;
+using IdeaMachine.Modules.ServiceBase.Interface;
 
 namespace IdeaMachine.Common.RemotingProxies.ProxyInvocation.Interface
 {

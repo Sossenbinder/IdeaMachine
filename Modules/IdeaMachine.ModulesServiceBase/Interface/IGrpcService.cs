@@ -1,4 +1,4 @@
-﻿namespace IdeaMachine.ModulesServiceBase.Interface
+﻿namespace IdeaMachine.Modules.ServiceBase.Interface
 {
 	public interface IGrpcService
 	{

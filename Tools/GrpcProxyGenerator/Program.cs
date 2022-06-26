@@ -3,7 +3,7 @@ using System.Reflection;
 using System.ServiceModel;
 using GrpcProxyGenerator.Service;
 using IdeaMachine.Common.Core.Extensions;
-using IdeaMachine.ModulesServiceBase.Interface;
+using IdeaMachine.Modules.ServiceBase.Interface;
 
 namespace GrpcProxyGenerator
 {

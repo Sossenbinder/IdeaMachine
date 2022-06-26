@@ -6,7 +6,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Account\IdeaMachine.Modules.Account.csproj" />
-		<ProjectReference Include="..\..\Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.ModulesServiceBase.csproj" />
+		<ProjectReference Include="..\..\Modules\IdeaMachine.ModulesServiceBase\IdeaMachine.Modules.ServiceBase.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Common.Grpc\IdeaMachine.Common.Grpc.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Common.IPC\IdeaMachine.Common.IPC.csproj" />
 	</ItemGroup>

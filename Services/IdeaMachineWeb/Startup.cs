@@ -3,6 +3,7 @@ using System.IO;
 using Autofac;
 using GreenPipes;
 using IdeaMachine.Common.AspNetIdentity.Extension;
+using IdeaMachine.Common.Eventing.Abstractions.Options;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
 using IdeaMachine.Common.IPC.DI;
@@ -40,6 +41,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace IdeaMachineWeb
@@ -131,6 +133,7 @@ namespace IdeaMachineWeb
 
 		private void ConfigureMassTransit(IServiceCollection services)
 		{
+			services.Configure<RabbitMqOptions>(Configuration.GetSection("RabbitMqSettings"));
 			services.AddSignalR();
 			services.AddMassTransit(x =>
 			{
@@ -148,7 +151,8 @@ namespace IdeaMachineWeb
 						retryConfig.Exponential(5, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(2));
 					});
 
-					cfg.Host($"rabbitmq://{Configuration["IdeaMachine_RabbitMq"]}");
+					var options = ctx.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
+					cfg.Host($"rabbitmq://{options.UserName}:{options.Password}@{options.BrokerAddress}");
 
 					cfg.ConfigureEndpoints(ctx);
 				});

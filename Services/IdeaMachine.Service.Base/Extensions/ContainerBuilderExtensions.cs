@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using IdeaMachine.ModulesServiceBase.Interface;
+using IdeaMachine.Modules.ServiceBase.Interface;
 
 namespace IdeaMachine.Service.Base.Extensions
 {

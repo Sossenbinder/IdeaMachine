@@ -5,8 +5,8 @@ using IdeaMachine.Common.Core.Cache.Implementations.Interface;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
+using IdeaMachine.Modules.ServiceBase;
 using IdeaMachine.Modules.Session.Service.Interface;
-using IdeaMachine.ModulesServiceBase;
 
 namespace IdeaMachine.Modules.Session.Service
 {

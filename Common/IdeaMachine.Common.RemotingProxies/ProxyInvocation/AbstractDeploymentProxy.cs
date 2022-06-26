@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.Grpc.Service.Interface;
 using IdeaMachine.Common.IPC;
 using IdeaMachine.Common.RemotingProxies.ProxyInvocation.Interface;
-using IdeaMachine.ModulesServiceBase.Interface;
+using IdeaMachine.Modules.ServiceBase.Interface;
 using ProtoBuf.Grpc.Client;
 
 namespace IdeaMachine.Common.RemotingProxies.ProxyInvocation

@@ -1,13 +1,14 @@
 ﻿using System;
 using Autofac;
 using GreenPipes;
+using IdeaMachine.Common.Eventing.Abstractions.Options;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
 using IdeaMachine.Common.Grpc.Interceptors;
 using IdeaMachine.Common.IPC.DI;
 using IdeaMachine.Common.Logging.Log;
 using IdeaMachine.Common.RuntimeSerialization.DI;
-using IdeaMachine.ModulesServiceBase.Interface;
+using IdeaMachine.Modules.ServiceBase.Interface;
 using IdeaMachine.Service.Base.Extensions;
 using MassTransit;
 using MassTransit.AutofacIntegration;
@@ -18,6 +19,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ProtoBuf.Grpc.Server;
 using Serilog;
 
@@ -35,6 +37,7 @@ namespace IdeaMachine.Service.Base.Startup
 		// .Net DI entry point
 		public virtual void ConfigureServices(IServiceCollection services)
 		{
+			services.Configure<RabbitMqOptions>(Configuration.GetSection("RabbitMqSettings"));
 			services.AddCodeFirstGrpc(grpcOptions =>
 			{
 				grpcOptions.EnableDetailedErrors = true;
@@ -91,7 +94,8 @@ namespace IdeaMachine.Service.Base.Startup
 							TimeSpan.FromSeconds(2));
 					});
 
-					cfg.Host($"rabbitmq://{Configuration["IdeaMachine_RabbitMq"]}");
+					var options = ctx.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
+					cfg.Host($"rabbitmq://{options.UserName}:{options.Password}@{options.BrokerAddress}");
 
 					cfg.ConfigureEndpoints(ctx);
 
@@ -107,12 +111,10 @@ namespace IdeaMachine.Service.Base.Startup
 
 		protected virtual void SetupMassTransitBus(IContainerBuilderBusConfigurator cfg)
 		{
-
 		}
 
 		protected virtual void SetupRabbitMq(IBusRegistrationContext ctx, IRabbitMqBusFactoryConfigurator cfg)
 		{
-
 		}
 	}
 

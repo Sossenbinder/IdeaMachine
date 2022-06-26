@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.ServiceModel;
+using System.Text;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Common.Core.Utils.IPC;
 using IdeaMachine.Common.RuntimeSerialization.Extensions;
 using IdeaMachine.Common.RuntimeSerialization.Serialize.Interface;
-using IdeaMachine.ModulesServiceBase.Attributes;
-using IdeaMachine.ModulesServiceBase.Interface;
+using IdeaMachine.Modules.ServiceBase.Interface;
 using Microsoft.Extensions.Logging;
 using ProtoBuf.Meta;
 
@@ -55,20 +56,13 @@ namespace IdeaMachine.Common.RuntimeSerialization.Serialize
 
 		private void PrepareProtoReservations(IEnumerable<Type> grpcServices)
 		{
+			using var md5Hasher = MD5.Create();
 			_protoDict = grpcServices
 				.ToDictionary(
 					x => x, x =>
 					{
-						var identifierAttribute = x.GetCustomAttribute<GrpcServiceIdentifierAttribute>();
-
-						if (identifierAttribute is not null)
-						{
-							return identifierAttribute.Identifier * PreAllocatedProtoPerService;
-						}
-
-						var exception = new ArgumentException($"Service of type {x.FullName} does not have a {nameof(GrpcServiceIdentifierAttribute)} attached to it");
-						_logger.LogException(exception);
-						throw exception;
+						var hashed = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(x.Name));
+						return Math.Abs(BitConverter.ToInt32(hashed, 0) % 500) * PreAllocatedProtoPerService;
 					});
 		}
 

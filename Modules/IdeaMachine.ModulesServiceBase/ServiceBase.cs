@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace IdeaMachine.ModulesServiceBase
+namespace IdeaMachine.Modules.ServiceBase
 {
 	public class ServiceBase : ServiceBaseWithoutLogger
 	{

@@ -2,7 +2,7 @@
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Idea.Repository.Interface;
-using IdeaMachine.ModulesServiceBase;
+using IdeaMachine.Modules.ServiceBase;
 
 namespace IdeaMachine.Modules.Idea.Service
 {
