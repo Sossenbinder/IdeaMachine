@@ -130,6 +130,10 @@ services:
 
   ideamachine.profilepictureservice:
     image: ${DOCKER_REGISTRY-}ideamachineprofilepictureservice
+    labels:
+      - ideamachinecompose
+    networks:
+      - ideamachinenetwork
     build:
       context: .
       dockerfile: Services/IdeaMachine.ProfilePictureService/Dockerfile
@@ -137,3 +141,6 @@ services:
       RabbitMqSettings__BrokerAddress: ideamachine.rabbitmq
       RabbitMqSettings__UserName: ideamachine
       RabbitMqSettings__Password: ideamachine
+    depends_on:
+      - ideamachine.sql
+      - ideamachine.rabbitmq
