@@ -74,8 +74,8 @@ namespace IdeaMachine.Common.Core.Extensions.Async
 			}
 		}
 
-		private static async Task Consume<T>
-		(ChannelReader<T> reader,
+		private static async Task Consume<T>(
+			ChannelReader<T> reader,
 			Func<T, Task> consumerFunc,
 			CancellationToken ct)
 		{

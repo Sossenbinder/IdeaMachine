@@ -4,8 +4,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-ADD ../../AzuriteCert/azuriteKey.pem /usr/local/share/ca-certificates/azuriteCert.crt
-RUN chmod 644 /usr/local/share/ca-certificates/azuriteCert.crt && update-ca-certificates
+COPY AzuriteCert/azuriteCert.crt /usr/local/share/ca-certificates
+RUN "update-ca-certificates"
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
