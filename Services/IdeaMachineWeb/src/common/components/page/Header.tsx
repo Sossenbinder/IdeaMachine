@@ -1,5 +1,5 @@
 // Framework
-import { Group } from "@mantine/core";
+import { Group, Text } from "@mantine/core";
 import * as React from "react";
 
 // Framework
@@ -31,7 +31,7 @@ export const Header = ({}: Props) => {
 		<Flex className={styles.NavBar} space="Between">
 			<Flex direction="Row" crossAlign="Center" className={styles.Branding} onClick={() => history.push("/")}>
 				<img className={styles.BrandIcon} src="/Resources/Icons/ideablub.svg" />
-				<span>IdeaMachine</span>
+				<Text>IdeaMachine</Text>
 			</Flex>
 			<Flex className={styles.ActionSection} direction="Row" crossAlignSelf="Center" mainAlign="End">
 				<LinkButton to="/idea/own" color="primary">

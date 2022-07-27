@@ -11,7 +11,7 @@ import { NotificationType } from "../modules/channel/types";
 export const useNotificationBackedCall = <TNotificationType>(
 	notification: NotificationType,
 	selector: (notification: TNotificationType) => boolean = null,
-	timeout: number = 10000
+	timeout: number = 10000,
 ): [boolean, (cb: () => Promise<void>) => Promise<void>] => {
 	const [isRunning, setIsRunning] = React.useState(false);
 
@@ -33,19 +33,23 @@ export const useNotificationBackedCall = <TNotificationType>(
 
 		// Wait for the event, and timeout otherwise
 		const timeoutHandle = window.setTimeout(cancel, timeout);
+		let unregisterHandle: () => void;
 		try {
 			await run(
 				new Promise((resolve) => {
-					channel.register(async (notification) => {
+					const notificationHandler = async (notification: TNotificationType) => {
 						if (selector?.(notification) ?? true) {
 							resolve();
 						}
-					});
-				})
+					};
+
+					unregisterHandle = () => channel.unregister(notificationHandler);
+					channel.register(notificationHandler);
+				}),
 			);
 		} catch {
 		} finally {
-			channel.unregister;
+			unregisterHandle?.();
 			window.clearTimeout(timeoutHandle);
 			setIsRunning(false);
 		}

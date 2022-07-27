@@ -1,6 +1,6 @@
 // Framework
 import * as React from "react";
-import { AppShell } from "@mantine/core";
+import { AppShell, Navbar } from "@mantine/core";
 
 // Components
 import NavBar from "common/components/page/NavBar";
@@ -31,13 +31,27 @@ export const MainContainer = () => {
 			<If condition={loading}>Loading...</If>
 			<If condition={!loading}>
 				<PushNotificationContainer />
-				<AppShell
+				{/* <AppShell
 					header={<Header />}
 					styles={{
 						root: { height: "100vh", display: "flex", flexDirection: "column" },
 						main: { padding: 0 },
 						body: { flexGrow: 1 },
 					}}
+				>
+					<Content />
+				</AppShell> */}
+				<AppShell
+					padding="md"
+					navbar={
+						<Navbar width={{ base: 300 }} height={500} p="xs">
+							{/* Navbar content */}
+						</Navbar>
+					}
+					//header={<Header height={60} p="xs">{/* Header content */}</Header>}
+					styles={(theme) => ({
+						main: { backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0] },
+					})}
 				>
 					<Content />
 				</AppShell>

@@ -21,7 +21,7 @@ export const FeedbackMaterialIcon: React.FC<FeedbackMaterialIcon> = (props) => {
 
 	const runFadeOut = () =>
 		new Promise<void>((resolve) => {
-			const cb = (_) => {
+			const cb = (_: any) => {
 				feedbackRef.current.classList.remove(styles.animateOut);
 				feedbackRef.current.onanimationend = undefined;
 				resolve();

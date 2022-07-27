@@ -31,7 +31,7 @@ export const ValidatableTextField: React.FC<Props> = (props) => {
 		setValid(isValid);
 	};
 
-	const onChange = (event) => {
+	const onChange = (event: any) => {
 		const value = event.currentTarget.value;
 		props.onChange(event);
 

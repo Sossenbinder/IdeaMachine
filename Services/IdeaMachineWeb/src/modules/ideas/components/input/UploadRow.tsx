@@ -24,7 +24,7 @@ type Props = {
 	isOwned?: boolean;
 };
 
-export const UploadRow: React.FC<Props> = ({ attachments, ideaId, onAttachmentAdded, isOwned = false }) => {
+export const UploadRow: React.FC<Props> = ({ attachments, ideaId, isOwned = false }) => {
 	const uploadFileRef = React.useRef<HTMLInputElement>(null);
 
 	const [running, call] = useAsyncCall();

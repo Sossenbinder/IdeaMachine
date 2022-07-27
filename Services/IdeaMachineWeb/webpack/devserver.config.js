@@ -14,16 +14,16 @@ exports.cfg = {
 	proxy: {
 		// "/signalRHub/negotiate": {
 		// 	secure: false,
-		// 	target: "https://localhost:1457",
+		// 	target: "https://localhost:1253",
 		// },
-		// "/signalRHub": {
-		// 	target: "ws://localhost:1457/signalRHub",
-		// 	ws: true,
-		// },
+		"/signalRHub": {
+			target: "https://localhost:1253",
+			ws: true,
+			secure: false,
+		},
 		"/": {
 			secure: false,
-			ws: true,
-			target: "https://localhost:1457",
+			target: "https://localhost:1253",
 		},
 	},
 	client: {

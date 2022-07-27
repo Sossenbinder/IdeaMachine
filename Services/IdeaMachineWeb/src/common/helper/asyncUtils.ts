@@ -1,16 +1,16 @@
 import { range } from "./arrayUtils";
 
 export const delay = async (seconds: number) => {
-	let resolver: ((value: void) => void);
-	const promise = new Promise<void>(res => resolver = res);
+	let resolver: (value: void) => void;
+	const promise = new Promise<void>((res) => (resolver = res));
 
 	window.setTimeout(() => resolver(null), seconds);
 
 	return promise;
-}
+};
 
 export const tickCountDownAwaitable = (tickCount: number, msBetweenTicks: number, cb: () => Promise<void>) => {
-	return new Promise<void>(resolve => {
+	return new Promise<void>((resolve) => {
 		let counter = 0;
 		const counterId = window.setInterval(() => {
 			cb();
@@ -22,15 +22,13 @@ export const tickCountDownAwaitable = (tickCount: number, msBetweenTicks: number
 			}
 		}, msBetweenTicks);
 	});
-}
+};
 
 export const asyncForEachParallel = async <T>(source: Array<T>, action: (item: T) => Promise<void>, parallelismDegree: number = 25) => {
-
-	const asyncExecutors = range(parallelismDegree)
-		.map(() => parallelExecutor(source, action));
+	const asyncExecutors = range(parallelismDegree).map(() => parallelExecutor(source, action));
 
 	await Promise.all(asyncExecutors);
-}
+};
 
 const parallelExecutor = async <T>(source: Array<T>, action: (item: T) => Promise<void>) => {
 	while (source.length > 0) {
@@ -42,8 +40,9 @@ const parallelExecutor = async <T>(source: Array<T>, action: (item: T) => Promis
 
 		await action(workItem);
 	}
-}
+};
 
+// @ts-ignore
 async function* mergeAsyncIterators<TOut>(iterators: Array<AsyncGenerator<TOut, void>>) {
 	const getIndexedNextPromise = (iterator: AsyncGenerator<TOut, void>, index: number) =>
 		iterator.next().then((iteratorResult) => ({
@@ -75,8 +74,8 @@ async function* mergeAsyncIterators<TOut>(iterators: Array<AsyncGenerator<TOut, 
 								value: void 0,
 								done: true,
 							},
-						})
-					)
+						}),
+					),
 				);
 				outstandingCount--;
 			} else {
