@@ -24,7 +24,7 @@ window.onload = async () => {
 };
 
 const initCoreServices = async (signalRConnectionProvider: ISignalRConnectionProvider, channelProvider: IChannelProvider) => {
-	await ServiceUpdateEvent.Raise({
+	await ServiceUpdateEvent.raise({
 		name: "SignalRConnectionProvider",
 		service: signalRConnectionProvider,
 	});
@@ -34,7 +34,7 @@ const initCoreServices = async (signalRConnectionProvider: ISignalRConnectionPro
 	const initService = async (serviceName: keyof Services, service: IModuleService) => {
 		await service.start();
 
-		await ServiceUpdateEvent.Raise({
+		await ServiceUpdateEvent.raise({
 			name: serviceName,
 			service: service,
 		});

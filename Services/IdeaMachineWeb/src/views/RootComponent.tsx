@@ -20,6 +20,8 @@ import { IChannelProvider } from "../common/modules/channel/ChannelProvider";
 import { store } from "common/redux/store";
 
 import "./styles/RootComponent.scss";
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/styles";
+import { customStyles } from "./styles/mantineStyles";
 
 const queryClient = new QueryClient();
 
@@ -34,14 +36,14 @@ const RootComponent: React.FC<Props> = ({ channelProvider, initFunc, initService
 	const [loadedServices, setLoadedServices] = React.useState(0);
 
 	React.useEffect(() => {
-		const registration = ServiceUpdateEvent.Register(() => {
+		const registration = ServiceUpdateEvent.register(() => {
 			setLoadedServices((current) => current + 1);
 			return Promise.resolve();
 		});
 
 		initFunc().then(() => setInitialized(true));
 
-		return () => ServiceUpdateEvent.Unregister(registration);
+		return () => ServiceUpdateEvent.unregister(registration);
 	}, []);
 
 	const themeOptions: ThemeOptions = React.useMemo(
@@ -49,38 +51,52 @@ const RootComponent: React.FC<Props> = ({ channelProvider, initFunc, initService
 			createTheme({
 				palette: {
 					primary: {
-						main: "#3f51b5"
+						main: "#3f51b5",
 					},
 					secondary: {
-						main: "#928b8e"
-					}
-				}
+						main: "#928b8e",
+					},
+				},
 			}),
-		[]
+		[],
 	);
+
+	const [currentColorScheme, setCurrentColorScheme] = React.useState<ColorScheme>("dark");
+	const toggleColorScheme = (value?: ColorScheme) => setCurrentColorScheme(!value || currentColorScheme === "dark" ? "light" : "dark");
 
 	return (
 		<Provider store={store}>
 			<BrowserRouter>
 				<ThemeProvider theme={themeOptions}>
-					<QueryClientProvider client={queryClient}>
-						<ServiceContextProvider>
-							<AccountContextProvider>
-								<ChannelProviderContextProvider channelProvider={channelProvider}>
-									<Choose>
-										<When condition={loadedServices === initServiceCount && initialized}>
-											<IdeaFilterContextProvider>
-												<MainContainer />
-											</IdeaFilterContextProvider>
-										</When>
-										<Otherwise>
-											<LoadingBar progress={(loadedServices / initServiceCount) * 100} />
-										</Otherwise>
-									</Choose>
-								</ChannelProviderContextProvider>
-							</AccountContextProvider>
-						</ServiceContextProvider>
-					</QueryClientProvider>
+					<MantineProvider
+						withGlobalStyles
+						withNormalizeCSS
+						styles={customStyles}
+						theme={{
+							colorScheme: currentColorScheme,
+						}}
+					>
+						<ColorSchemeProvider colorScheme={currentColorScheme} toggleColorScheme={toggleColorScheme}>
+							<QueryClientProvider client={queryClient}>
+								<ServiceContextProvider>
+									<AccountContextProvider>
+										<ChannelProviderContextProvider channelProvider={channelProvider}>
+											<Choose>
+												<When condition={loadedServices === initServiceCount && initialized}>
+													<IdeaFilterContextProvider>
+														<MainContainer />
+													</IdeaFilterContextProvider>
+												</When>
+												<Otherwise>
+													<LoadingBar progress={(loadedServices / initServiceCount) * 100} />
+												</Otherwise>
+											</Choose>
+										</ChannelProviderContextProvider>
+									</AccountContextProvider>
+								</ServiceContextProvider>
+							</QueryClientProvider>
+						</ColorSchemeProvider>
+					</MantineProvider>
 				</ThemeProvider>
 			</BrowserRouter>
 		</Provider>

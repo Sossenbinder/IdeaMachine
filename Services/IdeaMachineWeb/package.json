@@ -72,6 +72,7 @@
 		"react-router-dom": "^5.2.0",
 		"react-transition-group": "^4.4.2",
 		"recharts": "^2.0.9",
-		"redux": "^4.0.5"
+		"redux": "^4.0.5",
+		"tabler-icons-react": "^1.54.0"
 	}
 }

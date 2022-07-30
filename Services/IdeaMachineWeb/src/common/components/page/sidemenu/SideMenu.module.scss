@@ -1,0 +1,18 @@
+.Branding {
+	color: white;
+	margin: auto 15px auto 15px;
+	cursor: pointer;
+
+	height: 100%;
+
+	.BrandIcon {
+		height: 40px;
+		margin-right: 5px;
+	}
+
+	@media (max-width: 768px) {
+		h2 {
+			display: none;
+		}
+	}
+}

@@ -1,28 +1,20 @@
-// Framework
 import * as React from "react";
 import { useSelector } from "react-redux";
-
-// Types
 import { ReduxStore } from "common/redux/store";
+import { Notification } from "common/definitions/NotificationTypes";
+import { ActionIcon } from "@mantine/core";
+import { Bell } from "tabler-icons-react";
 
-// Styles
-import MaterialIcon from "common/components/MaterialIcon";
-import { Account } from "modules/account/types";
+type Props = {};
 
-type Props = {
-	
-}
-
-export const NotificationBell = ({ }: Props) => {
-
-	const notifications = useSelector<ReduxStore, Account>(x => x.accountReducer.data);
+export const NotificationBell = ({}: Props) => {
+	const notifications = useSelector<ReduxStore, Array<Notification>>((x) => x.notificationReducer.data);
 
 	return (
-		<MaterialIcon
-			size={37.5}
-			color="white"
-			iconName="notifications" />
+		<ActionIcon>
+			<Bell />
+		</ActionIcon>
 	);
-}
+};
 
 export default NotificationBell;

@@ -1,32 +1,22 @@
-// Framework
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
-// Components
 import IdeaNotFound from "modules/ideas/components/IdeaNotFound";
 import { Cell, Flex, Grid } from "common/components";
 import Card from "../Card";
 import MaterialIcon from "common/components/MaterialIcon";
 import CommentSection from "./CommentSection";
 import UploadRow from "../input/UploadRow";
-
-// Functionality
 import { ReduxStore } from "common/redux/store";
 import useAsyncCall from "common/hooks/useAsyncCall";
 import useServices from "common/hooks/useServices";
 import useTranslations from "common/hooks/useTranslations";
-
-// Functionality
 import { getUsDate, getUsTime } from "common/utils/timeUtils";
-
-// Types
 import { Idea, AttachmentUrl } from "../../types";
 import { Account } from "modules/account/types";
 import { LikeState } from "modules/reaction/types";
-
-// Styles
 import styles from "./styles/IdeaInfo.module.scss";
+import { Text } from "@mantine/core";
 
 type Props = RouteComponentProps<{
 	id: string;
@@ -110,7 +100,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 							</Flex>
 						</Cell>
 						<Cell gridArea="Attachments">
-							<span className={styles.Attachments}>Attachments:</span>
+							<Text className={styles.Attachments}>Attachments:</Text>
 							<UploadRow
 								ideaId={idea.id}
 								isOwned={idea.creatorId === account.userId}

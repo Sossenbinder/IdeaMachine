@@ -17,6 +17,7 @@ import useNotificationBackedCall from "common/hooks/useNotificationBackedCall";
 
 // Styles
 import styles from "./styles/NavBarAuthenticated.module.scss";
+import { Avatar } from "@mantine/core";
 
 type Props = {
 	account: Account;
@@ -40,19 +41,19 @@ export const NavBarAuthenticated: React.FC<Props> = ({ account }) => {
 				call(() => channel.publish(files));
 			}
 		},
-		[call]
+		[call],
 	);
 
 	return (
 		<Flex className={styles.Container} crossAlign="Center" direction="Row">
 			<label htmlFor="PictureUploadHiddenInput" className={styles.PictureLabel}>
 				<div className={styles.ProfilePictureContainer}>
-					<If condition={running}>
+					{running ? (
 						<BlackSpinner />
-					</If>
-					<If condition={!running}>
+					) : (
 						<img className={styles.ProfilePicture} src={account.profilePictureUrl ?? "Resources/Pictures/User/AnonymousUser.png"} />
-					</If>
+					)}
+					<Avatar src={account.profilePictureUrl ?? "Resources/Pictures/User/AnonymousUser.png"} alt="it's me" />
 				</div>
 			</label>
 			<input

@@ -1,25 +1,17 @@
-// Framework
+import { Text } from "@mantine/core";
 import * as React from "react";
 import classNames from "classnames";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import Chip from "@mui/material/Chip";
-
-// Components
 import { Grid, Cell, Flex } from "common/components";
 import MaterialIcon from "common/components/MaterialIcon";
 import { FeedbackMaterialIcon } from "common/components/FeedbackMaterialIcon";
 import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
 import Separator from "common/components/controls/Separator";
-
-// Functionality
 import { getUsDate, getUsTime } from "common/utils/timeUtils";
 import useServices from "common/hooks/useServices";
-
-// Types
 import { LikeState } from "modules/reaction/types";
 import { Idea } from "../types";
-
-// Styles
 import styles from "./styles/IdeaListEntry.module.scss";
 
 type Props = RouteComponentProps & {
@@ -34,9 +26,9 @@ export const IdeaListEntry: React.FC<Props> = ({
 		id,
 		tags,
 		attachmentUrls,
-		ideaReactionMetaData: { totalLike, ownLikeState }
+		ideaReactionMetaData: { totalLike, ownLikeState },
 	},
-	history
+	history,
 }) => {
 	const [previewOpen, setPreviewOpen] = React.useState(false);
 
@@ -75,7 +67,7 @@ export const IdeaListEntry: React.FC<Props> = ({
 
 		updateFilters({
 			...filters,
-			tags: [...filters.tags, tag]
+			tags: [...filters.tags, tag],
 		});
 	};
 
@@ -112,11 +104,11 @@ export const IdeaListEntry: React.FC<Props> = ({
 						<Separator direction="Vertical" width="20px" />
 					</Flex>
 				</Cell>
-				<span className={styles.ShortDescription}>{shortDescription}</span>
+				<Text className={styles.ShortDescription}>{shortDescription}</Text>
 				<Flex className={styles.ControlSection} direction="Row" crossAlign="Start">
 					<If condition={attachmentUrls && attachmentUrls.length > 0}>
 						<Flex direction="Row" crossAlign="Center" className={styles.Attachments}>
-							<span className={styles.Number}>{attachmentUrls.length}</span>
+							<Text className={styles.Number}>{attachmentUrls.length}</Text>
 							<MaterialIcon
 								className={styles.AttachmentIcon}
 								onClick={async (event) => navTo(event, `/idea/${id}`)}
@@ -130,8 +122,8 @@ export const IdeaListEntry: React.FC<Props> = ({
 					<FeedbackMaterialIcon onClick={async (event) => await deleteIdea(event)} iconName="delete" size={25} />
 				</Flex>
 				<Flex direction="Column">
-					<span>{getUsDate(creationDate)}</span>
-					<span>{getUsTime(creationDate)}</span>
+					<Text>{getUsDate(creationDate)}</Text>
+					<Text>{getUsTime(creationDate)}</Text>
 				</Flex>
 				<MaterialIcon className={styles.ExpandMore} iconName={`expand_${previewOpen ? "less" : "more"}`} size={40} />
 				<If condition={previewOpen}>
