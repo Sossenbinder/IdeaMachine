@@ -72,6 +72,7 @@ services:
 
   ideamachine.sql:
     image: ideamachinesql
+    container_name: ideamachinesql
     build:
       context: Scripts/Docker/mssql
       dockerfile: ./Dockerfile
@@ -88,8 +89,6 @@ services:
       - ideamachine_sql:/var/opt/mssql
       - ./Scripts/Docker/mssql:/scripts
     restart: unless-stopped
-    entrypoint:
-      - /scripts/init.sh
 
   ideamachine.seq:
     image: datalust/seq:latest
