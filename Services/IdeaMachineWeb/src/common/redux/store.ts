@@ -14,6 +14,7 @@ import { Account } from "modules/account/types";
 import { PushNotification } from "common/definitions/PushNotificationTypes";
 import { ReducerState, MultiReducerState } from "./reducer/types";
 import { Notification } from "common/definitions/NotificationTypes";
+import { compose } from "redux";
 
 export type Reducers = {
 	accountReducer: ReducerState<Account>;
@@ -21,9 +22,11 @@ export type Reducers = {
 	notificationReducer: MultiReducerState<Notification>;
 	ideaReducer: MultiReducerState<Idea>;
 	paginationReducer: PaginationReducerState;
-}
+};
 
-export type ReduxStore = redux.Store & Reducers
+export type ReduxStore = redux.Store & Reducers;
+
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store: ReduxStore = redux.createStore(
 	redux.combineReducers<Reducers>({
@@ -33,6 +36,7 @@ export const store: ReduxStore = redux.createStore(
 		ideaReducer: ideaReducer.reducer,
 		paginationReducer: paginationReducer,
 	}),
+	composeEnhancers(redux.applyMiddleware()),
 );
 
 export default store;

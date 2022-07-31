@@ -4,11 +4,15 @@ import { AuthenticatedAvatar } from "../subComponents/AuthenticatedAvatar";
 
 import { useHistory } from "react-router";
 import { Bulb } from "tabler-icons-react";
+import useAccount from "common/hooks/useAccount";
+import LogonLinks from "common/components/page/subComponents/LogonLinks";
 
 export const SideMenu = () => {
 	const [isOpen, setIsOpen] = React.useState(true);
 
 	const history = useHistory();
+
+	const account = useAccount();
 
 	return (
 		<Aside
@@ -39,7 +43,7 @@ export const SideMenu = () => {
 						</ActionIcon>
 					)}
 				</Group>
-				<AuthenticatedAvatar showName={isOpen} />
+				{!account.isAnonymous ? <AuthenticatedAvatar showName={isOpen} /> : <LogonLinks minified={!isOpen} />}
 			</Group>
 		</Aside>
 	);

@@ -1,7 +1,7 @@
 // Framework
 import * as React from "react";
-import { RouteComponentProps, useHistory, withRouter } from "react-router-dom";
-import { ActionIcon } from "@mantine/core";
+import { useHistory } from "react-router-dom";
+import { ActionIcon, Button, Text } from "@mantine/core";
 import { Key, Login } from "tabler-icons-react";
 
 type Props = {
@@ -15,15 +15,22 @@ export const LoginLinks = ({ minified = false }: Props) => {
 		<>
 			{minified ? (
 				<>
-					<ActionIcon color="primary" onClick={() => history.push("/Logon/login")}>
+					<ActionIcon color="primary" onClick={() => history.push("/logon/login")}>
 						<Login />
 					</ActionIcon>
-					<ActionIcon onClick={() => history.push("/Logon/Register")}>
+					<ActionIcon onClick={() => history.push("/logon/register")}>
 						<Key />
 					</ActionIcon>
 				</>
 			) : (
-				<></>
+				<>
+					<Button leftIcon={<Login size={25} />} variant="outline" onClick={() => history.push("/logon/login")}>
+						<Text>Login</Text>
+					</Button>
+					<Button leftIcon={<Key size={25} />} variant="outline" onClick={() => history.push("/logon/register")}>
+						<Text>Register</Text>
+					</Button>
+				</>
 			)}
 		</>
 	);
