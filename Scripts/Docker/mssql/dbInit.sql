@@ -1,3 +1,22 @@
+IF EXISTS (SELECT name FROM master.sys.databases WHERE name = N'IdeaMachine')
+   BEGIN
+   	RETURN;
+   END;
+
+CREATE DATABASE IdeaMachine;
+GO
+
+USE IdeaMachine;
+GO
+
+IF (EXISTS (SELECT *
+   FROM INFORMATION_SCHEMA.TABLES
+   WHERE TABLE_SCHEMA = 'dbo'
+   AND TABLE_NAME = 'Ideas'))
+   BEGIN
+   	RETURN;
+   END;
+
 CREATE TABLE [dbo].[Ideas] (
 	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[ShortDescription] [varchar](400) NOT NULL,

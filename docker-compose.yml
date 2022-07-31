@@ -6,9 +6,7 @@ volumes:
   seq: {}
 
 networks:
-  ideamachinenetwork:
-    external:
-      name: ideamachinenetwork
+  ideamachinenetwork: {}
 
 services:
   nginx.ingress:
@@ -73,7 +71,10 @@ services:
       - ideamachine.rabbitmq
 
   ideamachine.sql:
-    image: mcr.microsoft.com/mssql/server
+    image: ideamachinesql
+    build:
+      context: Scripts/Docker/mssql
+      dockerfile: ./Dockerfile
     labels:
       - ideamachinecompose
     networks:
@@ -85,8 +86,10 @@ services:
       SA_PASSWORD: "^dEbX2Ew"
     volumes:
       - ideamachine_sql:/var/opt/mssql
-      - ./database:/Scripts/dbInit.sql
+      - ./Scripts/Docker/mssql:/scripts
     restart: unless-stopped
+    entrypoint:
+      - /scripts/init.sh
 
   ideamachine.seq:
     image: datalust/seq:latest
@@ -106,7 +109,7 @@ services:
     labels:
       - ideamachinecompose
     build:
-      context: /Scripts/Docker/rabbitmq
+      context: Scripts/Docker/rabbitmq
       dockerfile: Dockerfile
     networks:
       - ideamachinenetwork

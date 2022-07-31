@@ -45,7 +45,7 @@ services:
       SA_PASSWORD: "^dEbX2Ew"
     volumes:
         - ideamachine_sql:/var/opt/mssql
-        - ./database:/Scripts/dbInit.sql
+        - ./database:/scripts/dbInit.sql
     restart: unless-stopped
 
   ideamachine.seq:
