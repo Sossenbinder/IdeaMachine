@@ -6,7 +6,6 @@ import { ActionIcon, Avatar, Group, Paper, Text } from "@mantine/core";
 
 import styles from "./AuthenticatedAvatar.module.scss";
 import { BlackSpinner } from "common/components/controls/Spinner";
-import MaterialIcon from "common/components/MaterialIcon";
 import { Link } from "react-router-dom";
 import useAccount from "common/hooks/useAccount";
 import { Logout } from "tabler-icons-react";
@@ -15,7 +14,7 @@ type Props = {
 	showName?: boolean;
 };
 
-export const AuthenticatedAvatar = ({ showName = true }) => {
+export const AuthenticatedAvatar = ({ showName = true }: Props) => {
 	const { AccountService } = useServices();
 
 	const account = useAccount();

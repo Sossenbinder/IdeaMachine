@@ -1,4 +1,4 @@
-import { Aside, Burger, Button, Group, Text } from "@mantine/core";
+import { ActionIcon, Aside, Burger, Button, Group, Text } from "@mantine/core";
 import * as React from "react";
 import { AuthenticatedAvatar } from "../subComponents/AuthenticatedAvatar";
 
@@ -28,10 +28,16 @@ export const SideMenu = () => {
 		>
 			<Group direction="column" align="center" position="apart" noWrap sx={{ height: "100%" }}>
 				<Group direction="column" position="center" noWrap sx={{ height: "100%", width: "100%" }}>
-					<Burger opened={isOpen} onClick={() => setIsOpen((o) => !o)} title="Menu" sx={{ alignSelf: "end" }} />
-					<Button leftIcon={<Bulb size={14} />} variant="outline" onClick={() => history.push("/idea/own")}>
-						{isOpen && <Text>My ideas</Text>}
-					</Button>
+					<Burger opened={isOpen} onClick={() => setIsOpen((o) => !o)} title="Menu" sx={{ alignSelf: isOpen ? "end" : "center" }} />
+					{isOpen ? (
+						<Button leftIcon={<Bulb size={25} />} variant="outline" onClick={() => history.push("/idea/own")}>
+							<Text>My ideas</Text>
+						</Button>
+					) : (
+						<ActionIcon onClick={() => history.push("/idea/own")} variant="outline" color="#4dabf7">
+							<Bulb size={25} />
+						</ActionIcon>
+					)}
 				</Group>
 				<AuthenticatedAvatar showName={isOpen} />
 			</Group>

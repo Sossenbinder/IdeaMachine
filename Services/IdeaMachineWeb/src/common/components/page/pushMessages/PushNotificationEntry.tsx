@@ -60,7 +60,7 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 					appearActive: styles.ContainerEnterActive,
 					enterActive: styles.ContainerEnterActive,
 					exitActive: styles.ContainerExitActive,
-					exit: styles.ContainerExit
+					exit: styles.ContainerExit,
 				}}
 				onExited={onExit}
 			>

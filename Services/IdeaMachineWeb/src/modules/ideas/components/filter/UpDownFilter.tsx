@@ -3,7 +3,6 @@ import * as React from "react";
 
 // Components
 import Flex from "common/components/Flex";
-import MaterialIcon from "common/components/MaterialIcon";
 
 // Functionality
 import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
@@ -12,6 +11,7 @@ import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
 import { OrderType, OrderDirection } from "modules/ideas/types";
 
 import styles from "./styles/UpDownFilter.module.scss";
+import { ArrowDown, ArrowUp } from "tabler-icons-react";
 
 type Props = {
 	type: OrderType;
@@ -28,7 +28,7 @@ export const UpDownFilter: React.FC<Props> = ({ type }) => {
 		updateFilters({
 			...filters,
 			order: type,
-			direction: dir
+			direction: dir,
 		});
 	};
 
@@ -43,18 +43,8 @@ export const UpDownFilter: React.FC<Props> = ({ type }) => {
 	return (
 		<Flex direction="Row" className={styles.UpDownFilter} crossAlign="Center">
 			<Flex direction="Column">
-				<MaterialIcon
-					iconName="arrow_upward"
-					color={direction === OrderDirection.Up ? "blue" : "black"}
-					size={20}
-					onClick={() => changeDirection(OrderDirection.Up)}
-				/>
-				<MaterialIcon
-					iconName="arrow_downward"
-					color={direction === OrderDirection.Down ? "blue" : "black"}
-					size={20}
-					onClick={() => changeDirection(OrderDirection.Down)}
-				/>
+				<ArrowUp color={direction === OrderDirection.Up ? "blue" : "black"} size={20} onClick={() => changeDirection(OrderDirection.Up)} />
+				<ArrowDown color={direction === OrderDirection.Down ? "blue" : "black"} size={20} onClick={() => changeDirection(OrderDirection.Down)} />
 			</Flex>
 			<span className={styles.Label} onClick={() => changeDirection(direction === OrderDirection.Up ? OrderDirection.Down : OrderDirection.Up)}>
 				{OrderType[type]}

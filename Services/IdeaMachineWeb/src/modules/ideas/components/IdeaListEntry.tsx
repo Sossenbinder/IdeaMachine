@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Group, Text } from "@mantine/core";
 import * as React from "react";
 import classNames from "classnames";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -78,13 +78,13 @@ export const IdeaListEntry: React.FC<Props> = ({
 				gridTemplateColumns="30px 7fr 100px 1fr 40px"
 				gridTemplateRows="1fr 1fr"
 				gridTemplateAreas={`
-						"TotalLike ShortDescription Actions Timestamp Expand"
-						"TotalLike LongDescription Tags Tags ."
-					`}
+					"TotalLike ShortDescription Actions Timestamp Expand"
+					"TotalLike LongDescription Tags Tags ."
+				`}
 			>
 				<Cell gridArea="TotalLike">
-					<Flex className={styles.TotalLikeContainer} direction="Row" crossAlign="Center">
-						<Flex space="Around" direction="Column">
+					<Group className={styles.TotalLikeContainer} direction="row" align="center" noWrap sx={{ gap: 0 }}>
+						<Group position="apart" direction="column" sx={{ gap: 0 }}>
 							<MaterialIcon
 								className={styles.ThumbButton}
 								onClick={async (ev) => await modifyLikeState(ev, LikeState.Like)}
@@ -100,9 +100,9 @@ export const IdeaListEntry: React.FC<Props> = ({
 								size={14}
 								color={ownLikeState === LikeState.Dislike ? "blue" : "black"}
 							/>
-						</Flex>
+						</Group>
 						<Separator direction="Vertical" width="20px" />
-					</Flex>
+					</Group>
 				</Cell>
 				<Text className={styles.ShortDescription}>{shortDescription}</Text>
 				<Flex className={styles.ControlSection} direction="Row" crossAlign="Start">
