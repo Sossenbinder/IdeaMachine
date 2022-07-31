@@ -15,10 +15,10 @@ export const LoginLinks = ({ minified = false }: Props) => {
 		<>
 			{minified ? (
 				<>
-					<ActionIcon color="primary" onClick={() => history.push("/logon/login")}>
+					<ActionIcon color="primary" onClick={() => history.push("/logon/login")} title="Login" variant="outline">
 						<Login />
 					</ActionIcon>
-					<ActionIcon onClick={() => history.push("/logon/register")}>
+					<ActionIcon onClick={() => history.push("/logon/register")} title="Register" variant="outline">
 						<Key />
 					</ActionIcon>
 				</>
