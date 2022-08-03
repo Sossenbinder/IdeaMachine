@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
 using IdeaMachine.Common.AspNetIdentity.Extension;
@@ -133,6 +134,7 @@ namespace IdeaMachineWeb
 
 		private void ConfigureMassTransit(IServiceCollection services)
 		{
+			services.AddSwaggerGen();
 			services.Configure<RabbitMqOptions>(Configuration.GetSection("RabbitMqSettings"));
 			services.AddSignalR();
 			services.AddMassTransit(x =>
@@ -200,6 +202,9 @@ namespace IdeaMachineWeb
 					context.Request.Scheme = "https";
 					return next(context);
 				});
+
+				app.UseSwagger();
+				app.UseSwaggerUI();
 			}
 			else
 			{

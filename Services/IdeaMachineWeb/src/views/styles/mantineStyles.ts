@@ -1,9 +1,14 @@
 import { MantineProviderProps } from "@mantine/styles";
 
 export const customStyles: MantineProviderProps["styles"] = {
-	Text: (theme) => ({
+	Text: (_) => ({
 		root: {
-			color: theme.colorScheme === "dark" ? "white" : "black",
+			color: "black",
+		},
+	}),
+	ActionIcon: (_) => ({
+		root: {
+			color: "black",
 		},
 	}),
 };

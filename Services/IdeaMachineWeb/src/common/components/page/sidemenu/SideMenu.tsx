@@ -35,7 +35,13 @@ export const SideMenu = () => {
 					<Burger opened={isOpen} onClick={() => setIsOpen((o) => !o)} title="Menu" sx={{ alignSelf: isOpen ? "end" : "center" }} />
 					{isOpen ? (
 						<Button leftIcon={<Bulb size={25} />} variant="outline" onClick={() => history.push("/idea/own")}>
-							<Text>My ideas</Text>
+							<Text
+								sx={(theme) => ({
+									color: theme.colorScheme === "dark" ? "white" : "black",
+								})}
+							>
+								My ideas
+							</Text>
 						</Button>
 					) : (
 						<ActionIcon onClick={() => history.push("/idea/own")} variant="outline" color="#4dabf7">

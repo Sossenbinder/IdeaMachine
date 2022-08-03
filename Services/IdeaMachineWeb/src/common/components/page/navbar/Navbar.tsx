@@ -21,7 +21,13 @@ export const Navbar = () => {
 			<Group direction="row" position="apart">
 				<Group direction="row" align="center" className={styles.HomeLink} onClick={() => history.push("/")}>
 					<Logo size="s" />
-					<Text color="white">IdeaMachine</Text>
+					<Text
+						sx={(theme) => ({
+							color: theme.colorScheme === "dark" ? "white" : "black",
+						})}
+					>
+						IdeaMachine
+					</Text>
 				</Group>
 				<Group direction="row" align="center">
 					<NotificationBell />

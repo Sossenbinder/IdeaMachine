@@ -30,11 +30,11 @@ export const MainContainer = () => {
 						padding="md"
 						aside={<SideMenu />}
 						header={<Navbar />}
-						styles={(theme) => ({
+						styles={{
 							main: {
 								padding: 0,
 							},
-						})}
+						}}
 					>
 						<Content />
 					</AppShell>

@@ -1,4 +1,4 @@
-import { Group, Text } from "@mantine/core";
+import { ActionIcon, Group, Text } from "@mantine/core";
 import * as React from "react";
 import classNames from "classnames";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -13,6 +13,7 @@ import useServices from "common/hooks/useServices";
 import { LikeState } from "modules/reaction/types";
 import { Idea } from "../types";
 import styles from "./styles/IdeaListEntry.module.scss";
+import { ThumbDown, ThumbUp } from "tabler-icons-react";
 
 type Props = RouteComponentProps & {
 	idea: Idea;
@@ -45,9 +46,7 @@ export const IdeaListEntry: React.FC<Props> = ({
 		history.push(navLink);
 	};
 
-	const modifyLikeState = async (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, likeState: LikeState) => {
-		event.stopPropagation();
-		event.preventDefault();
+	const modifyLikeState = async (likeState: LikeState) => {
 		await ReactionService.modifyLike(id, likeState);
 	};
 
@@ -85,21 +84,13 @@ export const IdeaListEntry: React.FC<Props> = ({
 				<Cell gridArea="TotalLike">
 					<Group className={styles.TotalLikeContainer} direction="row" align="center" noWrap sx={{ gap: 0 }}>
 						<Group position="apart" direction="column" sx={{ gap: 0 }}>
-							<MaterialIcon
-								className={styles.ThumbButton}
-								onClick={async (ev) => await modifyLikeState(ev, LikeState.Like)}
-								iconName="thumb_up"
-								size={14}
-								color={ownLikeState === LikeState.Like ? "blue" : "black"}
-							/>
-							{`${totalLike >= 0 ? "+" : ""}${totalLike}`}
-							<MaterialIcon
-								className={styles.ThumbButton}
-								onClick={async (ev) => await modifyLikeState(ev, LikeState.Dislike)}
-								iconName="thumb_down"
-								size={14}
-								color={ownLikeState === LikeState.Dislike ? "blue" : "black"}
-							/>
+							<ActionIcon onClick={async () => await modifyLikeState(LikeState.Like)} size={14}>
+								<ThumbUp />
+							</ActionIcon>
+							<Text>{`${totalLike >= 0 ? "+" : ""}${totalLike}`}</Text>
+							<ActionIcon onClick={async () => await modifyLikeState(LikeState.Dislike)} size={14}>
+								<ThumbDown />
+							</ActionIcon>
 						</Group>
 						<Separator direction="Vertical" width="20px" />
 					</Group>
