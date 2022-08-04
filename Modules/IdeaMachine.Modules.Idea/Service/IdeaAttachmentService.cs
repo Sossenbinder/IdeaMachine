@@ -88,7 +88,7 @@ namespace IdeaMachine.Modules.Idea.Service
 			}
 
 			var fileNameStartIndex = attachmentUrl.AttachmentUrl.LastIndexOf("ideaattachments/", StringComparison.Ordinal) + "ideaattachments/".Length;
-			var fileName = attachmentUrl!.AttachmentUrl[fileNameStartIndex..];
+			var fileName = attachmentUrl.AttachmentUrl[fileNameStartIndex..];
 
 			var deletionSuccess = await client.DeleteBlobIfExistsAsync(fileName);
 

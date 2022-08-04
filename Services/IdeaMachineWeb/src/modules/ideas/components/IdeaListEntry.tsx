@@ -13,22 +13,14 @@ import useServices from "common/hooks/useServices";
 import { LikeState } from "modules/reaction/types";
 import { Idea } from "../types";
 import styles from "./styles/IdeaListEntry.module.scss";
-import { ThumbDown, ThumbUp } from "tabler-icons-react";
+import Voting from "./input/Voting";
 
 type Props = RouteComponentProps & {
 	idea: Idea;
 };
 
 export const IdeaListEntry: React.FC<Props> = ({
-	idea: {
-		shortDescription,
-		creationDate,
-		longDescription,
-		id,
-		tags,
-		attachmentUrls,
-		ideaReactionMetaData: { totalLike, ownLikeState },
-	},
+	idea: { shortDescription, creationDate, longDescription, id, tags, attachmentUrls, ideaReactionMetaData },
 	history,
 }) => {
 	const [previewOpen, setPreviewOpen] = React.useState(false);
@@ -44,10 +36,6 @@ export const IdeaListEntry: React.FC<Props> = ({
 		event.preventDefault();
 
 		history.push(navLink);
-	};
-
-	const modifyLikeState = async (likeState: LikeState) => {
-		await ReactionService.modifyLike(id, likeState);
 	};
 
 	const deleteIdea = async (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
@@ -83,15 +71,7 @@ export const IdeaListEntry: React.FC<Props> = ({
 			>
 				<Cell gridArea="TotalLike">
 					<Group className={styles.TotalLikeContainer} direction="row" align="center" noWrap sx={{ gap: 0 }}>
-						<Group position="apart" direction="column" sx={{ gap: 0 }}>
-							<ActionIcon onClick={async () => await modifyLikeState(LikeState.Like)} size={14}>
-								<ThumbUp />
-							</ActionIcon>
-							<Text>{`${totalLike >= 0 ? "+" : ""}${totalLike}`}</Text>
-							<ActionIcon onClick={async () => await modifyLikeState(LikeState.Dislike)} size={14}>
-								<ThumbDown />
-							</ActionIcon>
-						</Group>
+						<Voting id={id} ideaReactionMetaData={ideaReactionMetaData} />
 						<Separator direction="Vertical" width="20px" />
 					</Group>
 				</Cell>
