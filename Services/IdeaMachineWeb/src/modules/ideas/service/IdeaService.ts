@@ -12,7 +12,7 @@ import { ensureArray } from "common/helper/arrayUtils";
 
 // Types
 import { IChannelProvider } from "common/modules/channel/ChannelProvider";
-import { Idea, IdeaDeleteErrorCode, IdeaInputResult, LikeCommitedNotification } from "../types";
+import { Idea, IdeaDeleteErrorCode, IdeaInputResult } from "../types";
 import { CouldBeArray } from "common/types/arrayTypes";
 
 export default class IdeaService extends ModuleService implements IIdeaService {
@@ -20,11 +20,7 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		super(channelProvider);
 	}
 
-	public async start() {
-		this.ChannelProvider.getChannel<LikeCommitedNotification>("LikeCommited").register(this.onLikeCommittedNotification);
-	}
-
-	private async onLikeCommittedNotification(onLikeCommittedNotification: LikeCommitedNotification) {}
+	public async start() {}
 
 	addIdea = async (idea: Idea, attachments?: FileList): Promise<number> => {
 		let result: IdeaInputResult = null;

@@ -1,4 +1,5 @@
 import { Comment } from "modules/comments/types";
+import { LikeState } from "../reaction/types";
 
 export type Idea = {
 	id: number;
@@ -47,9 +48,9 @@ export enum IdeaInputResult {
 	MissingLongDescription = 1 << 2,
 }
 
-export type LikeCommitedNotification = {
-	ideaId: string;
-	success: boolean;
+export type LikeCommitedFailedInfo = {
+	ideaId: number;
+	rollbackState: LikeState;
 };
 
 export namespace Network {

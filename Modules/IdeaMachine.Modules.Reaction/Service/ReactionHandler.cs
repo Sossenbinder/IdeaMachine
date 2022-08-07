@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.Eventing.DataTypes;
 using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Common.Eventing.MassTransit.Service.Interface;
+using IdeaMachine.Modules.Reaction.Abstractions.DataTypes;
 using IdeaMachine.Modules.Reaction.DataTypes.Events;
 using IdeaMachine.Modules.Reaction.Events.Interface;
 using IdeaMachine.Modules.Reaction.Repository.Interface;
@@ -33,11 +34,15 @@ namespace IdeaMachine.Modules.Reaction.Service
 
 			var putSuccess = await _reactionRepository.PutReaction(userId, ideaId, likeState);
 
-			await _notificationService.RaiseForGroup(userId.ToString(), NotificationFactory.Update(new
+			if (!putSuccess)
 			{
-				ideaId,
-				success = putSuccess,
-			}, NotificationType.LikeCommited));
+				var initialState = await _reactionRepository.GetLikeState(ideaId, userId);
+				await _notificationService.RaiseForGroup(userId.ToString(), NotificationFactory.Update(new
+				{
+					ideaId,
+					rollbackState = initialState ?? LikeState.Neutral,
+				}, NotificationType.LikeCommitFailed));
+			}
 		}
 	}
 }

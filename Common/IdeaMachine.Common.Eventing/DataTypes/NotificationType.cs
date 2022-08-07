@@ -4,7 +4,7 @@
 	{
 		Idea,
 		Reaction,
-		LikeCommited,
+		LikeCommitFailed,
 		Comment,
 		UserDetails,
 		IdeaResponse,

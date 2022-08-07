@@ -56,13 +56,13 @@ namespace IdeaMachine.Modules.Reaction.Repository
 			return result;
 		}
 
-		public async Task<LikeState> GetLikeState(int ideaId, Guid userId)
+		public async Task<LikeState?> GetLikeState(int ideaId, Guid userId)
 		{
 			await using var ctx = CreateContext();
 
 			var match = await ctx.Reactions.FirstOrDefaultAsync(x => x.IdeaId == ideaId && x.UserId == userId);
 
-			return match?.LikeState ?? LikeState.Neutral;
+			return match?.LikeState;
 		}
 	}
 }

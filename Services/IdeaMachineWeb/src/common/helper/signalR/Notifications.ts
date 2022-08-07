@@ -1,9 +1,9 @@
 export enum BackendNotification {
-  Idea,
-  Reaction,
-  LikeCommited,
-  Comment,
-  UserDetails,
+	Idea,
+	Reaction,
+	LikeCommitFailed,
+	Comment,
+	UserDetails,
 }
 
 export default BackendNotification;

@@ -33,7 +33,7 @@ namespace IdeaMachineWeb.Controllers
 		[HttpPost]
 		[Authorize]
 		[Route("Add")]
-		public async Task<JsonResponse> Add([FromBody] AddCommentUiModel commentModel)
+		public async Task<IActionResult> Add([FromBody] AddCommentUiModel commentModel)
 		{
 			var model = new CommentModel()
 			{
@@ -45,16 +45,16 @@ namespace IdeaMachineWeb.Controllers
 
 			await _ideaEvents.CommentAdded.Raise(new CommentAdded(model));
 
-			return JsonResponse.Success();
+			return Ok();
 		}
 
 		[HttpPost]
 		[Route("GetComments")]
-		public async Task<JsonDataResponse<List<CommentUiModel>>> GetComments([FromBody] GetCommentUiModel commentUiModel)
+		public async Task<IActionResult> GetComments([FromBody] GetCommentUiModel commentUiModel)
 		{
 			var comments = await _commentService.GetComments(commentUiModel.IdeaId);
 
-			return comments.ToJsonDataResponse(CommentUiModel.FromModel);
+			return comments.AsJsonResponse(CommentUiModel.FromModel);
 		}
 	}
 }

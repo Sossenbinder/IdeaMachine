@@ -10,6 +10,6 @@ namespace IdeaMachine.Modules.Reaction.Repository.Interface
 
 		Task<int> GetTotalLikeCount(int ideaId);
 
-		Task<LikeState> GetLikeState(int ideaId, Guid userId);
+		Task<LikeState?> GetLikeState(int ideaId, Guid userId);
 	}
 }
