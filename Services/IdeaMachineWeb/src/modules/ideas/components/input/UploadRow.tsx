@@ -16,6 +16,8 @@ import { AttachmentUrl } from "modules/ideas/types";
 import styles from "./styles/UploadRow.module.scss";
 import useAsyncCall from "common/hooks/useAsyncCall";
 import CircularProgress from "@mui/material/CircularProgress";
+import { CirclePlus } from "tabler-icons-react";
+import { ActionIcon } from "@mantine/core";
 
 type Props = {
 	attachments: Array<AttachmentUrl>;
@@ -49,7 +51,9 @@ export const UploadRow: React.FC<Props> = ({ attachments, ideaId, isOwned = fals
 				<Flex className={styles.UploadButton} mainAlign="Center" crossAlign="Center">
 					<Choose>
 						<When condition={!running}>
-							<MaterialIcon size={50} iconName="add_circle_outline" onClick={() => uploadFileRef.current.click()} />
+							<ActionIcon size="xl" variant="transparent" onClick={() => uploadFileRef.current.click()}>
+								<CirclePlus size={75} />
+							</ActionIcon>
 						</When>
 						<Otherwise>
 							<CircularProgress />

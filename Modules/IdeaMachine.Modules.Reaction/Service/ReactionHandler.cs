@@ -33,10 +33,11 @@ namespace IdeaMachine.Modules.Reaction.Service
 
 			var putSuccess = await _reactionRepository.PutReaction(userId, ideaId, likeState);
 
-			if (putSuccess)
+			await _notificationService.RaiseForGroup(userId.ToString(), NotificationFactory.Update(new
 			{
-				await _notificationService.RaiseForGroup(userId.ToString(), NotificationFactory.Update(ideaId, NotificationType.LikeCommited));
-			}
+				ideaId,
+				success = putSuccess,
+			}, NotificationType.LikeCommited));
 		}
 	}
 }

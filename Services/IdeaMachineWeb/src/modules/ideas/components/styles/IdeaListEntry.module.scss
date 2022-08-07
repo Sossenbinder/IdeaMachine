@@ -36,8 +36,14 @@
 		.TotalLikeContainer {
 			height: 100%;
 
-			.ThumbButton {
-				margin-left: 2px;
+			button {
+				$size: 18px;
+				height: $size;
+				min-height: $size;
+				width: $size;
+				min-width: $size;
+
+				align-self: center;
 			}
 		}
 

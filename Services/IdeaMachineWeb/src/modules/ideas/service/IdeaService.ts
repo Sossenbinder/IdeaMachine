@@ -12,21 +12,21 @@ import { ensureArray } from "common/helper/arrayUtils";
 
 // Types
 import { IChannelProvider } from "common/modules/channel/ChannelProvider";
-import { Idea, IdeaDeleteErrorCode, IdeaInputResult } from "../types";
+import { Idea, IdeaDeleteErrorCode, IdeaInputResult, LikeCommitedNotification } from "../types";
 import { CouldBeArray } from "common/types/arrayTypes";
 
 export default class IdeaService extends ModuleService implements IIdeaService {
-
 	public constructor(channelProvider: IChannelProvider) {
 		super(channelProvider);
 	}
 
-	public start() {
-		return Promise.resolve();
+	public async start() {
+		this.ChannelProvider.getChannel<LikeCommitedNotification>("LikeCommited").register(this.onLikeCommittedNotification);
 	}
 
-	addIdea = async (idea: Idea, attachments?: FileList): Promise<number> => {
+	private async onLikeCommittedNotification(onLikeCommittedNotification: LikeCommitedNotification) {}
 
+	addIdea = async (idea: Idea, attachments?: FileList): Promise<number> => {
 		let result: IdeaInputResult = null;
 
 		if (!idea.shortDescription) {
@@ -44,48 +44,49 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		const response = await ideaCommunication.postIdea(idea, attachments);
 
 		if (!response.success) {
-			this.dispatch(pushNotificationReducer.add({
-				message: "An error occured",
-				timeStamp: new Date(),
-				type: "Error",
-				timeout: 5000,
-			}));
+			this.dispatch(
+				pushNotificationReducer.add({
+					message: "An error occured",
+					timeStamp: new Date(),
+					type: "Error",
+					timeout: 5000,
+				}),
+			);
 
 			return IdeaInputResult.UnspecifiedError;
 		}
 
 		return IdeaInputResult.Successful;
-	}
+	};
 
 	fetchIdeas = async () => {
-
 		const paginationToken = this.getStore().paginationReducer.ideaPagination.paginationToken;
 
-		const ideaResponse = await ideaCommunication.getIdeas(paginationToken as (number | null));
+		const ideaResponse = await ideaCommunication.getIdeas(paginationToken as number | null);
 
 		if (ideaResponse.success) {
-
-			const { payload: { data, paginationToken } } = ideaResponse;
+			const {
+				payload: { data, paginationToken },
+			} = ideaResponse;
 
 			this.enrichIdeasWithDate(data);
 
 			this.dispatch(updateIdeaPagination(paginationToken));
 			this.dispatch(ideaReducer.add(data));
 		}
-	}
+	};
 
 	initializeOwnIdeas = async (): Promise<void> => {
 		const ideaResponse = await ideaCommunication.getOwnIdeas();
 
 		if (ideaResponse.success) {
-
 			const { payload } = ideaResponse;
 
 			this.enrichIdeasWithDate(payload);
 
 			this.dispatch(ideaReducer.put(payload));
 		}
-	}
+	};
 
 	getSpecificIdea = async (id: number) => {
 		const ideaResponse = await ideaCommunication.getSpecificIdea(id);
@@ -94,7 +95,7 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 			this.enrichIdeasWithDate(ideaResponse.payload);
 			this.dispatch(ideaReducer.put(ideaResponse.payload));
 		}
-	}
+	};
 
 	deleteIdea = async (id: number) => {
 		const deletionResponse = await ideaCommunication.deleteIdea(id);
@@ -102,47 +103,57 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		const errorCode = deletionResponse.payload;
 
 		if (errorCode === IdeaDeleteErrorCode.Successful) {
-			this.dispatch(ideaReducer.delete(this.getStore().ideaReducer.data.find(x => x.id === id)));
+			this.dispatch(ideaReducer.delete(this.getStore().ideaReducer.data.find((x) => x.id === id)));
 		}
 
 		if (errorCode === IdeaDeleteErrorCode.NotOwned) {
-			this.dispatch(pushNotificationReducer.add({
-				message: "You don't own this idea, so you also can't delete it",
-				timeStamp: new Date(),
-				type: "Warning",
-				timeout: 5000,
-			}));
+			this.dispatch(
+				pushNotificationReducer.add({
+					message: "You don't own this idea, so you also can't delete it",
+					timeStamp: new Date(),
+					type: "Warning",
+					timeout: 5000,
+				}),
+			);
 		}
-	}
+	};
 
 	deleteAttachment = async (ideaId: number, attachmentId: number) => {
 		const deletionResponse = await ideaCommunication.deleteAttachment(ideaId, attachmentId);
 
 		if (!deletionResponse.success) {
-			this.dispatch(pushNotificationReducer.add({
-				message: "Error while trying to delete the attachment",
-				timeStamp: new Date(),
-				type: "Error",
-				timeout: 5000,
-			}));
+			this.dispatch(
+				pushNotificationReducer.add({
+					message: "Error while trying to delete the attachment",
+					timeStamp: new Date(),
+					type: "Error",
+					timeout: 5000,
+				}),
+			);
 
 			return;
 		}
 
-		const idea = this.getStore().ideaReducer.data.find(x => x.id === ideaId);
+		const idea = this.getStore().ideaReducer.data.find((x) => x.id === ideaId);
 
-		this.dispatch(ideaReducer.put({
-			...idea,
-			attachmentUrls: [ ...this.getStore().ideaReducer.data.find(x => x.id === ideaId).attachmentUrls.filter(x => x.id !== attachmentId) ],
-		}));
-	}
+		this.dispatch(
+			ideaReducer.put({
+				...idea,
+				attachmentUrls: [
+					...this.getStore()
+						.ideaReducer.data.find((x) => x.id === ideaId)
+						.attachmentUrls.filter((x) => x.id !== attachmentId),
+				],
+			}),
+		);
+	};
 
 	uploadAttachment = async (ideaId: number, file: File) => {
 		const uploadResponse = await ideaCommunication.uploadAttachment(ideaId, file);
 
 		if (uploadResponse.success) {
-			const idea = this.getStore().ideaReducer.data.find(x => x.id === ideaId);
-			
+			const idea = this.getStore().ideaReducer.data.find((x) => x.id === ideaId);
+
 			if (!idea) {
 				return;
 			}
@@ -154,13 +165,13 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 					{
 						attachmentUrl: URL.createObjectURL(file),
 						id: uploadResponse.payload,
-					}
-				]
+					},
+				],
 			};
 
 			this.dispatch(ideaReducer.put(newIdea));
 		}
-	}
+	};
 
-	private enrichIdeasWithDate = (data: CouldBeArray<Idea>) => ensureArray(data).forEach(x => x.creationDate = moment(x.creationDate).local().toDate());
+	private enrichIdeasWithDate = (data: CouldBeArray<Idea>) => ensureArray(data).forEach((x) => (x.creationDate = moment(x.creationDate).local().toDate()));
 }

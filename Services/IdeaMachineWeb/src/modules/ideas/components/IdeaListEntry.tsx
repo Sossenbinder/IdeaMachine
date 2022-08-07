@@ -27,7 +27,7 @@ export const IdeaListEntry: React.FC<Props> = ({
 
 	const { filters, updateFilters } = React.useContext(IdeaFilterContext);
 
-	const { ReactionService, IdeaService } = useServices();
+	const { IdeaService } = useServices();
 
 	const containerClassNames = classNames(styles.Container, { [styles.Open]: previewOpen });
 
@@ -103,9 +103,9 @@ export const IdeaListEntry: React.FC<Props> = ({
 					</Cell>
 					<Cell gridArea="Tags">
 						<Flex className={styles.Chips} direction="Row" wrap="Wrap">
-							{tags.map((data, index) => {
-								return <Chip label={data} color="info" key={`Tags_${index}`} onClick={(event) => onTagClick(event, data)} />;
-							})}
+							{tags.map((data, index) => (
+								<Chip label={data} color="info" key={`Tags_${index}`} onClick={(event) => onTagClick(event, data)} />
+							))}
 						</Flex>
 					</Cell>
 				</If>

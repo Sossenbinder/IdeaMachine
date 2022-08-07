@@ -10,22 +10,22 @@ export type Idea = {
 	attachmentUrls: Array<AttachmentUrl>;
 	ideaReactionMetaData: IdeaReactionMetaData;
 	comments?: Array<Comment>;
-}
+};
 
 export type AttachmentUrl = {
 	id: number;
 	attachmentUrl: string;
-}
+};
 
 export type IdeaReactionMetaData = {
 	ownLikeState: number;
 	totalLike: number;
-}
+};
 
 export enum OrderType {
 	Created,
 	Description,
-	Popularity
+	Popularity,
 }
 
 export enum OrderDirection {
@@ -46,6 +46,11 @@ export enum IdeaInputResult {
 	MissingShortDescription = 1 << 1,
 	MissingLongDescription = 1 << 2,
 }
+
+export type LikeCommitedNotification = {
+	ideaId: string;
+	success: boolean;
+};
 
 export namespace Network {
 	export namespace Add {
@@ -73,7 +78,7 @@ export namespace Network {
 
 	export namespace UploadAttachment {
 		export type Request = {
-			ideaId: number,
+			ideaId: number;
 		};
 		export type Response = number;
 	}
@@ -82,12 +87,10 @@ export namespace Network {
 		export type Request = {
 			attachmentId: number;
 			ideaId: number;
-		}
+		};
 	}
 
 	export namespace Reply {
-		export type Request = {
-
-		}
+		export type Request = {};
 	}
 }

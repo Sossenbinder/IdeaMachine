@@ -17,6 +17,7 @@ import { Account } from "modules/account/types";
 import { LikeState } from "modules/reaction/types";
 import styles from "./styles/IdeaInfo.module.scss";
 import { Text } from "@mantine/core";
+import Voting from "../input/Voting";
 
 type Props = RouteComponentProps<{
 	id: string;
@@ -37,9 +38,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 }) => {
 	const idParsed = Number(id);
 
-	const { IdeaService, ReactionService } = useServices();
-
-	const translations = useTranslations();
+	const { IdeaService } = useServices();
 
 	const [loading, runCall] = useAsyncCall();
 
@@ -81,23 +80,7 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 						</Cell>
 						<Cell gridArea="LongDescription">{idea.longDescription}</Cell>
 						<Cell gridArea="Rating">
-							<Flex className={styles.ReactionSection} direction="Column" crossAlign="Center">
-								<MaterialIcon
-									className={styles.ThumbButton}
-									onClick={async (_) => await ReactionService.modifyLike(idea.id, LikeState.Like)}
-									iconName="thumb_up"
-									size={25}
-									color={idea.ideaReactionMetaData.ownLikeState === LikeState.Like ? "blue" : "black"}
-								/>
-								<span>{`${idea.ideaReactionMetaData.totalLike >= 0 ? "+" : ""}${idea.ideaReactionMetaData.totalLike}`}</span>
-								<MaterialIcon
-									className={styles.ThumbButton}
-									onClick={async (_) => await ReactionService.modifyLike(idea.id, LikeState.Dislike)}
-									iconName="thumb_down"
-									size={25}
-									color={idea.ideaReactionMetaData.ownLikeState === LikeState.Dislike ? "blue" : "black"}
-								/>
-							</Flex>
+							<Voting id={idParsed} ideaReactionMetaData={idea.ideaReactionMetaData} />
 						</Cell>
 						<Cell gridArea="Attachments">
 							<Text className={styles.Attachments}>Attachments:</Text>

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Common.Database.Context;
 using IdeaMachine.Common.Database.Extensions;
 using IdeaMachine.Common.Database.Repository;
 using IdeaMachine.Modules.Reaction.Abstractions.DataTypes;
-using IdeaMachine.Modules.Reaction.DataTypes;
 using IdeaMachine.Modules.Reaction.DataTypes.Entity;
 using IdeaMachine.Modules.Reaction.Repository.Context;
 using IdeaMachine.Modules.Reaction.Repository.Interface;

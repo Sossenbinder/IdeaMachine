@@ -6,6 +6,8 @@ import { LikeState } from "modules/reaction/types";
 import { IdeaReactionMetaData } from "../../types";
 import { ThumbDown, ThumbUp } from "tabler-icons-react";
 
+import styles from "./styles/Voting.module.scss";
+
 type Props = {
 	id: number;
 	ideaReactionMetaData: IdeaReactionMetaData;
@@ -21,11 +23,11 @@ export default function Voting({ id, ideaReactionMetaData: { ownLikeState, total
 
 	const createThumb = (likeState: LikeState) => {
 		return (
-			<ActionIcon onClick={(event: React.MouseEvent<HTMLButtonElement>) => modifyLikeState(event, likeState)} size={14}>
+			<ActionIcon className={styles.VotingThumb} onClick={(event: React.MouseEvent<HTMLButtonElement>) => modifyLikeState(event, likeState)}>
 				{likeState === LikeState.Like ? (
-					<ThumbUp fill={ownLikeState === LikeState.Like ? "lightblue" : "white"} />
+					<ThumbUp fill={ownLikeState === LikeState.Like ? "#3482E9" : "white"} />
 				) : (
-					<ThumbDown fill={ownLikeState === LikeState.Dislike ? "lightblue" : "white"} />
+					<ThumbDown fill={ownLikeState === LikeState.Dislike ? "#3482E9" : "white"} />
 				)}
 			</ActionIcon>
 		);
