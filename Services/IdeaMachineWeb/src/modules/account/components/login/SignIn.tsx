@@ -25,8 +25,6 @@ export const SignIn: React.FC = () => {
 	const [identityErrorCode, setIdentityErrorCode] = React.useState<IdentityErrorCode>(IdentityErrorCode.Success);
 	const history = useHistory();
 
-	const [providers, setProviders] = React.useState<Array<string>>([]);
-
 	const [signInInfo, setSignInInfo] = React.useState<SignInInfo>({
 		emailUserName: "",
 		password: "",
