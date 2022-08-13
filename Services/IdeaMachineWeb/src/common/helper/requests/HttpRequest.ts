@@ -1,4 +1,5 @@
 import { NetworkResponse } from "./types/NetworkDefinitions";
+import { msalInstance, scopes } from "../../../modules/account/msal/msalConfig";
 
 export enum RequestMethods {
 	GET = "GET",
@@ -19,7 +20,7 @@ export default abstract class HttpRequest<TRequest, TResponse> {
 	}
 
 	protected async send(requestData?: TRequest): Promise<NetworkResponse<TResponse>> {
-		const requestInit: RequestInit = {
+		const requestOptions: RequestInit = {
 			method: this.m_requestMethod,
 			cache: "no-cache",
 			headers: {
@@ -31,11 +32,28 @@ export default abstract class HttpRequest<TRequest, TResponse> {
 		};
 
 		if ((this.m_requestMethod === RequestMethods.POST || this.m_requestMethod === RequestMethods.DELETE) && typeof requestData !== "undefined") {
-			requestInit.body = JSON.stringify(requestData);
+			requestOptions.body = JSON.stringify(requestData);
 		}
 
+		const headers = new Headers({
+			Accept: "application/json, text/javascript, */*",
+			"Content-Type": "application/json",
+			RequestVerificationToken: tokenHolder.value,
+		});
+		const accounts = msalInstance.getAllAccounts();
+		if (accounts.length > 0) {
+			const tokenInfo = await msalInstance.acquireTokenSilent({
+				scopes: [scopes.user],
+				account: accounts[0],
+			});
+			const bearer = `Bearer ${tokenInfo.accessToken}`;
+			headers.append("Authorization", bearer);
+		}
+
+		requestOptions.headers = headers;
+
 		try {
-			const response = await fetch(this.m_url, requestInit);
+			const response = await fetch(this.m_url, requestOptions);
 			const responseBody = await response.text();
 
 			if (responseBody.length === 0) {

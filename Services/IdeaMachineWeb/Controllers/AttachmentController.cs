@@ -25,27 +25,27 @@ namespace IdeaMachineWeb.Controllers
 
 		[HttpPost]
 		[Route("Upload")]
-		public async Task<JsonDataResponse<int>> Upload(
+		public async Task<IActionResult> Upload(
 			[ModelBinder(BinderType = typeof(MultiPartJsonModelBinder))] UploadIdeaModel uploadIdeaModel,
 			IFormCollection form)
 		{
-			if (form.Files.Any())
+			if (!form.Files.Any())
 			{
-				var results = await _ideaAttachmentService.UploadAttachments(Session, form.Files, uploadIdeaModel.IdeaId);
-
-				return JsonResponse.Success(results.First().Id);
+				return BadRequest();
 			}
 
-			return JsonDataResponse<int>.Error();
+			var results = await _ideaAttachmentService.UploadAttachments(Session, form.Files, uploadIdeaModel.IdeaId);
+
+			return Json(results.First().Id);
 		}
 
 		[HttpDelete]
 		[Route("Delete")]
-		public async Task<JsonResponse> Delete([FromBody] DeleteAttachmentUrlUiModel deleteAttachmentUrl)
+		public async Task<IActionResult> Delete([FromBody] DeleteAttachmentUrlUiModel deleteAttachmentUrl)
 		{
 			var response = await _ideaAttachmentService.RemoveAttachment(Session, deleteAttachmentUrl.IdeaId, deleteAttachmentUrl.AttachmentId);
 
-			return response.ToJsonResponse();
+			return response.AsHttpResponse();
 		}
 	}
 }

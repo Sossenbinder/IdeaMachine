@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 import { createTheme, ThemeOptions, ThemeProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
+import { MsalProvider } from "@azure/msal-react";
 
 // Components
 import LoadingBar from "common/components/state/LoadingBar";
@@ -22,6 +23,7 @@ import { store } from "common/redux/store";
 import "./styles/RootComponent.scss";
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/styles";
 import { customStyles } from "./styles/mantineStyles";
+import { msalInstance } from "../modules/account/msal/msalConfig";
 
 const queryClient = new QueryClient();
 
@@ -66,39 +68,41 @@ const RootComponent: React.FC<Props> = ({ channelProvider, initFunc, initService
 
 	return (
 		<Provider store={store}>
-			<BrowserRouter>
-				<ThemeProvider theme={themeOptions}>
-					<MantineProvider
-						withGlobalStyles
-						withNormalizeCSS
-						styles={customStyles}
-						theme={{
-							colorScheme: currentColorScheme,
-						}}
-					>
-						<ColorSchemeProvider colorScheme={currentColorScheme} toggleColorScheme={toggleColorScheme}>
-							<QueryClientProvider client={queryClient}>
-								<ServiceContextProvider>
-									<AccountContextProvider>
-										<ChannelProviderContextProvider channelProvider={channelProvider}>
-											<Choose>
-												<When condition={loadedServices === initServiceCount && initialized}>
-													<IdeaFilterContextProvider>
-														<MainContainer />
-													</IdeaFilterContextProvider>
-												</When>
-												<Otherwise>
-													<LoadingBar progress={(loadedServices / initServiceCount) * 100} />
-												</Otherwise>
-											</Choose>
-										</ChannelProviderContextProvider>
-									</AccountContextProvider>
-								</ServiceContextProvider>
-							</QueryClientProvider>
-						</ColorSchemeProvider>
-					</MantineProvider>
-				</ThemeProvider>
-			</BrowserRouter>
+			<MsalProvider instance={msalInstance}>
+				<BrowserRouter>
+					<ThemeProvider theme={themeOptions}>
+						<MantineProvider
+							withGlobalStyles
+							withNormalizeCSS
+							styles={customStyles}
+							theme={{
+								colorScheme: currentColorScheme,
+							}}
+						>
+							<ColorSchemeProvider colorScheme={currentColorScheme} toggleColorScheme={toggleColorScheme}>
+								<QueryClientProvider client={queryClient}>
+									<ServiceContextProvider>
+										<AccountContextProvider>
+											<ChannelProviderContextProvider channelProvider={channelProvider}>
+												<Choose>
+													<When condition={loadedServices === initServiceCount && initialized}>
+														<IdeaFilterContextProvider>
+															<MainContainer />
+														</IdeaFilterContextProvider>
+													</When>
+													<Otherwise>
+														<LoadingBar progress={(loadedServices / initServiceCount) * 100} />
+													</Otherwise>
+												</Choose>
+											</ChannelProviderContextProvider>
+										</AccountContextProvider>
+									</ServiceContextProvider>
+								</QueryClientProvider>
+							</ColorSchemeProvider>
+						</MantineProvider>
+					</ThemeProvider>
+				</BrowserRouter>
+			</MsalProvider>
 		</Provider>
 	);
 };

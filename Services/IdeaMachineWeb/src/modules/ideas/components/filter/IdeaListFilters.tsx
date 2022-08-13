@@ -1,19 +1,11 @@
-// Framework
 import * as React from "react";
-
-// Components
 import Flex from "common/components/Flex";
 import TagDisplay from "../input/TagDisplay";
 import UpDownFilter from "./UpDownFilter";
-
-// Functionality
 import { IdeaFilterContext } from "../IdeaFilterContext";
-
-// Types
 import { OrderType } from "modules/ideas/types";
-
-// Styles
 import styles from "./styles/IdeaListFilters.module.scss";
+import { Text } from "@mantine/core";
 
 export const IdeaListFilters: React.FC = () => {
 	const { filters, updateFilters } = React.useContext(IdeaFilterContext);
@@ -21,13 +13,15 @@ export const IdeaListFilters: React.FC = () => {
 	const updateTags = (newTags: Array<string>) => {
 		updateFilters({
 			...filters,
-			tags: newTags
+			tags: newTags,
 		});
 	};
 
 	return (
 		<Flex className={styles.Container} direction="Column" crossAlign="Start">
-			<span className={styles.Heading}>Order</span>
+			<Text className={styles.Heading} mt={5} sx={{ alignSelf: "center" }}>
+				Order
+			</Text>
 			<UpDownFilter type={OrderType.Created} />
 			<UpDownFilter type={OrderType.Description} />
 			<UpDownFilter type={OrderType.Popularity} />

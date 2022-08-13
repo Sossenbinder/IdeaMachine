@@ -31,6 +31,7 @@ using IdeaMachineWeb.Middleware;
 using IdeaMachineWeb.Utils;
 using MassTransit;
 using MassTransit.SignalR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -110,26 +111,13 @@ namespace IdeaMachineWeb
 			services.AddIdentityWithoutDefaultAuthSchemes<AccountEntity, IdentityRole<Guid>>()
 				.AddEntityFrameworkStores<AccountContext>();
 
-			var authBuilder = services.AddAuthentication(options =>
-				{
-					options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-					options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-					options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-				})
-				.AddCookie(IdentityConstants.ApplicationScheme, o =>
-				{
-					o.LoginPath = new PathString("/Logon/login");
-				});
-
-			authBuilder.AddExternalCookie();
-			authBuilder.AddTwoFactorRememberMeCookie();
-			authBuilder.AddTwoFactorUserIdCookie();
-			authBuilder.AddGoogle(options =>
-				{
-					options.ClientId = Configuration["GoogleClientId"];
-					options.ClientSecret = Configuration["GoogleClientSecret"];
-					options.SignInScheme = IdentityConstants.ExternalScheme;
-				});
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddMicrosoftIdentityWebApi(
+					options =>
+					{
+						options.TokenValidationParameters.NameClaimType = "name";
+					},
+					options => Configuration.Bind("AzureAdB2C", options));
 		}
 
 		private void ConfigureMassTransit(IServiceCollection services)

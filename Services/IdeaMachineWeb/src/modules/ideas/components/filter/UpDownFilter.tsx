@@ -1,17 +1,10 @@
-// Framework
 import * as React from "react";
-
-// Components
 import Flex from "common/components/Flex";
-
-// Functionality
 import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
-
-// Types
 import { OrderType, OrderDirection } from "modules/ideas/types";
-
 import styles from "./styles/UpDownFilter.module.scss";
 import { ArrowDown, ArrowUp } from "tabler-icons-react";
+import { Text } from "@mantine/core";
 
 type Props = {
 	type: OrderType;
@@ -47,7 +40,7 @@ export const UpDownFilter: React.FC<Props> = ({ type }) => {
 				<ArrowDown color={direction === OrderDirection.Down ? "blue" : "black"} size={20} onClick={() => changeDirection(OrderDirection.Down)} />
 			</Flex>
 			<span className={styles.Label} onClick={() => changeDirection(direction === OrderDirection.Up ? OrderDirection.Down : OrderDirection.Up)}>
-				{OrderType[type]}
+				<Text>{OrderType[type]}</Text>
 			</span>
 		</Flex>
 	);

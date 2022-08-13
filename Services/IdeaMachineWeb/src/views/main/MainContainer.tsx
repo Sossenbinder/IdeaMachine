@@ -7,11 +7,29 @@ import { getTranslations } from "common/translations/translations";
 import styles from "./styles/MainContainer.module.scss";
 import SideMenu from "common/components/page/sidemenu/SideMenu";
 import Navbar from "../../common/components/page/navbar/Navbar";
+import { useAccount, useIsAuthenticated, useMsal } from "@azure/msal-react";
+import { loginRequest, scopes } from "../../modules/account/msal/msalConfig";
 
 export const MainContainer = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
 
 	const data = getTranslations();
+
+	const msal = useMsal();
+
+	const account = useAccount(msal.accounts[0] || {});
+	React.useEffect(() => {
+		if (msal.accounts.length === 0) {
+			console.log("No accounts");
+			return;
+		}
+		msal.instance
+			.acquireTokenSilent({
+				scopes: [scopes.user],
+				account: account,
+			})
+			.then((res) => console.log(res));
+	}, []);
 
 	React.useEffect(() => {
 		if (data) {

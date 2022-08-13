@@ -54,7 +54,7 @@ namespace IdeaMachineWeb.Controllers
 		{
 			var comments = await _commentService.GetComments(commentUiModel.IdeaId);
 
-			return comments.AsJsonResponse(CommentUiModel.FromModel);
+			return comments.AsHttpResponse(CommentUiModel.FromModel);
 		}
 	}
 }

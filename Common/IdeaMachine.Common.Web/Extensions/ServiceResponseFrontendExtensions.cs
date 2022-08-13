@@ -38,7 +38,14 @@ namespace IdeaMachine.Common.Web.Extensions
 				: JsonResponse.Error(serviceResponse.PayloadOrNull is null ? default : serviceResponse.PayloadOrFail.Select(transformer).ToList());
 		}
 
-		public static IActionResult AsJsonResponse<TPayload, TNewModel>(this ServiceResponse<List<TPayload>> serviceResponse, Func<TPayload, TNewModel> transformer)
+		public static IActionResult AsHttpResponse(this ServiceResponse serviceResponse)
+		{
+			return serviceResponse.IsSuccess
+				? new JsonResult(serviceResponse)
+				: new StatusCodeResult((int)HttpStatusCode.InternalServerError);
+		}
+
+		public static IActionResult AsHttpResponse<TPayload, TNewModel>(this ServiceResponse<List<TPayload>> serviceResponse, Func<TPayload, TNewModel> transformer)
 		{
 			return serviceResponse.IsSuccess
 				? new JsonResult(serviceResponse.PayloadOrFail.Select(transformer).ToList())

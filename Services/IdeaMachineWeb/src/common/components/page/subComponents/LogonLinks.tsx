@@ -2,44 +2,38 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import { ActionIcon, Button, Text } from "@mantine/core";
-import { Key, Login } from "tabler-icons-react";
+import { Login } from "tabler-icons-react";
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../../../../modules/account/msal/msalConfig";
 
 type Props = {
 	minified?: boolean;
 };
 
 export const LoginLinks = ({ minified = false }: Props) => {
-	const history = useHistory();
+	const msal = useMsal();
+
+	const signIn = React.useCallback(() => {
+		msal.instance.loginPopup(loginRequest);
+	}, []);
 
 	return (
 		<>
 			{minified ? (
 				<>
-					<ActionIcon color="primary" onClick={() => history.push("/logon/login")} title="Login" variant="outline">
+					<ActionIcon color="primary" onClick={signIn} title="Sign in" variant="outline">
 						<Login />
-					</ActionIcon>
-					<ActionIcon onClick={() => history.push("/logon/register")} title="Register" variant="outline">
-						<Key />
 					</ActionIcon>
 				</>
 			) : (
 				<>
-					<Button leftIcon={<Login size={25} />} variant="outline" onClick={() => history.push("/logon/login")}>
+					<Button leftIcon={<Login size={25} />} variant="outline" onClick={signIn}>
 						<Text
 							sx={(theme) => ({
 								color: theme.colorScheme === "dark" ? "white" : "black",
 							})}
 						>
-							Login
-						</Text>
-					</Button>
-					<Button leftIcon={<Key size={25} />} variant="outline" onClick={() => history.push("/logon/register")}>
-						<Text
-							sx={(theme) => ({
-								color: theme.colorScheme === "dark" ? "white" : "black",
-							})}
-						>
-							Register
+							Sign in
 						</Text>
 					</Button>
 				</>

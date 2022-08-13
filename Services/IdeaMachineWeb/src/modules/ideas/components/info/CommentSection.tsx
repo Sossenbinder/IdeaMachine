@@ -61,8 +61,8 @@ export const CommentSection: React.FC<Props> = ({ idea }) => {
 	return (
 		<Flex className={styles.CommentSection} direction="Column">
 			<div className={styles.CommentList} ref={commentlistRef}>
-				{orderedComments.map((x) => (
-					<Comment comment={x} key={x.id} />
+				{orderedComments.map((x, i) => (
+					<Comment comment={x} key={i} />
 				))}
 			</div>
 			<Flex className={styles.CommentInputSection} crossAlign="Center" direction="Row">
