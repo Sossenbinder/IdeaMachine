@@ -18,14 +18,7 @@ export default class AccountService extends ModuleService implements IAccountSer
 
 	public async start() {
 		this.ChannelProvider.getChannel<FileList>("UpdateProfilePictureTriggered").register(this.onProfilePictureUpdated);
-
 		this.ChannelProvider.getBackendChannel<Account>(BackendNotification.UserDetails).register(this.onUserDetailsUpdated);
-
-		const accountRequest = await accountCommunication.getAccount();
-
-		if (accountRequest.success) {
-			this.dispatch(accountReducer.replace(accountRequest.payload));
-		}
 	}
 
 	async onProfilePictureUpdated(fileList: FileList) {
@@ -38,8 +31,8 @@ export default class AccountService extends ModuleService implements IAccountSer
 				this.dispatch(
 					accountReducer.update({
 						...this.getStore().accountReducer.data,
-						profilePictureUrl: `${payload.profilePictureUrl}?${new Date().getTime()}`
-					})
+						profilePictureUrl: `${payload.profilePictureUrl}?${new Date().getTime()}`,
+					}),
 				);
 				break;
 		}

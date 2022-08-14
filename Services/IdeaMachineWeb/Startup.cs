@@ -69,6 +69,13 @@ namespace IdeaMachineWeb
 			ConfigureMassTransit(services);
 			ConfigureIdentity(services);
 
+			services.Configure<ForwardedHeadersOptions>(options =>
+			{
+				options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+				options.KnownNetworks.Clear();
+				options.KnownProxies.Clear();
+			});
+
 			services.AddMvc(options =>
 			{
 				options.ModelBinderProviders.Insert(0, new DestructuringModelBinderProvider());
@@ -102,15 +109,7 @@ namespace IdeaMachineWeb
 
 		private void ConfigureIdentity(IServiceCollection services)
 		{
-			services.Configure<ForwardedHeadersOptions>(options =>
-			{
-				options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
-				options.KnownNetworks.Clear();
-				options.KnownProxies.Clear();
-			});
 			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
-			services.AddIdentityWithoutDefaultAuthSchemes<AccountEntity, IdentityRole<Guid>>()
-				.AddEntityFrameworkStores<AccountContext>();
 
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddMicrosoftIdentityWebApi(

@@ -14,7 +14,7 @@ export const LoginLinks = ({ minified = false }: Props) => {
 	const msal = useMsal();
 
 	const signIn = React.useCallback(() => {
-		msal.instance.loginPopup(loginRequest);
+		msal.instance.loginRedirect(loginRequest);
 	}, []);
 
 	return (

@@ -2,9 +2,8 @@ export type Account = {
 	isAnonymous: boolean;
 	userName: string;
 	email: string;
-	lastAccessedAt: Date;
 	userId: string;
-	profilePictureUrl: string;
+	profilePictureUrl?: string;
 };
 
 export type SignInInfo = {
@@ -24,7 +23,7 @@ export enum SocialLoginErrorCodes {
 	Unknown = 0,
 	InfoUnavailable = 1,
 	EmailNotKnown = 2,
-	CouldntCreateAccount = 3
+	CouldntCreateAccount = 3,
 }
 
 export enum IdentityErrorCode {
@@ -54,7 +53,7 @@ export enum IdentityErrorCode {
 	PasswordMissing = 23,
 	EmailNotConfirmed = 24,
 	EmailAlreadyConfirmed = 25,
-	InvalidEmailOrUserName = 26
+	InvalidEmailOrUserName = 26,
 }
 
 export namespace Network {

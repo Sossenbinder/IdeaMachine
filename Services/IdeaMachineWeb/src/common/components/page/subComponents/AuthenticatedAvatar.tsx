@@ -46,9 +46,7 @@ export const AuthenticatedAvatar = ({ showName = true }: Props) => {
 		>
 			<Group direction="row" position="center" align="center">
 				<label htmlFor="PictureUploadHiddenInput">
-					<div className={styles.ProfilePictureContainer}>
-						{running ? <BlackSpinner /> : <Avatar src={account.profilePictureUrl ?? "Resources/Pictures/User/AnonymousUser.png"} alt="You" />}
-					</div>
+					<div className={styles.ProfilePictureContainer}>{running ? <BlackSpinner /> : <Avatar src={account.profilePictureUrl} alt="You" />}</div>
 				</label>
 				<input
 					id="PictureUploadHiddenInput"
