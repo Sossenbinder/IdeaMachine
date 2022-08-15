@@ -8,37 +8,37 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace IdeaMachine.Common.Core.Cache.Implementations
 {
-    public class MemoryCache<TKey, TValue> : ICache<TKey, TValue> 
-	    where TKey : notnull
-    {
-	    private readonly IMemoryCache _cache;
+	public class MemoryCache<TKey, TValue> : ICache<TKey, TValue>
+		where TKey : notnull
+	{
+		private readonly IMemoryCache _cache;
 
-	    private readonly ICacheLockManager<TKey> _cacheLockManager;
+		private readonly ICacheLockManager<TKey> _cacheLockManager;
 
-        public MemoryCache()
-	    {
-		    _cache = new MemoryCache(new MemoryCacheOptions());
-		    _cacheLockManager = new MemoryCacheLockManager<TKey>();
-	    }
+		public MemoryCache()
+		{
+			_cache = new MemoryCache(new MemoryCacheOptions());
+			_cacheLockManager = new MemoryCacheLockManager<TKey>();
+		}
 
-	    public TValue Get(TKey key)
-        {
+		public TValue Get(TKey key)
+		{
 			return _cache.Get<TValue>(key) ?? throw new KeyNotFoundException($"Item for key {key} not found");
 		}
 
-	    public bool TryGetValue(TKey key, out TValue value)
-	    {
-		    return _cache.TryGetValue(key, out value);
-	    }
+		public bool TryGetValue(TKey key, out TValue value)
+		{
+			return _cache.TryGetValue(key, out value);
+		}
 
-	    public TValue GetOrAdd(TKey key, Func<ICacheEntry, TValue> factory)
-        {
-	        return _cache.GetOrCreate(key, factory);
-        }
+		public TValue GetOrAdd(TKey key, Func<ICacheEntry, TValue> factory)
+		{
+			return _cache.GetOrCreate(key, factory);
+		}
 
-        public async Task<LockedCacheItem<TValue>> GetLocked(TKey key)
-        {
-	        var @lock = await TryGetLockedInternal(key);
+		public async Task<LockedCacheItem<TValue>> GetLocked(TKey key)
+		{
+			var @lock = await TryGetLockedInternal(key);
 
 			// In case the item is not there, throw
 			if (@lock is null)
@@ -47,12 +47,12 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 			}
 
 			return @lock;
-        }
+		}
 
-        public Task<LockedCacheItem<TValue>?> TryGetLocked(TKey key)
-	        => TryGetLockedInternal(key);
+		public Task<LockedCacheItem<TValue>?> TryGetLocked(TKey key)
+			=> TryGetLockedInternal(key);
 
-        private async Task<LockedCacheItem<TValue>?> TryGetLockedInternal(TKey key)
+		private async Task<LockedCacheItem<TValue>?> TryGetLockedInternal(TKey key)
 		{
 			// Get our lock first - Then we can check if an item is there at all.
 			// If we would check first, then there is no guarantee the item is still
@@ -66,22 +66,27 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 			}
 
 			// In case the item is not there, remove the lock again and return null
-			await using (@lock)
-			{
-				return null;
-			}
+			await @lock.DisposeAsync();
+			return null;
 		}
 
-        public ValueTask Set(TKey key, TValue value)
-        {
-	        _cache.Set(key, value);
-	        return default;
-        }
+		public ValueTask Set(TKey key, TValue value, TimeSpan? slidingExpiration = null)
+		{
+			var options = new MemoryCacheEntryOptions();
 
-        public ValueTask Delete(TKey key)
-        {
-	        _cache.Remove(key);
-	        return default;
-        }
-    }
+			if (slidingExpiration is not null)
+			{
+				options.SlidingExpiration = slidingExpiration;
+			}
+
+			_cache.Set(key, value, options);
+			return default;
+		}
+
+		public ValueTask Delete(TKey key)
+		{
+			_cache.Remove(key);
+			return default;
+		}
+	}
 }

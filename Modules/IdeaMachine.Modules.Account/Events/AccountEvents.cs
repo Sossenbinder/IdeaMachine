@@ -1,5 +1,4 @@
 ﻿using IdeaMachine.Common.Eventing.Abstractions.Events;
-using IdeaMachine.Common.Eventing.Helper;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 

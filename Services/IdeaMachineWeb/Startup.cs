@@ -1,9 +1,7 @@
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
-using IdeaMachine.Common.AspNetIdentity.Extension;
 using IdeaMachine.Common.Eventing.Abstractions.Options;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
@@ -13,8 +11,6 @@ using IdeaMachine.Common.RemotingProxies.Proxies;
 using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.Common.SignalR.DI;
-using IdeaMachine.Common.Web.Extensions;
-using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Events;
 using IdeaMachine.Modules.Account.Repository.Context;
@@ -35,9 +31,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -166,9 +160,6 @@ namespace IdeaMachineWeb
 			builder.RegisterModule<ReactionModule>();
 			builder.RegisterModule<SignalRModule>();
 
-			builder.RegisterGrpcProxy<IRegistrationService, RegistrationServiceProxy>();
-			builder.RegisterGrpcProxy<ILoginService, LoginServiceProxy>();
-			builder.RegisterGrpcProxy<IVerificationService, VerificationServiceProxy>();
 			builder.RegisterGrpcProxy<IAccountService, AccountServiceProxy>();
 
 			builder.RegisterType<SessionContextMiddleware>().SingleInstance();

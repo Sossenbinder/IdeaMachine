@@ -47,7 +47,7 @@ namespace IdeaMachine.ProfilePictureService
 			_containerClient = new AsyncLazy<BlobContainerClient>(async () =>
 			{
 				var client = blobServiceClient.GetBlobContainerClient("profilepictures");
-				
+
 				await client.CreateIfNotExistsAsync(PublicAccessType.Blob);
 
 				return client;
@@ -70,7 +70,7 @@ namespace IdeaMachine.ProfilePictureService
 			resizedImageStream.Position = 0;
 
 			var resizedImageName = $"{userId}/64.png";
-			
+
 			await Task.WhenAll(
 				OverwriteBlob($"{userId}/raw.png", resizedImageStream),
 				OverwriteBlob(resizedImageName, rawData)
@@ -110,7 +110,7 @@ namespace IdeaMachine.ProfilePictureService
 
 		private async Task UpdateUser(Guid userId, string profilePictureUrl)
 		{
-			var user = await _accountContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+			var user = await _accountContext.UserInfo.FirstOrDefaultAsync(x => x.UserId == userId);
 
 			if (user is not null)
 			{

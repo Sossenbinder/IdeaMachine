@@ -37,6 +37,11 @@ namespace IdeaMachine.Modules.Session.Service
 			await _sessionCache.Set(session.User.UserId, session);
 		}
 
+		public async ValueTask AddSession(Guid userId, Abstractions.DataTypes.Session session)
+		{
+			await _sessionCache.Set(userId, session);
+		}
+
 		public Abstractions.DataTypes.Session? GetSession(Guid userId)
 		{
 			return _sessionCache.TryGetValue(userId, out var value) ? value : null;

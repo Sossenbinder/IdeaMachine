@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 
 namespace IdeaMachine.Modules.Idea.DataTypes.Entity
@@ -17,8 +16,6 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Entity
 		public string? LongDescription { get; set; }
 
 		public DateTime CreationDate { get; set; }
-
-		public AccountEntity Creator { get; set; } = null!;
 
 		public List<TagEntity>? Tags { get; set; }
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Common.Web.Extensions;
 using IdeaMachine.Modules.Idea.DataTypes.Events;
 using IdeaMachine.Modules.Idea.DataTypes.Model;

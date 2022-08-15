@@ -58,9 +58,6 @@ namespace IdeaMachine.Modules.Idea.Service
 
 			if (ownerId is not null)
 			{
-				var accountNameResponse = await _accountService.GetAccountName(new GetAccountNameRequest(comment.CommenterId));
-				comment.CommenterName = accountNameResponse.PayloadOrNull ?? "Unknown";
-
 				comment.TimeStamp = entity.CreationDate;
 				comment.IdeaId = entity.IdeaId;
 				await _notificationService.RaiseForGroup(ownerId.Value.ToString(), NotificationFactory.Create(comment.ToUiModel(), NotificationType.Comment));

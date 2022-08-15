@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Model;
+using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachineWeb.Static;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -21,53 +22,45 @@ namespace IdeaMachineWeb.Middleware
 
 		private readonly ISessionService _sessionService;
 
-		public SessionContextMiddleware(ISessionService sessionService)
+		private readonly IAccountService _accountService;
+
+		private const string AzureB2CIdentifier =
+			"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+
+		private const string AzureB2CName = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname";
+
+		public SessionContextMiddleware(
+			ISessionService sessionService,
+			IAccountService accountService)
 		{
 			_sessionService = sessionService;
+			_accountService = accountService;
 		}
 
 		public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 		{
-			HandleRequest(context);
+			await HandleRequest(context);
 			await next(context);
 		}
 
-		private void HandleRequest(HttpContext context)
+		private async Task HandleRequest(HttpContext context)
 		{
 			if (context.User.Identity?.IsAuthenticated ?? false)
 			{
-				string? name = null;
-				var authenticationMethod = context.User.Claims.Any(x => x.Type == ClaimTypes.AuthenticationMethod);
+				var user = context.User.Claims.FirstOrDefault(x => x.Type == AzureB2CIdentifier)?.Value;
 
-				if (!authenticationMethod)
+				if (user is not null && Guid.TryParse(user, out var userId))
 				{
-					// Try to initialize a known username/password session
-					name = context.User.Identity?.Name;
+					var session = await InitializeSession(userId.ToString(),
+						context.User.Claims.ToDictionary(x => x.Type, x => x.Value));
+					context.Items[SessionContextIdentifier] = session;
+					return;
 				}
-				else
-				{
-					// Has to be an external scheme then
-					if (context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.AuthenticationMethod)?.Value == GoogleDefaults.AuthenticationScheme)
-					{
-						name = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-					}
-				}
-
-				if (name is not null && Guid.TryParse(name, out var userId))
-				{
-					var session = TryInitializeKnownSession(userId.ToString());
-					if (session is not null)
-					{
-						context.Items[SessionContextIdentifier] = session;
-						return;
-					}
-				}
-
-				// TODO: Properly fix the scheme setup here
 			}
 
 			// It has to be an anonymous user then
-			var isUserAnonymous = context.Request.Cookies.TryGetValue(IdentityDefinitions.AnonymousIdentification, out var anonCookieValue);
+			var isUserAnonymous = context.Request.Cookies.TryGetValue(IdentityDefinitions.AnonymousIdentification,
+				out var anonCookieValue);
 			if (!isUserAnonymous)
 			{
 				return;
@@ -86,11 +79,37 @@ namespace IdeaMachineWeb.Middleware
 			context.Items[SessionContextIdentifier] = anonymousSession;
 		}
 
-		private Session? TryInitializeKnownSession(string userId)
+		private async Task<Session> InitializeSession(string userId, IReadOnlyDictionary<string, string> claims)
 		{
 			var parsedUserId = Guid.Parse(userId);
 
-			return _sessionService.GetSession(parsedUserId);
+			var session = _sessionService.GetSession(parsedUserId);
+			if (session is not null)
+			{
+				return session;
+			}
+
+			session = await ParseJwtToSession(parsedUserId, claims);
+			await _sessionService.AddSession(parsedUserId, session);
+			return session;
+		}
+
+		private async Task<Session> ParseJwtToSession(Guid userId, IReadOnlyDictionary<string, string> claims)
+		{
+			var email = claims["emails"];
+			var userName = claims[AzureB2CName];
+
+			return new Session()
+			{
+				User = new Account()
+				{
+					UserId = userId,
+					Email = email,
+					UserName = userName,
+					ProfilePictureUrl = (await _accountService.GetProfilePictureUrl(new GetProfilePictureUrl(userId)))
+						.PayloadOrNull,
+				}
+			};
 		}
 	}
 

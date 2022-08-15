@@ -1,16 +1,13 @@
 using System;
 using System.IO;
 using Autofac;
-using IdeaMachine.Common.AspNetIdentity.Extension;
-using IdeaMachine.Common.AspNetIdentity.Helper;
-using IdeaMachine.Modules.Account.DataTypes.Entity;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Repository.Context;
-using IdeaMachine.Modules.Account.Service;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
 using IdeaMachine.Service.Base.Startup;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -22,12 +19,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
 
 namespace IdeaMachine.AccountService
 {
 	public class Startup : CommonEndpointStartup
 	{
-		private bool _isDevelopmentEnvironment;
+		private readonly bool _isDevelopmentEnvironment;
 
 		public Startup(
 			IConfiguration configuration,
@@ -68,9 +66,6 @@ namespace IdeaMachine.AccountService
 			containerBuilder.RegisterModule<InternalAccountModule>();
 			containerBuilder.RegisterModule<SessionModule>();
 
-			containerBuilder.RegisterGrpcService<RegistrationService>();
-			containerBuilder.RegisterGrpcService<LoginService>();
-			containerBuilder.RegisterGrpcService<VerificationService>();
 			containerBuilder.RegisterGrpcService<Modules.Account.Service.AccountService>();
 
 			base.ConfigureContainer(containerBuilder);
@@ -79,36 +74,18 @@ namespace IdeaMachine.AccountService
 		private void ConfigureIdentity(IServiceCollection services)
 		{
 			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
-			services.AddIdentityWithoutDefaultAuthSchemes<AccountEntity, IdentityRole<Guid>>()
-				.AddEntityFrameworkStores<AccountContext>();
 
-			var authBuilder = services.AddAuthentication(options =>
-				{
-					options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-					options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-					options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-				})
-				.AddCookie(IdentityConstants.ApplicationScheme, o =>
-				{
-					o.LoginPath = new PathString("/Logon/login");
-				});
-
-			authBuilder.AddExternalCookie();
-			authBuilder.AddTwoFactorRememberMeCookie();
-			authBuilder.AddTwoFactorUserIdCookie();
-			authBuilder.AddGoogle(options =>
-			{
-				options.ClientId = Configuration["GoogleClientId"];
-				options.ClientSecret = Configuration["GoogleClientSecret"];
-				options.SignInScheme = IdentityConstants.ExternalScheme;
-			});
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddMicrosoftIdentityWebApi(
+					options =>
+					{
+						options.TokenValidationParameters.NameClaimType = "name";
+					},
+					options => Configuration.Bind("AzureAdB2C", options));
 		}
 
 		protected override void RegisterEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
 		{
-			endpointRouteBuilder.MapGrpcService<IRegistrationService>();
-			endpointRouteBuilder.MapGrpcService<ILoginService>();
-			endpointRouteBuilder.MapGrpcService<IVerificationService>();
 			endpointRouteBuilder.MapGrpcService<IAccountService>();
 
 			endpointRouteBuilder.MapControllerRoute(

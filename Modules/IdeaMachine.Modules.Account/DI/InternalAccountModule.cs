@@ -1,4 +1,8 @@
 ﻿using Autofac;
+using IdeaMachine.Common.Database.Extensions;
+using IdeaMachine.Modules.Account.Repository;
+using IdeaMachine.Modules.Account.Repository.Context;
+using IdeaMachine.Modules.Account.Repository.Interface;
 using IdeaMachine.Modules.Account.Service;
 using IdeaMachine.Modules.Account.Service.Interface;
 
@@ -10,20 +14,14 @@ namespace IdeaMachine.Modules.Account.DI
 		{
 			builder.RegisterModule<AccountModule>();
 
-			builder.RegisterType<RegistrationService>()
-				.As<IRegistrationService>()
-				.SingleInstance();
-
-			builder.RegisterType<LoginService>()
-				.As<ILoginService>()
-				.SingleInstance();
-
 			builder.RegisterType<AccountService>()
 				.As<IAccountService>()
 				.SingleInstance();
 
-			builder.RegisterType<VerificationService>()
-				.As<IVerificationService>()
+			builder.RegisterDbContextFactory(cfg => new AccountContext(cfg["DbConnectionString"]));
+
+			builder.RegisterType<UserInfoRepository>()
+				.As<IUserInfoRepository>()
 				.SingleInstance();
 
 			base.Load(builder);

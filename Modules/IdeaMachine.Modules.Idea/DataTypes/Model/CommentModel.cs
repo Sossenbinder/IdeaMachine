@@ -8,9 +8,7 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Model
 	{
 		public int CommentId { get; set; }
 
-		public Guid CommenterId {  get; set; }
-
-		public string CommenterName { get; set; }
+		public Guid CommenterId { get; set; }
 
 		public int IdeaId { get; set; }
 
@@ -35,7 +33,6 @@ namespace IdeaMachine.Modules.Idea.DataTypes.Model
 			{
 				Comment = Comment,
 				CommenterId = CommenterId,
-				CommenterName = CommenterName,
 				Id = CommentId,
 				IdeaId = IdeaId,
 				TimeStamp = TimeStamp,

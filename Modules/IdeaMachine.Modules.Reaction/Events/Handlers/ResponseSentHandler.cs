@@ -35,18 +35,17 @@ namespace IdeaMachine.Modules.Reaction.Events.Handlers
 
 			await using var ctx = _ideaDbContextFactory.CreateDbContext();
 
-			var owner = (await ctx
+			var ownerId = (await ctx
 				.Ideas
-				.Include(x => x.Creator)
-				.FirstOrDefaultAsync(x => x.Id == ideaId))?.Creator;
+				.FirstOrDefaultAsync(x => x.Id == ideaId))?.CreatorId;
 
-			if (owner is null)
+			if (ownerId is null)
 			{
 				_logger.LogError($"{userId} responded to idea with id {ideaId}, but no owner could be determined");
 				return;
 			}
 
-			await _notificationService.RaiseForUser(owner.Id, NotificationFactory.Create(context.Message, NotificationType.IdeaResponse));
+			await _notificationService.RaiseForUser(ownerId.Value, NotificationFactory.Create(context.Message, NotificationType.IdeaResponse));
 		}
 	}
 }

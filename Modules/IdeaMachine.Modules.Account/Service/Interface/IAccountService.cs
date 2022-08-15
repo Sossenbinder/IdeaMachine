@@ -10,6 +10,6 @@ namespace IdeaMachine.Modules.Account.Service.Interface
 	public interface IAccountService : IGrpcService
 	{
 		[OperationContract]
-		Task<ServiceResponse<string>> GetAccountName(GetAccountNameRequest getAccountNameModel);
+		Task<ServiceResponse<string>> GetProfilePictureUrl(GetProfilePictureUrl getProfilePictureUrl);
 	}
 }

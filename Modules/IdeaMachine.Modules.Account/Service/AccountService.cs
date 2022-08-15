@@ -1,28 +1,26 @@
 ﻿using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Utils.IPC;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Model;
-using IdeaMachine.Modules.Account.DataTypes.Entity;
+using IdeaMachine.Modules.Account.Repository.Interface;
 using IdeaMachine.Modules.Account.Service.Interface;
-using Microsoft.AspNetCore.Identity;
 
 namespace IdeaMachine.Modules.Account.Service
 {
-    public class AccountService : IAccountService
+	public class AccountService : IAccountService
 	{
-		private readonly UserManager<AccountEntity> _userManager;
+		private readonly IUserInfoRepository _userInfoRepository;
 
-		public AccountService(UserManager<AccountEntity> userManager)
+		public AccountService(
+			IUserInfoRepository userInfoRepository)
 		{
-			_userManager = userManager;
+			_userInfoRepository = userInfoRepository;
 		}
 
-		public async Task<ServiceResponse<string>> GetAccountName(GetAccountNameRequest getAccountNameModel)
+		public async Task<ServiceResponse<string>> GetProfilePictureUrl(GetProfilePictureUrl getProfilePictureUrl)
 		{
-			var user = await _userManager.FindByIdAsync(getAccountNameModel.UserIdentifier.ToString());
+			var profilePictureUrl = await _userInfoRepository.GetProfilePictureUrl(getProfilePictureUrl.UserIdentifier);
 
-			return user is not null
-				? ServiceResponse<string>.Success(user.UserName)
-				: ServiceResponse<string>.Failure();
+			return profilePictureUrl is not null ? ServiceResponse<string>.Success(profilePictureUrl) : ServiceResponse<string>.Failure();
 		}
-    }
+	}
 }

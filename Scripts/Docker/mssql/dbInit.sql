@@ -17,6 +17,11 @@ IF (EXISTS (SELECT *
    	RETURN;
    END;
 
+CREATE TABLE [dbo].[UserInfo] (
+	[UserId] [uniqueidentifier] NOT NULL PRIMARY KEY,
+	[ProfilePictureUrl] [varchar](500) NOT NULL,
+);
+
 CREATE TABLE [dbo].[Ideas] (
 	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[ShortDescription] [varchar](400) NOT NULL,

@@ -1,21 +1,15 @@
-﻿using System;
-using IdeaMachine.Modules.Account.DataTypes.Entity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using IdeaMachine.Common.Database.Context;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdeaMachine.Modules.Account.Repository.Context
 {
-	public class AccountContext : IdentityDbContext<AccountEntity, IdentityRole<Guid>, Guid>
+	public class AccountContext : AbstractDbContext
 	{
-		//Migration
-		public AccountContext() 
-			: base(new DbContextOptionsBuilder<AccountContext>().UseSqlServer("Server=tcp:localhost,1433;User ID=SA;Password=^dEbX2Ew;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;").Options)
-		{
-		}
+		public DbSet<UserInfoEntity> UserInfo { get; set; }
 
-		public AccountContext(DbContextOptions<AccountContext> options)
-			: base(options)
+		public AccountContext(string connectionString)
+			: base(connectionString)
 		{
 		}
 
@@ -23,9 +17,9 @@ namespace IdeaMachine.Modules.Account.Repository.Context
 		{
 			base.OnModelCreating(builder);
 
-			builder.Entity<AccountEntity>()
-				.Property(p => p.Id)
-				.ValueGeneratedOnAdd();
+			builder.Entity<UserInfoEntity>()
+				.ToTable("UserInfo")
+				.HasKey(x => x.UserId);
 		}
 	}
 }

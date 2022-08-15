@@ -1,6 +1,4 @@
-﻿using System;
-using IdeaMachine.Common.Database.Context;
-using IdeaMachine.Modules.Account.DataTypes.Entity;
+﻿using IdeaMachine.Common.Database.Context;
 using IdeaMachine.Modules.Idea.DataTypes.Entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,11 +31,6 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 			modelBuilder.Entity<IdeaEntity>()
 				.Property(x => x.CreatorId)
 				.HasColumnName("Creator");
-
-			modelBuilder.Entity<IdeaEntity>()
-				.HasOne(x => x.Creator)
-				.WithMany()
-				.HasForeignKey(x => x.CreatorId);
 
 			modelBuilder.Entity<IdeaEntity>()
 				.HasMany(x => x.Tags)
@@ -86,16 +79,7 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 				.HasForeignKey(x => x.IdeaId);
 
 			modelBuilder.Entity<CommentEntity>()
-				.HasOne(x => x.Commenter)
-				.WithMany()
-				.HasForeignKey(x => x.CommenterId);
-
-			modelBuilder.Entity<CommentEntity>()
 				.ToTable("Comments")
-				.HasKey(x => x.Id);
-
-			modelBuilder.Entity<AccountEntity>()
-				.ToTable("AspNetUsers")
 				.HasKey(x => x.Id);
 		}
 	}

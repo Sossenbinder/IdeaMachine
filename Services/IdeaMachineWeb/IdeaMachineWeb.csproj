@@ -32,7 +32,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Common\IdeaMachine.Common.AspNetIdentity\IdeaMachine.Common.AspNetIdentity.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing\IdeaMachine.Common.Eventing.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Logging\IdeaMachine.Common.Logging.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.RemotingProxies\IdeaMachine.Common.RemotingProxies.csproj" />

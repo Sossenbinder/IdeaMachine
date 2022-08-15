@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
-using IdeaMachine.Modules.Session.Service.Interface;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +19,14 @@ namespace IdeaMachineWeb.Controllers
 			_publishEndpoint = publishEndpoint;
 		}
 
+		[HttpGet]
+		public IActionResult GetProfilePicture()
+		{
+			var profilePictureUrl = Session.User.ProfilePictureUrl;
+
+			return profilePictureUrl is not null ? Ok(profilePictureUrl) : NotFound();
+		}
+
 		[Route("UpdateProfilePicture")]
 		[HttpPost]
 		public async Task<JsonResponse> UpdateProfilePicture(IFormCollection form)
@@ -31,7 +38,7 @@ namespace IdeaMachineWeb.Controllers
 
 			await using var imageStream = form.Files[0].OpenReadStream();
 			var buffer = new Memory<byte>(new byte[imageStream.Length]);
-			await imageStream.ReadAsync(buffer);
+			var _ = await imageStream.ReadAsync(buffer);
 			var base64Image = Convert.ToBase64String(buffer.ToArray());
 
 			await _publishEndpoint.Publish(new AccountUpdateProfilePicture(Session.User.UserId, base64Image));

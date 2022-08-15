@@ -12,7 +12,7 @@ namespace GrpcProxyGenerator
 		{
 			var typeList = new List<Type>()
 			{
-				typeof(IRegistrationService)
+				typeof(IAccountService)
 			};
 		}
 	}

@@ -17,8 +17,8 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Common\IdeaMachine.Common.AspNetIdentity\IdeaMachine.Common.AspNetIdentity.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Core\IdeaMachine.Common.Core.csproj" />
+		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Database\IdeaMachine.Common.Database.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing.Abstractions\IdeaMachine.Common.Eventing.Abstractions.csproj" />
 		<ProjectReference Include="..\..\Common\IdeaMachine.Common.Eventing\IdeaMachine.Common.Eventing.csproj" />
 		<ProjectReference Include="..\IdeaMachine.Modules.Account.Abstractions\IdeaMachine.Modules.Account.Abstractions.csproj" />
