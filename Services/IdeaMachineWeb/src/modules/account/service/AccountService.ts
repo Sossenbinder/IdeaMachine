@@ -9,6 +9,7 @@ import { IChannelProvider } from "common/modules/channel/ChannelProvider";
 import { Account } from "../types";
 import { Notification, Operation } from "common/helper/signalR/types";
 import BackendNotification from "common/helper/signalR/Notifications";
+import { loginRequest, msalInstance } from "../msal/msalConfig";
 
 export default class AccountService extends ModuleService implements IAccountService {
 	public constructor(channelProvider: IChannelProvider) {
@@ -16,8 +17,33 @@ export default class AccountService extends ModuleService implements IAccountSer
 	}
 
 	public async start() {
+		this.initAccount();
 		this.ChannelProvider.getChannel<FileList>("UpdateProfilePictureTriggered").register(this.onProfilePictureUpdated);
 		this.ChannelProvider.getBackendChannel<Account>(BackendNotification.UserDetails).register(this.onUserDetailsUpdated);
+	}
+
+	initAccount = () => {
+		const accounts = msalInstance.getAllAccounts();
+
+		if (accounts.length === 0) {
+			return;
+		}
+
+		const account = accounts[0];
+		const claims = account.idTokenClaims;
+
+		this.dispatch(
+			accountReducer.put({
+				userName: claims["given_name"] as string,
+				isAnonymous: false,
+				userId: account.nativeAccountId,
+				email: claims["emails"][0] as string,
+			}),
+		);
+	};
+
+	async login() {
+		await msalInstance.loginRedirect(loginRequest);
 	}
 
 	async onProfilePictureUpdated(fileList: FileList) {

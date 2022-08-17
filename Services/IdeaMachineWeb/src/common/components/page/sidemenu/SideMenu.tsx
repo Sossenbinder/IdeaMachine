@@ -49,7 +49,6 @@ export const SideMenu = () => {
 						</ActionIcon>
 					)}
 				</Group>
-				<LogonLinks minified={!isOpen} />
 				{!account.isAnonymous ? <AuthenticatedAvatar showName={isOpen} /> : <LogonLinks minified={!isOpen} />}
 			</Group>
 		</Aside>

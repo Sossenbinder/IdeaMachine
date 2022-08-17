@@ -31,7 +31,9 @@ export interface ICommentsService extends IModuleService {
 	queryComments(ideaId: number): Promise<void>;
 }
 
-export interface IAccountService extends IModuleService {}
+export interface IAccountService extends IModuleService {
+	login(): Promise<void>;
+}
 
 export type Services = {
 	AccountService: IAccountService;

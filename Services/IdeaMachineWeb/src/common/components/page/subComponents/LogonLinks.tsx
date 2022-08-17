@@ -1,22 +1,18 @@
 // Framework
 import * as React from "react";
-import { useHistory } from "react-router-dom";
 import { ActionIcon, Button, Text } from "@mantine/core";
 import { Login } from "tabler-icons-react";
-import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../../../modules/account/msal/msalConfig";
-import { useDispatch } from "react-redux";
+import useServices from "common/hooks/useServices";
 
 type Props = {
 	minified?: boolean;
 };
 
 export const LoginLinks = ({ minified = false }: Props) => {
-	const dispatch = useDispatch();
-	const msal = useMsal();
+	const { AccountService } = useServices();
 
 	const signIn = React.useCallback(async () => {
-		await msal.instance.loginRedirect(loginRequest);
+		await AccountService.login();
 	}, []);
 
 	return (

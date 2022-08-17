@@ -6,6 +6,9 @@ import { Account } from "modules/account/types";
 
 export const reducer = createSingleReducer<Account>({
 	actionIdentifier: "Account",
+	initialState: {
+		isAnonymous: true,
+	} as Account,
 });
 
 export default reducer;

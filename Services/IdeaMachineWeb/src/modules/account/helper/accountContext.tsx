@@ -1,34 +1,17 @@
 // Framework
 import * as React from "react";
+import { useSelector } from "react-redux";
 
 // Types
 import { Account } from "../types";
+import { ReduxStore } from "../../../common/redux/store";
 
-export type AccountContext = {
-	account: Account;
-	setAccount: (account: Account) => void;
-};
-
-export const AccountContext = React.createContext<AccountContext>({
-	account: undefined,
-	setAccount: () => void 0,
-});
+export const AccountContext = React.createContext({} as Account);
 
 export const AccountContextProvider = ({ children }: { children: React.ReactNode }) => {
-	const [ideaMachineAccount, setIdeaMachineAccount] = React.useState<Account>({
-		isAnonymous: true,
-	} as Account);
+	const account = useSelector<ReduxStore, Account>((store) => store.accountReducer.data);
 
-	return (
-		<AccountContext.Provider
-			value={{
-				account: ideaMachineAccount,
-				setAccount: setIdeaMachineAccount,
-			}}
-		>
-			{children}
-		</AccountContext.Provider>
-	);
+	return <AccountContext.Provider value={account}>{children}</AccountContext.Provider>;
 };
 
 export default AccountContextProvider;
