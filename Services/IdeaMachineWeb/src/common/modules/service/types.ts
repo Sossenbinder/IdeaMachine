@@ -1,8 +1,6 @@
 //Types
-import { NetworkResponse, GenericNetworkResponse } from "common/helper/requests/types/NetworkDefinitions";
 import ISignalRConnectionProvider from "common/helper/signalR/interface/ISignalRConnectionProvider";
 import { Idea } from "modules/ideas/types";
-import { RegisterInfo, SignInInfo, IdentityErrorCode } from "modules/account/types";
 import { LikeState } from "modules/reaction/types";
 
 export interface IModuleService {
@@ -12,7 +10,7 @@ export interface IModuleService {
 export type ServiceNotification = {
 	name: keyof Services;
 	service: IModuleService;
-}
+};
 
 export interface IIdeaService extends IModuleService {
 	addIdea(idea: Idea, attachments?: FileList): Promise<number>;
@@ -33,12 +31,7 @@ export interface ICommentsService extends IModuleService {
 	queryComments(ideaId: number): Promise<void>;
 }
 
-export interface IAccountService extends IModuleService {
-	logout(): Promise<void>;
-	register(registerInfo: RegisterInfo): Promise<NetworkResponse<IdentityErrorCode>>;
-	login(signInInfo: SignInInfo): Promise<IdentityErrorCode>;
-	verifyEmail(userName: string, token: string): Promise<NetworkResponse<IdentityErrorCode>>;
-}
+export interface IAccountService extends IModuleService {}
 
 export type Services = {
 	AccountService: IAccountService;
@@ -46,4 +39,4 @@ export type Services = {
 	IdeaService: IIdeaService;
 	ReactionService: IReactionService;
 	SignalRConnectionProvider: ISignalRConnectionProvider;
-}
+};

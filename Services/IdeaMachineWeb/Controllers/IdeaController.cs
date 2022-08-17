@@ -46,10 +46,9 @@ namespace IdeaMachineWeb.Controllers
 		}
 
 		[HttpPost]
-		[Route("Get")]
 		public async Task<JsonDataResponse<PaginationResult<int?, IdeaUiModel>>> Get([FromBody] PaginationTokenUiModel<int?> getIdeasTokenModel)
 		{
-			var result = await _ideaRetrievalService.Get(Session, getIdeasTokenModel.PaginationToken);
+			var result = await _ideaRetrievalService.Get(getIdeasTokenModel.PaginationToken);
 
 			var uiModelPayload = result.WithNewPayload(await Task.WhenAll(result.Data.Select(ToEnrichedUiModel)));
 			return JsonResponse.Success(uiModelPayload);

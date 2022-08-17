@@ -21,7 +21,7 @@ namespace IdeaMachine.Modules.Idea.Service
 			_ideaRepository = ideaRepository;
 		}
 
-		public async Task<PaginationResult<int?, IdeaModel>> Get(ISession session, int? paginationToken = null)
+		public async Task<PaginationResult<int?, IdeaModel>> Get(int? paginationToken = null)
 		{
 			var ideaResult = await _ideaRepository.Get(paginationToken);
 

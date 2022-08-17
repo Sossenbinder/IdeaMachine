@@ -6,8 +6,6 @@ import { Route } from "react-router-dom";
 import Flex from "common/components/Flex";
 import IdeaListAll from "modules/ideas/components/IdeaListAll";
 import CreateButton from "modules/ideas/components/CreateButton";
-import LogonView from "views/login/LogonView";
-import EmailVerification from "views/emailVerification/EmailVerification";
 import AccountRoutes from "views/account/AccountRoutes";
 import IdeaRoutes from "views/ideas/IdeaRoutes";
 
@@ -19,12 +17,6 @@ export const Content: React.FC = () => {
 		<Flex className={styles.ContentWrapper} space="Around">
 			<div className={styles.Content}>
 				<div className={styles.InnerContentWrapper}>
-					<Route path="/Logon">
-						<LogonView />
-					</Route>
-					<Route path="/VerifyEmail">
-						<EmailVerification />
-					</Route>
 					<Route path="/account">
 						<AccountRoutes />
 					</Route>

@@ -5,16 +5,18 @@ import { ActionIcon, Button, Text } from "@mantine/core";
 import { Login } from "tabler-icons-react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../../../modules/account/msal/msalConfig";
+import { useDispatch } from "react-redux";
 
 type Props = {
 	minified?: boolean;
 };
 
 export const LoginLinks = ({ minified = false }: Props) => {
+	const dispatch = useDispatch();
 	const msal = useMsal();
 
-	const signIn = React.useCallback(() => {
-		msal.instance.loginRedirect(loginRequest);
+	const signIn = React.useCallback(async () => {
+		await msal.instance.loginRedirect(loginRequest);
 	}, []);
 
 	return (

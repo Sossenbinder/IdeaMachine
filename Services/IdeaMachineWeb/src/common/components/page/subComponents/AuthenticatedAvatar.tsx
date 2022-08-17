@@ -9,22 +9,23 @@ import { BlackSpinner } from "common/components/controls/Spinner";
 import { Link } from "react-router-dom";
 import useAccount from "common/hooks/useAccount";
 import { Logout } from "tabler-icons-react";
+import { useMsal } from "@azure/msal-react";
 
 type Props = {
 	showName?: boolean;
 };
 
 export const AuthenticatedAvatar = ({ showName = true }: Props) => {
-	const { AccountService } = useServices();
-
 	const account = useAccount();
 
 	const channel = useChannel<FileList>("UpdateProfilePictureTriggered");
 
 	const [running, call] = useNotificationBackedCall("UserDetails");
 
+	const msal = useMsal();
+
 	const onLogoutClick = async () => {
-		await AccountService.logout();
+		await msal.instance.logoutRedirect();
 	};
 
 	const uploadPicture = React.useCallback(
