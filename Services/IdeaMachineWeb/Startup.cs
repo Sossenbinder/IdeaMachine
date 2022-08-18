@@ -21,9 +21,9 @@ using IdeaMachine.Modules.Reaction.DI;
 using IdeaMachine.Modules.Reaction.Events.Handlers;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
+using IdeaMachine.Service.Base.Middleware;
 using IdeaMachineWeb.Controllers;
 using IdeaMachineWeb.DataTypes.Validation;
-using IdeaMachineWeb.Middleware;
 using IdeaMachineWeb.Utils;
 using MassTransit;
 using MassTransit.SignalR;
@@ -81,8 +81,6 @@ namespace IdeaMachineWeb
 				loggingBuilder.AddSerilog(LogProvider.CreateLogger(Configuration));
 			});
 
-			services.AddHttpClient<ProfilePictureController>();
-
 			services.AddAntiforgery(x => x.HeaderName = "RequestVerificationToken");
 			services.AddResponseCompression();
 
@@ -103,8 +101,6 @@ namespace IdeaMachineWeb
 
 		private void ConfigureIdentity(IServiceCollection services)
 		{
-			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
-
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddMicrosoftIdentityWebApi(
 					options =>

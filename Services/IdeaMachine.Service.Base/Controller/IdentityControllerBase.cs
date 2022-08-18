@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Extensions;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
-using IdeaMachineWeb.Middleware;
+using IdeaMachine.Service.Base.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace IdeaMachineWeb.Controllers
+namespace IdeaMachine.Service.Base.Controller
 {
-	public abstract class IdentityControllerBase : Controller
+	public abstract class IdentityControllerBase : Microsoft.AspNetCore.Mvc.Controller
 	{
 		protected ISession? SessionOrNull { get; private set; }
 

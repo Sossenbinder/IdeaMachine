@@ -3,11 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
+using IdeaMachine.Service.Base.Controller;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdeaMachineWeb.Controllers
+namespace IdeaMachine.AccountService.Controller
 {
 	[Route("ProfilePicture")]
 	public class ProfilePictureController : IdentityControllerBase
@@ -27,7 +28,6 @@ namespace IdeaMachineWeb.Controllers
 			return profilePictureUrl is not null ? Ok(profilePictureUrl) : NotFound();
 		}
 
-		[Route("UpdateProfilePicture")]
 		[HttpPost]
 		public async Task<JsonResponse> UpdateProfilePicture(IFormCollection form)
 		{

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using IdeaMachine.Modules.Reaction.DataTypes.Events;
+using IdeaMachine.Service.Base.Controller;
 using IdeaMachineWeb.DataTypes.UiModels.Reaction;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;

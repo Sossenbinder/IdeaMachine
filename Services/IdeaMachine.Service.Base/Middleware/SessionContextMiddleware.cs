@@ -7,11 +7,11 @@ using IdeaMachine.Modules.Account.Abstractions.DataTypes.Model;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes;
 using IdeaMachine.Modules.Session.Service.Interface;
-using IdeaMachineWeb.Static;
+using IdeaMachine.Service.Base.Static;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace IdeaMachineWeb.Middleware
+namespace IdeaMachine.Service.Base.Middleware
 {
 	/// <summary>
 	/// Middleware to initialize sessions based on the session cache

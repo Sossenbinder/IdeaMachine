@@ -6,6 +6,6 @@ namespace IdeaMachine.Modules.Account.Abstractions.DataTypes.Entity
 	{
 		public Guid UserId { get; set; }
 
-		public string ProfilePictureUrl { get; set; }
+		public string? ProfilePictureUrl { get; set; }
 	}
 }

@@ -6,6 +6,7 @@ using IdeaMachine.Modules.Account.Repository.Context;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
+using IdeaMachine.Service.Base.Middleware;
 using IdeaMachine.Service.Base.Startup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -61,20 +62,20 @@ namespace IdeaMachine.AccountService
 			base.ConfigureServices(services);
 		}
 
-		public override void ConfigureContainer(ContainerBuilder containerBuilder)
+		public override void ConfigureContainer(ContainerBuilder builder)
 		{
-			containerBuilder.RegisterModule<InternalAccountModule>();
-			containerBuilder.RegisterModule<SessionModule>();
+			builder.RegisterModule<InternalAccountModule>();
+			builder.RegisterModule<SessionModule>();
 
-			containerBuilder.RegisterGrpcService<Modules.Account.Service.AccountService>();
+			builder.RegisterGrpcService<Modules.Account.Service.AccountService>();
 
-			base.ConfigureContainer(containerBuilder);
+			builder.RegisterType<SessionContextMiddleware>().SingleInstance();
+
+			base.ConfigureContainer(builder);
 		}
 
 		private void ConfigureIdentity(IServiceCollection services)
 		{
-			services.AddDbContext<AccountContext>(options => options.UseSqlServer(Configuration["DbConnectionString"]));
-
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddMicrosoftIdentityWebApi(
 					options =>
@@ -99,6 +100,8 @@ namespace IdeaMachine.AccountService
 		{
 			app.UseAuthentication();
 			app.UseAuthorization();
+
+			app.UseSessionContextMiddleware();
 
 			base.Configure(app, env);
 		}

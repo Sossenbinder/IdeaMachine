@@ -7,6 +7,7 @@ using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Reaction.Service.Interface;
+using IdeaMachine.Service.Base.Controller;
 using IdeaMachineWeb.DataTypes.UiModels.Idea;
 using IdeaMachineWeb.DataTypes.UiModels.Pagination;
 using IdeaMachineWeb.DataTypes.Validation;

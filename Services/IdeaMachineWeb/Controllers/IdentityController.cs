@@ -1,5 +1,6 @@
 ﻿using System;
-using IdeaMachineWeb.Static;
+using IdeaMachine.Service.Base.Controller;
+using IdeaMachine.Service.Base.Static;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

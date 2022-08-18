@@ -8,6 +8,7 @@
 	<DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
   <ItemGroup>
+	<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
 	<PackageReference Include="Azure.Storage.Blobs" Version="12.9.1" />
 	<PackageReference Include="HttpMultipartParser" Version="5.0.1" />
 	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.12" />

@@ -19,7 +19,7 @@ IF (EXISTS (SELECT *
 
 CREATE TABLE [dbo].[UserInfo] (
 	[UserId] [uniqueidentifier] NOT NULL PRIMARY KEY,
-	[ProfilePictureUrl] [varchar](500) NOT NULL,
+	[ProfilePictureUrl] [varchar](500),
 );
 
 CREATE TABLE [dbo].[Ideas] (
@@ -52,7 +52,7 @@ CREATE TABLE [dbo].[AttachmentUrls](
 CREATE TABLE [dbo].[Comments](
 	[Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[IdeaId] [int] NOT NULL FOREIGN KEY REFERENCES Ideas(Id),
-	[CommenterId] [uniqueidentifier] NOT NULL FOREIGN KEY REFERENCES AspNetUsers(Id),
+	[CommenterId] [uniqueidentifier] NOT NULL,
 	[CreationDate] [datetime2](7) NOT NULL,
 	[Content] [varchar](5000) NOT NULL,
 );

@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using IdeaMachine.Common.Core.Utils.Async;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
+using IdeaMachine.Modules.Account.Repository;
 using IdeaMachine.Modules.Account.Repository.Context;
-using IdeaMachine.Modules.Session.Abstractions.DataTypes;
+using IdeaMachine.Modules.Account.Repository.Interface;
 using MassTransit;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
@@ -24,7 +23,7 @@ namespace IdeaMachine.ProfilePictureService
 	{
 		private readonly IHostEnvironment _hostEnv;
 
-		private readonly AccountContext _accountContext;
+		private readonly IUserInfoRepository _userInfoRepository;
 
 		private readonly IPublishEndpoint _publishEndpoint;
 
@@ -36,11 +35,11 @@ namespace IdeaMachine.ProfilePictureService
 			IHostEnvironment hostEnv,
 			ILoggerFactory loggerFactory,
 			BlobServiceClient blobServiceClient,
-			AccountContext accountContext,
+			IUserInfoRepository userInfoRepository,
 			IPublishEndpoint publishEndpoint)
 		{
 			_hostEnv = hostEnv;
-			_accountContext = accountContext;
+			_userInfoRepository = userInfoRepository;
 			_publishEndpoint = publishEndpoint;
 			_logger = loggerFactory.CreateLogger<Upload>();
 
@@ -85,7 +84,7 @@ namespace IdeaMachine.ProfilePictureService
 				resizedImageUrl = resizedImageUrl.Replace("ideamachine.azurite", "localhost");
 			}
 
-			await UpdateUser(userId, resizedImageUrl);
+			await _userInfoRepository.AddProfilePictureUrlToUser(userId, resizedImageUrl);
 
 			await _publishEndpoint.Publish(new AccountProfilePictureUpdated(userId, resizedImageUrl));
 		}
@@ -106,18 +105,6 @@ namespace IdeaMachine.ProfilePictureService
 			var blobClient = containerClient.GetBlobClient(blobName);
 
 			await blobClient.UploadAsync(rawData, true);
-		}
-
-		private async Task UpdateUser(Guid userId, string profilePictureUrl)
-		{
-			var user = await _accountContext.UserInfo.FirstOrDefaultAsync(x => x.UserId == userId);
-
-			if (user is not null)
-			{
-				user.ProfilePictureUrl = profilePictureUrl;
-
-				await _accountContext.SaveChangesAsync();
-			}
 		}
 
 		private static async Task<Stream> ConvertToSmallImage(BinaryData rawData)

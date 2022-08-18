@@ -6,6 +6,7 @@ using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.DataTypes.UiModel;
 using IdeaMachine.Modules.Idea.Events.Interface;
 using IdeaMachine.Modules.Idea.Service.Interface;
+using IdeaMachine.Service.Base.Controller;
 using IdeaMachineWeb.DataTypes.UiModels.Comment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

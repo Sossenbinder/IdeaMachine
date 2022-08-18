@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using IdeaMachine.Common.Web.Extensions;
 using IdeaMachine.Modules.Idea.Service.Interface;
+using IdeaMachine.Service.Base.Controller;
 using IdeaMachineWeb.DataTypes.UiModels.Idea;
 using IdeaMachineWeb.Utils;
 using Microsoft.AspNetCore.Http;

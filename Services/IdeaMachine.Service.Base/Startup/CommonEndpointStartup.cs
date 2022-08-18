@@ -54,14 +54,14 @@ namespace IdeaMachine.Service.Base.Startup
 		}
 
 		// Autofac entry point
-		public virtual void ConfigureContainer(ContainerBuilder containerBuilder)
+		public virtual void ConfigureContainer(ContainerBuilder builder)
 		{
-			SetupMassTransit(containerBuilder);
+			SetupMassTransit(builder);
 
-			containerBuilder.RegisterModule<MassTransitModule>();
-			containerBuilder.RegisterModule<ProtobufSerializationModule>();
-			containerBuilder.RegisterModule<GrpcModule>();
-			containerBuilder.RegisterModule<IpcModule>();
+			builder.RegisterModule<MassTransitModule>();
+			builder.RegisterModule<ProtobufSerializationModule>();
+			builder.RegisterModule<GrpcModule>();
+			builder.RegisterModule<IpcModule>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -137,11 +137,11 @@ namespace IdeaMachine.Service.Base.Startup
 			base.RegisterEndpoints(endpointRouteBuilder);
 		}
 
-		public override void ConfigureContainer(ContainerBuilder containerBuilder)
+		public override void ConfigureContainer(ContainerBuilder builder)
 		{
-			containerBuilder.RegisterGrpcService<TGrpcService>();
+			builder.RegisterGrpcService<TGrpcService>();
 
-			base.ConfigureContainer(containerBuilder);
+			base.ConfigureContainer(builder);
 		}
 	}
 }
