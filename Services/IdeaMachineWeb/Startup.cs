@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using Autofac;
 using GreenPipes;
+using IdeaMachine.Common.Core.Cache;
+using IdeaMachine.Common.Core.Utils.Async;
 using IdeaMachine.Common.Eventing.Abstractions.Options;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
@@ -13,7 +15,6 @@ using IdeaMachine.Common.SignalR;
 using IdeaMachine.Common.SignalR.DI;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Events;
-using IdeaMachine.Modules.Account.Repository.Context;
 using IdeaMachine.Modules.Account.Service.Interface;
 using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
@@ -22,7 +23,6 @@ using IdeaMachine.Modules.Reaction.Events.Handlers;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
 using IdeaMachine.Service.Base.Middleware;
-using IdeaMachineWeb.Controllers;
 using IdeaMachineWeb.DataTypes.Validation;
 using IdeaMachineWeb.Utils;
 using MassTransit;
@@ -32,7 +32,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,6 +39,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Serilog;
+using StackExchange.Redis;
 
 namespace IdeaMachineWeb
 {
@@ -164,6 +164,13 @@ namespace IdeaMachineWeb
 			{
 				lts.Resolve<IBusControl>().Start();
 			});
+
+			builder.RegisterType<RedisCacheFactory>()
+				.AsSelf()
+				.SingleInstance();
+			builder.Register(ctx => new AsyncLazy<IConnectionMultiplexer>(async () => await ConnectionMultiplexer.ConnectAsync(ctx.Resolve<IConfiguration>()["RedisConnectionString"])))
+				.As<AsyncLazy<IConnectionMultiplexer>>()
+				.SingleInstance();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

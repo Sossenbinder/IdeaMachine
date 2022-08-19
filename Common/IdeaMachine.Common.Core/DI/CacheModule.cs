@@ -8,7 +8,7 @@ namespace IdeaMachine.Common.Core.DI
     {
 	    protected override void Load(ContainerBuilder builder)
 	    {
-		    builder.RegisterGeneric(typeof(ICache<,>))
+		    builder.RegisterGeneric(typeof(IMemoryCache<,>))
 			    .As(typeof(MemoryCache<,>));
 	    }
     }

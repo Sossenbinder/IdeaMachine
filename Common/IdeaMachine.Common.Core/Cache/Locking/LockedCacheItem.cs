@@ -13,7 +13,8 @@ namespace IdeaMachine.Common.Core.Cache.Locking
 	/// <typeparam name="T"></typeparam>
 	public class LockedCacheItem<T> : IDisposable, IAsyncDisposable
 	{
-		public T Value { get; set; }
+		private readonly T _value;
+		public T Value => _isDisposed ? throw new InvalidOperationException("Object is already disposed") : _value;
 
 		private readonly string _keyValue;
 
@@ -33,7 +34,7 @@ namespace IdeaMachine.Common.Core.Cache.Locking
 			_cancellationTokenSource = new CancellationTokenSource();
 			_keyValue = keyValue;
 			_cacheLock = cacheLock;
-			Value = value;
+			_value = value;
 
 			_ = RunAutoRelease().IgnoreTaskCancelledException();
 		}

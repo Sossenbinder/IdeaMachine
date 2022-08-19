@@ -12,7 +12,7 @@ namespace IdeaMachine.Modules.Session.Service
 {
 	public class SessionService : ServiceBaseWithoutLogger, ISessionService
 	{
-		private readonly ICache<Guid, Abstractions.DataTypes.Session> _sessionCache;
+		private readonly IMemoryCache<Guid, Abstractions.DataTypes.Session> _sessionCache;
 
 		public SessionService(IAccountEvents accountEvents)
 		{

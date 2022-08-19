@@ -8,16 +8,16 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace IdeaMachine.Common.Core.Cache.Implementations
 {
-	public class MemoryCache<TKey, TValue> : ICache<TKey, TValue>
+	public class MemoryCache<TKey, TValue> : IMemoryCache<TKey, TValue>
 		where TKey : notnull
 	{
 		private readonly IMemoryCache _cache;
 
 		private readonly ICacheLockManager<TKey> _cacheLockManager;
 
-		public MemoryCache()
+		public MemoryCache(MemoryCacheOptions? memoryCacheOptions = null)
 		{
-			_cache = new MemoryCache(new MemoryCacheOptions());
+			_cache = new MemoryCache(memoryCacheOptions ?? new MemoryCacheOptions());
 			_cacheLockManager = new MemoryCacheLockManager<TKey>();
 		}
 
