@@ -36,9 +36,9 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 			return _cache.GetOrCreate(key, factory);
 		}
 
-		public async Task<LockedCacheItem<TValue>> GetLocked(TKey key)
+		public async Task<LockedCacheItem<TValue>> GetLocked(TKey key, TimeSpan? expirationTimeSpan = default)
 		{
-			var @lock = await TryGetLockedInternal(key);
+			var @lock = await TryGetLockedInternal(key, expirationTimeSpan);
 
 			// In case the item is not there, throw
 			if (@lock is null)
@@ -49,10 +49,10 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 			return @lock;
 		}
 
-		public Task<LockedCacheItem<TValue>?> TryGetLocked(TKey key)
-			=> TryGetLockedInternal(key);
+		public Task<LockedCacheItem<TValue>?> TryGetLocked(TKey key, TimeSpan? expirationTimeSpan = default)
+			=> TryGetLockedInternal(key, expirationTimeSpan);
 
-		private async Task<LockedCacheItem<TValue>?> TryGetLockedInternal(TKey key)
+		private async Task<LockedCacheItem<TValue>?> TryGetLockedInternal(TKey key, TimeSpan? expirationTimeSpan = default)
 		{
 			// Get our lock first - Then we can check if an item is there at all.
 			// If we would check first, then there is no guarantee the item is still
@@ -66,7 +66,7 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 			}
 
 			// In case the item is not there, remove the lock again and return null
-			await @lock.DisposeAsync();
+			await @lock.Release();
 			return null;
 		}
 

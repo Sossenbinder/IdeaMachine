@@ -6,10 +6,12 @@ namespace IdeaMachine.Common.Core.Cache.Locking.Extensions
 	// ReSharper disable once InconsistentNaming
 	public static class IMemoryCacheExtensions
 	{
-		public static T GetOrCreateOnce<T>(this IMemoryCache cache, object key, Func<T> factory)
+		public static T GetOrCreateOnce<T>(this IMemoryCache cache, object key, Func<ICacheEntry, T> factory)
 		{
-			var creator = new Lazy<T>(factory);
-			return cache.GetOrCreate(key, _ => creator.Value);
+			Lazy<T>? creator = null;
+			var result = cache.GetOrCreate(key, entry => (creator ??= new Lazy<T>(() => factory(entry))).Value);
+
+			return result;
 		}
 	}
 }

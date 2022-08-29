@@ -8,7 +8,7 @@ namespace IdeaMachine.Common.Core.Cache.Locking.Interface
 	/// </summary>
 	public interface ICacheLock : IDisposable, IAsyncDisposable
 	{
-		Task Lock();
+		Task Lock(TimeSpan? expirationTimeSpan = default);
 
 		ValueTask Release();
 	}

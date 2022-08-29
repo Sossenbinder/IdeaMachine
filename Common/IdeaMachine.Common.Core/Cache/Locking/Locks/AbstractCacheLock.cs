@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Cache.Locking.Interface;
 
-namespace IdeaMachine.Common.Core.Cache.Locking
+namespace IdeaMachine.Common.Core.Cache.Locking.Locks
 {
 	public abstract class AbstractCacheLock : ICacheLock
 	{
-		public abstract Task Lock();
+		public abstract Task Lock(TimeSpan? expirationTimeSpan = default);
 
 		public abstract ValueTask Release();
 
