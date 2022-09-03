@@ -1,19 +1,20 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace IdeaMachine.Common.Core.Cache.Implementations.Interface
 {
 	public interface IDistributedCache<in TKey, TValue> : ILockableCache<TKey, TValue>
 	{
-		TValue Get(TKey key);
+		Task<TValue> Get(TKey key);
 
-		bool TryGetValue(TKey key, out TValue value);
+		Task<TValue?> GetOrDefault(TKey key);
 
-		TValue GetOrAdd(TKey key, Func<ICacheEntry, TValue> factory);
+		Task<TValue> GetOrAdd(TKey key, Func<TValue> factory);
 
-		ValueTask Set(TKey key, TValue value, TimeSpan? slidingExpiration = null);
+		Task<bool> Has(TKey key);
 
-		ValueTask Delete(TKey key);
+		Task Set(TKey key, TValue value, TimeSpan? slidingExpiration = null);
+
+		Task Delete(TKey key);
 	}
 }

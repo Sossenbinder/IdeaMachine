@@ -4,6 +4,7 @@ using Autofac;
 using GreenPipes;
 using IdeaMachine.Common.Core.Cache;
 using IdeaMachine.Common.Core.Utils.Async;
+using IdeaMachine.Common.Core.Utils.Serialization;
 using IdeaMachine.Common.Eventing.Abstractions.Options;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
@@ -13,6 +14,8 @@ using IdeaMachine.Common.RemotingProxies.Proxies;
 using IdeaMachine.Common.RuntimeSerialization.DI;
 using IdeaMachine.Common.SignalR;
 using IdeaMachine.Common.SignalR.DI;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Account.Events;
 using IdeaMachine.Modules.Account.Service.Interface;
@@ -20,6 +23,8 @@ using IdeaMachine.Modules.Email.DI;
 using IdeaMachine.Modules.Idea.DI;
 using IdeaMachine.Modules.Reaction.DI;
 using IdeaMachine.Modules.Reaction.Events.Handlers;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Service.Base.Extensions;
 using IdeaMachine.Service.Base.Middleware;
@@ -165,10 +170,25 @@ namespace IdeaMachineWeb
 				lts.Resolve<IBusControl>().Start();
 			});
 
+			builder.Register(_ => new JsonSerializerDeserializer(
+						new CommonJsonConverter<IUser, Account>(),
+						new CommonJsonConverter<ISession, Session>()
+					)
+				)
+				.As<ISerializerDeserializer>()
+				.SingleInstance();
+
 			builder.RegisterType<RedisCacheFactory>()
 				.AsSelf()
 				.SingleInstance();
-			builder.Register(ctx => new AsyncLazy<IConnectionMultiplexer>(async () => await ConnectionMultiplexer.ConnectAsync(ctx.Resolve<IConfiguration>()["RedisConnectionString"])))
+
+			builder.Register(ctx =>
+				{
+					var resolutionContext = ctx.Resolve<IComponentContext>();
+					return new AsyncLazy<IConnectionMultiplexer>(async () =>
+						await ConnectionMultiplexer.ConnectAsync(
+							resolutionContext.Resolve<IConfiguration>()["RedisConnectionString"]));
+				})
 				.As<AsyncLazy<IConnectionMultiplexer>>()
 				.SingleInstance();
 		}

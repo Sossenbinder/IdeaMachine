@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IdeaMachine.Common.Core.Cache.Locking.Interface;
+﻿using IdeaMachine.Common.Core.Cache.Locking.Locks;
+using IdeaMachine.Common.Core.Utils.Async;
+using StackExchange.Redis;
 
 namespace IdeaMachine.Common.Core.Cache.Locking
 {
 	public class RedisCacheLockManager<TKey> : AbstractCacheLockManager<TKey>
+		where TKey : notnull
 	{
-		protected RedisCacheLockManager()
-			: base(CreateLock)
+		public RedisCacheLockManager(AsyncLazy<IConnectionMultiplexer> redisConnectionMultiplexer)
+			: base(key => new RedisLock(redisConnectionMultiplexer, key))
 		{
-		}
-
-		private static ICacheLock CreateLock(Action disposeFunc)
-		{
-			return null;
 		}
 	}
 }

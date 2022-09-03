@@ -3,19 +3,20 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Cache.Locking.Interface;
+using IdeaMachine.Common.Core.Cache.Locking.Locks;
 
 namespace IdeaMachine.Common.Core.Cache.Locking
 {
 	public class AbstractCacheLockManager<TKey> : ICacheLockManager<TKey>
 		where TKey : notnull
 	{
-		private readonly Func<Action, ICacheLock> _cacheLockFactory;
+		private readonly Func<string, ICacheLock> _cacheLockFactory;
 
 		private readonly ConcurrentDictionary<TKey, ICacheLock> _cacheLocks;
 
 		private readonly TimeSpan _defaultTimeout = TimeSpan.FromSeconds(10);
 
-		protected AbstractCacheLockManager(Func<Action, ICacheLock> cacheLockFactory)
+		protected AbstractCacheLockManager(Func<string, ICacheLock> cacheLockFactory)
 		{
 			_cacheLockFactory = cacheLockFactory;
 			_cacheLocks = new();
@@ -38,23 +39,23 @@ namespace IdeaMachine.Common.Core.Cache.Locking
 				{
 					// In case no lock was found, try to add this one as the "new" lock. Return it if successful, otherwise
 					// rerun the loop and handle it just like a lock was already found.
-					var newLock = _cacheLockFactory(() => ReleaseLock(key));
+					var newLock = _cacheLockFactory(key.ToString()!);
 					if (_cacheLocks.TryAdd(key, newLock))
 					{
-						return newLock;
+						return CreateDisposalWrappedLock(key, newLock);
 					}
 
 					continue;
 				}
 
 				// The old lock was patiently awaited. Now we try to update it with ours
-				var updatedLock = _cacheLockFactory(() => ReleaseLock(key));
+				var updatedLock = _cacheLockFactory(key.ToString()!);
 				lockReceived = _cacheLocks.TryUpdate(key, updatedLock, @lock);
 
 				if (lockReceived)
 				{
 					// We got lucky - Return this lock
-					return updatedLock;
+					return CreateDisposalWrappedLock(key, updatedLock);
 				}
 
 				// If we did not get lucky - We have to rerun the while loop sadly.
@@ -66,6 +67,11 @@ namespace IdeaMachine.Common.Core.Cache.Locking
 		public void ReleaseLock(TKey key)
 		{
 			_cacheLocks.TryRemove(key, out _);
+		}
+
+		private ICacheLock CreateDisposalWrappedLock(TKey key, ICacheLock actualLock)
+		{
+			return new DisposingCacheLockDecorator(actualLock, () => ReleaseLock(key));
 		}
 	}
 }

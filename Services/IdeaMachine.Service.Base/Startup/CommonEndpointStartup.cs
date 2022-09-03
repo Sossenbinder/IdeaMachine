@@ -1,6 +1,9 @@
 ﻿using System;
 using Autofac;
 using GreenPipes;
+using IdeaMachine.Common.Core.Cache;
+using IdeaMachine.Common.Core.Utils.Async;
+using IdeaMachine.Common.Core.Utils.Serialization;
 using IdeaMachine.Common.Eventing.Abstractions.Options;
 using IdeaMachine.Common.Eventing.DI;
 using IdeaMachine.Common.Grpc.DI;
@@ -8,7 +11,11 @@ using IdeaMachine.Common.Grpc.Interceptors;
 using IdeaMachine.Common.IPC.DI;
 using IdeaMachine.Common.Logging.Log;
 using IdeaMachine.Common.RuntimeSerialization.DI;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
+using IdeaMachine.Modules.Account.Abstractions.DataTypes;
 using IdeaMachine.Modules.ServiceBase.Interface;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using IdeaMachine.Service.Base.Extensions;
 using MassTransit;
 using MassTransit.AutofacIntegration;
@@ -22,6 +29,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ProtoBuf.Grpc.Server;
 using Serilog;
+using StackExchange.Redis;
 
 namespace IdeaMachine.Service.Base.Startup
 {
@@ -62,6 +70,28 @@ namespace IdeaMachine.Service.Base.Startup
 			builder.RegisterModule<ProtobufSerializationModule>();
 			builder.RegisterModule<GrpcModule>();
 			builder.RegisterModule<IpcModule>();
+
+			builder.Register(_ => new JsonSerializerDeserializer(
+					new CommonJsonConverter<IUser, Account>(),
+						new CommonJsonConverter<ISession, Session>()
+					)
+				)
+				.As<ISerializerDeserializer>()
+				.SingleInstance();
+
+			builder.RegisterType<RedisCacheFactory>()
+				.AsSelf()
+				.SingleInstance();
+
+			builder.Register(ctx =>
+				{
+					var resolutionContext = ctx.Resolve<IComponentContext>();
+					return new AsyncLazy<IConnectionMultiplexer>(async () =>
+						await ConnectionMultiplexer.ConnectAsync(
+							resolutionContext.Resolve<IConfiguration>()["RedisConnectionString"]));
+				})
+				.As<AsyncLazy<IConnectionMultiplexer>>()
+				.SingleInstance();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

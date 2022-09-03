@@ -1,23 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Cache.Implementations.Interface;
 using IdeaMachine.Common.Core.Cache.Locking;
 using IdeaMachine.Common.Core.Cache.Locking.Interface;
-using Microsoft.Extensions.Caching.Memory;
+using IdeaMachine.Common.Core.Utils.Async;
+using IdeaMachine.Common.Core.Utils.Serialization;
 using StackExchange.Redis;
 
 namespace IdeaMachine.Common.Core.Cache.Implementations
 {
 	public class RedisCache<TKey, TValue> : IDistributedCache<TKey, TValue>
+		where TKey : notnull
 	{
-		private readonly IDatabase _database;
+		private readonly AsyncLazy<IConnectionMultiplexer> _connectionMultiplexer;
 
 		private readonly ICacheLockManager<TKey> _cacheLockManager;
 
-		public RedisCache(IConnectionMultiplexer connectionMultiplexer)
+		private readonly ISerializerDeserializer _serializerDeserializer;
+
+		public RedisCache(
+			AsyncLazy<IConnectionMultiplexer> connectionMultiplexer,
+			ISerializerDeserializer serializerDeserializer)
 		{
-			_database = connectionMultiplexer.GetDatabase();
+			_connectionMultiplexer = connectionMultiplexer;
+			_serializerDeserializer = serializerDeserializer;
+
+			_cacheLockManager = new RedisCacheLockManager<TKey>(connectionMultiplexer);
 		}
 
 		public async Task<LockedCacheItem<TValue>> GetLocked(TKey key, TimeSpan? expirationTimeSpan = default)
@@ -41,8 +51,8 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 			// Get our lock first - Then we can check if an item is there at all.
 			// If we would check first, then there is no guarantee the item is still
 			// there at the point in time we get our turn on the lock
-			var @lock = await _cacheLockManager.GetLockLocked(key);
-			var value = Get(key);
+			var @lock = await _cacheLockManager.GetLockLocked(key, expirationTimeSpan);
+			var value = await Get(key);
 
 			if (value != null)
 			{
@@ -54,29 +64,63 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 			return null;
 		}
 
-		public TValue Get(TKey key)
+		private async ValueTask<IDatabase> GetDb()
 		{
-			throw new NotImplementedException();
+			return (await _connectionMultiplexer).GetDatabase();
 		}
 
-		public bool TryGetValue(TKey key, out TValue value)
+		public async Task<TValue> Get(TKey key)
 		{
-			throw new NotImplementedException();
+			var rawValue = (await GetDb()).StringGet(key.ToString());
+
+			if (!rawValue.HasValue)
+			{
+				throw new KeyNotFoundException($"Item for key {key} not found");
+			}
+
+			return _serializerDeserializer.Deserialize<TValue>(rawValue!) ?? throw new SerializationException($"Couldn't deserialize item");
 		}
 
-		public TValue GetOrAdd(TKey key, Func<ICacheEntry, TValue> factory)
+		public async Task<TValue?> GetOrDefault(TKey key)
 		{
-			throw new NotImplementedException();
+			var rawValue = (await GetDb()).StringGet(key.ToString());
+
+			if (!rawValue.HasValue)
+			{
+				return default;
+			}
+
+			return _serializerDeserializer.Deserialize<TValue>(rawValue!) ?? throw new SerializationException($"Couldn't deserialize item");
 		}
 
-		public ValueTask Set(TKey key, TValue value, TimeSpan? slidingExpiration = null)
+		public async Task<TValue> GetOrAdd(TKey key, Func<TValue> factory)
 		{
-			throw new NotImplementedException();
+			var rawValue = (await GetDb()).StringGet(key.ToString());
+
+			if (rawValue.HasValue)
+			{
+				return _serializerDeserializer.Deserialize<TValue>(rawValue!) ??
+					   throw new SerializationException($"Couldn't deserialize item");
+			}
+
+			var value = factory();
+
+			return value;
 		}
 
-		public ValueTask Delete(TKey key)
+		public async Task<bool> Has(TKey key)
 		{
-			throw new NotImplementedException();
+			return await (await GetDb()).KeyExistsAsync(key.ToString());
+		}
+
+		public async Task Set(TKey key, TValue value, TimeSpan? slidingExpiration = null)
+		{
+			(await GetDb()).StringSet(key.ToString(), _serializerDeserializer.Serialize(value), slidingExpiration);
+		}
+
+		public async Task Delete(TKey key)
+		{
+			(await GetDb()).KeyDelete(key.ToString());
 		}
 	}
 }

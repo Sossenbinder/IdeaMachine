@@ -57,7 +57,7 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 			// Get our lock first - Then we can check if an item is there at all.
 			// If we would check first, then there is no guarantee the item is still
 			// there at the point in time we get our turn on the lock
-			var @lock = await _cacheLockManager.GetLockLocked(key);
+			var @lock = await _cacheLockManager.GetLockLocked(key, expirationTimeSpan);
 			var value = Get(key);
 
 			if (value != null)

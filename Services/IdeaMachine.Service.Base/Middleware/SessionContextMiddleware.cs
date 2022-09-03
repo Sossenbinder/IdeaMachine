@@ -10,6 +10,7 @@ using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachine.Service.Base.Static;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using ISession = IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface.ISession;
 
 namespace IdeaMachine.Service.Base.Middleware
 {
@@ -79,11 +80,11 @@ namespace IdeaMachine.Service.Base.Middleware
 			context.Items[SessionContextIdentifier] = anonymousSession;
 		}
 
-		private async Task<Session> InitializeSession(string userId, IReadOnlyDictionary<string, string> claims)
+		private async Task<ISession> InitializeSession(string userId, IReadOnlyDictionary<string, string> claims)
 		{
 			var parsedUserId = Guid.Parse(userId);
 
-			var session = _sessionService.GetSession(parsedUserId);
+			var session = await _sessionService.GetSession(parsedUserId);
 			if (session is not null)
 			{
 				return session;
@@ -94,7 +95,7 @@ namespace IdeaMachine.Service.Base.Middleware
 			return session;
 		}
 
-		private async Task<Session> ParseJwtToSession(Guid userId, IReadOnlyDictionary<string, string> claims)
+		private async Task<ISession> ParseJwtToSession(Guid userId, IReadOnlyDictionary<string, string> claims)
 		{
 			var email = claims["emails"];
 			var userName = claims[AzureB2CName];

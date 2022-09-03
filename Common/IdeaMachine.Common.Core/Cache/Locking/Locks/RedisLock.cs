@@ -1,37 +1,42 @@
 ﻿using System;
 using System.Threading.Tasks;
+using IdeaMachine.Common.Core.Utils.Async;
 using StackExchange.Redis;
 
 namespace IdeaMachine.Common.Core.Cache.Locking.Locks
 {
 	public class RedisLock : AbstractCacheLock
 	{
-		private readonly IDatabase _redisDatabase;
+		private readonly AsyncLazy<IConnectionMultiplexer> _redisConnectionMultiplexer;
 
-		private readonly RedisKey _key;
+		private readonly string _key;
 
 		private readonly RedisValue _value;
 
 		private readonly TimeSpan _defaultTimeout = TimeSpan.FromSeconds(5);
 
 		public RedisLock(
-			IDatabase redisDatabase,
-			RedisKey key,
-			RedisValue value)
+			AsyncLazy<IConnectionMultiplexer> redisConnectionMultiplexer,
+			string key)
 		{
-			_redisDatabase = redisDatabase;
+			_redisConnectionMultiplexer = redisConnectionMultiplexer;
 			_key = key;
-			_value = value;
+			_value = Guid.NewGuid().ToString();
 		}
 
-		public override Task Lock(TimeSpan? expirationTimeSpan = default)
+		public override async Task Lock(TimeSpan? expirationTimeSpan = default)
 		{
-			return _redisDatabase.LockTakeAsync(_key, _value, expirationTimeSpan ?? _defaultTimeout);
+			await (await GetDb()).LockTakeAsync(_key, _value, expirationTimeSpan ?? _defaultTimeout);
 		}
 
 		public override async ValueTask Release()
 		{
-			await _redisDatabase.LockReleaseAsync(_key, _value);
+			await (await GetDb()).LockReleaseAsync(_key, _value);
+		}
+
+		private async ValueTask<IDatabase> GetDb()
+		{
+			return (await _redisConnectionMultiplexer).GetDatabase();
 		}
 	}
 }

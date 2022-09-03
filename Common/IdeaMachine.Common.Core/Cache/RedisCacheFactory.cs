@@ -1,6 +1,6 @@
 ﻿using IdeaMachine.Common.Core.Utils.Async;
-using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Cache.Implementations;
+using IdeaMachine.Common.Core.Utils.Serialization;
 using StackExchange.Redis;
 
 namespace IdeaMachine.Common.Core.Cache
@@ -9,15 +9,19 @@ namespace IdeaMachine.Common.Core.Cache
 	{
 		private readonly AsyncLazy<IConnectionMultiplexer> _lazyConnectionMultiplexer;
 
-		public RedisCacheFactory(AsyncLazy<IConnectionMultiplexer> lazyConnectionMultiplexer)
+		private readonly ISerializerDeserializer _serializerDeserializer;
+
+		public RedisCacheFactory(
+			AsyncLazy<IConnectionMultiplexer> lazyConnectionMultiplexer,
+			ISerializerDeserializer serializerDeserializer)
 		{
 			_lazyConnectionMultiplexer = lazyConnectionMultiplexer;
+			_serializerDeserializer = serializerDeserializer;
 		}
 
-		public async Task<RedisCache<TKey, TValue>> Create<TKey, TValue>()
+		public RedisCache<TKey, TValue> Create<TKey, TValue>() where TKey : notnull
 		{
-			var connectionMultiplexer = await _lazyConnectionMultiplexer;
-			return new RedisCache<TKey, TValue>(connectionMultiplexer);
+			return new RedisCache<TKey, TValue>(_lazyConnectionMultiplexer, _serializerDeserializer);
 		}
 	}
 }

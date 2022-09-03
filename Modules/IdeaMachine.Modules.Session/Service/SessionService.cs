@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Threading.Tasks;
-using IdeaMachine.Common.Core.Cache.Implementations;
+using IdeaMachine.Common.Core.Cache;
 using IdeaMachine.Common.Core.Cache.Implementations.Interface;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.ServiceBase;
+using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
 
 namespace IdeaMachine.Modules.Session.Service
 {
 	public class SessionService : ServiceBaseWithoutLogger, ISessionService
 	{
-		private readonly IMemoryCache<Guid, Abstractions.DataTypes.Session> _sessionCache;
+		private readonly IDistributedCache<Guid, ISession> _sessionCache;
 
-		public SessionService(IAccountEvents accountEvents)
+		public SessionService(
+			IAccountEvents accountEvents,
+			RedisCacheFactory redisCacheFactory)
 		{
-			_sessionCache = new MemoryCache<Guid, Abstractions.DataTypes.Session>();
+			_sessionCache = redisCacheFactory.Create<Guid, ISession>();
 
 			RegisterEventHandler(accountEvents.AccountSignedIn, OnAccountSignedIn);
 			RegisterEventHandler(accountEvents.AccountSignedOut, OnAccountSignedOut);
@@ -37,17 +40,22 @@ namespace IdeaMachine.Modules.Session.Service
 			await _sessionCache.Set(session.User.UserId, session);
 		}
 
-		public async ValueTask AddSession(Guid userId, Abstractions.DataTypes.Session session)
+		public async ValueTask AddSession(Guid userId, ISession session)
 		{
 			await _sessionCache.Set(userId, session);
 		}
 
-		public Abstractions.DataTypes.Session? GetSession(Guid userId)
+		public Task<ISession?> GetSession(Guid userId)
 		{
-			return _sessionCache.TryGetValue(userId, out var value) ? value : null;
+			return _sessionCache.GetOrDefault(userId);
 		}
 
-		public async Task UpdateSession(Guid userId, Action<Abstractions.DataTypes.Session> sessionUpdater)
+		public Task<bool> HasSession(Guid userId)
+		{
+			return _sessionCache.Has(userId);
+		}
+
+		public async Task UpdateSession(Guid userId, Action<ISession> sessionUpdater)
 		{
 			await using var lockedItem = await _sessionCache.TryGetLocked(userId);
 

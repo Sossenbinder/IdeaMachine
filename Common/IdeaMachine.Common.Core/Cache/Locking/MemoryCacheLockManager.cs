@@ -6,7 +6,7 @@ namespace IdeaMachine.Common.Core.Cache.Locking
 		where TKey : notnull
 	{
 		public MemoryCacheLockManager()
-			: base(disposeFunc => new SemaphoreLock(disposeFunc))
+			: base(_ => new SemaphoreLock())
 		{
 		}
 	}

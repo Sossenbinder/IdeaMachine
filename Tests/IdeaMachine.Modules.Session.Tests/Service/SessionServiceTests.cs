@@ -50,12 +50,12 @@ namespace IdeaMachine.Modules.Session.Tests.Service
 				UserName = "TestUser",
 				UserId = userId,
 			};
-			
+
 			Assert.True(_sessionService.GetSession(userId) is null);
 
 			Assert.True(await _accountEvents.AccountSignedIn.RaiseForTest(_harness, new AccountSignedIn(account)));
 
-			var newSession = _sessionService.GetSession(userId);
+			var newSession = await _sessionService.GetSession(userId);
 			Assert.NotNull(newSession);
 			Assert.AreEqual(account.UserId, newSession!.User.UserId);
 			Assert.AreEqual(account.UserId, userId);

@@ -43,6 +43,7 @@ services:
       GmailUserName: "ideamachinenews@gmail.com"
       Seq_Server: "http://ideamachine.seq:5341"
       DeploymentLink: "https://localhost:1253/"
+      RedisConnectionString: "ideamachine.redis:6379"
     volumes:
       - /Keys/Storage:/keys/storage
     depends_on:
@@ -67,6 +68,7 @@ services:
       RabbitMqSettings__Password: ideamachine
       IdeaMachine_RabbitMq: ideamachine.rabbitmq
       Seq_Server: "http://ideamachine.seq:5341"
+      RedisConnectionString: "ideamachine.redis:6379"
     volumes:
       - /Keys/Storage:/keys/storage
     depends_on:
@@ -153,3 +155,12 @@ services:
     depends_on:
       - ideamachine.sql
       - ideamachine.rabbitmq
+
+  ideamachine.redis:
+    image: redis
+    labels:
+      - ideamachinecompose
+    networks:
+      - ideamachinenetwork
+    ports:
+      - "6379:6379"

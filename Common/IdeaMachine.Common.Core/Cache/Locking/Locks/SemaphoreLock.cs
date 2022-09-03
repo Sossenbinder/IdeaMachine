@@ -6,15 +6,12 @@ namespace IdeaMachine.Common.Core.Cache.Locking.Locks
 {
 	public class SemaphoreLock : AbstractCacheLock
 	{
-		private readonly Action _disposeFunc;
-
 		private readonly SemaphoreSlim _semaphore;
 
 		private readonly TimeSpan _defaultTimeout = TimeSpan.FromSeconds(5);
 
-		public SemaphoreLock(Action disposeFunc)
+		public SemaphoreLock()
 		{
-			_disposeFunc = disposeFunc;
 			_semaphore = new SemaphoreSlim(0, 1);
 		}
 
@@ -27,7 +24,6 @@ namespace IdeaMachine.Common.Core.Cache.Locking.Locks
 		public override ValueTask Release()
 		{
 			_semaphore.Release();
-			_disposeFunc();
 			return default;
 		}
 	}
