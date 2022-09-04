@@ -20,6 +20,8 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 
 		private readonly ISerializerDeserializer _serializerDeserializer;
 
+		private static readonly TimeSpan _defaultExpiration = TimeSpan.FromMinutes(10);
+
 		public RedisCache(
 			AsyncLazy<IConnectionMultiplexer> connectionMultiplexer,
 			ISerializerDeserializer serializerDeserializer)
@@ -115,12 +117,13 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 
 		public async Task Set(TKey key, TValue value, TimeSpan? slidingExpiration = null)
 		{
-			(await GetDb()).StringSet(key.ToString(), _serializerDeserializer.Serialize(value), slidingExpiration);
+			slidingExpiration ??= _defaultExpiration;
+			await (await GetDb()).StringSetAsync(key.ToString(), _serializerDeserializer.Serialize(value), slidingExpiration);
 		}
 
 		public async Task Delete(TKey key)
 		{
-			(await GetDb()).KeyDelete(key.ToString());
+			await (await GetDb()).KeyDeleteAsync(key.ToString());
 		}
 	}
 }
