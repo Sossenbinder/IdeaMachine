@@ -73,7 +73,7 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 
 		public async Task<TValue> Get(TKey key)
 		{
-			var rawValue = (await GetDb()).StringGet(key.ToString());
+			var rawValue = await (await GetDb()).StringGetAsync(key.ToString());
 
 			if (!rawValue.HasValue)
 			{
@@ -85,7 +85,7 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 
 		public async Task<TValue?> GetOrDefault(TKey key)
 		{
-			var rawValue = (await GetDb()).StringGet(key.ToString());
+			var rawValue = await (await GetDb()).StringGetAsync(key.ToString());
 
 			if (!rawValue.HasValue)
 			{
@@ -97,7 +97,7 @@ namespace IdeaMachine.Common.Core.Cache.Implementations
 
 		public async Task<TValue> GetOrAdd(TKey key, Func<TValue> factory)
 		{
-			var rawValue = (await GetDb()).StringGet(key.ToString());
+			var rawValue = await (await GetDb()).StringGetAsync(key.ToString());
 
 			if (rawValue.HasValue)
 			{

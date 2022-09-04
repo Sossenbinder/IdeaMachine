@@ -1,5 +1,4 @@
 import * as React from "react";
-import useServices from "common/hooks/useServices";
 import useChannel from "common/hooks/useChannel";
 import useNotificationBackedCall from "common/hooks/useNotificationBackedCall";
 import { ActionIcon, Avatar, Group, Paper, Text } from "@mantine/core";
