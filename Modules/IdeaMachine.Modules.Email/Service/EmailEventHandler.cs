@@ -17,44 +17,12 @@ namespace IdeaMachine.Modules.Email.Service
 	{
 		private readonly IEmailSender _mailSender;
 
-		private readonly IConfiguration _configuration;
-
 		public EmailEventHandler(
 			IIdeaEvents ideaEvents,
-			IAccountEvents accountEvents,
-			IEmailSender mailSender,
-			IConfiguration configuration)
+			IEmailSender mailSender)
 		{
 			_mailSender = mailSender;
-			_configuration = configuration;
 			RegisterEventHandler(ideaEvents.IdeaCreated, OnIdeaCreated);
-			RegisterEventHandler(accountEvents.AccountCreated, OnAccountCreated);
-		}
-
-		private async Task OnAccountCreated(AccountCreated accountCreated)
-		{
-			var (userName, email, verificationCode) = accountCreated;
-
-			if (email.IsNullOrEmpty())
-			{
-				return;
-			}
-
-			var mail = MailFactory.CreateMail();
-			mail.To.Add(new MailboxAddress($"Dear {userName}!", email));
-			mail.Subject = "Thanks for signing up to IdeaMachine";
-
-			var builder = new BodyBuilder
-			{
-				HtmlBody = $@"
-					<h2>Your verification mail!</h2>
-					<p>Dear {userName} - Thanks for signing up! Please click the link below to verify your registration.</p>
-					<a href='{EnvironmentLinkGenerator.GetDomainLink(_configuration)}/VerifyEmail?userName={userName}&token={WebUtility.HtmlEncode(verificationCode)}'>Click to verify</a>
-				",
-			};
-			mail.Body = builder.ToMessageBody();
-
-			await _mailSender.SendMail(mail);
 		}
 
 		private async Task OnIdeaCreated(IdeaCreated ideaCreated)

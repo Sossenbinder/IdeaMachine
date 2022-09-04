@@ -58,7 +58,14 @@ export const AuthenticatedAvatar = ({ showName = true }: Props) => {
 				/>
 				{showName && (
 					<Link to="/account/Overview" className={styles.UserName}>
-						<Text size="md">{account.userName}</Text>
+						<Text
+							size="md"
+							sx={(theme) => ({
+								color: theme.colorScheme === "dark" ? "white" : "black",
+							})}
+						>
+							{account.userName}
+						</Text>
 					</Link>
 				)}
 				<ActionIcon>

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdeaMachine.AccountService.Controller
 {
-	[Route("ProfilePicture")]
+	[Route("Profile/Picture")]
 	public class ProfilePictureController : IdentityControllerBase
 	{
 		private readonly IPublishEndpoint _publishEndpoint;

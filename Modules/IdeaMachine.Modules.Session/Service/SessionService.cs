@@ -21,23 +21,12 @@ namespace IdeaMachine.Modules.Session.Service
 		{
 			_sessionCache = redisCacheFactory.Create<Guid, ISession>();
 
-			RegisterEventHandler(accountEvents.AccountSignedIn, OnAccountSignedIn);
 			RegisterEventHandler(accountEvents.AccountSignedOut, OnAccountSignedOut);
 		}
 
 		private async Task OnAccountSignedOut(AccountLoggedOut account)
 		{
 			await _sessionCache.Delete(GetKey(account.Session));
-		}
-
-		private async Task OnAccountSignedIn(AccountSignedIn accountSignedIn)
-		{
-			var session = new Abstractions.DataTypes.Session()
-			{
-				User = accountSignedIn.Account,
-			};
-
-			await _sessionCache.Set(session.User.UserId, session);
 		}
 
 		public async ValueTask AddSession(Guid userId, ISession session)

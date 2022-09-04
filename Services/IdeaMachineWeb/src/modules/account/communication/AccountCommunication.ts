@@ -7,8 +7,8 @@ const Urls = {
 	SignIn: "/Account/SignIn",
 	Verify: "/Verify/VerifyMail",
 	Logout: "/Account/Logout",
-	GetProfilePicture: "/ProfilePicture",
-	UpdateProfilePicture: "/ProfilePicture",
+	GetProfilePicture: "/Profile/Picture",
+	UpdateProfilePicture: "/Profile/Picture",
 };
 
 export const updateProfilePicture = async (files: FileList) => {

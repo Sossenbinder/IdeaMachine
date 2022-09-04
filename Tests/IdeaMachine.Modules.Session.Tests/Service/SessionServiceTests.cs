@@ -53,7 +53,7 @@ namespace IdeaMachine.Modules.Session.Tests.Service
 
 			Assert.True(_sessionService.GetSession(userId) is null);
 
-			Assert.True(await _accountEvents.AccountSignedIn.RaiseForTest(_harness, new AccountSignedIn(account)));
+			//Assert.True(await _accountEvents.AccountSignedIn.RaiseForTest(_harness, new AccountSignedIn(account)));
 
 			var newSession = await _sessionService.GetSession(userId);
 			Assert.NotNull(newSession);

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
-using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Idea.Repository.Interface;
 using IdeaMachine.Modules.ServiceBase;
 
@@ -10,12 +9,9 @@ namespace IdeaMachine.Modules.Idea.Service
 	{
 		private readonly IIdeaRepository _ideaRepository;
 
-		public IdeaMigrationService(
-			IAccountEvents accountEvents,
-			IIdeaRepository ideaRepository)
+		public IdeaMigrationService(IIdeaRepository ideaRepository)
 		{
 			_ideaRepository = ideaRepository;
-			RegisterEventHandler(accountEvents.AccountVerified, OnAccountVerified);
 		}
 
 		private async Task OnAccountVerified(AccountVerified accountVerifiedInfo)
