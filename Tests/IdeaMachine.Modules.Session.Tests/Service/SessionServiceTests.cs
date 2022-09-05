@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Autofac;
-using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
-using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Account.DI;
 using IdeaMachine.Modules.Session.DI;
 using IdeaMachine.Modules.Session.Service.Interface;
 using IdeaMachine.Tests.Core.DI;
-using IdeaMachine.Tests.Core.Eventing.Extensions;
 using MassTransit.Testing;
 using NUnit.Framework;
 
@@ -16,11 +13,7 @@ namespace IdeaMachine.Modules.Session.Tests.Service
 	[TestFixture]
 	public class SessionServiceTests
 	{
-		private ISessionService _sessionService;
-
-		private IAccountEvents _accountEvents;
-
-		private BusTestHarness _harness;
+		private ISessionService _sessionService = null!;
 
 		[SetUp]
 		public async Task SetUp()
@@ -34,10 +27,7 @@ namespace IdeaMachine.Modules.Session.Tests.Service
 
 			var container = builder.Build();
 			await container.Resolve<BusTestHarness>().Start();
-
-			_accountEvents = container.Resolve<IAccountEvents>();
 			_sessionService = container.Resolve<ISessionService>();
-			_harness = container.Resolve<BusTestHarness>();
 		}
 
 		[Test]
@@ -51,9 +41,7 @@ namespace IdeaMachine.Modules.Session.Tests.Service
 				UserId = userId,
 			};
 
-			Assert.True(_sessionService.GetSession(userId) is null);
-
-			//Assert.True(await _accountEvents.AccountSignedIn.RaiseForTest(_harness, new AccountSignedIn(account)));
+			Assert.True(await _sessionService.GetSession(userId) is null);
 
 			var newSession = await _sessionService.GetSession(userId);
 			Assert.NotNull(newSession);

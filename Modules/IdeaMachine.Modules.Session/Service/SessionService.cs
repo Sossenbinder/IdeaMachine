@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Cache;
 using IdeaMachine.Common.Core.Cache.Implementations.Interface;
-using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
 using IdeaMachine.Modules.Account.Abstractions.DataTypes.Interface;
-using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.ServiceBase;
 using IdeaMachine.Modules.Session.Abstractions.DataTypes.Interface;
 using IdeaMachine.Modules.Session.Service.Interface;
@@ -15,18 +13,9 @@ namespace IdeaMachine.Modules.Session.Service
 	{
 		private readonly IDistributedCache<Guid, ISession> _sessionCache;
 
-		public SessionService(
-			IAccountEvents accountEvents,
-			RedisCacheFactory redisCacheFactory)
+		public SessionService(RedisCacheFactory redisCacheFactory)
 		{
 			_sessionCache = redisCacheFactory.Create<Guid, ISession>();
-
-			RegisterEventHandler(accountEvents.AccountSignedOut, OnAccountSignedOut);
-		}
-
-		private async Task OnAccountSignedOut(AccountLoggedOut account)
-		{
-			await _sessionCache.Delete(GetKey(account.Session));
 		}
 
 		public async ValueTask AddSession(Guid userId, ISession session)

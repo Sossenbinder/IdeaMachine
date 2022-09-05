@@ -31,7 +31,6 @@ namespace IdeaMachineWeb.Controllers
 
 		[HttpPost]
 		[Authorize]
-		[Route("Add")]
 		public async Task<IActionResult> Add([FromBody] AddCommentUiModel commentModel)
 		{
 			var model = new CommentModel()
@@ -48,7 +47,7 @@ namespace IdeaMachineWeb.Controllers
 		}
 
 		[HttpPost]
-		[Route("GetComments")]
+		[Route("Get")]
 		public async Task<IActionResult> GetComments([FromBody] GetCommentUiModel commentUiModel)
 		{
 			var comments = await _commentService.GetComments(commentUiModel.IdeaId);

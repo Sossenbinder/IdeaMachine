@@ -1,14 +1,10 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Extensions;
-using IdeaMachine.Modules.Account.Abstractions.DataTypes.Events;
-using IdeaMachine.Modules.Account.Abstractions.Events.Interface;
 using IdeaMachine.Modules.Email.Service.Interface;
 using IdeaMachine.Modules.Email.Utils;
 using IdeaMachine.Modules.Idea.DataTypes.Events;
 using IdeaMachine.Modules.Idea.Events.Interface;
 using IdeaMachine.Modules.ServiceBase;
-using Microsoft.Extensions.Configuration;
 using MimeKit;
 
 namespace IdeaMachine.Modules.Email.Service
