@@ -37,7 +37,7 @@ export default class CommentsService extends ModuleService implements ICommentsS
 	public async addComment(ideaId: number, comment: string) {
 		const commentEntity = {
 			comment,
-			ideaId
+			ideaId,
 		} as Comment;
 
 		const response = await commentsCommunication.addComment(commentEntity);
@@ -68,9 +68,9 @@ export default class CommentsService extends ModuleService implements ICommentsS
 				...idea,
 				comments: [...(idea.comments ?? []), ...ensureArray(comments)].map((x) => ({
 					...x,
-					commenterName: name
-				}))
-			})
+					commenterName: name,
+				})),
+			}),
 		);
 	}
 }

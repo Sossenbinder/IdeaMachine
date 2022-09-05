@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using IdeaMachine.Common.Core.Extensions;
@@ -60,6 +61,11 @@ namespace IdeaMachine.Service.Base.Controller
 
 			SessionOrNull = session!;
 			UserIdOrNull = session!.User.UserId;
+		}
+
+		protected IActionResult InternalServerError()
+		{
+			return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
 		}
 	}
 }

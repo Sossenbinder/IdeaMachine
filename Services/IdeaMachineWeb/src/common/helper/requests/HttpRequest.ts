@@ -64,7 +64,7 @@ export default abstract class HttpRequest<TRequest, TResponse> {
 
 			const json = JSON.parse(responseBody);
 
-			if (json.data === undefined) {
+			if (json === undefined) {
 				return {
 					success: response.ok,
 					payload: undefined,
@@ -73,7 +73,7 @@ export default abstract class HttpRequest<TRequest, TResponse> {
 
 			return {
 				success: response.ok,
-				payload: json.data as TResponse,
+				payload: json as TResponse,
 			};
 		} catch (e) {
 			return {

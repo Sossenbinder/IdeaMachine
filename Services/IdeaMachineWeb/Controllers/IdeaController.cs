@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IdeaMachine.Common.Core.Utils.Pagination;
-using IdeaMachine.Common.Web.DataTypes.Responses;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Reaction.Service.Interface;
@@ -47,54 +44,54 @@ namespace IdeaMachineWeb.Controllers
 		}
 
 		[HttpPost]
-		public async Task<JsonDataResponse<PaginationResult<int?, IdeaUiModel>>> Get([FromBody] PaginationTokenUiModel<int?> getIdeasTokenModel)
+		public async Task<IActionResult> Get([FromBody] PaginationTokenUiModel<int?> getIdeasTokenModel)
 		{
 			var result = await _ideaRetrievalService.Get(getIdeasTokenModel.PaginationToken);
 
 			var uiModelPayload = result.WithNewPayload(await Task.WhenAll(result.Data.Select(ToEnrichedUiModel)));
-			return JsonResponse.Success(uiModelPayload);
+			return Json(uiModelPayload);
 		}
 
 		[HttpGet]
 		[Route("GetOwn")]
-		public async Task<JsonDataResponse<List<IdeaUiModel>>> GetOwn()
+		public async Task<IActionResult> GetOwn()
 		{
 			var result = await _ideaRetrievalService.GetForUser(Session);
 
 			var uiModelPayload = await Task.WhenAll(result.Select(ToEnrichedUiModel));
-			return JsonResponse.Success(uiModelPayload.ToList());
+			return Json(uiModelPayload.ToList());
 		}
 
 		[HttpPost]
 		[Route("GetForUser")]
-		public async Task<JsonDataResponse<List<IdeaUiModel>>> GetForUser(Guid userId)
+		public async Task<IActionResult> GetForUser(Guid userId)
 		{
 			var result = await _ideaRetrievalService.GetForUser(Session);
 
 			var uiModelPayload = await Task.WhenAll(result.Select(ToEnrichedUiModel));
-			return JsonResponse.Success(uiModelPayload.ToList());
+			return Json(uiModelPayload.ToList());
 		}
 
 		[HttpPost]
 		[Route("GetSpecificIdea")]
-		public async Task<JsonDataResponse<IdeaUiModel?>> GetSpecificIdea([FromBody] int id)
+		public async Task<IActionResult> GetSpecificIdea([FromBody] int id)
 		{
 			var result = await _ideaRetrievalService.GetSpecificIdea(Session, id);
 
 			return result.IsFailure
-				? JsonDataResponse<IdeaUiModel?>.Error()
-				: JsonDataResponse<IdeaUiModel?>.Success(await ToEnrichedUiModel(result.PayloadOrFail!));
+				? InternalServerError()
+				: Json(await ToEnrichedUiModel(result.PayloadOrFail!));
 		}
 
 		[HttpPost]
 		[Route("Add")]
-		public async Task<JsonDataResponse<AddIdeaResult>> Add(
+		public async Task<IActionResult> Add(
 			[ModelBinder(BinderType = typeof(MultiPartJsonModelBinder))] IdeaModel ideaModel,
 			IFormCollection form)
 		{
 			if (!ideaModel.Validate())
 			{
-				return JsonResponse.Error(AddIdeaResult.ValidationFailure);
+				return BadRequest(AddIdeaResult.ValidationFailure);
 			}
 
 			var hasFormFiles = form.Files.Any();
@@ -103,12 +100,12 @@ namespace IdeaMachineWeb.Controllers
 			{
 				if (form.Files.Count > _validationInfo.MaxUploads)
 				{
-					return JsonResponse.Error(AddIdeaResult.TooManyUploads);
+					return BadRequest(AddIdeaResult.TooManyUploads);
 				}
 
 				if (form.Files.Any(x => x.Length == _validationInfo.MaxByteSize))
 				{
-					return JsonResponse.Error(AddIdeaResult.UploadTooBig);
+					return BadRequest(AddIdeaResult.UploadTooBig);
 				}
 			}
 
@@ -119,16 +116,16 @@ namespace IdeaMachineWeb.Controllers
 				await _ideaAttachmentService.UploadAttachments(Session, form.Files, ideaId);
 			}
 
-			return JsonDataResponse<AddIdeaResult>.Success();
+			return Ok();
 		}
 
 		[HttpDelete]
 		[Route("Delete")]
-		public async Task<JsonDataResponse<IdeaDeleteErrorCode>> Delete([FromBody] int id)
+		public async Task<IActionResult> Delete([FromBody] int id)
 		{
 			var result = await _ideaService.Delete(Session, id);
 
-			return JsonResponse.Success(result);
+			return Json(result);
 		}
 
 		private async Task<IdeaUiModel> ToEnrichedUiModel(IdeaModel ideaModel)
