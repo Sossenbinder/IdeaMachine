@@ -7,7 +7,11 @@ import styles from "./Navbar.module.scss";
 import LightDarkSwitch from "../../controls/LightDarkSwitch";
 import NotificationBell from "../notifications/NotificationBell";
 
-export const Navbar = () => {
+type Props = {
+	navbarHeightPx: number;
+};
+
+export const Navbar = ({ navbarHeightPx }: Props) => {
 	const history = useHistory();
 
 	return (
@@ -15,7 +19,7 @@ export const Navbar = () => {
 			sx={(theme) => ({
 				backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
 			})}
-			height={45}
+			height={navbarHeightPx}
 			p="xs"
 		>
 			<Group direction="row" position="apart">

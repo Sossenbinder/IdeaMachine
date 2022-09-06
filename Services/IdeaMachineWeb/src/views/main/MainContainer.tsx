@@ -8,6 +8,8 @@ import styles from "./styles/MainContainer.module.scss";
 import SideMenu from "common/components/page/sidemenu/SideMenu";
 import Navbar from "../../common/components/page/navbar/Navbar";
 
+const navbarHeightPx = 45;
+
 export const MainContainer = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
 
@@ -27,12 +29,16 @@ export const MainContainer = () => {
 				<>
 					<PushNotificationContainer />
 					<AppShell
+						className={styles.App}
 						padding="md"
 						aside={<SideMenu />}
-						header={<Navbar />}
+						header={<Navbar navbarHeightPx={navbarHeightPx} />}
 						styles={{
 							main: {
 								padding: 0,
+							},
+							body: {
+								height: `calc(100vh - ${navbarHeightPx}px)`,
 							},
 						}}
 					>

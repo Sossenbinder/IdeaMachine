@@ -1,29 +1,17 @@
 // Framework
 import * as React from "react";
-import { connect } from "react-redux";
 
 // Components
 import IdeaList from "./IdeaList";
 
 // Types
 import { ReduxStore } from "common/redux/store";
-import { Idea } from "../types";
+import { useSelector } from "react-redux";
 
-type ReduxProps = {
-	ideas: Array<Idea>;
-}
+export const IdeaListAll = () => {
+	const ideas = useSelector((state: ReduxStore) => state.ideaReducer.data);
 
-export const IdeaListAll: React.FC<ReduxProps> = ({ ideas }) => {
-	return (
-		<IdeaList
-			ideas={ideas}
-		/>
-	);
-}
+	return <IdeaList ideas={ideas} />;
+};
 
-
-const mapStateToProps = (state: ReduxStore): ReduxProps => ({
-	ideas: state.ideaReducer.data,
-});
-
-export default connect(mapStateToProps)(IdeaListAll);
+export default IdeaListAll;

@@ -36,8 +36,18 @@ export const UpDownFilter: React.FC<Props> = ({ type }) => {
 	return (
 		<Flex direction="Row" className={styles.UpDownFilter} crossAlign="Center">
 			<Flex direction="Column">
-				<ArrowUp color={direction === OrderDirection.Up ? "blue" : "black"} size={20} onClick={() => changeDirection(OrderDirection.Up)} />
-				<ArrowDown color={direction === OrderDirection.Down ? "blue" : "black"} size={20} onClick={() => changeDirection(OrderDirection.Down)} />
+				<ArrowUp
+					className={styles.Arrow}
+					color={direction === OrderDirection.Up ? "blue" : "black"}
+					size={20}
+					onClick={() => changeDirection(OrderDirection.Up)}
+				/>
+				<ArrowDown
+					className={styles.Arrow}
+					color={direction === OrderDirection.Down ? "blue" : "black"}
+					size={20}
+					onClick={() => changeDirection(OrderDirection.Down)}
+				/>
 			</Flex>
 			<span className={styles.Label} onClick={() => changeDirection(direction === OrderDirection.Up ? OrderDirection.Down : OrderDirection.Up)}>
 				<Text>{OrderType[type]}</Text>

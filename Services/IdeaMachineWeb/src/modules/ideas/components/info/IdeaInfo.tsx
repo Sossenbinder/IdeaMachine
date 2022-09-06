@@ -1,5 +1,5 @@
 import * as React from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import IdeaNotFound from "modules/ideas/components/IdeaNotFound";
 import { Cell, Flex, Grid } from "common/components";
@@ -10,33 +10,27 @@ import UploadRow from "../input/UploadRow";
 import { ReduxStore } from "common/redux/store";
 import useAsyncCall from "common/hooks/useAsyncCall";
 import useServices from "common/hooks/useServices";
-import useTranslations from "common/hooks/useTranslations";
 import { getUsDate, getUsTime } from "common/utils/timeUtils";
-import { Idea, AttachmentUrl } from "../../types";
-import { Account } from "modules/account/types";
-import { LikeState } from "modules/reaction/types";
+import { AttachmentUrl } from "../../types";
 import styles from "./styles/IdeaInfo.module.scss";
 import { Text } from "@mantine/core";
 import Voting from "../input/Voting";
+import useAccount from "common/hooks/useAccount";
 
 type Props = RouteComponentProps<{
 	id: string;
 }>;
 
-type ReduxProps = {
-	account: Account;
-	idea: Idea;
-};
-
-export const IdeaInfo: React.FC<Props & ReduxProps> = ({
+export const IdeaInfo: React.FC<Props> = ({
 	match: {
 		params: { id },
 	},
-	idea,
 	history,
-	account,
 }) => {
 	const idParsed = Number(id);
+	const account = useAccount();
+
+	const idea = useSelector((state: ReduxStore) => state.ideaReducer.data.find((x) => x.id === idParsed));
 
 	const { IdeaService } = useServices();
 
@@ -114,13 +108,4 @@ export const IdeaInfo: React.FC<Props & ReduxProps> = ({
 	);
 };
 
-const mapStateToProps = (state: ReduxStore, ownProps: Props): ReduxProps => {
-	const idParsed = Number(ownProps.match.params.id);
-
-	return {
-		account: state.accountReducer.data,
-		idea: state.ideaReducer.data.find((x) => x.id === idParsed),
-	};
-};
-
-export default connect(mapStateToProps)(withRouter(IdeaInfo));
+export default withRouter(IdeaInfo);
