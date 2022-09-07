@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Text } from "@mantine/core";
+import { Group, Text } from "@mantine/core";
 import * as React from "react";
 import classNames from "classnames";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -10,7 +10,6 @@ import { IdeaFilterContext } from "modules/ideas/components/IdeaFilterContext";
 import Separator from "common/components/controls/Separator";
 import { getUsDate, getUsTime } from "common/utils/timeUtils";
 import useServices from "common/hooks/useServices";
-import { LikeState } from "modules/reaction/types";
 import { Idea } from "../types";
 import styles from "./styles/IdeaListEntry.module.scss";
 import Voting from "./input/Voting";
@@ -76,9 +75,9 @@ export const IdeaListEntry: React.FC<Props> = ({
 					</Group>
 				</Cell>
 				<Text className={styles.ShortDescription}>{shortDescription}</Text>
-				<Flex className={styles.ControlSection} direction="Row" crossAlign="Start">
+				<Group className={styles.ControlSection} direction="row" align="flex-start" noWrap sx={{ gap: "0" }}>
 					<If condition={attachmentUrls && attachmentUrls.length > 0}>
-						<Flex direction="Row" crossAlign="Center" className={styles.Attachments}>
+						<Group direction="row" align="center" className={styles.Attachments}>
 							<Text className={styles.Number}>{attachmentUrls.length}</Text>
 							<MaterialIcon
 								className={styles.AttachmentIcon}
@@ -86,12 +85,12 @@ export const IdeaListEntry: React.FC<Props> = ({
 								iconName="attachment"
 								size={25}
 							/>
-						</Flex>
+						</Group>
 					</If>
 					<MaterialIcon onClick={(event) => navTo(event, `/idea/${id}`)} iconName="info" type="Outlined" size={25} />
 					<MaterialIcon onClick={(event) => navTo(event, `/idea/${id}/reply`)} iconName="share" size={25} />
 					<FeedbackMaterialIcon onClick={async (event) => await deleteIdea(event)} iconName="delete" size={25} />
-				</Flex>
+				</Group>
 				<Flex direction="Column">
 					<Text>{getUsDate(creationDate)}</Text>
 					<Text>{getUsTime(creationDate)}</Text>
