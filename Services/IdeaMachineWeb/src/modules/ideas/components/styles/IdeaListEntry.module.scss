@@ -11,10 +11,6 @@
 
 	transition: 0.3s background ease-in-out;
 
-	&:not(:last-child) {
-		margin-bottom: 10px;
-	}
-
 	&:hover {
 		background: colors.$white;
 	}

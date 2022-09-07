@@ -24,12 +24,12 @@ type Props = {
 	ideas: Array<Idea>;
 };
 
-export const IdeaList: React.FC<Props> = ({ ideas }) => {
+export const IdeaList = ({ ideas }: Props) => {
 	const {
 		filters: { order, direction, tags },
 	} = React.useContext(IdeaFilterContext);
 
-	const scrollRef = React.createRef<HTMLDivElement>();
+	const scrollArea = React.createRef<HTMLDivElement>();
 
 	const { IdeaService } = useServices();
 
@@ -75,7 +75,7 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 		return newDataSet.sort(sortCb);
 	}, [ideas, order, direction, tags]);
 
-	const ideasRendered = React.useMemo(() => ideasSorted.map((idea) => <IdeaListEntry idea={idea} key={idea.id} />), [ideasSorted]);
+	const ideasRendered = React.useMemo(() => ideasSorted.concat(ideasSorted).map((idea) => <IdeaListEntry idea={idea} key={idea.id} />), [ideasSorted]);
 
 	React.useEffect(() => {
 		if (ideas.length === 0) {
@@ -83,12 +83,11 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 		}
 	}, []);
 
-	const onScroll = async (ev: Event) => {
-		const element = ev.target as any;
+	const onScroll = async ({ y }: { x: number; y: number }) => {
+		const element = scrollArea.current as any;
 		const maxScroll = element.scrollHeight - element.clientHeight;
-		const currentScroll = element.scrollTop;
 
-		const yScrollPercentage = currentScroll / maxScroll;
+		const yScrollPercentage = y / maxScroll;
 
 		if (yScrollPercentage < 0.95 || scrollHandlingInProgress.current) {
 			return;
@@ -100,29 +99,22 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 				await call(IdeaService.fetchIdeas);
 			}
 
-			element.scrollTop = currentScroll;
+			element.scrollTop = y;
 		} finally {
 			scrollHandlingInProgress.current = false;
 		}
 	};
 
-	React.useEffect(() => {
-		if (!scrollRef.current) {
-			return;
-		}
-		scrollRef.current.onscroll = onScroll;
-	}, [scrollRef]);
-
 	return (
-		<>
-			<Flex className={styles.IdeaList} direction="Column" ref={scrollRef}>
+		<ScrollArea className={styles.IdeaListContainer} onScrollPositionChange={onScroll} viewportRef={scrollArea}>
+			<Group className={styles.IdeaList} spacing="sm" direction="column">
 				{ideasRendered}
 				<If condition={moreLoading}>
 					<LoadingBubbles color="white" />
 				</If>
-			</Flex>
+			</Group>
 			<IdeaListFilters />
-		</>
+		</ScrollArea>
 	);
 };
 
