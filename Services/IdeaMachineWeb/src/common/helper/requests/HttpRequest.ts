@@ -1,5 +1,6 @@
 import { NetworkResponse } from "./types/NetworkDefinitions";
 import { msalInstance, scopes } from "../../../modules/account/msal/msalConfig";
+import { AuthenticationResult } from "@azure/msal-common";
 
 export enum RequestMethods {
 	GET = "GET",
@@ -42,11 +43,19 @@ export default abstract class HttpRequest<TRequest, TResponse> {
 		});
 		const accounts = msalInstance.getAllAccounts();
 		if (accounts.length > 0) {
-			const tokenInfo = await msalInstance.acquireTokenSilent({
-				scopes: [scopes.user],
-				account: accounts[0],
-			});
-			const bearer = `Bearer ${tokenInfo.accessToken}`;
+			let authenticationResult: AuthenticationResult;
+			try {
+				authenticationResult = await msalInstance.acquireTokenSilent({
+					scopes: [scopes.user],
+					account: accounts[0],
+				});
+			} catch (_) {
+				authenticationResult = await msalInstance.acquireTokenPopup({
+					scopes: [scopes.user],
+					account: accounts[0],
+				});
+			}
+			const bearer = `Bearer ${authenticationResult.accessToken}`;
 			headers.append("Authorization", bearer);
 		}
 

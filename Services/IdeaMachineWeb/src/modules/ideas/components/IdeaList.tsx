@@ -75,7 +75,7 @@ export const IdeaList: React.FC<Props> = ({ ideas }) => {
 		return newDataSet.sort(sortCb);
 	}, [ideas, order, direction, tags]);
 
-	const ideasRendered = React.useMemo(() => ideasSorted.concat(ideasSorted).map((idea) => <IdeaListEntry idea={idea} key={idea.id} />), [ideasSorted]);
+	const ideasRendered = React.useMemo(() => ideasSorted.map((idea) => <IdeaListEntry idea={idea} key={idea.id} />), [ideasSorted]);
 
 	React.useEffect(() => {
 		if (ideas.length === 0) {
