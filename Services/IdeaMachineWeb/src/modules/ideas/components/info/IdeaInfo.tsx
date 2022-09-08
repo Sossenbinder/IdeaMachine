@@ -43,68 +43,66 @@ export const IdeaInfo: React.FC<Props> = ({
 	}, []);
 
 	return (
-		<Card>
-			<Choose>
-				<When condition={!!idea}>
-					<Grid
-						className={styles.IdeaInfoGrid}
-						gridTemplateColumns="9fr 1fr 2fr"
-						gridTemplateRows="50px 4fr 1fr minmax(0px, 4fr)"
-						rowGap="20px"
-						gridTemplateAreas={`
+		<Choose>
+			<When condition={!!idea}>
+				<Grid
+					className={styles.IdeaInfoGrid}
+					gridTemplateColumns="9fr 1fr 2fr"
+					gridTemplateRows="50px 4fr 1fr minmax(0px, 4fr)"
+					rowGap="20px"
+					gridTemplateAreas={`
 							"ShortDescription Reply Timestamp"
 							"LongDescription LongDescription Rating"
 							"Attachments Attachments Attachments"
 							"Comments Comments Comments"
 						`}
-					>
-						<Cell gridArea="ShortDescription">
-							<h2>
-								<u>{idea.shortDescription}</u>
-							</h2>
-						</Cell>
-						<Cell gridArea="Reply">
-							<MaterialIcon onClick={() => history.push(`/idea/${id}/reply`)} iconName="reply" color="white" size={40} />
-						</Cell>
-						<Cell gridArea="Timestamp">
-							<Flex direction="Column">
-								<span>{getUsDate(idea.creationDate)}</span>
-								<span>{getUsTime(idea.creationDate)}</span>
-							</Flex>
-						</Cell>
-						<Cell gridArea="LongDescription">{idea.longDescription}</Cell>
-						<Cell gridArea="Rating">
-							<Voting id={idParsed} ideaReactionMetaData={idea.ideaReactionMetaData} />
-						</Cell>
-						<Cell gridArea="Attachments">
-							<Text className={styles.Attachments}>Attachments:</Text>
-							<UploadRow
-								ideaId={idea.id}
-								isOwned={idea.creatorId === account.userId}
-								attachments={idea.attachmentUrls}
-								onAttachmentAdded={(attachment) => {
-									const newIdea = { ...idea };
-									newIdea.attachmentUrls.push({
-										attachmentUrl: URL.createObjectURL(attachment),
-									} as AttachmentUrl);
-								}}
-							/>
-						</Cell>
-						<Cell gridArea="Comments">
-							<CommentSection idea={idea} />
-						</Cell>
-					</Grid>
-				</When>
-				<Otherwise>
-					<Choose>
-						<When condition={!loading}>
-							<IdeaNotFound />
-						</When>
-						<Otherwise>Fetching...</Otherwise>
-					</Choose>
-				</Otherwise>
-			</Choose>
-		</Card>
+				>
+					<Cell gridArea="ShortDescription">
+						<h2>
+							<u>{idea.shortDescription}</u>
+						</h2>
+					</Cell>
+					<Cell gridArea="Reply">
+						<MaterialIcon onClick={() => history.push(`/idea/${id}/reply`)} iconName="reply" color="white" size={40} />
+					</Cell>
+					<Cell gridArea="Timestamp">
+						<Flex direction="Column">
+							<span>{getUsDate(idea.creationDate)}</span>
+							<span>{getUsTime(idea.creationDate)}</span>
+						</Flex>
+					</Cell>
+					<Cell gridArea="LongDescription">{idea.longDescription}</Cell>
+					<Cell gridArea="Rating">
+						<Voting id={idParsed} ideaReactionMetaData={idea.ideaReactionMetaData} />
+					</Cell>
+					<Cell gridArea="Attachments">
+						<Text className={styles.Attachments}>Attachments:</Text>
+						<UploadRow
+							ideaId={idea.id}
+							isOwned={idea.creatorId === account.userId}
+							attachments={idea.attachmentUrls}
+							onAttachmentAdded={(attachment) => {
+								const newIdea = { ...idea };
+								newIdea.attachmentUrls.push({
+									attachmentUrl: URL.createObjectURL(attachment),
+								} as AttachmentUrl);
+							}}
+						/>
+					</Cell>
+					<Cell gridArea="Comments">
+						<CommentSection idea={idea} />
+					</Cell>
+				</Grid>
+			</When>
+			<Otherwise>
+				<Choose>
+					<When condition={!loading}>
+						<IdeaNotFound />
+					</When>
+					<Otherwise>Fetching...</Otherwise>
+				</Choose>
+			</Otherwise>
+		</Choose>
 	);
 };
 
