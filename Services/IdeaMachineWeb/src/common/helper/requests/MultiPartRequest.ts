@@ -5,10 +5,9 @@ const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] 
 type Request<TRequest> = {
 	files: FileList | Array<File>;
 	data?: TRequest;
-}
+};
 
 export default class MultiPartRequest<TRequest, TResponse = void> {
-
 	private m_url: string;
 
 	constructor(url: string) {
@@ -16,7 +15,6 @@ export default class MultiPartRequest<TRequest, TResponse = void> {
 	}
 
 	public async post(requestData?: Request<TRequest>): Promise<NetworkResponse<TResponse>> {
-
 		const formData = new FormData();
 
 		for (let file of requestData.files) {
@@ -31,20 +29,20 @@ export default class MultiPartRequest<TRequest, TResponse = void> {
 			method: "POST",
 			cache: "no-cache",
 			headers: {
-				"Accept": "application/json, text/javascript, */*",
-				"RequestVerificationToken": tokenHolder.value,
+				Accept: "application/json, text/javascript, */*",
+				RequestVerificationToken: tokenHolder.value,
 			},
-			credentials: 'include',
+			credentials: "include",
 			body: formData,
 		};
 
 		try {
 			const response = await fetch(this.m_url, requestInit);
+			const responseBody = await response.text();
 
-			if (!response.ok) {
+			if (responseBody.length === 0) {
 				return {
-					success: false,
-					payload: undefined,
+					success: response.ok,
 				};
 			}
 
@@ -61,7 +59,6 @@ export default class MultiPartRequest<TRequest, TResponse = void> {
 				success: json.success,
 				payload: json.data,
 			};
-
 		} catch (e) {
 			return {
 				success: false,

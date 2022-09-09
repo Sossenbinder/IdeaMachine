@@ -11,11 +11,7 @@ import Card from "../../Card";
 type Props = {};
 
 export const IdeaReply = ({}: Props) => {
-	return (
-		<Card>
-			<Flex direction="Column">Reply</Flex>
-		</Card>
-	);
+	return <Flex direction="Column">Reply</Flex>;
 };
 
 export default IdeaReply;

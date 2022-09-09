@@ -38,14 +38,14 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 
 	const [idea, setIdea] = React.useState<Idea>({
 		longDescription: "",
-		shortDescription: ""
+		shortDescription: "",
 	} as Idea);
 
 	const [tags, setTags] = React.useState<Array<string>>([]);
 
 	const [errors, setErrors] = React.useState<Errors>({
 		longDescriptionMissing: false,
-		shortDescriptionMissing: false
+		shortDescriptionMissing: false,
 	});
 
 	const [fileUrls, setFileUrls] = React.useState<Array<string>>([]);
@@ -56,15 +56,15 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 		const result = await IdeaService.addIdea(
 			{
 				...idea,
-				tags
+				tags,
 			},
-			files
+			files,
 		);
 
 		if ((result & (IdeaInputResult.MissingShortDescription | IdeaInputResult.MissingLongDescription)) != 0) {
 			setErrors({
 				longDescriptionMissing: (result & IdeaInputResult.MissingLongDescription) != 0,
-				shortDescriptionMissing: (result & IdeaInputResult.MissingShortDescription) != 0
+				shortDescriptionMissing: (result & IdeaInputResult.MissingShortDescription) != 0,
 			});
 		}
 
@@ -82,86 +82,84 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 	};
 
 	return (
-		<Card>
-			<Grid
-				className={styles.IdeaInput}
-				gridTemplateRows="20px 50px 1fr 4fr 1fr 65px"
-				gridTemplateColumns="repeat(6, 1fr)"
-				gridTemplateAreas={`
-						"Intro Intro Intro Intro Intro Intro"
-						"Separator Separator Separator Separator Separator Separator"
-						"ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription"
-						"LongDescription LongDescription LongDescription LongDescription LongDescription LongDescription"
-						"UploadRow UploadRow UploadRow Tags Tags Tags"
-						"Upload Upload . . . Submit"
-					`}
-			>
-				<Cell gridArea="Intro">
-					<span>{translations.AddIdea}</span>
-				</Cell>
-				<Cell gridArea="Separator">
-					<Separator className={styles.Separator} direction="Horizontal" />
-				</Cell>
-				<Cell gridArea="ShortDescription">
-					<ValidatableTextField
-						label={translations.AddIdeaShortDescription}
-						className={styles.ShortDescription}
-						value={idea.shortDescription}
-						color="primary"
-						variant="outlined"
-						error={errors.shortDescriptionMissing}
-						helperText={"This input field must not be empty"}
-						validate={(val) => !!val}
-						onChange={(val) =>
-							setIdea({
-								...idea,
-								shortDescription: val.currentTarget.value
-							})
-						}
-					/>
-				</Cell>
-				<Cell gridArea="LongDescription">
-					<ValidatableTextField
-						label={translations.AddIdeaLongDescription}
-						className={styles.LongDescription}
-						value={idea.longDescription}
-						color="primary"
-						rows={10}
-						multiline
-						variant="outlined"
-						error={errors.longDescriptionMissing}
-						helperText={"This input field must not be empty"}
-						validate={(val) => !!val}
-						onChange={(event) => {
-							setIdea({
-								...idea,
-								longDescription: event.currentTarget.value
-							});
-						}}
-					/>
-				</Cell>
-				<Cell className={styles.TagsArea} gridArea="Tags">
-					<TagDisplay tags={tags} setTags={setTags} />
-				</Cell>
-				<Cell gridArea="UploadRow">
-					<UploadRow attachments={fileUrls.map((x) => ({ attachmentUrl: x } as AttachmentUrl))} onAttachmentAdded={(_) => void 0} ideaId={idea.id} />
-				</Cell>
-				<Cell gridArea="Upload">
-					<input type="file" name="uploadFile" ref={uploadFileRef} onChange={onFileInputChange} accept="image/*" multiple hidden />
-					<Button variant="contained" color="primary" className={styles.UploadAttachmentButton} onClick={onUploadClick}>
-						<Flex direction="Row" crossAlign="Center">
-							<MaterialIcon color="white" iconName="attach_file" />
-							Upload attachment
-						</Flex>
-					</Button>
-				</Cell>
-				<Cell gridArea="Submit">
-					<Button variant="contained" color="primary" onClick={onClick}>
-						Submit
-					</Button>
-				</Cell>
-			</Grid>
-		</Card>
+		<Grid
+			className={styles.IdeaInput}
+			gridTemplateRows="20px 50px 1fr 4fr 1fr 65px"
+			gridTemplateColumns="repeat(6, 1fr)"
+			gridTemplateAreas={`
+					"Intro Intro Intro Intro Intro Intro"
+					"Separator Separator Separator Separator Separator Separator"
+					"ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription"
+					"LongDescription LongDescription LongDescription LongDescription LongDescription LongDescription"
+					"UploadRow UploadRow UploadRow Tags Tags Tags"
+					"Upload Upload . . . Submit"
+				`}
+		>
+			<Cell gridArea="Intro">
+				<span>{translations.AddIdea}</span>
+			</Cell>
+			<Cell gridArea="Separator">
+				<Separator className={styles.Separator} direction="Horizontal" />
+			</Cell>
+			<Cell gridArea="ShortDescription">
+				<ValidatableTextField
+					label={translations.AddIdeaShortDescription}
+					className={styles.ShortDescription}
+					value={idea.shortDescription}
+					color="primary"
+					variant="outlined"
+					error={errors.shortDescriptionMissing}
+					helperText={"This input field must not be empty"}
+					validate={(val) => !!val}
+					onChange={(val) =>
+						setIdea({
+							...idea,
+							shortDescription: val.currentTarget.value,
+						})
+					}
+				/>
+			</Cell>
+			<Cell gridArea="LongDescription">
+				<ValidatableTextField
+					label={translations.AddIdeaLongDescription}
+					className={styles.LongDescription}
+					value={idea.longDescription}
+					color="primary"
+					rows={10}
+					multiline
+					variant="outlined"
+					error={errors.longDescriptionMissing}
+					helperText={"This input field must not be empty"}
+					validate={(val) => !!val}
+					onChange={(event) => {
+						setIdea({
+							...idea,
+							longDescription: event.currentTarget.value,
+						});
+					}}
+				/>
+			</Cell>
+			<Cell className={styles.TagsArea} gridArea="Tags">
+				<TagDisplay tags={tags} setTags={setTags} />
+			</Cell>
+			<Cell gridArea="UploadRow">
+				<UploadRow attachments={fileUrls.map((x) => ({ attachmentUrl: x } as AttachmentUrl))} onAttachmentAdded={(_) => void 0} ideaId={idea.id} />
+			</Cell>
+			<Cell gridArea="Upload">
+				<input type="file" name="uploadFile" ref={uploadFileRef} onChange={onFileInputChange} accept="image/*" multiple hidden />
+				<Button variant="contained" color="primary" className={styles.UploadAttachmentButton} onClick={onUploadClick}>
+					<Flex direction="Row" crossAlign="Center">
+						<MaterialIcon color="white" iconName="attach_file" />
+						Upload attachment
+					</Flex>
+				</Button>
+			</Cell>
+			<Cell gridArea="Submit">
+				<Button variant="contained" color="primary" onClick={onClick}>
+					Submit
+				</Button>
+			</Cell>
+		</Grid>
 	);
 };
 
