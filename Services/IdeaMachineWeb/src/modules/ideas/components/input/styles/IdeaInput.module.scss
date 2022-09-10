@@ -11,6 +11,16 @@
 		width: 100%;
 	}
 
+	.SeparatorContainer {
+		display: grid;
+		place-items: center;
+
+		> div {
+			border-radius: 5px;
+			width: 100%;
+		}
+	}
+
 	.ShortDescription {
 		@include CommonWidth();
 		margin-bottom: 15px;

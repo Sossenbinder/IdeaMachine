@@ -1,26 +1,17 @@
-// Framework
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
-// Components
 import { Grid, Cell, Flex } from "common/components";
 import TagDisplay from "./TagDisplay";
-import Card from "../Card";
 import UploadRow from "./UploadRow";
 import MaterialIcon from "common/components/MaterialIcon";
-import Separator from "common/components/controls/Separator";
 import ValidatableTextField from "./ValidatableTextField";
-
-// Functionality
 import { useTranslations } from "common/hooks/useTranslations";
 import useServices from "common/hooks/useServices";
-
-// Types
 import { AttachmentUrl, Idea, IdeaInputResult } from "modules/ideas/types";
-
-// Styles
 import styles from "./styles/IdeaInput.module.scss";
+import { Divider, Textarea, TextInput } from "@mantine/core";
+import ThemedText from "common/components/ThemedText";
 
 type Errors = {
 	shortDescriptionMissing: boolean;
@@ -96,21 +87,18 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 				`}
 		>
 			<Cell gridArea="Intro">
-				<span>{translations.AddIdea}</span>
+				<ThemedText>{translations.AddIdea}</ThemedText>
 			</Cell>
-			<Cell gridArea="Separator">
-				<Separator className={styles.Separator} direction="Horizontal" />
+			<Cell gridArea="Separator" className={styles.SeparatorContainer}>
+				<Divider size="md" />
 			</Cell>
 			<Cell gridArea="ShortDescription">
-				<ValidatableTextField
-					label={translations.AddIdeaShortDescription}
+				<TextInput
+					placeholder={translations.AddIdeaShortDescription}
 					className={styles.ShortDescription}
+					label="Short description"
 					value={idea.shortDescription}
-					color="primary"
-					variant="outlined"
-					error={errors.shortDescriptionMissing}
-					helperText={"This input field must not be empty"}
-					validate={(val) => !!val}
+					error={errors.shortDescriptionMissing ? translations.InputMissing : ""}
 					onChange={(val) =>
 						setIdea({
 							...idea,
@@ -120,22 +108,28 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 				/>
 			</Cell>
 			<Cell gridArea="LongDescription">
-				<ValidatableTextField
-					label={translations.AddIdeaLongDescription}
+				<Textarea
+					placeholder={translations.AddIdeaLongDescription}
 					className={styles.LongDescription}
+					label="Long description"
 					value={idea.longDescription}
-					color="primary"
-					rows={10}
-					multiline
-					variant="outlined"
-					error={errors.longDescriptionMissing}
-					helperText={"This input field must not be empty"}
-					validate={(val) => !!val}
+					error={errors.longDescriptionMissing ? translations.InputMissing : ""}
 					onChange={(event) => {
 						setIdea({
 							...idea,
 							longDescription: event.currentTarget.value,
 						});
+					}}
+					styles={{
+						wrapper: {
+							height: "100%",
+						},
+						label: {
+							height: "20px",
+						},
+						input: {
+							height: "calc(100% - 30px)",
+						},
 					}}
 				/>
 			</Cell>
