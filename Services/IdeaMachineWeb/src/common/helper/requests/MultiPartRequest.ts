@@ -17,7 +17,7 @@ export default class MultiPartRequest<TRequest, TResponse = void> {
 	public async post(requestData?: Request<TRequest>): Promise<NetworkResponse<TResponse>> {
 		const formData = new FormData();
 
-		for (let file of requestData.files) {
+		for (const file of requestData.files) {
 			formData.append(file.name, file);
 		}
 

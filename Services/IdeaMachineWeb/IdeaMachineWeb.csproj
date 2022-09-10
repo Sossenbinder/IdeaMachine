@@ -12,6 +12,17 @@
 	<PropertyGroup>
 		<DockerImageName>ideamachineweb</DockerImageName>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <Compile Remove="Middleware\**" />
+	  <Compile Remove="Static\**" />
+	  <Content Remove="Middleware\**" />
+	  <Content Remove="Static\**" />
+	  <EmbeddedResource Remove="Middleware\**" />
+	  <EmbeddedResource Remove="Static\**" />
+	  <None Remove="Middleware\**" />
+	  <None Remove="Static\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="6.2.0" />
@@ -44,11 +55,6 @@
 		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Reaction\IdeaMachine.Modules.Reaction.csproj" />
 		<ProjectReference Include="..\..\Modules\IdeaMachine.Modules.Session\IdeaMachine.Modules.Session.csproj" />
 		<ProjectReference Include="..\..\Services\IdeaMachine.Service.Base\IdeaMachine.Service.Base.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Middleware\" />
-	  <Folder Include="Static\" />
 	</ItemGroup>
 
 </Project>

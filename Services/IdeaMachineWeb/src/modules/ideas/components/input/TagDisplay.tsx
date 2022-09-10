@@ -1,12 +1,9 @@
-// Framework
 import * as React from "react";
-import Chip from "@mui/material/Chip";
-
-// Components
 import Flex from "common/components/Flex";
-import StyledTextField from "./StyledTextField";
+import { Textarea } from "@mantine/core";
 
 import styles from "./styles/TagDisplay.module.scss";
+import CloseableBadge from "common/components/controls/CloseableBadge";
 
 type Props = {
 	tags: Array<string>;
@@ -24,40 +21,33 @@ export const TagDisplay: React.FC<Props> = ({ tags, setTags }) => {
 	};
 
 	return (
-		<StyledTextField
-			InputProps={{
-				startAdornment: (
-					<Flex className={styles.Chips} direction="Row" wrap="Wrap">
-						{tags.map((data, index) => {
-							return (
-								<Chip
-									label={data}
-									color="info"
-									id={`Tags_${index}`}
-									key={`Tags_${index}`}
-									onDelete={(x) => {
-										const parentId = x.currentTarget.parentElement.id as string;
-										const strippedId = parentId.replace("Tags_", "");
-
-										const newTags = [...tags];
-										newTags.splice(+strippedId, 1);
-										setTags(newTags);
-									}}
-								/>
-							);
-						})}
-					</Flex>
-				)
-			}}
-			multiline
+		<Textarea
 			rows={1}
-			fullWidth
 			label="Tags"
 			value={currentText}
 			onKeyDown={(event) => onKeyDown(event as unknown as KeyboardEvent)}
 			onChange={(event) => setCurrentText(event.currentTarget.value)}
-			variant="outlined"
-		/>
+		>
+			<Flex className={styles.Chips} direction="Row" wrap="Wrap">
+				{tags.map((data, index) => (
+					<CloseableBadge
+						variant="filled"
+						color="info"
+						id={`Tags_${index}`}
+						key={`Tags_${index}`}
+						onDelete={(id: string) => {
+							const strippedId = id.replace("Tags_", "");
+
+							const newTags = [...tags];
+							newTags.splice(+strippedId, 1);
+							setTags(newTags);
+						}}
+					>
+						{data}
+					</CloseableBadge>
+				))}
+			</Flex>
+		</Textarea>
 	);
 };
 

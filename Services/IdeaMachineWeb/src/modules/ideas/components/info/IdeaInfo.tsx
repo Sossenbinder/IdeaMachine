@@ -1,9 +1,8 @@
 import * as React from "react";
-import { connect, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import IdeaNotFound from "modules/ideas/components/IdeaNotFound";
 import { Cell, Flex, Grid } from "common/components";
-import Card from "../Card";
 import MaterialIcon from "common/components/MaterialIcon";
 import CommentSection from "./CommentSection";
 import UploadRow from "../input/UploadRow";

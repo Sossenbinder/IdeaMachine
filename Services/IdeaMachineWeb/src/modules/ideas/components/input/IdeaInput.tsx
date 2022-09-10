@@ -5,7 +5,6 @@ import { Grid, Cell, Flex } from "common/components";
 import TagDisplay from "./TagDisplay";
 import UploadRow from "./UploadRow";
 import MaterialIcon from "common/components/MaterialIcon";
-import ValidatableTextField from "./ValidatableTextField";
 import { useTranslations } from "common/hooks/useTranslations";
 import useServices from "common/hooks/useServices";
 import { AttachmentUrl, Idea, IdeaInputResult } from "modules/ideas/types";

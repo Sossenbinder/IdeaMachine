@@ -6,7 +6,7 @@ export default class Semaphore {
 
 	private readonly _waitResolvers: Array<() => void>;
 
-	constructor(maxLock: number = 1) {
+	constructor(maxLock = 1) {
 		this._maxLock = maxLock;
 	}
 

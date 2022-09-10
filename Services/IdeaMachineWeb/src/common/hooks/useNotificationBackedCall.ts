@@ -11,7 +11,7 @@ import { NotificationType } from "../modules/channel/types";
 export const useNotificationBackedCall = <TNotificationType>(
 	notification: NotificationType,
 	selector: (notification: TNotificationType) => boolean = null,
-	timeout: number = 10000,
+	timeout = 10000,
 ): [boolean, (cb: () => Promise<void>) => Promise<void>] => {
 	const [isRunning, setIsRunning] = React.useState(false);
 

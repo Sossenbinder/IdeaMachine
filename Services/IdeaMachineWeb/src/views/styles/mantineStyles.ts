@@ -1,14 +1,14 @@
 import { MantineProviderProps } from "@mantine/styles";
 
 export const customStyles: MantineProviderProps["styles"] = {
-	Text: (_) => ({
+	Text: {
 		root: {
 			color: "black",
 		},
-	}),
-	ActionIcon: (_) => ({
+	},
+	ActionIcon: {
 		root: {
 			color: "black",
 		},
-	}),
+	},
 };

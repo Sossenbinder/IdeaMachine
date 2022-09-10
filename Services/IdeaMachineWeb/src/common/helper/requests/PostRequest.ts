@@ -42,7 +42,7 @@ export class PagedPostRequest<TResponse, TTokenType = string> extends HttpReques
 
 			yield result.payload.data;
 
-		} while (!!paginationToken);
+		} while (paginationToken);
 	}
 }
 

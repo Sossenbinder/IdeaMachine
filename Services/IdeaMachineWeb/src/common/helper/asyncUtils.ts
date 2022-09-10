@@ -24,7 +24,7 @@ export const tickCountDownAwaitable = (tickCount: number, msBetweenTicks: number
 	});
 };
 
-export const asyncForEachParallel = async <T>(source: Array<T>, action: (item: T) => Promise<void>, parallelismDegree: number = 25) => {
+export const asyncForEachParallel = async <T>(source: Array<T>, action: (item: T) => Promise<void>, parallelismDegree = 25) => {
 	const asyncExecutors = range(parallelismDegree).map(() => parallelExecutor(source, action));
 
 	await Promise.all(asyncExecutors);

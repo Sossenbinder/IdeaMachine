@@ -1,7 +1,7 @@
 export enum LikeState {
 	Neutral,
 	Dislike,
-	Like,
+	Like,x
 }
 
 export namespace Network {

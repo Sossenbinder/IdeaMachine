@@ -37,7 +37,7 @@ export const PushNotificationEntry: React.FC<Props> = ({ notification }) => {
 		}
 	}, []);
 
-	let color: string = "white";
+	let color = "white";
 
 	switch (notification.type) {
 		case "Error":
