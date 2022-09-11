@@ -1,6 +1,5 @@
 // Framework
 import * as React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 
 // Functionality
 import useAsyncCall from "common/hooks/useAsyncCall";
@@ -10,6 +9,7 @@ import useOnceFlag from "common/hooks/useOnceFlag";
 import MaterialIcon, { MaterialIconProps } from "./MaterialIcon";
 
 import styles from "./styles/FeedbackMaterialIcon.module.scss";
+import { Loader } from "@mantine/core";
 
 type FeedbackMaterialIcon = MaterialIconProps<Promise<void>>;
 
@@ -48,7 +48,7 @@ export const FeedbackMaterialIcon: React.FC<FeedbackMaterialIcon> = (props) => {
 	return (
 		<>
 			<If condition={loading}>
-				<CircularProgress size={props.size} />
+				<Loader size={props.size} />
 			</If>
 			<div className={styles.FeedbackMaterialIcon} ref={feedbackRef}>
 				<If condition={!loading && !ran}>

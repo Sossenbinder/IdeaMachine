@@ -8,12 +8,12 @@ export type Idea = {
 	creatorId: string;
 	creationDate: Date;
 	tags: Array<string>;
-	attachmentUrls: Array<AttachmentUrl>;
+	attachments: Array<AttachmentModel>;
 	ideaReactionMetaData: IdeaReactionMetaData;
 	comments?: Array<Comment>;
 };
 
-export type AttachmentUrl = {
+export type AttachmentModel = {
 	id: number;
 	attachmentUrl: string;
 };

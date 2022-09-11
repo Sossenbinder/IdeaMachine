@@ -9,7 +9,7 @@ namespace IdeaMachine.Modules.Idea.Service.Interface
 {
     public interface IIdeaAttachmentService
     {
-	    Task<List<AttachmentUrlModel>> UploadAttachments(ISession session, IFormFileCollection files, int ideaId);
+	    Task<List<AttachmentModel>> UploadAttachments(ISession session, IFormFileCollection files, int ideaId);
 
         Task<List<string>> GetAttachments(ISession session, int ideaId);
 

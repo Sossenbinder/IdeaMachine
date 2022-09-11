@@ -43,7 +43,7 @@ namespace IdeaMachine.Modules.Idea.Service
 			});
 		}
 
-		public async Task<List<AttachmentUrlModel>> UploadAttachments(ISession session, IFormFileCollection files, int ideaId)
+		public async Task<List<AttachmentModel>> UploadAttachments(ISession session, IFormFileCollection files, int ideaId)
 		{
 			var client = await _containerClient;
 

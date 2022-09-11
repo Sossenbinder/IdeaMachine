@@ -10,7 +10,7 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 
 		public DbSet<TagEntity> Tags { get; set; } = null!;
 
-		public DbSet<AttachmentUrlEntity> AttachmentUrls { get; set; } = null!;
+		public DbSet<AttachmentEntity> AttachmentUrls { get; set; } = null!;
 
 		public DbSet<CommentEntity> Comments { get; set; } = null!;
 
@@ -56,16 +56,16 @@ namespace IdeaMachine.Modules.Idea.Repository.Context
 			modelBuilder.Entity<TagEntity>()
 				.HasKey(x => x.Id);
 
-			modelBuilder.Entity<AttachmentUrlEntity>()
+			modelBuilder.Entity<AttachmentEntity>()
 				.Property(x => x.Id)
 				.ValueGeneratedOnAdd();
 
-			modelBuilder.Entity<AttachmentUrlEntity>()
+			modelBuilder.Entity<AttachmentEntity>()
 				.HasOne(x => x.Idea)
 				.WithMany(x => x.AttachmentUrls)
 				.HasForeignKey(x => x.IdeaId);
 
-			modelBuilder.Entity<AttachmentUrlEntity>()
+			modelBuilder.Entity<AttachmentEntity>()
 				.ToTable("AttachmentUrls")
 				.HasKey(x => x.Id);
 

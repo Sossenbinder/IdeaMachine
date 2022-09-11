@@ -89,7 +89,7 @@ export const CommentSection: React.FC<Props> = ({ idea }) => {
 				>
 					<If condition={!loading}>Send</If>
 					<If condition={loading}>
-						<BlackSpinner size={50} />
+						<BlackSpinner />
 					</If>
 				</StyledButton>
 			</Flex>

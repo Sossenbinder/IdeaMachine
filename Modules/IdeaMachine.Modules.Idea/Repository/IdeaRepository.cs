@@ -135,7 +135,7 @@ namespace IdeaMachine.Modules.Idea.Repository
 				: IdeaDeleteErrorCode.UnspecifiedError;
 		}
 
-		public async Task<List<AttachmentUrlEntity>> AddAttachmentUrls(int ideaId, IEnumerable<string> attachmentUrls)
+		public async Task<List<AttachmentEntity>> AddAttachmentUrls(int ideaId, IEnumerable<string> attachmentUrls)
 		{
 			await using var ctx = CreateContext();
 
@@ -146,7 +146,7 @@ namespace IdeaMachine.Modules.Idea.Repository
 				return new();
 			}
 
-			var attachmentEntities = attachmentUrls.Select(x => new AttachmentUrlEntity()
+			var attachmentEntities = attachmentUrls.Select(x => new AttachmentEntity()
 			{
 				AttachmentUrl = x,
 			}).ToList();
@@ -165,7 +165,7 @@ namespace IdeaMachine.Modules.Idea.Repository
 			return attachmentEntities;
 		}
 
-		public async Task<AttachmentUrlEntity?> GetAttachmentUrl(int ideaId, int id)
+		public async Task<AttachmentEntity?> GetAttachmentUrl(int ideaId, int id)
 		{
 			await using var ctx = CreateContext();
 
@@ -175,7 +175,7 @@ namespace IdeaMachine.Modules.Idea.Repository
 				.FirstOrDefaultAsync(x => x.Id == id && x.IdeaId == ideaId);
 		}
 
-		public async Task DeleteAttachmentUrl(AttachmentUrlEntity entity)
+		public async Task DeleteAttachmentUrl(AttachmentEntity entity)
 		{
 			await using var ctx = CreateContext();
 

@@ -1,16 +1,19 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Grid, Cell, Flex } from "common/components";
+import { Grid, Cell } from "common/components";
 import TagDisplay from "./TagDisplay";
 import UploadRow from "./UploadRow";
-import MaterialIcon from "common/components/MaterialIcon";
 import { useTranslations } from "common/hooks/useTranslations";
 import useServices from "common/hooks/useServices";
-import { AttachmentUrl, Idea, IdeaInputResult } from "modules/ideas/types";
+import { AttachmentModel, Idea, IdeaInputResult } from "modules/ideas/types";
 import styles from "./styles/IdeaInput.module.scss";
-import { Divider, Textarea, TextInput } from "@mantine/core";
+import { Button, Divider, Textarea, TextInput } from "@mantine/core";
 import ThemedText from "common/components/ThemedText";
+
+type FileInfo = {
+	file: File;
+	fileUrl: string;
+};
 
 type Errors = {
 	shortDescriptionMissing: boolean;
@@ -24,8 +27,6 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 
 	const { IdeaService } = useServices();
 
-	const uploadFileRef = React.useRef<HTMLInputElement>(null);
-
 	const [idea, setIdea] = React.useState<Idea>({
 		longDescription: "",
 		shortDescription: "",
@@ -38,10 +39,10 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 		shortDescriptionMissing: false,
 	});
 
-	const [fileUrls, setFileUrls] = React.useState<Array<string>>([]);
+	const [fileInfos, setFileInfos] = React.useState<Array<FileInfo>>([]);
 
 	const onClick = async () => {
-		const files = uploadFileRef.current.files;
+		const files = fileInfos.map((x) => x.file);
 
 		const result = await IdeaService.addIdea(
 			{
@@ -63,12 +64,22 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 		}
 	};
 
-	const onUploadClick = () => {
-		uploadFileRef.current.click();
+	const onAttachmentsAdded = (files: Array<File>) => {
+		setFileInfos((existingFileInfos) => [
+			...existingFileInfos,
+			...files.map((file) => ({
+				file,
+				fileUrl: URL.createObjectURL(file),
+			})),
+		]);
 	};
 
-	const onFileInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-		setFileUrls(Array.from(event.target.files).map((x) => URL.createObjectURL(x)));
+	const onAttachmentRemoved = (index: number) => {
+		setFileInfos((existingFileInfos) => {
+			const newFiles = [...existingFileInfos];
+			newFiles.splice(index, 1);
+			return newFiles;
+		});
 	};
 
 	return (
@@ -82,7 +93,7 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 					"ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription ShortDescription"
 					"LongDescription LongDescription LongDescription LongDescription LongDescription LongDescription"
 					"UploadRow UploadRow UploadRow Tags Tags Tags"
-					"Upload Upload . . . Submit"
+					"UploadRow UploadRow UploadRow . . Submit"
 				`}
 		>
 			<Cell gridArea="Intro">
@@ -133,22 +144,19 @@ export const IdeaInput: React.FC<Props> = ({ history }) => {
 				/>
 			</Cell>
 			<Cell className={styles.TagsArea} gridArea="Tags">
-				<TagDisplay tags={tags} setTags={setTags} />
+				<TagDisplay tags={tags} setTags={setTags} maximumTags={4} />
 			</Cell>
 			<Cell gridArea="UploadRow">
-				<UploadRow attachments={fileUrls.map((x) => ({ attachmentUrl: x } as AttachmentUrl))} onAttachmentAdded={(_) => void 0} ideaId={idea.id} />
-			</Cell>
-			<Cell gridArea="Upload">
-				<input type="file" name="uploadFile" ref={uploadFileRef} onChange={onFileInputChange} accept="image/*" multiple hidden />
-				<Button variant="contained" color="primary" className={styles.UploadAttachmentButton} onClick={onUploadClick}>
-					<Flex direction="Row" crossAlign="Center">
-						<MaterialIcon color="white" iconName="attach_file" />
-						Upload attachment
-					</Flex>
-				</Button>
+				<UploadRow
+					attachments={fileInfos.map((x) => ({ attachmentUrl: x.fileUrl } as AttachmentModel))}
+					onAttachmentsAdded={onAttachmentsAdded}
+					onAttachmentRemoved={onAttachmentRemoved}
+					canDelete={true}
+				/>
+				<ThemedText>(Upload attachments here)</ThemedText>
 			</Cell>
 			<Cell gridArea="Submit">
-				<Button variant="contained" color="primary" onClick={onClick}>
+				<Button variant="filled" onClick={onClick}>
 					Submit
 				</Button>
 			</Cell>

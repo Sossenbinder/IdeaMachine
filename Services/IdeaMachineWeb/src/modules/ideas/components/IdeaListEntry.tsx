@@ -19,7 +19,7 @@ type Props = RouteComponentProps & {
 };
 
 export const IdeaListEntry: React.FC<Props> = ({
-	idea: { shortDescription, creationDate, longDescription, id, tags, attachmentUrls, ideaReactionMetaData },
+	idea: { shortDescription, creationDate, longDescription, id, tags, attachments: attachmentUrls, ideaReactionMetaData },
 	history,
 }) => {
 	const [previewOpen, setPreviewOpen] = React.useState(false);

@@ -19,7 +19,7 @@ const Urls = {
 	Reply: "/Idea/Reply",
 };
 
-export const postIdea = async (idea: Idea, files?: FileList) => {
+export const postIdea = async (idea: Idea, files?: Array<File>) => {
 	const request = new MultiPartRequest<Network.Add.Request, void>(Urls.Add);
 	return await request.post({
 		files: files ?? new FileList(),

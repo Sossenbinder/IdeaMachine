@@ -24,6 +24,7 @@ import "./styles/RootComponent.scss";
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/styles";
 import { customStyles } from "./styles/mantineStyles";
 import { msalInstance } from "../modules/account/msal/msalConfig";
+import mantineTheme from "views/styles/mantineTheme";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ const RootComponent: React.FC<Props> = ({ channelProvider, initFunc, initService
 							withNormalizeCSS
 							styles={customStyles}
 							theme={{
+								...mantineTheme,
 								colorScheme: currentColorScheme,
 							}}
 						>

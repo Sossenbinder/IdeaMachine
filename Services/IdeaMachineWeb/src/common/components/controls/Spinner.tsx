@@ -1,9 +1,6 @@
-// Framework
-import CircularProgress from "@mui/material/CircularProgress";
-import { styled } from "@mui/system";
+import * as React from "react";
+import { Loader } from "@mantine/core";
 
-export const BlackSpinner = styled(CircularProgress)({
-	color: "black"
-});
+export const BlackSpinner = () => <Loader color="dark" />;
 
 export default BlackSpinner;

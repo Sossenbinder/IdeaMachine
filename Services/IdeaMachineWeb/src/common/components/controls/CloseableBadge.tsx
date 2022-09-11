@@ -7,20 +7,20 @@ type CloseButtonProps = {
 };
 
 const CloseButton = ({ onDelete }: CloseButtonProps) => (
-	<ActionIcon size="xs" color="blue" radius="xl" variant="transparent">
-		<X size={10} onClick={onDelete} />
+	<ActionIcon size="xs" variant="transparent" onClick={onDelete}>
+		<X />
 	</ActionIcon>
 );
 
 type Props = BadgeProps<"div"> & {
 	children: React.ReactNode;
-	onDelete(id: string): void;
+	onDelete(): void;
 };
 
 export default (props: Props) => {
 	const { children, onDelete, ...propsWithoutLabel } = props;
 	return (
-		<Badge {...propsWithoutLabel} rightSection={<CloseButton onDelete={() => onDelete(propsWithoutLabel.id)} />}>
+		<Badge {...propsWithoutLabel} rightSection={<CloseButton onDelete={onDelete} />}>
 			{children}
 		</Badge>
 	);

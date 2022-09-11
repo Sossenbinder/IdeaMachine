@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import IdeaNotFound from "modules/ideas/components/IdeaNotFound";
 import { Cell, Flex, Grid } from "common/components";
@@ -10,7 +10,7 @@ import { ReduxStore } from "common/redux/store";
 import useAsyncCall from "common/hooks/useAsyncCall";
 import useServices from "common/hooks/useServices";
 import { getUsDate, getUsTime } from "common/utils/timeUtils";
-import { AttachmentUrl } from "../../types";
+import { AttachmentModel } from "../../types";
 import styles from "./styles/IdeaInfo.module.scss";
 import { Text } from "@mantine/core";
 import Voting from "../input/Voting";
@@ -77,15 +77,12 @@ export const IdeaInfo: React.FC<Props> = ({
 					<Cell gridArea="Attachments">
 						<Text className={styles.Attachments}>Attachments:</Text>
 						<UploadRow
-							ideaId={idea.id}
-							isOwned={idea.creatorId === account.userId}
-							attachments={idea.attachmentUrls}
-							onAttachmentAdded={(attachment) => {
-								const newIdea = { ...idea };
-								newIdea.attachmentUrls.push({
-									attachmentUrl: URL.createObjectURL(attachment),
-								} as AttachmentUrl);
-							}}
+							canDelete={idea.creatorId === account.userId}
+							attachments={idea?.attachments ?? []}
+							onAttachmentsAdded={async (attachments) =>
+								await Promise.all(attachments.map((attachment) => IdeaService.uploadAttachment(idea.id, attachment)))
+							}
+							onAttachmentRemoved={async (index) => await IdeaService.deleteAttachment(idea.id, idea.attachments[index].id)}
 						/>
 					</Cell>
 					<Cell gridArea="Comments">

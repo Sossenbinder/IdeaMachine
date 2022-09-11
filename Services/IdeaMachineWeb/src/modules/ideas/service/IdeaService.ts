@@ -22,7 +22,7 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 
 	public async start() {}
 
-	addIdea = async (idea: Idea, attachments?: FileList): Promise<number> => {
+	addIdea = async (idea: Idea, attachments?: Array<File>): Promise<number> => {
 		let result: IdeaInputResult = null;
 
 		if (!idea.shortDescription) {
@@ -135,10 +135,10 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 		this.dispatch(
 			ideaReducer.put({
 				...idea,
-				attachmentUrls: [
+				attachments: [
 					...this.getStore()
 						.ideaReducer.data.find((x) => x.id === ideaId)
-						.attachmentUrls.filter((x) => x.id !== attachmentId),
+						.attachments.filter((x) => x.id !== attachmentId),
 				],
 			}),
 		);
@@ -156,8 +156,8 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 
 			const newIdea: Idea = {
 				...idea,
-				attachmentUrls: [
-					...idea.attachmentUrls,
+				attachments: [
+					...idea.attachments,
 					{
 						attachmentUrl: URL.createObjectURL(file),
 						id: uploadResponse.payload,

@@ -8,11 +8,9 @@ import Dialog from "@mui/material/Dialog";
 type Props = {
 	file: string;
 	onExit(): void;
-	isOwned: boolean;
-	onDelete(): Promise<void>;
 };
 
-const UploadModal: React.FC<Props> = ({ file, onExit, isOwned }) => {
+const UploadModal: React.FC<Props> = ({ file, onExit }) => {
 	return (
 		<Dialog open={true} onClose={onExit}>
 			<img src={file} />
@@ -20,10 +18,10 @@ const UploadModal: React.FC<Props> = ({ file, onExit, isOwned }) => {
 	);
 };
 
-export const openUploadModal = (file: string, onDelete: () => Promise<void>, isOwned?: boolean) => {
+export const openUploadModal = (file: string) => {
 	const localDiv = document.createElement("div");
 
-	render(<UploadModal file={file} onDelete={onDelete} onExit={() => unmountComponentAtNode(localDiv)} isOwned={isOwned} />, localDiv);
+	render(<UploadModal file={file} onExit={() => unmountComponentAtNode(localDiv)} />, localDiv);
 };
 
 export default openUploadModal;

@@ -21,7 +21,7 @@ namespace IdeaMachineWeb.DataTypes.UiModels.Idea
 
 		public List<string> Tags { get; set; } = null!;
 
-		public List<AttachmentUrlModel> AttachmentUrls { get; set; } = null!;
+		public List<AttachmentModel> Attachments { get; set; } = null!;
 
 		public static IdeaUiModel FromModel(IdeaModel model)
 		{
@@ -33,7 +33,7 @@ namespace IdeaMachineWeb.DataTypes.UiModels.Idea
 				LongDescription = model.LongDescription,
 				ShortDescription = model.ShortDescription,
 				Tags = model.Tags,
-				AttachmentUrls = model.AttachmentUrls,
+				Attachments = model.Attachments,
 			};
 		}
 	}
