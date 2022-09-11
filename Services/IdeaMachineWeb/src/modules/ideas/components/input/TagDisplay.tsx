@@ -1,6 +1,6 @@
 import * as React from "react";
 import Flex from "common/components/Flex";
-import { Textarea } from "@mantine/core";
+import { Group, TextInput } from "@mantine/core";
 
 import styles from "./styles/TagDisplay.module.scss";
 import CloseableBadge from "common/components/controls/CloseableBadge";
@@ -21,13 +21,14 @@ export const TagDisplay: React.FC<Props> = ({ tags, setTags }) => {
 	};
 
 	return (
-		<Textarea
-			rows={1}
-			label="Tags"
-			value={currentText}
-			onKeyDown={(event) => onKeyDown(event as unknown as KeyboardEvent)}
-			onChange={(event) => setCurrentText(event.currentTarget.value)}
-		>
+		<Group direction="row">
+			<TextInput
+				label="Tags"
+				value={currentText}
+				onKeyDown={(event) => onKeyDown(event as unknown as KeyboardEvent)}
+				onChange={(event) => setCurrentText(event.currentTarget.value)}
+				sx={{ width: "100px" }}
+			/>
 			<Flex className={styles.Chips} direction="Row" wrap="Wrap">
 				{tags.map((data, index) => (
 					<CloseableBadge
@@ -47,7 +48,7 @@ export const TagDisplay: React.FC<Props> = ({ tags, setTags }) => {
 					</CloseableBadge>
 				))}
 			</Flex>
-		</Textarea>
+		</Group>
 	);
 };
 
