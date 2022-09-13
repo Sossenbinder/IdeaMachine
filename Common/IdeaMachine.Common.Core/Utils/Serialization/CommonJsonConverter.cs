@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace IdeaMachine.Common.Core.Utils.Serialization
 {
-	public class CommonJsonConverter<TAbstraction, TImplementation> : JsonConverter<TAbstraction>
+	public class CommonJsonConverter<TAbstraction, TImplementation> : System.Text.Json.Serialization.JsonConverter<TAbstraction>
 		where TImplementation : TAbstraction
 	{
 		private readonly Type _abstractionType;
@@ -24,9 +25,9 @@ namespace IdeaMachine.Common.Core.Utils.Serialization
 			return JsonSerializer.Deserialize<TImplementation>(ref reader, options);
 		}
 
-		public override void Write(Utf8JsonWriter writer, TAbstraction value, JsonSerializerOptions options)
+		public override void Write(Utf8JsonWriter writer, TAbstraction value, JsonSerializerOptions? options)
 		{
-			JsonSerializer.Serialize(writer, value, options);
+			JsonSerializer.Serialize(writer, (TImplementation)value!, options);
 		}
 	}
 }

@@ -63,12 +63,10 @@ export namespace Network {
 	}
 
 	export namespace GetForUser {
-		export type Request = string;
 		export type Response = Array<Idea>;
 	}
 
 	export namespace GetSpecificIdea {
-		export type Request = number;
 		export type Response = Idea | undefined;
 	}
 

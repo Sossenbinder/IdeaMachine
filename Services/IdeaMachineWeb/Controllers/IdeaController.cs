@@ -53,7 +53,7 @@ namespace IdeaMachineWeb.Controllers
 		}
 
 		[HttpGet]
-		[Route("GetOwn")]
+		[Route("/Own")]
 		public async Task<IActionResult> GetOwn()
 		{
 			var result = await _ideaRetrievalService.GetForUser(Session);
@@ -62,8 +62,7 @@ namespace IdeaMachineWeb.Controllers
 			return Json(uiModelPayload.ToList());
 		}
 
-		[HttpPost]
-		[Route("GetForUser")]
+		[HttpGet("/User/{userId}")]
 		public async Task<IActionResult> GetForUser(Guid userId)
 		{
 			var result = await _ideaRetrievalService.GetForUser(Session);
@@ -72,9 +71,8 @@ namespace IdeaMachineWeb.Controllers
 			return Json(uiModelPayload.ToList());
 		}
 
-		[HttpPost]
-		[Route("GetSpecificIdea")]
-		public async Task<IActionResult> GetSpecificIdea([FromBody] int id)
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetSpecificIdea(int id)
 		{
 			var result = await _ideaRetrievalService.GetSpecificIdea(Session, id);
 
@@ -84,7 +82,6 @@ namespace IdeaMachineWeb.Controllers
 		}
 
 		[HttpPost]
-		[Route("Add")]
 		public async Task<IActionResult> Add(
 			[ModelBinder(BinderType = typeof(MultiPartJsonModelBinder))] IdeaModel ideaModel,
 			IFormCollection form)
@@ -119,8 +116,7 @@ namespace IdeaMachineWeb.Controllers
 			return Ok();
 		}
 
-		[HttpDelete]
-		[Route("Delete")]
+		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete([FromBody] int id)
 		{
 			var result = await _ideaService.Delete(Session, id);

@@ -8,12 +8,11 @@ import DeleteRequest from "common/helper/requests/DeleteRequest";
 import MultiPartRequest from "common/helper/requests/MultiPartRequest";
 
 const Urls = {
-	Add: "/Idea/Add",
+	Add: "/Idea",
 	Get: "/Idea",
-	GetOwn: "/Idea/GetOwn",
-	GetForUser: "/Idea/GetForUser",
-	GetSpecific: "/Idea/GetSpecificIdea",
-	Delete: "/Idea/Delete",
+	GetOwn: "/Idea/Own",
+	GetForUser: "/Idea/User/",
+	Delete: "/Idea",
 	UploadAttachment: "/Attachment/Upload",
 	DeleteAttachment: "/Attachment/Delete",
 	Reply: "/Idea/Reply",
@@ -38,13 +37,13 @@ export const getOwnIdeas = async () => {
 };
 
 export const getIdeasForUser = async (userId: string) => {
-	const request = new PostRequest<Network.GetForUser.Request, Network.GetForUser.Response>(Urls.GetForUser);
-	return await request.post(userId);
+	const request = new GetRequest<Network.GetForUser.Response>(`${Urls.GetForUser}/${userId}`);
+	return await request.get();
 };
 
 export const getSpecificIdea = async (id: number) => {
-	const request = new PostRequest<Network.GetSpecificIdea.Request, Network.GetSpecificIdea.Response>(Urls.GetSpecific);
-	return await request.post(id);
+	const request = new GetRequest<Network.GetSpecificIdea.Response>(`${Urls.Get}/${id}`);
+	return await request.get();
 };
 
 export const deleteIdea = async (id: number) => {
