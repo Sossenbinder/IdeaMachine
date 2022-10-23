@@ -6,7 +6,6 @@ using IdeaMachine.Modules.Idea.Service.Interface;
 using IdeaMachine.Modules.Reaction.Service.Interface;
 using IdeaMachine.Service.Base.Controller;
 using IdeaMachineWeb.DataTypes.UiModels.Idea;
-using IdeaMachineWeb.DataTypes.UiModels.Pagination;
 using IdeaMachineWeb.DataTypes.Validation;
 using IdeaMachineWeb.Utils;
 using Microsoft.AspNetCore.Http;
@@ -43,10 +42,18 @@ namespace IdeaMachineWeb.Controllers
 			_validationInfo = validationInfo.Value.Idea;
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Get([FromBody] PaginationTokenUiModel<int?> getIdeasTokenModel)
+		[HttpGet]
+		[Route("/Count")]
+		public async Task<IActionResult> Count([FromQuery] Guid? userId = null)
 		{
-			var result = await _ideaRetrievalService.Get(getIdeasTokenModel.PaginationToken);
+			var result = await _ideaRetrievalService.CountAll(userId);
+			return Json(result);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Get([FromQuery] int? page = null)
+		{
+			var result = await _ideaRetrievalService.Get(page);
 
 			var uiModelPayload = result.WithNewPayload(await Task.WhenAll(result.Data.Select(ToEnrichedUiModel)));
 			return Json(uiModelPayload);
@@ -71,8 +78,9 @@ namespace IdeaMachineWeb.Controllers
 			return Json(uiModelPayload.ToList());
 		}
 
-		[HttpGet("{id}")]
-		public async Task<IActionResult> GetSpecificIdea(int id)
+		[HttpGet]
+		[ExactQueryParam("id")]
+		public async Task<IActionResult> GetSpecificIdea([FromQuery] int id)
 		{
 			var result = await _ideaRetrievalService.GetSpecificIdea(Session, id);
 

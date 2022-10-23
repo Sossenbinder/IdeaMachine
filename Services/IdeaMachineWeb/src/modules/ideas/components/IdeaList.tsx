@@ -19,12 +19,14 @@ import { Idea, OrderDirection } from "modules/ideas/types";
 import styles from "./styles/IdeaList.module.scss";
 import { OrderType } from "../types";
 import { Group, ScrollArea } from "@mantine/core";
+import { IIdeaService } from "common/modules/service/types";
 
 type Props = {
 	ideas: Array<Idea>;
+	ideaInitializer?: (ideaService: IIdeaService) => Promise<void>;
 };
 
-export const IdeaList = ({ ideas }: Props) => {
+export const IdeaList = ({ ideas, ideaInitializer = (service) => service.fetchIdeas() }: Props) => {
 	const {
 		filters: { order, direction, tags },
 	} = React.useContext(IdeaFilterContext);
@@ -75,11 +77,11 @@ export const IdeaList = ({ ideas }: Props) => {
 		return newDataSet.sort(sortCb);
 	}, [ideas, order, direction, tags]);
 
-	const ideasRendered = React.useMemo(() => ideasSorted.concat(ideasSorted).map((idea) => <IdeaListEntry idea={idea} key={idea.id} />), [ideasSorted]);
+	const ideasRendered = React.useMemo(() => ideasSorted.map((idea) => <IdeaListEntry idea={idea} key={idea.id} />), [ideasSorted]);
 
 	React.useEffect(() => {
 		if (ideas.length === 0) {
-			call(IdeaService.fetchIdeas);
+			call(() => ideaInitializer(IdeaService));
 		}
 	}, []);
 

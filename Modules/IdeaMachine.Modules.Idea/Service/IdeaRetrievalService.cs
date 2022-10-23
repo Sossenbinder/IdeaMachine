@@ -21,6 +21,11 @@ namespace IdeaMachine.Modules.Idea.Service
 			_ideaRepository = ideaRepository;
 		}
 
+		public Task<int> CountAll(Guid? userId)
+		{
+			return _ideaRepository.Count(userId);
+		}
+
 		public async Task<PaginationResult<int?, IdeaModel>> Get(int? paginationToken = null)
 		{
 			var ideaResult = await _ideaRepository.Get(paginationToken);

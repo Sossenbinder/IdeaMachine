@@ -1,23 +1,37 @@
-﻿import { NetworkResponse } from "./types/NetworkDefinitions";
-import HttpRequest, { RequestMethods } from "./HttpRequest"
+﻿import { NetworkResponse, Pagination } from "./types/NetworkDefinitions";
+import HttpRequest, { RequestMethods } from "./HttpRequest";
 
-type VerificationTokenRequest = {
-	__RequestVerificationToken?: string;
-}
-
-export default class GetRequest<TResponse, TRequest = void> extends HttpRequest<TRequest, TResponse> {
-
+export default class GetRequest<TResponse> extends HttpRequest<void, TResponse> {
 	constructor(url: string) {
 		super(url, RequestMethods.GET);
 	}
 
-	public async get(requestData?: TRequest): Promise<NetworkResponse<TResponse>> {
+	public async get(): Promise<NetworkResponse<TResponse>> {
+		return super.send();
+	}
+}
 
-		let getData: TRequest & VerificationTokenRequest = undefined;
-		if (requestData) {
-			getData = requestData ?? ({} as TRequest & VerificationTokenRequest);
-		}
+export class PagedGetRequest<TResponse, TTokenType = string> {
+	constructor(private readonly url: string, private readonly pageParameterName: string = "page") {}
 
-		return super.send(getData);
+	public get = async (paginationToken: TTokenType = null): Promise<NetworkResponse<Pagination.PaginationResult<TTokenType, TResponse>>> => {
+		const getRequest = new GetRequest<Pagination.PaginationResult<TTokenType, TResponse>>(
+			`${this.url}${paginationToken ? `?${this.pageParameterName}=${paginationToken ?? null}` : ""}`,
+		);
+		return await getRequest.get();
+	};
+
+	public async *getContinuous(paginationToken?: TTokenType): AsyncIterableIterator<Array<TResponse>> {
+		do {
+			const result = await this.get(paginationToken);
+
+			if (!result.success || !!result.payload?.paginationToken) {
+				return;
+			}
+
+			paginationToken = result.payload.paginationToken;
+
+			yield result.payload.data;
+		} while (paginationToken);
 	}
 }

@@ -11,6 +11,7 @@ using IdeaMachine.Modules.Idea.DataTypes.Entity;
 using IdeaMachine.Modules.Idea.DataTypes.Model;
 using IdeaMachine.Modules.Idea.Repository.Context;
 using IdeaMachine.Modules.Idea.Repository.Interface;
+using MassTransit.SignalR.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdeaMachine.Modules.Idea.Repository
@@ -62,6 +63,21 @@ namespace IdeaMachine.Modules.Idea.Repository
 			int? nextContinuationToken = queryResult.Any() ? queryResult.Last().Id : null;
 
 			return new PaginationResult<int?, IdeaEntity>(nextContinuationToken, queryResult);
+		}
+
+		public async Task<int> Count(Guid? userId)
+		{
+			await using var ctx = CreateContext();
+
+			var query = ctx.Ideas
+				.AsQueryable();
+
+			if (userId is not null)
+			{
+				query = query.Where(x => x.CreatorId == userId);
+			}
+
+			return await query.CountAsync();
 		}
 
 		public async Task<List<IdeaEntity>> GetForSpecificUser(Guid userId)

@@ -7,6 +7,7 @@ namespace IdeaMachineWeb.Controllers
 	{
 		public IActionResult Index()
 		{
+			
 			return View("~/Views/Index.cshtml");
 		}
 	}

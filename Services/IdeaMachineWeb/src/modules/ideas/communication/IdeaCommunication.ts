@@ -2,13 +2,14 @@
 import { Idea, Network } from "../types";
 
 // Functionality
-import PostRequest, { PagedPostRequest, VoidPostRequest } from "common/helper/requests/PostRequest";
-import GetRequest from "common/helper/requests/GetRequest";
+import { PagedPostRequest, VoidPostRequest } from "common/helper/requests/PostRequest";
+import GetRequest, { PagedGetRequest } from "common/helper/requests/GetRequest";
 import DeleteRequest from "common/helper/requests/DeleteRequest";
 import MultiPartRequest from "common/helper/requests/MultiPartRequest";
 
 const Urls = {
 	Add: "/Idea",
+	Count: "/Idea/Count",
 	Get: "/Idea",
 	GetOwn: "/Idea/Own",
 	GetForUser: "/Idea/User/",
@@ -26,9 +27,14 @@ export const postIdea = async (idea: Idea, files?: Array<File>) => {
 	});
 };
 
+export const countIdeas = async () => {
+	const request = new GetRequest<number>(Urls.Count);
+	return await request.get();
+};
+
 export const getIdeas = async (paginationToken: number | null = null) => {
-	const request = new PagedPostRequest<Network.Get.Response, number>(Urls.Get);
-	return await request.post(paginationToken);
+	const request = new PagedGetRequest<Network.Get.Response, number>(Urls.Get, "page");
+	return await request.get(paginationToken);
 };
 
 export const getOwnIdeas = async () => {
@@ -42,7 +48,7 @@ export const getIdeasForUser = async (userId: string) => {
 };
 
 export const getSpecificIdea = async (id: number) => {
-	const request = new GetRequest<Network.GetSpecificIdea.Response>(`${Urls.Get}/${id}`);
+	const request = new GetRequest<Network.GetSpecificIdea.Response>(`${Urls.Get}?id=${id}`);
 	return await request.get();
 };
 

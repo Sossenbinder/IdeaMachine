@@ -11,6 +11,8 @@ namespace IdeaMachine.Modules.Idea.Service.Interface
 {
 	public interface IIdeaRetrievalService
 	{
+		Task<int> CountAll(Guid? userId);
+
 		Task<PaginationResult<int?, IdeaModel>> Get(int? paginationToken = null);
 
 		Task<List<IdeaModel>> GetForUser(ISession session);

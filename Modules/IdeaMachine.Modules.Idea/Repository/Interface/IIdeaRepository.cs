@@ -13,6 +13,8 @@ namespace IdeaMachine.Modules.Idea.Repository.Interface
 
 		Task<PaginationResult<int?, IdeaEntity>> Get(int? paginationToken = null);
 
+		Task<int> Count(Guid? userId);
+
 		Task<List<IdeaEntity>> GetForSpecificUser(Guid userId);
 
 		Task<Guid?> GetOwner(int id);

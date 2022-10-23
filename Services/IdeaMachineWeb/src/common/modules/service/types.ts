@@ -14,6 +14,8 @@ export type ServiceNotification = {
 
 export interface IIdeaService extends IModuleService {
 	addIdea(idea: Idea, attachments?: Array<File>): Promise<number>;
+	countMine(): Promise<number>;
+	countAll(): Promise<number>;
 	fetchIdeas(): Promise<void>;
 	initializeOwnIdeas(): Promise<void>;
 	getSpecificIdea(id: number): Promise<void>;

@@ -19,7 +19,6 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 	public constructor(channelProvider: IChannelProvider) {
 		super(channelProvider);
 	}
-
 	public async start() {}
 
 	addIdea = async (idea: Idea, attachments?: Array<File>): Promise<number> => {
@@ -54,6 +53,13 @@ export default class IdeaService extends ModuleService implements IIdeaService {
 
 		return IdeaInputResult.Successful;
 	};
+
+	countMine(): Promise<number> {
+		throw new Error("Method not implemented.");
+	}
+	countAll(): Promise<number> {
+		throw new Error("Method not implemented.");
+	}
 
 	fetchIdeas = async () => {
 		const paginationToken = this.getStore().paginationReducer.ideaPagination.paginationToken;

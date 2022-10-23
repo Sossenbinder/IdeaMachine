@@ -12,7 +12,6 @@ const tokenHolder = document.getElementsByName("__RequestVerificationToken")[0] 
 
 export default abstract class HttpRequest<TRequest, TResponse> {
 	private m_url: string;
-
 	private m_requestMethod: string;
 
 	constructor(url: string, requestMethod: RequestMethods = RequestMethods.POST) {
